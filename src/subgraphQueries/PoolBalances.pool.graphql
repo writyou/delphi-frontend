@@ -1,9 +1,0 @@
-subscription PoolBalances($date: ID!, $minUsersLength: BigInt!) {
-  pools(first: 1000, orderBy: id, where: {id_gt: $date, usersLength_gte: $minUsersLength}) {
-    id
-    usersLength
-    lBalance
-    pEnterPrice
-    pExitPrice
-  }
-}
