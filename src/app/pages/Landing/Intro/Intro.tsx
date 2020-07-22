@@ -1,11 +1,11 @@
-import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { routes } from "app/routes";
-import { Button, Intro, Link, LinkProps } from "components";
-import { makeStyles } from "utils/styles";
+import { routes } from 'app/routes';
+import { Button, Intro, Link, LinkProps } from 'components';
+import { makeStyles } from 'utils/styles';
 
-import { LandingIcon, LandingTextLogo } from "../Icons";
+import { LandingIcon, LandingTextLogo } from '../Icons';
 
 export function LandingIntro() {
   const classes = useStyles();
@@ -46,9 +46,7 @@ export function LandingIntro() {
           size="large"
           variant="outlined"
           color="primary"
-          component={
-            Link as React.FunctionComponent<Omit<LinkProps, "variant">>
-          }
+          component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
           underline="none"
           href="https://sparta-rinkeby.akropolis.io/stats"
           target="_blank"
@@ -61,24 +59,24 @@ export function LandingIntro() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   textLogo: {
     fontSize: theme.spacing(2.75),
     marginLeft: theme.spacing(2.5),
   },
   content: {
-    display: "flex",
-    alignItems: "center",
-    whiteSpace: "nowrap",
+    display: 'flex',
+    alignItems: 'center',
+    whiteSpace: 'nowrap',
 
     fontSize: theme.spacing(1.5),
-    [theme.breakpoints.up("tabletXS")]: {
+    [theme.breakpoints.up('tabletXS')]: {
       fontSize: theme.spacing(2.5),
     },
   },
   button: {
     margin: theme.spacing(0, 1.25),
-    [theme.breakpoints.up("tabletXS")]: {
+    [theme.breakpoints.up('tabletXS')]: {
       margin: theme.spacing(0, 2),
     },
   },

@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Layout, Benefits } from "components";
-import { Header } from "app/components/LandingHeader/Header";
-import { Footer } from "app/components/Footer/Footer";
-import { makeStyles } from "utils/styles";
+import { Layout, Benefits } from 'components';
+import { Header } from 'app/components/LandingHeader/Header';
+import { Footer } from 'app/components/Footer/Footer';
+import { makeStyles } from 'utils/styles';
 
-import { LandingIntro } from "./Intro/Intro";
-import { benefits, footerNavItems } from "./constants";
+import { LandingIntro } from './Intro/Intro';
+import { benefits, footerNavItems } from './constants';
 
 export function Landing() {
   const classes = useStyles();
@@ -26,25 +26,23 @@ export function Landing() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  "@global": {
+const useStyles = makeStyles(theme => ({
+  '@global': {
     body: {
       backgroundColor:
-        theme.palette.type === "light"
-          ? theme.colors.athensGray
-          : theme.colors.obsidian,
+        theme.palette.type === 'light' ? theme.colors.athensGray : theme.colors.obsidian,
     },
   },
 
   section: {
     marginTop: theme.spacing(5),
-    [theme.breakpoints.up("tabletSM")]: {
+    [theme.breakpoints.up('tabletSM')]: {
       marginTop: theme.spacing(7.5),
     },
 
-    "&:last-child": {
+    '&:last-child': {
       marginBottom: theme.spacing(3.75),
-      [theme.breakpoints.up("tabletSM")]: {
+      [theme.breakpoints.up('tabletSM')]: {
         marginBottom: theme.spacing(7.5),
       },
     },

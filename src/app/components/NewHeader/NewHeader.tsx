@@ -1,12 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { AuthButton } from "features/auth";
-import { ThemeButton } from "services/theme";
+import { AuthButton } from 'features/auth';
+import { ThemeButton } from 'services/theme';
 
-import { useStyles } from "./NewHeader.style";
-import { Logo } from "./icons";
-import { Links } from "./Links";
+import { useStyles } from './NewHeader.style';
+import { Logo } from './icons';
+import { Links } from './Links';
 
 export const NewHeader: React.FC = () => {
   const classes = useStyles();

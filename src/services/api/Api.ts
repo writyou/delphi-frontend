@@ -1,10 +1,10 @@
-import ApolloClient from "apollo-client";
+import ApolloClient from 'apollo-client';
 
-import { Web3Manager } from "./modules/Web3Manager";
-import { Erc20Api } from "./modules/Erc20Api";
-import { TransactionsApi } from "./modules/TransactionsApi";
-import { SwarmApi } from "./modules/SwarmApi";
-import { makeSubgraphApi } from "./modules/SubgraphApi";
+import { Web3Manager } from './modules/Web3Manager';
+import { Erc20Api } from './modules/Erc20Api';
+import { TransactionsApi } from './modules/TransactionsApi';
+import { SwarmApi } from './modules/SwarmApi';
+import { makeSubgraphApi } from './modules/SubgraphApi';
 
 export class Api {
   public web3Manager = new Web3Manager();

@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Switch, Route } from "react-router";
+import * as React from 'react';
+import { Switch, Route } from 'react-router';
 
-import { Landing } from "app/pages/Landing/Landing";
+import { Landing } from 'app/pages/Landing/Landing';
 
-import { MainLayout, Content } from "./components";
+import { MainLayout, Content } from './components';
 
 export function App() {
   return (

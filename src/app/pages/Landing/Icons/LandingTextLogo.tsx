@@ -1,12 +1,12 @@
 // tslint:disable: max-line-length
-import * as React from "react";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import * as React from 'react';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { makeStyles, useTheme } from "utils/styles";
+import { makeStyles, useTheme } from 'utils/styles';
 
 const useStyles = makeStyles({
   root: {
-    width: "unset",
+    width: 'unset',
   },
 });
 
@@ -18,11 +18,9 @@ function LandingTextLogo(props: React.ComponentProps<typeof SvgIcon>) {
     <SvgIcon {...props} classes={classes} viewBox="0 0 143 22">
       <defs>
         <linearGradient id="LandingTextLogo-gradient" x1="0%" y1="50%" y2="50%">
-          {theme.gradients.landingText.points.map(
-            ({ offset, color }, index) => (
-              <stop key={index} offset={offset} stopColor={color} />
-            )
-          )}
+          {theme.gradients.landingText.points.map(({ offset, color }, index) => (
+            <stop key={index} offset={offset} stopColor={color} />
+          ))}
         </linearGradient>
       </defs>
       <g fill="none" fillRule="evenodd" transform="translate(-227 -191)">

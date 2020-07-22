@@ -1,16 +1,16 @@
-import * as React from "react";
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
-import Avatar from "@material-ui/core/Avatar";
+import * as React from 'react';
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import Avatar from '@material-ui/core/Avatar';
 
-import { NETWORK_ID } from "env";
-import { useApi } from "services/api";
-import { getShortAddress } from "utils/format";
-import { useSubscribable, useCommunication } from "utils/react";
-import { makeStyles } from "utils/styles";
-import { tKeys, useTranslate } from "services/i18n";
-import { Button, Loading, Typography, Grid } from "components";
+import { NETWORK_ID } from 'env';
+import { useApi } from 'services/api';
+import { getShortAddress } from 'utils/format';
+import { useSubscribable, useCommunication } from 'utils/react';
+import { makeStyles } from 'utils/styles';
+import { tKeys, useTranslate } from 'services/i18n';
+import { Button, Loading, Typography, Grid } from 'components';
 
-import { AuthModal } from "./components/AuthModal";
+import { AuthModal } from './components/AuthModal';
 
 export function AuthButton() {
   const [isOpened, setIsOpened] = React.useState(false);
@@ -18,17 +18,9 @@ export function AuthButton() {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [account, accountMeta] = useSubscribable(
-    () => api.web3Manager.account,
-    [],
-    null
-  );
-  const [status] = useSubscribable(() => api.web3Manager.status, [], "pending");
-  const [connectedWallet] = useSubscribable(
-    () => api.web3Manager.connectedWallet,
-    [],
-    null
-  );
+  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account, [], null);
+  const [status] = useSubscribable(() => api.web3Manager.status, [], 'pending');
+  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet, [], null);
 
   const connectCommunication = useCommunication(api.web3Manager.connect, []);
 
@@ -45,15 +37,15 @@ export function AuthButton() {
   return (
     <>
       <Button
-        color={connectedWallet ? "default" : "primary"}
-        variant={connectedWallet ? "outlined" : "contained"}
+        color={connectedWallet ? 'default' : 'primary'}
+        variant={connectedWallet ? 'outlined' : 'contained'}
         onClick={toggleIsOpened}
         disabled={!accountMeta.loaded}
         className={classes.root}
         endIcon={
           <Loading
             ignoreError
-            meta={{ loaded: status !== "pending", error: null }}
+            meta={{ loaded: status !== 'pending', error: null }}
             communication={connectCommunication}
             progressVariant="circle"
             progressProps={{
@@ -76,18 +68,12 @@ export function AuthButton() {
                 className={classes.container}
               >
                 <Grid item>
-                  <Typography className={classes.address}>
-                    {getShortAddress(account)}
-                  </Typography>
+                  <Typography className={classes.address}>{getShortAddress(account)}</Typography>
                 </Grid>
                 <Grid item>
                   <Typography className={classes.connected}>
                     {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
-                    ${t(
-                      tKeys.features.networkWarning.networkType[
-                        NETWORK_ID
-                      ].getKey()
-                    )}`}
+                    ${t(tKeys.features.networkWarning.networkType[NETWORK_ID].getKey())}`}
                   </Typography>
                 </Grid>
               </Grid>
@@ -114,7 +100,7 @@ export function AuthButton() {
 
 const useStyles = makeStyles({
   root: {
-    padding: "0 15px 0 0",
+    padding: '0 15px 0 0',
   },
   address: {
     fontSize: 12,
