@@ -23,6 +23,11 @@ export const Content: React.FC = () => {
         path={routes.savings.getRoutePath()}
         component={makeUnimplementedComponent("Savings")}
       />
+      <Route
+        exact
+        path={routes.investing.getRoutePath()}
+        component={makeUnimplementedComponent("Investing")}
+      />
 
       <Redirect to="/" />
     </Switch>

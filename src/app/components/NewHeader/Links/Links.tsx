@@ -13,12 +13,12 @@ const links: Link.models.Link[] = [
   {
     kind: "internal",
     label: "Savings",
-    ref: routes.summary.getRoutePath(),
+    ref: routes.savings.getRoutePath(),
   },
   {
     kind: "internal",
     label: "Investing",
-    ref: routes.summary.getRoutePath(),
+    ref: routes.investing.getRoutePath(),
   },
   {
     kind: "external",

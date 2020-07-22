@@ -1,32 +1,32 @@
-import { makeStyles } from 'utils/styles';
+import { makeStyles } from "utils/styles";
 
 export const useStyles = makeStyles(
   {
     root: {
-      padding: '16px 50px',
-      display: 'flex',
-      justifyContent: 'space-between',
+      padding: "16px 50px",
+      display: "flex",
+      justifyContent: "space-between",
     },
 
     leftPart: {
-      display: 'flex',
+      display: "flex",
     },
 
     authButton: {
       marginRight: 50,
-      display: 'flex',
+      display: "flex",
     },
 
     rightPart: {
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
     },
 
     links: {
-      display: 'flex',
+      display: "flex",
       marginLeft: 10,
-      alignItems: 'center',
+      alignItems: "center",
     },
   },
-  { name: 'Header' },
+  { name: "Header" }
 );
