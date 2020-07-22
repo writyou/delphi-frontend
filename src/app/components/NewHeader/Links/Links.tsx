@@ -1,26 +1,29 @@
-import React from 'react';
+import React from "react";
 
-import { tKeys } from 'services/i18n';
-
-import * as Link from '../../Link';
-import { routes } from '../../../routes';
-import { useStyles } from './Links.style';
+import * as Link from "../../Link";
+import { routes } from "../../../routes";
+import { useStyles } from "./Links.style";
 
 const links: Link.models.Link[] = [
   {
-    kind: 'internal',
-    label: tKeys.modules.navigation.statistics.getKey(),
-    ref: routes.stats.getRoutePath(),
+    kind: "internal",
+    label: "My Summary",
+    ref: routes.summary.getRoutePath(),
   },
   {
-    kind: 'internal',
-    label: tKeys.modules.navigation.governance.getKey(),
-    ref: routes.governance.getRoutePath(),
+    kind: "internal",
+    label: "Savings",
+    ref: routes.summary.getRoutePath(),
   },
   {
-    kind: 'external',
-    ref: 'https://wiki.akropolis.io/spartafaq/',
-    label: tKeys.modules.navigation.wiki.getKey(),
+    kind: "internal",
+    label: "Investing",
+    ref: routes.summary.getRoutePath(),
+  },
+  {
+    kind: "external",
+    label: "Wiki",
+    ref: "https://wiki.akropolis.io/spartafaq/",
   },
 ];
 

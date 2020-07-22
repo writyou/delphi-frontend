@@ -1,13 +1,13 @@
-import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
-import { Button, ButtonProps } from 'components';
-import { routes } from 'app/routes';
-import { tKeys, useTranslate } from 'services/i18n';
+import { Button, ButtonProps } from "components";
+import { routes } from "app/routes";
+import { tKeys, useTranslate } from "services/i18n";
 
-import { useStyles } from './AppButton.style';
+import { useStyles } from "./AppButton.style";
 
-function AppButton({ size }: Partial<Pick<ButtonProps, 'size'>>) {
+function AppButton({ size }: Partial<Pick<ButtonProps, "size">>) {
   const classes = useStyles();
   const { t } = useTranslate();
 
@@ -18,7 +18,7 @@ function AppButton({ size }: Partial<Pick<ButtonProps, 'size'>>) {
       variant="contained"
       color="primary"
       component={RouterLink}
-      to={routes.stats.getRedirectPath()}
+      to={routes.summary.getRedirectPath()}
       className={classes.root}
     >
       {t(tKeys.modules.navigation.app.getKey())}
