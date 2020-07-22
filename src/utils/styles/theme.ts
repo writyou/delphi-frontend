@@ -1,6 +1,6 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { createMuiTheme, Theme } from "@material-ui/core/styles";
 
-import { colors } from 'utils/styles/colors';
+import { colors } from "utils/styles/colors";
 
 import {
   helveticaNeueBold,
@@ -17,26 +17,32 @@ import {
   helveticaNeueUltraLight,
   helveticaNeueUltraLightItalic,
   helveticaNeue,
-} from './fonts';
-import { makeGradient } from './makeGradient';
-import { generateGridSpacingOverrides } from './generateGridSpacingOverrides';
+} from "./fonts";
+import { makeGradient } from "./makeGradient";
+import { generateGridSpacingOverrides } from "./generateGridSpacingOverrides";
 
 export { Theme };
 
 const defaultTheme = createMuiTheme();
 
-function getGradients(type: 'dark' | 'light') {
+function getGradients(type: "dark" | "light") {
   return {
     main: makeGradient([colors.heliotrope, colors.royalBlue]),
     products: [
       makeGradient(
-        type === 'dark' ? [colors.jacarta, colors.blueZodiac] : [colors.zumthor2, colors.linkWater],
+        type === "dark"
+          ? [colors.jacarta, colors.blueZodiac]
+          : [colors.zumthor2, colors.linkWater]
       ),
       makeGradient(
-        type === 'dark' ? [colors.jacarta2, colors.bunting] : [colors.whisper, colors.blueChalk],
+        type === "dark"
+          ? [colors.jacarta2, colors.bunting]
+          : [colors.whisper, colors.blueChalk]
       ),
       makeGradient(
-        type === 'dark' ? [colors.bossanova, colors.valhalla] : [colors.snuff, colors.amour],
+        type === "dark"
+          ? [colors.bossanova, colors.valhalla]
+          : [colors.snuff, colors.amour]
       ),
     ] as const,
     button: makeGradient([
@@ -45,24 +51,24 @@ function getGradients(type: 'dark' | 'light') {
       colors.heliotrope2,
       colors.heliotrope,
     ]),
-    creditPoolIcon: makeGradient(
-      type === 'dark'
+    landingIcon: makeGradient(
+      type === "dark"
         ? [colors.northWesternPurple, colors.darkPurple]
-        : [colors.lilac, colors.iris],
+        : [colors.lilac, colors.iris]
     ),
-    creditPoolText: makeGradient([colors.blueViolet, colors.lavenderBlue]),
+    landingText: makeGradient([colors.blueViolet, colors.lavenderBlue]),
     poolBalanceChart: [
-      makeGradient(['#fc87e2', '#f24cb6']),
-      makeGradient(['#63afdd', '#574cf2']),
+      makeGradient(["#fc87e2", "#f24cb6"]),
+      makeGradient(["#63afdd", "#574cf2"]),
     ] as const,
     poolCompositionChart: [
-      makeGradient(['#63f8b3', '#dcff9c']),
-      makeGradient(['#e323ff', '#7517f8']),
-      makeGradient(['#639ff8', '#85f9e1']),
-      makeGradient(['#7d40ff', '#02a4ff']),
-      makeGradient(['#f985f5', '#f863dd']),
+      makeGradient(["#63f8b3", "#dcff9c"]),
+      makeGradient(["#e323ff", "#7517f8"]),
+      makeGradient(["#639ff8", "#85f9e1"]),
+      makeGradient(["#7d40ff", "#02a4ff"]),
+      makeGradient(["#f985f5", "#f863dd"]),
     ] as const,
-    progressChart: makeGradient(['#7d40ff', '#02a4ff']),
+    progressChart: makeGradient(["#7d40ff", "#02a4ff"]),
   };
 }
 
@@ -91,7 +97,7 @@ const lightPalette = {
     paper: colors.white,
     paperSecondary: colors.white,
   },
-  type: 'light' as const,
+  type: "light" as const,
 };
 
 export const darkPalette = {
@@ -119,13 +125,13 @@ export const darkPalette = {
     paper: colors.foggyNight,
     paperSecondary: colors.darkBlueMagenta,
   },
-  type: 'dark' as const,
+  type: "dark" as const,
 };
 
-export const lightTheme = getTheme('light');
-export const darkTheme = getTheme('dark');
+export const lightTheme = getTheme("light");
+export const darkTheme = getTheme("dark");
 
-function getTheme(type: 'light' | 'dark'): Theme {
+function getTheme(type: "light" | "dark"): Theme {
   const tabsHeight = 36;
   const tabsIndicatorSpace = 3;
   const tabsBorderWidth = 1;
@@ -133,23 +139,23 @@ function getTheme(type: 'light' | 'dark'): Theme {
   return createMuiTheme({
     colors,
     gradients: getGradients(type),
-    palette: type === 'light' ? lightPalette : darkPalette,
+    palette: type === "light" ? lightPalette : darkPalette,
     breakpoints: {
       keys: [
-        'xs',
-        'sm',
-        'md',
-        'lg',
-        'xl',
-        'desktopXL',
-        'desktopLG',
-        'desktopMD',
-        'desktopSM',
-        'desktopXS',
-        'tabletSM',
-        'tabletXS',
-        'mobileSM',
-        'mobileXS',
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "desktopXL",
+        "desktopLG",
+        "desktopMD",
+        "desktopSM",
+        "desktopXS",
+        "tabletSM",
+        "tabletXS",
+        "mobileSM",
+        "mobileXS",
       ],
       values: {
         xs: 0,
@@ -169,7 +175,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
       },
     },
     typography: {
-      fontFamily: ['Helvetica Neue', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ["Helvetica Neue", "Arial", "sans-serif"].join(","),
       h6: {
         fontSize: 16,
         fontWeight: 400,
@@ -181,30 +187,34 @@ function getTheme(type: 'light' | 'dark'): Theme {
     overrides: {
       MuiDrawer: {
         paper: {
-          display: 'block',
+          display: "block",
           width: defaultTheme.spacing(60),
           padding: defaultTheme.spacing(4, 5),
-          backgroundColor: type === 'dark' ? colors.blackCurrant : colors.white,
+          backgroundColor: type === "dark" ? colors.blackCurrant : colors.white,
         },
       },
       MuiPaper: {
         root: {
-          transition: defaultTheme.transitions.create(['background-color', 'box-shadow']),
+          transition: defaultTheme.transitions.create([
+            "background-color",
+            "box-shadow",
+          ]),
         },
       },
       MuiLink: {
         underlineHover: {
-          textDecoration: 'underline',
-          textDecorationColor: type === 'dark' ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+          textDecoration: "underline",
+          textDecorationColor:
+            type === "dark" ? "rgba(255, 255, 255, 0.3)" : "rgba(0, 0, 0, 0.3)",
 
-          '&:hover': {
-            textDecorationColor: 'inherit',
+          "&:hover": {
+            textDecorationColor: "inherit",
           },
         },
       },
       MuiCssBaseline: {
-        '@global': {
-          '@font-face': [
+        "@global": {
+          "@font-face": [
             helveticaNeueBold,
             helveticaNeueBoldItalic,
             helveticaNeueCondensedBlack,
@@ -221,69 +231,69 @@ function getTheme(type: 'light' | 'dark'): Theme {
             helveticaNeue,
           ],
           html: {
-            boxSizing: 'border-box',
-            WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale',
+            boxSizing: "border-box",
+            WebkitFontSmoothing: "antialiased",
+            MozOsxFontSmoothing: "grayscale",
             fontSize: 16,
-            fontFamily: 'helvetica, sans-serif',
+            fontFamily: "helvetica, sans-serif",
           },
 
           body: {
             margin: 0,
-            fontSize: '1rem',
-            transition: defaultTheme.transitions.create('background-color'),
-            overflow: 'hidden',
+            fontSize: "1rem",
+            transition: defaultTheme.transitions.create("background-color"),
+            overflow: "hidden",
           },
 
-          'html, body, #root': {
-            height: '100%',
+          "html, body, #root": {
+            height: "100%",
           },
 
-          '#root': {
+          "#root": {
             zIndex: 1,
-            position: 'relative',
+            position: "relative",
           },
 
-          '*, *::before, *::after': {
-            boxSizing: 'inherit',
+          "*, *::before, *::after": {
+            boxSizing: "inherit",
           },
 
-          '@media print': {
+          "@media print": {
             body: {
-              backgroundColor: '#fff',
+              backgroundColor: "#fff",
             },
           },
 
-          '#walletconnect-wrapper': {
+          "#walletconnect-wrapper": {
             zIndex: defaultTheme.zIndex.modal,
-            position: 'relative',
+            position: "relative",
           },
         },
       },
 
       MuiButton: {
         endIcon: {
-          '&:empty': {
-            display: 'none',
+          "&:empty": {
+            display: "none",
           },
         },
 
         startIcon: {
-          '&:empty': {
-            display: 'none',
+          "&:empty": {
+            display: "none",
           },
         },
       },
 
       MuiExpansionPanelSummary: {
         root: {
-          '&$expanded': {
+          "&$expanded": {
             minHeight: defaultTheme.spacing(6),
           },
         },
 
         content: {
-          '&$expanded': {
+          "&$expanded": {
             margin: defaultTheme.spacing(1.5, 0),
           },
         },
@@ -295,7 +305,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiSnackbarContent: {
         root: {
-          backgroundColor: '#fff',
+          backgroundColor: "#fff",
         },
         message: {
           color: colors.rhino,
@@ -310,8 +320,8 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiTabs: {
         root: {
-          display: 'inline-flex',
-          overflow: 'hidden',
+          display: "inline-flex",
+          overflow: "hidden",
           minHeight: tabsHeight,
           borderRadius: tabsHeight / 2,
           padding: tabsIndicatorSpace,
@@ -321,29 +331,29 @@ function getTheme(type: 'light' | 'dark'): Theme {
         indicator: {
           top: 0,
           bottom: 0,
-          height: '100%',
+          height: "100%",
           borderRadius: tabsHeight / 2 - tabsIndicatorSpace - tabsBorderWidth,
           zIndex: -1,
-          background: 'linear-gradient(to left, #544cf2, #d93cef)',
+          background: "linear-gradient(to left, #544cf2, #d93cef)",
         },
 
         scroller: {
           zIndex: 1,
-          overflow: 'hidden',
+          overflow: "hidden",
           borderRadius: tabsHeight / 2 - tabsIndicatorSpace - tabsBorderWidth,
         },
       },
 
       MuiTab: {
         root: {
-          minHeight: 'unset',
+          minHeight: "unset",
           padding: defaultTheme.spacing(0.2, 1.5),
-          textTransform: 'unset',
-          fontSize: '1rem',
+          textTransform: "unset",
+          fontSize: "1rem",
           lineHeight: 1.5,
           borderRadius: tabsHeight / 2 - tabsIndicatorSpace - tabsBorderWidth,
 
-          '&$selected': {
+          "&$selected": {
             color: colors.white,
           },
         },
@@ -351,16 +361,16 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiSvgIcon: {
         root: {
-          display: 'block',
-          fontSize: '1.25rem',
+          display: "block",
+          fontSize: "1.25rem",
         },
 
         fontSizeSmall: {
-          fontSize: '1rem',
+          fontSize: "1rem",
         },
 
         fontSizeLarge: {
-          fontSize: '1.5rem',
+          fontSize: "1.5rem",
         },
       },
 
@@ -375,7 +385,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
   });
 }
 
-declare module '@material-ui/core/styles/createMuiTheme' {
+declare module "@material-ui/core/styles/createMuiTheme" {
   interface Theme {
     colors: typeof colors;
     gradients: ReturnType<typeof getGradients>;
@@ -387,7 +397,7 @@ declare module '@material-ui/core/styles/createMuiTheme' {
   }
 }
 
-declare module '@material-ui/core/styles/createPalette' {
+declare module "@material-ui/core/styles/createPalette" {
   interface TypeBackground {
     hint: string;
     tableHeader: string;
@@ -395,7 +405,7 @@ declare module '@material-ui/core/styles/createPalette' {
   }
 }
 
-declare module '@material-ui/core/styles/createBreakpoints' {
+declare module "@material-ui/core/styles/createBreakpoints" {
   interface BreakpointOverrides {
     desktopXL: true;
     desktopLG: true;
