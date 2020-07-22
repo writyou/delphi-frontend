@@ -1,1 +1,0 @@
-export { MySummary } from './MySummary';

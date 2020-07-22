@@ -2,11 +2,11 @@ import * as React from "react";
 
 import { Typography } from "components";
 
-export function DemoPage() {
+export function SummeryPage() {
   return (
     <div>
       <Typography variant="h4" gutterBottom>
-        Page for developers
+        Coming soon
       </Typography>
     </div>
   );

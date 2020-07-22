@@ -1,17 +1,14 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { useApolloClient } from '@apollo/react-hooks';
+import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import { useApolloClient } from "@apollo/react-hooks";
 
-import { App } from 'app/App';
-import { Api, ApiContext } from 'services/api';
-import { ApolloProvider } from 'services/apollo';
-import { I18nProvider } from 'services/i18n';
-import { ThemeProvider } from 'services/theme';
-import { TransactionsNotifications } from 'features/transactionsNotifications';
-import { CookiesMsg } from 'features/cookies';
-import { NetworkWarning } from 'features/networkWarning';
-import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
-import { AdaptabilityProvider } from 'services/adaptability';
+import { App } from "app/App";
+import { Api, ApiContext } from "services/api";
+import { ApolloProvider } from "services/apollo";
+import { I18nProvider } from "services/i18n";
+import { ThemeProvider } from "services/theme";
+import { ErrorBoundary, Snackbar, CssBaseline } from "components";
+import { AdaptabilityProvider } from "services/adaptability";
 
 export function Root(): React.ReactElement<{}> {
   return (
@@ -30,7 +27,7 @@ function ApiWrapper() {
 
   const api = new Api(apolloClient);
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     (window as any).api = api;
   }
 
@@ -42,9 +39,6 @@ function ApiWrapper() {
             <AdaptabilityProvider>
               <CssBaseline />
               <App />
-              <TransactionsNotifications />
-              <CookiesMsg />
-              <NetworkWarning />
             </AdaptabilityProvider>
           </Snackbar>
         </ThemeProvider>

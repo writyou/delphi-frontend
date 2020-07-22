@@ -1689,20 +1689,6 @@ export enum UserSnapshot_OrderBy {
   Credit = 'credit'
 }
 
-export type UsersQueryVariables = Exact<{
-  first: Scalars['Int'];
-  skip: Scalars['Int'];
-}>;
-
-
-export type UsersQuery = (
-  { __typename?: 'Query' }
-  & { users: Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'pBalance' | 'pLockedSum' | 'credit'>
-  )> }
-);
-
 export type DebtProposalsQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
@@ -1949,16 +1935,6 @@ export type PoolMetricsSubscription = (
 );
 
 
-export const UsersDocument = gql`
-    query Users($first: Int!, $skip: Int!) @pool {
-  users(first: $first, skip: $skip) {
-    id
-    pBalance
-    pLockedSum
-    credit
-  }
-}
-    `;
 export const DebtProposalsDocument = gql`
     query DebtProposals($first: Int!, $skip: Int!) {
   debts(first: $first, skip: $skip, where: {status: PROPOSED, stakeProgress_lt: "0x64"}) {
@@ -2170,9 +2146,6 @@ export type SdkFunctionWrapper = <T>(action: () => Promise<T>) => Promise<T>;
 const defaultWrapper: SdkFunctionWrapper = sdkFunction => sdkFunction();
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    Users(variables: UsersQueryVariables): Promise<UsersQuery> {
-      return withWrapper(() => client.request<UsersQuery>(print(UsersDocument), variables));
-    },
     DebtProposals(variables: DebtProposalsQueryVariables): Promise<DebtProposalsQuery> {
       return withWrapper(() => client.request<DebtProposalsQuery>(print(DebtProposalsDocument), variables));
     },

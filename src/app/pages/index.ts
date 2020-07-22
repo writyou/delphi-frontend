@@ -1,14 +1,3 @@
-export { Lend } from "./Lend";
-export { AccountPage } from "./Account/AccountPage";
-export { ActivitiesPage } from "./Activities/ActivitiesPage";
-export { BalancesPage } from "./Balances/Balances";
-export { DemoPage } from "./Demo/DemoPage";
-export { DistributionsPage } from "./Distributions/DistributionsPage";
-export { LiquidationsPage } from "./Liquidations/Liquidations";
-export { MyGuaranteesPage } from "./MyGuarantees/MyGuarantees";
-export { MyLoansPage } from "./MyLoans/MyLoans";
-export { PoolPage } from "./Pool/PoolPage";
-export { StatsPage } from "./Stats/Stats";
 export { Landing } from "./Landing/Landing";
-export { HistoryPage } from "./History/HistoryPage";
-export { StrategiesPage } from "./Strategies/StrategiesPage";
+export { SummaryPage } from "./Summary/SummaryPage";
+export { DemoPage } from "./Demo/DemoPage";

@@ -35,7 +35,7 @@ export function LandingIntro() {
           variant="contained"
           color="primary"
           component={RouterLink}
-          to={routes.stats.getRedirectPath()}
+          to={routes.summary.getRedirectPath()}
         >
           Mainnet
         </Button>
