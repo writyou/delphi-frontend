@@ -1,15 +1,15 @@
 // tslint:disable: max-line-length
-import * as React from "react";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import * as React from 'react';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { makeStyles, useTheme } from "utils/styles";
+import { makeStyles, useTheme } from 'utils/styles';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
-    width: "unset",
+    width: 'unset',
 
-    "& path": {
-      mixBlendMode: theme.palette.type === "dark" ? "screen" : "unset",
+    '& path': {
+      mixBlendMode: theme.palette.type === 'dark' ? 'screen' : 'unset',
     },
   },
 }));
@@ -25,7 +25,7 @@ export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
       theme.gradients.landingIcon.points.map(({ offset, color }, index) => (
         <stop key={index} offset={offset} stopColor={color} />
       )),
-    [theme]
+    [theme],
   );
 
   React.useEffect(() => {
@@ -36,22 +36,10 @@ export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
     <SvgIcon {...props} classes={classes} viewBox="0 0 96 66">
       {/* chrome bug: it doesn't rerender gradient inside svg after theme change, but rerenders after defs remount */}
       <defs key={hackForGradientUpdating}>
-        <linearGradient
-          id="LandingIcon-gradient-a"
-          x1="50%"
-          x2="50%"
-          y1="0%"
-          y2="100%"
-        >
+        <linearGradient id="LandingIcon-gradient-a" x1="50%" x2="50%" y1="0%" y2="100%">
           {gradientStops}
         </linearGradient>
-        <linearGradient
-          id="LandingIcon-gradient-b"
-          x1="100%"
-          x2="0%"
-          y1="50%"
-          y2="50%"
-        >
+        <linearGradient id="LandingIcon-gradient-b" x1="100%" x2="0%" y1="50%" y2="50%">
           {gradientStops}
         </linearGradient>
         <g id="LandingIcon-shape">

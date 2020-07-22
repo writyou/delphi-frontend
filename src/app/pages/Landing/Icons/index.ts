@@ -1,2 +1,2 @@
-export * from "./LandingIcon";
-export * from "./LandingTextLogo";
+export * from './LandingIcon';
+export * from './LandingTextLogo';

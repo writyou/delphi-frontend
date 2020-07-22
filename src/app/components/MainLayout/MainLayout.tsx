@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import { NewHeader } from "../NewHeader";
-import { useStyles } from "./MainLayout.style";
-import { AppFooter } from "../AppFooter/AppFooter";
+import { NewHeader } from '../NewHeader';
+import { useStyles } from './MainLayout.style';
+import { AppFooter } from '../AppFooter/AppFooter';
 
 type Props = {
   Content: React.FC;
 };
 
-export const MainLayout: React.FC<Props> = (props) => {
+export const MainLayout: React.FC<Props> = props => {
   const classes = useStyles();
 
   return (

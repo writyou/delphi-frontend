@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Typography } from "components";
+import { Typography } from 'components';
 
 export function SummaryPage() {
   return (
