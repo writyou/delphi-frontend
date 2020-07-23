@@ -1,7 +1,7 @@
 {
-  "name": "ethereum-dapp-starter-kit",
+  "name": "akropolis-delphi-frontend",
   "version": "0.0.1",
-  "description": "Frontend starter kit for Ethereum DApps",
+  "description": "Akropolis Delphi Frontend",
   "main": "index.js",
   "scripts": {
     "dev": "npm run dev:sandbox",
@@ -37,7 +37,7 @@
       "command": "better-npm-run node webpack-dev-server --config webpack/dev.ts"
     }
   },
-  "author": "Serdtsev Dmitriy",
+  "author": "Akropolis",
   "license": "MIT",
   "dependencies": {
     "@apollo/react-common": "^3.1.3",
