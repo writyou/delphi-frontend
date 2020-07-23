@@ -20,11 +20,6 @@ const links: Link.models.Link[] = [
     label: 'Investing',
     ref: routes.investing.getRoutePath(),
   },
-  {
-    kind: 'external',
-    label: 'Wiki',
-    ref: 'https://wiki.akropolis.io/spartafaq/',
-  },
 ];
 
 export const Links = () => {

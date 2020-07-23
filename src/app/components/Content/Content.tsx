@@ -11,22 +11,10 @@ export const Content: React.FC = () => {
         <Route exact path={routes.demo.getRoutePath()} component={pages.DemoPage} />
       )}
       <Route path={routes.summary.getRoutePath()} component={pages.SummaryPage} />
-      <Route
-        exact
-        path={routes.savings.getRoutePath()}
-        component={makeUnimplementedComponent('Savings')}
-      />
-      <Route
-        exact
-        path={routes.investing.getRoutePath()}
-        component={makeUnimplementedComponent('Investing')}
-      />
+      <Route path={routes.savings.getRoutePath()} component={pages.SavingsPage} />
+      <Route path={routes.investing.getRoutePath()} component={pages.InvestingPage} />
 
       <Redirect to="/" />
     </Switch>
   );
 };
-
-function makeUnimplementedComponent(componentLabel: string) {
-  return () => <div style={{ fontSize: 45 }}>{`${componentLabel} not implemented`}</div>;
-}
