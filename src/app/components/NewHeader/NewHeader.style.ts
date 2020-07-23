@@ -13,7 +13,7 @@ export const useStyles = makeStyles(
     },
 
     authButton: {
-      marginRight: 50,
+      marginLeft: 50,
       display: 'flex',
     },
 
