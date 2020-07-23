@@ -9,6 +9,7 @@ import { I18nProvider } from 'services/i18n';
 import { ThemeProvider } from 'services/theme';
 import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
 import { AdaptabilityProvider } from 'services/adaptability';
+import { NetworkWarning } from 'features/networkWarning';
 
 export function Root(): React.ReactElement<{}> {
   return (
@@ -39,6 +40,7 @@ function ApiWrapper() {
             <AdaptabilityProvider>
               <CssBaseline />
               <App />
+              <NetworkWarning />
             </AdaptabilityProvider>
           </Snackbar>
         </ThemeProvider>
