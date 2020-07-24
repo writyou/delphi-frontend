@@ -11,8 +11,8 @@ export function ChartMock() {
 const useStyles = makeStyles(
   () => ({
     root: {
-      width: 54,
-      height: 16,
+      width: 48,
+      height: 48,
       backgroundColor: 'red',
     },
   }),
