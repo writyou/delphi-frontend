@@ -1,17 +1,17 @@
 /* eslint-disable import/no-extraneous-dependencies */
-import path from "path";
-import merge from "webpack-merge";
+import path from 'path';
+import merge from 'webpack-merge';
 
-import common from "./common";
+import common from './common';
 
 // eslint-disable-next-line import/no-default-export
 export default merge(common, {
-  mode: "development",
-  devtool: "inline-source-map",
+  mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
     hot: true,
-    contentBase: path.resolve("..", "build"),
-    host: "0.0.0.0",
+    contentBase: path.resolve('..', 'build'),
+    host: '0.0.0.0',
     port: 8082,
     inline: true,
     lazy: false,
