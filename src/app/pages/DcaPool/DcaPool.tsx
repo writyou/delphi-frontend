@@ -14,7 +14,7 @@ function DcaPool() {
   return (
     <Layout>
       <Layout.Header>
-        <Header customNavItems={[]} />
+        <Header forLanding customNavItems={[]} />
       </Layout.Header>
       <Layout.Container className={classes.main}>
         <DcaPoolIntro />

@@ -10,16 +10,16 @@ import { AuthButton } from 'features/auth';
 
 import { menuItems } from './constants';
 import { useStyles } from './Header.style';
-import { AppButton } from './components/AppButton/AppButton';
 
 interface Props {
+  forLanding?: boolean;
   customNavItems?: IMenuItem[];
   CustomLogo?: typeof SvgIcon;
 }
 
 const AKROPOLIS_LINK = 'https://akropolis.io/';
 
-export function Header({ customNavItems, CustomLogo }: Props) {
+export function Header({ forLanding, customNavItems, CustomLogo }: Props) {
   const classes = useStyles();
 
   return (
@@ -53,18 +53,10 @@ export function Header({ customNavItems, CustomLogo }: Props) {
           </React.Fragment>,
           <React.Fragment key="1">
             <Adaptive to="tabletXS">
-              <AppButton size="small" />
+              <AuthButton forLanding={forLanding} />
             </Adaptive>
             <Adaptive from="tabletXS">
-              <AppButton />
-            </Adaptive>
-          </React.Fragment>,
-          <React.Fragment key="2">
-            <Adaptive to="tabletXS">
-              <AuthButton />
-            </Adaptive>
-            <Adaptive from="tabletXS">
-              <AuthButton />
+              <AuthButton forLanding={forLanding} />
             </Adaptive>
           </React.Fragment>,
         ]}
