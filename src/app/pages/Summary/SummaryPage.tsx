@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Grid, TabContext, TabsList, Tab, TabPanel } from 'components';
+import { Grid, TabContext, TabsList, Tab, TabPanel, ComingSoon } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import {
@@ -38,12 +38,13 @@ export function SummaryPage() {
       <Grid container xs>
         <Grid item xs>
           <div className={classes.chart}>
+            <ComingSoon position="overlay" />
             <PortfolioBalanceChart />
           </div>
         </Grid>
         {metricsBlock()}
       </Grid>
-      <Grid container direction="column" xs>
+      <Grid container direction="column" xs className={classes.innerPages}>
         {tabsBlock()}
       </Grid>
     </Grid>
@@ -102,7 +103,8 @@ export function SummaryPage() {
 
   function metricsBlock() {
     return (
-      <Grid container direction="column" xs>
+      <Grid container direction="column" xs className={classes.metrics}>
+        <ComingSoon position="overlay" />
         <Grid container justify="space-between" className={classes.liveStats}>
           <Grid item>Live Stats</Grid>
           <Grid item>
@@ -130,6 +132,10 @@ const useStyles = makeStyles(
     },
     chart: {
       maxWidth: 537,
+      position: 'relative',
+    },
+    metrics: {
+      position: 'relative',
     },
     liveStats: {
       borderBottom: '1px solid rgba(255,255,255,0.1)',
@@ -146,6 +152,9 @@ const useStyles = makeStyles(
       display: 'flex',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
+    },
+    innerPages: {
+      marginTop: 60,
     },
   }),
   { name: 'MySummary' },

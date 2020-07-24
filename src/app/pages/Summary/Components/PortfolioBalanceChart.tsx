@@ -37,7 +37,7 @@ function PortfolioBalanceChart() {
   const chartPoints: PoolPoint[] = mockedPoints;
 
   const renderCurrentBalance = () => {
-    return <div>Coming soon</div>;
+    return <div>Chart legend</div>;
   };
 
   return (
