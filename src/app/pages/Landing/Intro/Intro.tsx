@@ -2,18 +2,18 @@ import React from 'react';
 
 import { Button, Link, LinkProps, Intro } from 'components';
 
-import { DcaPoolIcon, DelphiTextLogo } from '../Icons';
+import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
 import { DCA_LINK } from '../constants';
 
-function DcaPoolIntro() {
+function LandingIntro() {
   const classes = useStyles();
 
   return (
     <Intro
       icon={
         <>
-          <DcaPoolIcon fontSize="inherit" />
+          <LandingIcon fontSize="inherit" />
           <DelphiTextLogo className={classes.textLogo} />
         </>
       }
@@ -78,4 +78,4 @@ function DcaPoolIntro() {
   );
 }
 
-export { DcaPoolIntro };
+export { LandingIntro };

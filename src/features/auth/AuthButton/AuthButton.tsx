@@ -12,9 +12,9 @@ import { Button, Loading, Typography, Grid } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
-type Props = { forLanding?: boolean };
+type Props = { text?: string };
 
-export function AuthButton({ forLanding }: Props) {
+export function AuthButton({ text }: Props) {
   const [isOpened, setIsOpened] = React.useState(false);
   const api = useApi();
   const classes = useStyles();
@@ -82,9 +82,7 @@ export function AuthButton({ forLanding }: Props) {
             </>
           ) : (
             <Typography className={classes.connect}>
-              {forLanding
-                ? t(tKeys.modules.navigation.app.getKey())
-                : t(tKeys.features.auth.connect.getKey())}
+              {text || t(tKeys.features.auth.connect.getKey())}
             </Typography>
           )}
         </Loading>

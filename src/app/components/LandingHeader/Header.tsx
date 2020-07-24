@@ -12,14 +12,14 @@ import { menuItems } from './constants';
 import { useStyles } from './Header.style';
 
 interface Props {
-  forLanding?: boolean;
+  authButtonText?: string;
   customNavItems?: IMenuItem[];
   CustomLogo?: typeof SvgIcon;
 }
 
 const AKROPOLIS_LINK = 'https://akropolis.io/';
 
-export function Header({ forLanding, customNavItems, CustomLogo }: Props) {
+export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
   const classes = useStyles();
 
   return (
@@ -53,10 +53,10 @@ export function Header({ forLanding, customNavItems, CustomLogo }: Props) {
           </React.Fragment>,
           <React.Fragment key="1">
             <Adaptive to="tabletXS">
-              <AuthButton forLanding={forLanding} />
+              <AuthButton text={authButtonText} />
             </Adaptive>
             <Adaptive from="tabletXS">
-              <AuthButton forLanding={forLanding} />
+              <AuthButton text={authButtonText} />
             </Adaptive>
           </React.Fragment>,
         ]}

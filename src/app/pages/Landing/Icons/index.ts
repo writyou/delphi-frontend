@@ -1,2 +1,2 @@
-export * from './DcaPoolIcon';
+export * from './LandingIcon';
 export * from './DelphiTextLogo';

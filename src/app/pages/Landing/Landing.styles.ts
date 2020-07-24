@@ -8,7 +8,6 @@ const useStyles = makeStyles(theme => ({
   },
 
   main: {
-    // marginTop: 41,
     marginBottom: 90,
   },
 
