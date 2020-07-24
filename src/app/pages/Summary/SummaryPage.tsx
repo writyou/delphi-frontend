@@ -42,15 +42,15 @@ export function SummaryPage() {
             <PortfolioBalanceChart />
           </div>
         </Grid>
-        {metricsBlock()}
+        {renderMetrics()}
       </Grid>
       <Grid container direction="column" xs className={classes.innerPages}>
-        {tabsBlock()}
+        {renderTabs()}
       </Grid>
     </Grid>
   );
 
-  function tabsBlock() {
+  function renderTabs() {
     return (
       <TabContext value={selectedPage}>
         <div className={classes.navigationBar}>
@@ -101,7 +101,7 @@ export function SummaryPage() {
     );
   }
 
-  function metricsBlock() {
+  function renderMetrics() {
     return (
       <Grid container direction="column" xs className={classes.metrics}>
         <ComingSoon position="overlay" />
@@ -157,5 +157,5 @@ const useStyles = makeStyles(
       marginTop: 60,
     },
   }),
-  { name: 'MySummary' },
+  { name: 'SummaryPage' },
 );

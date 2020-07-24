@@ -1,13 +1,10 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-
-import { PoolIcon } from './PoolIcon';
-
-export type CurrencyIcon = 'DAI' | 'USDC' | 'USDT' | 'sUSD';
+import { TokenIcon } from 'components';
 
 type Props = {
-  icons: CurrencyIcon[];
+  icons: string[];
 };
 
 export function IconsBlock(props: Props) {
@@ -19,7 +16,7 @@ export function IconsBlock(props: Props) {
       {icons.map(icon => {
         return (
           <div className={classes.icon} key={icon}>
-            <PoolIcon />
+            <TokenIcon tokenAddress={icon} />
           </div>
         );
       })}
@@ -33,7 +30,7 @@ const useStyles = makeStyles(
       display: 'flex',
     },
     icon: {
-      marginLeft: 3,
+      marginLeft: -7,
     },
   }),
   { name: 'IconsBlock' },

@@ -10,11 +10,36 @@ const entries: tableData.Order[] = [
   {
     pool: 'sUSD',
     poolFullTitle: 'Curve',
-    orderIcons: ['USDT', 'DAI'],
+    tokens: ['USDT', 'DAI'],
     APY: percentAmount,
     balance: tokenAmount,
     additionalTable: [0, 4],
   },
+];
+
+export const entriesForChart = [
+  [
+    {
+      value: 10,
+      label: 'RSV',
+    },
+    {
+      value: 30,
+      label: 'DAI',
+    },
+    {
+      value: 20,
+      label: 'USDT',
+    },
+    {
+      value: 10,
+      label: 'TUSD',
+    },
+    {
+      value: 30,
+      label: 'USDC',
+    },
+  ],
 ];
 
 export function Savings() {
@@ -34,7 +59,7 @@ export function Savings() {
               <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={[0]} />
+              <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />
             </Grid>
           </Grid>
         )}

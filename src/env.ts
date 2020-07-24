@@ -6,6 +6,12 @@ interface INetworkConfig {
   id: NetworkID;
   name: 'mainnet' | 'rinkeby';
   contracts: {};
+  tokens: {
+    dai: string;
+    usdc: string;
+    usdt: string;
+    tusd: string;
+  };
   etherskanDomain: string;
 }
 
@@ -13,6 +19,12 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {},
+  tokens: {
+    dai: 'dai',
+    usdc: 'usdc',
+    usdt: 'usdt',
+    tusd: 'tusd',
+  },
   etherskanDomain: 'https://rinkeby.etherscan.io/',
 };
 
@@ -20,6 +32,7 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {},
+  tokens: { dai: 'dai', usdc: 'usdc', usdt: 'usdt', tusd: 'tusd' },
   etherskanDomain: 'https://rinkeby.etherscan.io/',
 };
 
@@ -27,6 +40,7 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
   id: 1,
   name: 'mainnet',
   contracts: {},
+  tokens: { dai: 'dai', usdc: 'usdc', usdt: 'usdt', tusd: 'tusd' },
   etherskanDomain: 'https://etherscan.io/',
 };
 

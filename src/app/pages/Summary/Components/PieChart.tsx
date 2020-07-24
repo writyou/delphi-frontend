@@ -2,10 +2,19 @@ import * as React from 'react';
 import * as R from 'ramda';
 
 import { useTheme, makeStyles } from 'utils/styles';
-import { mockSectors } from 'utils/mock';
 import { CompositionChart } from 'components';
 
-function PieChart() {
+export type PieSector = {
+  value: number;
+  label: string;
+};
+
+type Props = {
+  sectors: PieSector[];
+};
+
+function PieChart(props: Props) {
+  const { sectors } = props;
   const classes = useStyles();
   const theme = useTheme();
 
@@ -35,7 +44,7 @@ function PieChart() {
     <div className={classes.root}>
       <div className={classes.hidden}>{renderGradients()}</div>
       <CompositionChart
-        chartData={mockSectors}
+        chartData={sectors}
         sectorColors={R.pluck('sector', colors)}
         labelColors={R.pluck('label', colors)}
       />
