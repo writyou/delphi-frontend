@@ -6,6 +6,7 @@ import { ThemeButton } from 'services/theme';
 import { NavInline, Link } from 'components';
 import { LogoWithNameIcon } from 'components/icons';
 import { IMenuItem } from 'utils/types/common';
+import { AuthButton } from 'features/auth';
 
 import { menuItems } from './constants';
 import { useStyles } from './Header.style';
@@ -56,6 +57,14 @@ export function Header({ customNavItems, CustomLogo }: Props) {
             </Adaptive>
             <Adaptive from="tabletXS">
               <AppButton />
+            </Adaptive>
+          </React.Fragment>,
+          <React.Fragment key="2">
+            <Adaptive to="tabletXS">
+              <AuthButton />
+            </Adaptive>
+            <Adaptive from="tabletXS">
+              <AuthButton />
             </Adaptive>
           </React.Fragment>,
         ]}
