@@ -1,11 +1,14 @@
 import { getEnv, Mode } from 'core/getEnv';
+import { zeroAddress } from 'utils/mock';
 
 export type NetworkID = 1 | 4;
 
 interface INetworkConfig {
   id: NetworkID;
   name: 'mainnet' | 'rinkeby';
-  contracts: {};
+  contracts: {
+    savingsModule: string;
+  };
   tokens: {
     dai: string;
     usdc: string;
@@ -18,7 +21,9 @@ interface INetworkConfig {
 const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
-  contracts: {},
+  contracts: {
+    savingsModule: zeroAddress,
+  },
   tokens: {
     dai: 'dai',
     usdc: 'usdc',
@@ -31,7 +36,9 @@ const ethNetworkConfigTestnet: INetworkConfig = {
 const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
-  contracts: {},
+  contracts: {
+    savingsModule: '0xEbc77a8542Afd7340eAa584f5048c3045A11Dadf',
+  },
   tokens: { dai: 'dai', usdc: 'usdc', usdt: 'usdt', tusd: 'tusd' },
   etherskanDomain: 'https://rinkeby.etherscan.io/',
 };
@@ -39,7 +46,9 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
 const ethNetworkConfigsForMainnet: INetworkConfig = {
   id: 1,
   name: 'mainnet',
-  contracts: {},
+  contracts: {
+    savingsModule: zeroAddress,
+  },
   tokens: { dai: 'dai', usdc: 'usdc', usdt: 'usdt', tusd: 'tusd' },
   etherskanDomain: 'https://etherscan.io/',
 };
@@ -59,15 +68,15 @@ export const MIN_COLLATERAL_PERCENT_FOR_BORROWER = 50;
 export const PLEDGE_MARGIN_DIVIDER = 1000000;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
-  testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-rinkeby',
-  sandbox: 'https://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-sandbox',
-  mainnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-mainnet',
+  testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  sandbox: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
+  mainnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 const subgraphWsUrlsByMode: Record<Mode, string> = {
-  testnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-rinkeby',
-  sandbox: 'wss://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-sandbox',
-  mainnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/akropolis-os-mainnet',
+  testnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  sandbox: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
+  mainnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 export const SUBGRAPH_HTTP_URL = subgraphHttpUrlsByMode[getEnv().mode];
