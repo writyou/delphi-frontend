@@ -2,7 +2,12 @@ import build, { getParam } from 'build-route-tree';
 
 const rawTree = {
   demo: null,
-  summary: null,
+  summary: {
+    savings: null,
+    investment: null,
+    dca: null,
+    harvest: null,
+  },
   savings: {
     allocate: null,
     withdraw: null,
