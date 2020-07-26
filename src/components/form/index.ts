@@ -9,4 +9,5 @@ export { TokenAmountField } from './TokenAmountField';
 export { LiquidityAmountField } from './LiquidityAmountField';
 export { FormTemplate, FormTemplateProps } from './FormTemplate';
 export { FormWithConfirmation, FormWithConfirmationProps } from './FormWithConfirmation';
+export { SwitchInputField } from './SwitchInputField';
 export * from './types';
