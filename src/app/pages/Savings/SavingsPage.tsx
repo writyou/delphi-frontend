@@ -1,11 +1,13 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { useRouteMatch } from 'react-router';
+import { useRouteMatch, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel } from 'components';
+
+import { PoolSavingsPage } from '../PoolSavings/PoolSavingsPage';
 
 export function SavingsPage() {
   const match = useRouteMatch<{ page: string }>('/savings/:page');
@@ -23,36 +25,47 @@ export function SavingsPage() {
 
   const classes = useStyles();
 
-  return (
-    <Grid className={classes.root}>
-      <TabContext value={selectedPage}>
-        <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-            <Tab
-              label="Allocate"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.allocate.getElementKey()}
-              to={routes.savings.allocate.getRedirectPath()}
-            />
-            <Tab
-              label="Withdraw"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.withdraw.getElementKey()}
-              to={routes.savings.withdraw.getRedirectPath()}
-            />
-          </TabsList>
-        </div>
-        <TabPanel value={routes.savings.allocate.getElementKey()}>
-          Allocate not implemented
-        </TabPanel>
-        <TabPanel value={routes.savings.withdraw.getElementKey()}>
-          Withdraw not implemented
-        </TabPanel>
-      </TabContext>
-    </Grid>
-  );
+  return page === routes.savings.allocate.getElementKey() ||
+    page === routes.savings.withdraw.getElementKey()
+    ? renderTabs()
+    : renderPoolSavings();
+
+  function renderTabs() {
+    return (
+      <Grid className={classes.root}>
+        <TabContext value={selectedPage}>
+          <div className={classes.navigationBar}>
+            <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
+              <Tab
+                label="Allocate"
+                className={classes.tab}
+                component={Link}
+                value={routes.savings.allocate.getElementKey()}
+                to={routes.savings.allocate.getRedirectPath()}
+              />
+              <Tab
+                label="Withdraw"
+                className={classes.tab}
+                component={Link}
+                value={routes.savings.withdraw.getElementKey()}
+                to={routes.savings.withdraw.getRedirectPath()}
+              />
+            </TabsList>
+          </div>
+          <TabPanel value={routes.savings.allocate.getElementKey()}>
+            Allocate not implemented
+          </TabPanel>
+          <TabPanel value={routes.savings.withdraw.getElementKey()}>
+            Withdraw not implemented
+          </TabPanel>
+        </TabContext>
+      </Grid>
+    );
+  }
+
+  function renderPoolSavings() {
+    return <Route path={routes.savings.id.getRoutePath()} component={PoolSavingsPage} />;
+  }
 }
 
 const useStyles = makeStyles(

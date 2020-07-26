@@ -13,7 +13,6 @@ export const Content: React.FC = () => {
       <Route path={routes.summary.getRoutePath()} component={pages.SummaryPage} />
       <Route path={routes.savings.getRoutePath()} component={pages.SavingsPage} />
       <Route path={routes.investing.getRoutePath()} component={pages.InvestingPage} />
-
       <Redirect to="/" />
     </Switch>
   );
