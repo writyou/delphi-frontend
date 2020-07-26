@@ -50,19 +50,25 @@ export class Erc20Api {
   }
 
   @memoize((...args: string[]) => args.join())
-  public getBalance$(tokenAddress: string, account: string): Observable<BN> {
+  public getBalance$(tokenAddress: string, account: string): Observable<TokenAmount> {
     const contract = this.getErc20ReadonlyContract(tokenAddress);
 
-    return contract.methods.balanceOf({ account }, [
-      contract.events.Transfer({ filter: { from: account } }),
-      contract.events.Transfer({ filter: { to: account } }),
-    ]);
+    return this.toTokenAmount(
+      tokenAddress,
+      contract.methods.balanceOf({ account }, [
+        contract.events.Transfer({ filter: { from: account } }),
+        contract.events.Transfer({ filter: { to: account } }),
+      ]),
+    );
   }
 
   @memoize(R.identity)
-  public getTotalSupply$(address: string): Observable<BN> {
+  public getTotalSupply$(address: string): Observable<TokenAmount> {
     const contract = this.getErc20ReadonlyContract(address);
-    return contract.methods.totalSupply(undefined, contract.events.Transfer());
+    return this.toTokenAmount(
+      address,
+      contract.methods.totalSupply(undefined, contract.events.Transfer()),
+    );
   }
 
   private getErc20TxContract(address: string): Contracts['erc20'] {

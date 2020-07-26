@@ -1,0 +1,16 @@
+subscription SavingsPools {
+  savingsPools(first: 1000) {
+    id
+    poolToken {
+      id
+      name
+      symbol
+      decimals
+    }
+    tokens {
+      id
+      symbol
+      decimals
+    }
+  }
+}

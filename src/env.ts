@@ -25,9 +25,9 @@ const ethNetworkConfigTestnet: INetworkConfig = {
     savingsModule: zeroAddress,
   },
   tokens: {
-    dai: 'dai',
-    usdc: 'usdc',
-    usdt: 'usdt',
+    dai: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
+    usdc: '0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b',
+    usdt: '0xd9ba894e0097f8cc2bbc9d24d308b98e36dc6d02',
     tusd: 'tusd',
   },
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -39,7 +39,12 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   contracts: {
     savingsModule: '0xEbc77a8542Afd7340eAa584f5048c3045A11Dadf',
   },
-  tokens: { dai: 'dai', usdc: 'usdc', usdt: 'usdt', tusd: 'tusd' },
+  tokens: {
+    dai: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
+    usdc: '0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b',
+    usdt: '0xd9ba894e0097f8cc2bbc9d24d308b98e36dc6d02',
+    tusd: 'tusd',
+  },
   etherskanDomain: 'https://rinkeby.etherscan.io/',
 };
 

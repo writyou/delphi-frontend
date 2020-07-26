@@ -1,13 +1,16 @@
 import * as React from 'react';
 
-import { Typography } from 'components';
+import { Typography, Box } from 'components';
+
+import { SavingsPollsList } from './SavingsPollsList';
 
 export function DemoPage() {
   return (
-    <div>
+    <Box p={5}>
       <Typography variant="h4" gutterBottom>
         Page for developers
       </Typography>
-    </div>
+      <SavingsPollsList />
+    </Box>
   );
 }

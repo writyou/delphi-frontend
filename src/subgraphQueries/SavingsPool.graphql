@@ -1,0 +1,16 @@
+subscription SavingsPool($id: ID!) {
+  savingsPool(id: $id) {
+    id
+    poolToken {
+      id
+      name
+      symbol
+      decimals
+    }
+    tokens {
+      id
+      symbol
+      decimals
+    }
+  }
+}
