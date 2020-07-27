@@ -7,6 +7,8 @@ import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel } from 'components';
 
+import * as innerPages from './innerPages';
+
 export function InvestingPage() {
   const match = useRouteMatch<{ page: string }>('/investing/:page');
   const [selectedPage, setSelectedPage] = React.useState('all');
@@ -44,8 +46,12 @@ export function InvestingPage() {
             />
           </TabsList>
         </div>
-        <TabPanel value={routes.investing.all.getElementKey()}>All-in not implemented</TabPanel>
-        <TabPanel value={routes.investing.dca.getElementKey()}>DCA not implemented</TabPanel>
+        <TabPanel value={routes.investing.all.getElementKey()}>
+          <innerPages.AllIn />
+        </TabPanel>
+        <TabPanel value={routes.investing.dca.getElementKey()}>
+          <innerPages.DCA />
+        </TabPanel>
       </TabContext>
     </Grid>
   );
