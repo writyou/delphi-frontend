@@ -1,83 +1,81 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 
-import { routes } from 'app/routes';
-import { Button, Intro, Link, LinkProps } from 'components';
-import { makeStyles } from 'utils/styles';
+import { Button, Link, LinkProps, Intro } from 'components';
 
-import { LandingIcon, LandingTextLogo } from '../Icons';
+import { LandingIcon, DelphiTextLogo } from '../Icons';
+import { useStyles } from './Intro.styles';
+import { DCA_LINK } from '../constants';
 
-export function LandingIntro() {
+function LandingIntro() {
   const classes = useStyles();
+
   return (
     <Intro
       icon={
         <>
           <LandingIcon fontSize="inherit" />
-          <LandingTextLogo className={classes.textLogo} />
+          <DelphiTextLogo className={classes.textLogo} />
         </>
       }
       title={
-        <>
-          <span>Create your own community bank.</span>
-          <br />
-          <span>Monetise your ideas. Build your reputation on-chain.</span>
-        </>
+        <div>
+          Automate your DeFi life: <br />
+          Combine and compound DeFi yields and{' '}
+          <Link href={DCA_LINK} color="inherit" target="_blank" rel="noopener noreferrer">
+            DCA
+          </Link>{' '}
+          your way into ETH & BTC
+        </div>
       }
-      description="Access under-collateralised credit based on trust"
     >
-      <div className={classes.content}>
-        Try it on
-        <Button<typeof RouterLink>
-          className={classes.button}
-          fullWidth
-          size="large"
-          variant="contained"
-          color="primary"
-          component={RouterLink}
-          to={routes.summary.getRedirectPath()}
-        >
-          Mainnet
-        </Button>
-        or
-        <Button
-          className={classes.button}
-          fullWidth
-          size="large"
-          variant="outlined"
-          color="primary"
-          component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
-          underline="none"
-          href="https://sparta-rinkeby.akropolis.io/stats"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Rinkeby
-        </Button>
+      <div className={classes.buttons}>
+        {/* <div className={classes.button}>
+          <Button
+            disabled
+            size="large"
+            color="gradient"
+            variant="contained"
+            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
+            underline="none"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View Prototype
+          </Button>
+        </div> */}
+        <div className={classes.button}>
+          <Button
+            size="large"
+            color="primary"
+            variant="outlined"
+            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
+            underline="none"
+            href="https://docs.google.com/forms/d/1OcvOT-zSG2brjjoR1F_yZiswg8DkNOcRNumitqcoGS4"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join Waitlist
+          </Button>
+        </div>
+        {/* <div className={classes.button}>
+          <Button
+            disabled
+            size="large"
+            color="gradient"
+            variant="outlined"
+            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
+            underline="none"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Feature Request
+          </Button>
+        </div> */}
       </div>
     </Intro>
   );
 }
 
-const useStyles = makeStyles(theme => ({
-  textLogo: {
-    fontSize: theme.spacing(2.75),
-    marginLeft: theme.spacing(2.5),
-  },
-  content: {
-    display: 'flex',
-    alignItems: 'center',
-    whiteSpace: 'nowrap',
-
-    fontSize: theme.spacing(1.5),
-    [theme.breakpoints.up('tabletXS')]: {
-      fontSize: theme.spacing(2.5),
-    },
-  },
-  button: {
-    margin: theme.spacing(0, 1.25),
-    [theme.breakpoints.up('tabletXS')]: {
-      margin: theme.spacing(0, 2),
-    },
-  },
-}));
+export { LandingIntro };

@@ -28,6 +28,7 @@ const useStyles = makeStyles(
   () => ({
     root: {
       display: 'flex',
+      marginLeft: 7,
     },
     icon: {
       marginLeft: -7,

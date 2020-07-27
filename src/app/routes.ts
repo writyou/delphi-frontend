@@ -2,6 +2,7 @@ import build from 'build-route-tree';
 
 const rawTree = {
   demo: null,
+  summaryEmpty: null,
   summary: {
     savings: null,
     investment: null,
