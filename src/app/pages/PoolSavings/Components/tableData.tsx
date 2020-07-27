@@ -15,14 +15,14 @@ export type Order = {
 
 export const columnForLegend: Array<NewTable.models.Column<Order>> = [
   {
-    renderTitle: () => '',
+    renderTitle: () => null,
     cellContent: {
       kind: 'simple',
       render: x => <PoolTitle title={x.label} />,
     },
   },
   {
-    renderTitle: () => '',
+    renderTitle: () => null,
     cellContent: {
       kind: 'simple',
       render: x => (
@@ -34,7 +34,7 @@ export const columnForLegend: Array<NewTable.models.Column<Order>> = [
     },
   },
   {
-    renderTitle: () => '',
+    renderTitle: () => null,
     cellContent: {
       kind: 'simple',
       render: x => <FormattedAmount sum={x.value} variant="plain" />,

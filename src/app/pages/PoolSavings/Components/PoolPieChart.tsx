@@ -98,6 +98,7 @@ const useStyles = makeStyles(
     },
     table: {
       marginLeft: 25,
+      marginTop: 15,
     },
   }),
   { name: 'PoolPieChart' },

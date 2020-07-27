@@ -103,10 +103,12 @@ export function PoolSavingsPage() {
     return (
       <FormTemplate onSubmit={() => undefined} onCancel={() => undefined}>
         <Grid container direction="column">
-          <Grid item>Allocate</Grid>
+          <Grid item className={classes.allocateTitle}>
+            Allocate
+          </Grid>
           <Grid container item>
             <Grid item xs={8}>
-              A
+              Token input
             </Grid>
             <Grid item xs={4}>
               <Grid container justify="flex-end">
@@ -120,7 +122,7 @@ export function PoolSavingsPage() {
           </Grid>
           <Grid container item className={classes.row}>
             <Grid item xs={8}>
-              A
+              Estimated Gas Price
             </Grid>
             <Grid item xs={4}>
               <Grid container justify="flex-end">
@@ -158,6 +160,9 @@ const useStyles = makeStyles(
     },
     row: {
       paddingTop: 50,
+    },
+    allocateTitle: {
+      marginBottom: 20,
     },
   }),
   { name: 'PoolSavingsPage' },

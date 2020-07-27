@@ -55,9 +55,11 @@ export function Table<T, U = null>(props: Props<T, U>) {
         },
       ])}
     >
-      <thead>
-        <tr>{columns.map(renderTitle)}</tr>
-      </thead>
+      {columns.find(column => column.renderTitle()) && (
+        <thead>
+          <tr>{columns.map(renderTitle)}</tr>
+        </thead>
+      )}
       <tbody>{renderEntriesAndSummary()}</tbody>
     </table>
   );
