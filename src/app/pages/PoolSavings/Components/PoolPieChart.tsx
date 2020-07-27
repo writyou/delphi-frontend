@@ -10,6 +10,7 @@ import * as tableData from './tableData';
 
 export type PieSector = {
   value: number;
+  currency: number;
   label: string;
 };
 
@@ -25,12 +26,11 @@ type Props = {
 const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 function getEntries(sectors: PieSector[], colors: SectorColor[]): tableData.Order[] {
-  const sum: number = sectors.map(sector => sector.value).reduce((total, single) => total + single);
   return sectors.map((sector, index) => {
     return {
       label: sector.label,
-      value: new TokenAmount(sector.value, new Token(zeroAddress, '', 10)),
-      percent: new PercentAmount(new Fraction(sum / (sector.value * 100), '1')),
+      value: new TokenAmount(sector.currency, new Token(zeroAddress, '', 18)),
+      percent: new PercentAmount(new Fraction(sector.value, '1')),
       labelColor: R.pluck('label', colors)[index],
     };
   });
@@ -66,7 +66,7 @@ function PoolPieChart(props: Props) {
     <div className={classes.root}>
       <div className={classes.hidden}>{renderGradients()}</div>
       <CompositionChart
-        chartData={sectors}
+        chartData={sectors.map(sector => R.pick(['value', 'label'], sector))}
         withoutLegend
         sectorColors={R.pluck('sector', colors)}
         labelColors={R.pluck('label', colors)}

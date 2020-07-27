@@ -12,9 +12,36 @@ import {
   PoolSwapFee,
   MySupplyBalance,
 } from 'features/metrics';
-import { mockSectors } from 'utils/mock';
 
 import { PoolPieChart } from './Components/PoolPieChart';
+
+const mockSectors = [
+  {
+    value: 10,
+    currency: 31654654364,
+    label: 'RSV',
+  },
+  {
+    value: 30,
+    currency: 31654654364,
+    label: 'DAI',
+  },
+  {
+    value: 20,
+    currency: 5465468498,
+    label: 'USDT',
+  },
+  {
+    value: 10,
+    currency: 316654364,
+    label: 'TUSD',
+  },
+  {
+    value: 30,
+    currency: 516516,
+    label: 'USDC',
+  },
+];
 
 export function PoolSavingsPage() {
   const match = useRouteMatch<{ id: string }>('/savings/:id');
