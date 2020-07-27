@@ -14,14 +14,15 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   FormProps<FormValues>,
   'subscription'
 > & {
-  title: string;
+  title?: string;
   cancelButton?: string;
   submitButton?: string;
   onCancel: () => void;
+  hasButtons?: boolean;
 };
 
 export function FormTemplate<FormValues extends AnyObject>(props: FormTemplateProps<FormValues>) {
-  const { title, cancelButton, submitButton, onCancel, ...restProps } = props;
+  const { title, cancelButton, submitButton, onCancel, hasButtons = false, ...restProps } = props;
 
   const children = React.Children.toArray(restProps.children);
 
@@ -34,9 +35,11 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
         <form onSubmit={handleSubmit}>
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h5" gutterBottom>
-                {title}
-              </Typography>
+              {title && (
+                <Typography variant="h5" gutterBottom>
+                  {title}
+                </Typography>
+              )}
 
               {children[0]}
             </Grid>
@@ -53,22 +56,26 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
                 </Hint>
               </Grid>
             )}
-            <Grid item xs={6}>
-              <Button variant="outlined" fullWidth onClick={onCancel}>
-                {cancelButton || 'Cancel'}
-              </Button>
-            </Grid>
-            <Grid item xs={6}>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                fullWidth
-                disabled={submitting}
-              >
-                {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
-              </Button>
-            </Grid>
+            {hasButtons && (
+              <>
+                <Grid item xs={6}>
+                  <Button variant="outlined" fullWidth onClick={onCancel}>
+                    {cancelButton || 'Cancel'}
+                  </Button>
+                </Grid>
+                <Grid item xs={6}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    disabled={submitting}
+                  >
+                    {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
+                  </Button>
+                </Grid>
+              </>
+            )}
           </Grid>
         </form>
       )}

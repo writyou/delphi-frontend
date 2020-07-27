@@ -2,11 +2,18 @@ import * as React from 'react';
 
 import { Metric, Label, FormattedAmount, ChartProfit, Grid } from 'components';
 import { percentAmount } from 'utils/mock';
+import { makeStyles } from 'utils/styles';
 
 export function PoolLiquidityAPY() {
+  const classes = useStyles();
+
   return (
     <Metric
-      title={<Label>APY</Label>}
+      title={
+        <div className={classes.title}>
+          <Label>APY</Label>
+        </div>
+      }
       value={<FormattedAmount sum={percentAmount} />}
       subValue={
         <Grid container>
@@ -17,3 +24,12 @@ export function PoolLiquidityAPY() {
     />
   );
 }
+
+const useStyles = makeStyles(
+  () => ({
+    title: {
+      marginBottom: 15,
+    },
+  }),
+  { name: 'PoolLiquidityAPY' },
+);

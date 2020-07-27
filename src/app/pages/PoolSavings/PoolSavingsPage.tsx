@@ -1,9 +1,10 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
+import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Button, Grid } from 'components';
+import { Button, Grid, FormTemplate, SwitchInputField } from 'components';
 import {
   PoolLiquidity,
   PoolLiquidityAPY,
@@ -13,7 +14,7 @@ import {
 } from 'features/metrics';
 import { mockSectors } from 'utils/mock';
 
-import { PieChart } from './Components/PieChart';
+import { PoolPieChart } from './Components/PoolPieChart';
 
 export function PoolSavingsPage() {
   const match = useRouteMatch<{ id: string }>('/savings/:id');
@@ -23,7 +24,7 @@ export function PoolSavingsPage() {
 
   return (
     <Grid container direction="column" className={classes.root}>
-      <Grid container justify="space-between">
+      <Grid container justify="space-between" alignItems="center">
         <Grid item>
           <Grid container alignItems="center">
             <Back />
@@ -31,12 +32,12 @@ export function PoolSavingsPage() {
           </Grid>
         </Grid>
         <Grid item>
-          <Button color="default" variant="outlined">
+          <Button color="primary" variant="outlined">
             Withdraw
           </Button>
         </Grid>
       </Grid>
-      <Grid container>
+      <Grid container className={classes.row}>
         <Grid item xs={6} className={classes.paddingRight}>
           <Grid container justify="space-between">
             <PoolLiquidity />
@@ -50,33 +51,62 @@ export function PoolSavingsPage() {
           </Grid>
         </Grid>
       </Grid>
-      <Grid container className={classes.withBorder}>
-        <Grid item xs={6} className={classes.paddingRight}>
+      <Grid container className={cn(classes.withBorder, classes.row)}>
+        <Grid container item xs={6} className={classes.paddingRight}>
           Approximate Reward Weekly
-          <PieChart sectors={mockSectors} />
+          <PoolPieChart sectors={mockSectors} />
         </Grid>
-        <Grid item xs={4}>
+        <Grid container item xs={4}>
           Currency Reserves
-          <PieChart sectors={mockSectors} />
+          <PoolPieChart sectors={mockSectors} />
         </Grid>
       </Grid>
       <Grid container>
         <Grid item xs={6}>
           <MySupplyBalance />
         </Grid>
-        <Grid item xs={4}>
-          allocate
-        </Grid>
-        <Grid item xs={2}>
-          <Grid container justify="flex-end">
-            <Button color="primary" variant="contained">
-              Allocate
-            </Button>
-          </Grid>
+        <Grid item xs={6}>
+          {renderForm()}
         </Grid>
       </Grid>
     </Grid>
   );
+
+  function renderForm() {
+    return (
+      <FormTemplate onSubmit={() => undefined} onCancel={() => undefined}>
+        <Grid container direction="column">
+          <Grid item>Allocate</Grid>
+          <Grid container item>
+            <Grid item xs={8}>
+              A
+            </Grid>
+            <Grid item xs={4}>
+              <Grid container justify="flex-end">
+                <SwitchInputField
+                  name="InfiniteUnlock"
+                  label="Infinite unlock"
+                  helperText="Infinite unlock"
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid container item className={classes.row}>
+            <Grid item xs={8}>
+              A
+            </Grid>
+            <Grid item xs={4}>
+              <Grid container justify="flex-end">
+                <Button color="primary" variant="contained">
+                  Allocate
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </FormTemplate>
+    );
+  }
 }
 
 const useStyles = makeStyles(
@@ -97,6 +127,10 @@ const useStyles = makeStyles(
     withBorder: {
       borderBottom: '1px solid rgba(255,255,255,0.1)',
       paddingBottom: 45,
+      marginBottom: 30,
+    },
+    row: {
+      paddingTop: 50,
     },
   }),
   { name: 'PoolSavingsPage' },
