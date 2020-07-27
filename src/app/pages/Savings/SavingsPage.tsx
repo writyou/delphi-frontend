@@ -1,13 +1,11 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import { useRouteMatch, Route } from 'react-router';
+import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel } from 'components';
-
-import { PoolSavingsPage } from '../PoolSavings/PoolSavingsPage';
 
 export function SavingsPage() {
   const match = useRouteMatch<{ page: string }>('/savings/:page');
@@ -25,10 +23,7 @@ export function SavingsPage() {
 
   const classes = useStyles();
 
-  return page === routes.savings.allocate.getElementKey() ||
-    page === routes.savings.withdraw.getElementKey()
-    ? renderTabs()
-    : renderPoolSavings();
+  return renderTabs();
 
   function renderTabs() {
     return (
@@ -61,10 +56,6 @@ export function SavingsPage() {
         </TabContext>
       </Grid>
     );
-  }
-
-  function renderPoolSavings() {
-    return <Route path={routes.savings.id.getRoutePath()} component={PoolSavingsPage} />;
   }
 }
 

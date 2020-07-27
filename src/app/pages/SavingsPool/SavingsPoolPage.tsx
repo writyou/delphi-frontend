@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
@@ -43,18 +44,23 @@ const mockSectors = [
   },
 ];
 
-export function PoolSavingsPage() {
+export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>('/savings/:id');
   const id = match ? match.params.id : null;
 
+  const history = useHistory();
+
   const classes = useStyles();
+
+  // eslint-disable-next-line no-console
+  console.log(history.length);
 
   return (
     <Grid container direction="column" className={classes.root}>
       <Grid container justify="space-between" alignItems="center">
         <Grid item>
           <Grid container alignItems="center">
-            <Back />
+            <Back onClick={handleBackOnClick} className={classes.backButton} />
             <div className={classes.poolTitle}>{id}</div>
           </Grid>
         </Grid>
@@ -136,6 +142,14 @@ export function PoolSavingsPage() {
       </FormTemplate>
     );
   }
+
+  function handleBackOnClick() {
+    if (history.length > 2) {
+      history.goBack();
+    } else {
+      history.push('/savings');
+    }
+  }
 }
 
 const useStyles = makeStyles(
@@ -164,6 +178,9 @@ const useStyles = makeStyles(
     allocateTitle: {
       marginBottom: 20,
     },
+    backButton: {
+      cursor: 'pointer',
+    },
   }),
-  { name: 'PoolSavingsPage' },
+  { name: 'SavingsPoolPage' },
 );

@@ -12,7 +12,9 @@ const rawTree = {
   savings: {
     allocate: null,
     withdraw: null,
-    id: getParam(null),
+    pool: {
+      id: getParam(null),
+    },
   },
   investing: {
     all: null,

@@ -11,7 +11,7 @@ export const Content: React.FC = () => {
         <Route exact path={routes.demo.getRoutePath()} component={pages.DemoPage} />
       )}
       <Route path={routes.summary.getRoutePath()} component={pages.SummaryPage} />
-      <Route path={routes.summaryEmpty.getRoutePath()} component={pages.SummaryEmptyPage} />
+      <Route exact path={routes.savings.pool.id.getRoutePath()} component={pages.SavingsPoolPage} />
       <Route path={routes.savings.getRoutePath()} component={pages.SavingsPage} />
       <Route path={routes.investing.getRoutePath()} component={pages.InvestingPage} />
       <Redirect to="/" />
