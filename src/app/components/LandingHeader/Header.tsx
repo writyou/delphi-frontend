@@ -6,19 +6,20 @@ import { ThemeButton } from 'services/theme';
 import { NavInline, Link } from 'components';
 import { LogoWithNameIcon } from 'components/icons';
 import { IMenuItem } from 'utils/types/common';
+import { AuthButton } from 'features/auth';
 
 import { menuItems } from './constants';
 import { useStyles } from './Header.style';
-import { AppButton } from './components/AppButton/AppButton';
 
 interface Props {
+  authButtonText?: string;
   customNavItems?: IMenuItem[];
   CustomLogo?: typeof SvgIcon;
 }
 
 const AKROPOLIS_LINK = 'https://akropolis.io/';
 
-export function Header({ customNavItems, CustomLogo }: Props) {
+export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
   const classes = useStyles();
 
   return (
@@ -52,10 +53,10 @@ export function Header({ customNavItems, CustomLogo }: Props) {
           </React.Fragment>,
           <React.Fragment key="1">
             <Adaptive to="tabletXS">
-              <AppButton size="small" />
+              <AuthButton text={authButtonText} />
             </Adaptive>
             <Adaptive from="tabletXS">
-              <AppButton />
+              <AuthButton text={authButtonText} />
             </Adaptive>
           </React.Fragment>,
         ]}
