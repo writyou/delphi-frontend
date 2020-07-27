@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Typography, Box } from 'components';
 
-import { SavingsPollsList } from './SavingsPollsList';
+import { SavingsPollsList } from './components/SavingsPollsList';
 
 export function DemoPage() {
   return (

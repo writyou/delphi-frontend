@@ -159,38 +159,34 @@ export function AmountInput<A extends Amount<ICurrency>>(props: AmountInputProps
         }}
         className={classes.amount}
       />
-      {/* TODO uncomment after adding multiple tokens */}
-      {false && (
-        <TextInput
-          select
-          disabled={isDisabledCurrencySelector}
-          value={currentCurrency && getCurrencyIdentifier(currentCurrency!)}
-          variant="outlined"
-          onChange={handleCurrencyChange}
-        >
-          {currencies.map(item => {
-            const id = getCurrencyIdentifier(item);
-            return (
-              <MenuItem key={id} value={id}>
-                {item.symbol}
-              </MenuItem>
-            );
-          })}
-        </TextInput>
-      )}
+      <TextInput
+        select
+        disabled={isDisabledCurrencySelector}
+        value={currentCurrency && getCurrencyIdentifier(currentCurrency!)}
+        variant="outlined"
+        onChange={handleCurrencyChange}
+      >
+        {currencies.map(item => {
+          const id = getCurrencyIdentifier(item);
+          return (
+            <MenuItem key={id} value={id}>
+              {item.symbol}
+            </MenuItem>
+          );
+        })}
+      </TextInput>
     </div>
   );
 }
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
   amount: {
     width: 0,
     flexGrow: 1,
-    // TODO uncomment after adding multiple tokens
-    // marginRight: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 }));
 

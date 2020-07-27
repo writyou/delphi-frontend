@@ -2,17 +2,25 @@ import PromiEvent from 'web3/promiEvent';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
 
-import { createErc20 } from 'generated/contracts';
+import { createErc20, createSavingsModule, createDefiProtocol } from 'generated/contracts';
 import { TokenAmount } from 'model/entities';
+import { DepositToSavingsPool } from 'model/types';
 
 export type Contracts = {
   erc20: ReturnType<typeof createErc20>;
+  savingsModule: ReturnType<typeof createSavingsModule>;
+  defiProtocol: ReturnType<typeof createDefiProtocol>;
 };
 
-export type SubmittedTransaction = IGenericSubmittedTransaction<
-  'erc20.approve',
-  { spender: string; fromAddress: string; value: TokenAmount }
->;
+export type SubmittedTransaction =
+  | IGenericSubmittedTransaction<
+      'erc20.approve',
+      { spender: string; fromAddress: string; value: TokenAmount }
+    >
+  | IGenericSubmittedTransaction<
+      'savings.deposit',
+      { deposits: DepositToSavingsPool[]; fromAddress: string }
+    >;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {
   type: T;

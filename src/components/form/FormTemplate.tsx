@@ -17,7 +17,7 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   title: string;
   cancelButton?: string;
   submitButton?: string;
-  onCancel: () => void;
+  onCancel?: () => void;
 };
 
 export function FormTemplate<FormValues extends AnyObject>(props: FormTemplateProps<FormValues>) {
@@ -54,9 +54,11 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
               </Grid>
             )}
             <Grid item xs={6}>
-              <Button variant="outlined" fullWidth onClick={onCancel}>
-                {cancelButton || 'Cancel'}
-              </Button>
+              {onCancel && (
+                <Button variant="outlined" fullWidth onClick={onCancel}>
+                  {cancelButton || 'Cancel'}
+                </Button>
+              )}
             </Grid>
             <Grid item xs={6}>
               <Button

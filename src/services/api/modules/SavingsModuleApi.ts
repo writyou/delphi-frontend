@@ -1,49 +1,76 @@
-import { Observable } from 'rxjs';
+import { autobind } from 'core-decorators';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as R from 'ramda';
 
-import { memoize } from 'utils/decorators';
-import { SavingsPool } from 'model/types';
-import { Token } from 'model/entities';
-import * as SR from 'generated/gql/subgraphRequests';
+import { getCurrentValueOrThrow } from 'utils/rxjs';
+import { DepositToSavingsPool } from 'model/types';
+import { ETH_NETWORK_CONFIG } from 'env';
+import { createSavingsModule } from 'generated/contracts';
 
-import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
-import { SubgraphApi } from './SubgraphApi.model';
+import { Contracts } from '../types';
+import { SubgraphApi } from './SubgraphApi';
+import { Web3Manager } from './Web3Manager';
 import { TransactionsApi } from './TransactionsApi';
 
 export class SavingsModuleApi {
+  // private readonlyContract: Contracts['savingsModule'];
+  private txContract = new BehaviorSubject<null | Contracts['savingsModule']>(null);
+
   constructor(
-    private web3Manager: Web3ManagerModule,
+    private web3Manager: Web3Manager,
     private transactionsApi: TransactionsApi,
     private erc20: Erc20Api,
     private subgraph: SubgraphApi,
-  ) {}
+  ) {
+    // this.readonlyContract = createSavingsModule(
+    //   this.web3Manager.web3,
+    //   ETH_NETWORK_CONFIG.contracts.savingsModule,
+    // );
 
-  @memoize()
-  public getPools(): Observable<SavingsPool[]> {
-    return this.subgraph
-      .SavingsPools()
-      .pipe(map(({ savingsPools }) => savingsPools.map<SavingsPool>(convertSavingsPool)));
+    this.web3Manager.txWeb3
+      .pipe(
+        map(
+          txWeb3 =>
+            txWeb3 && createSavingsModule(txWeb3, ETH_NETWORK_CONFIG.contracts.savingsModule),
+        ),
+      )
+      .subscribe(this.txContract);
   }
 
-  @memoize(R.identity)
-  public getPool(address: string): Observable<SavingsPool | null> {
-    return this.subgraph
-      .SavingsPool({ id: address.toLowerCase() })
-      .pipe(map(({ savingsPool }) => (savingsPool ? convertSavingsPool(savingsPool) : null)));
+  public getPools() {
+    return this.subgraph.loadSavingsPools();
   }
-}
-function convertSavingsPool(
-  d: Pick<SR.SavingsPool, 'id'> & {
-    poolToken: Pick<SR.Token, 'symbol' | 'id' | 'name' | 'decimals'>;
-    tokens: Pick<SR.Token, 'symbol' | 'id' | 'decimals'>[];
-  },
-): SavingsPool {
-  return {
-    address: d.id,
-    devName: d.poolToken.name,
-    poolToken: new Token(d.poolToken.id, d.poolToken.symbol, d.poolToken.decimals),
-    tokens: d.tokens.map(token => new Token(token.id, token.symbol, token.decimals)),
-  };
+
+  public getPool(address: string) {
+    return this.subgraph.loadSavingsPool(address);
+  }
+
+  @autobind
+  public async deposit(deposits: DepositToSavingsPool[]): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account);
+
+    await this.erc20.approveMultiple(
+      from,
+      ETH_NETWORK_CONFIG.contracts.savingsModule,
+      deposits.map(x => x.amount),
+    );
+
+    const promiEvent = txContract.methods.deposit(
+      {
+        _protocols: deposits.map(x => x.poolAddress),
+        _tokens: deposits.map(x => x.amount.currency.address),
+        _dnAmounts: deposits.map(x => x.amount.toBN()),
+      },
+      { from },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions$('savings.deposit', promiEvent, {
+      deposits,
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
 }

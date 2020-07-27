@@ -2,9 +2,9 @@ import { Observable } from 'rxjs';
 
 import { getSdk } from 'generated/gql/subgraphRequests';
 
-export type SubgraphApi = MakeSubgraphApi<ReturnType<typeof getSdk>>;
+export type SubgraphSdk = MakeSubgraphSdk<ReturnType<typeof getSdk>>;
 
-type MakeSubgraphApi<T extends Record<string, (...args: any[]) => Promise<any>>> = {
+type MakeSubgraphSdk<T extends Record<string, (...args: any[]) => Promise<any>>> = {
   [key in keyof T]: PromiseToObservable<T[key]>;
 };
 
