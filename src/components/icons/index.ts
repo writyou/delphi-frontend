@@ -32,3 +32,7 @@ export { Sun } from './Sun';
 export { Moon } from './Moon';
 export { ProfitArrow } from './ProfitArrow';
 export { Cat1 } from './cats/Cat1';
+export { CatsPaw } from './CatsPaw';
+export { Fish } from './Fish';
+export { ChartWithCat } from './ChartWithCat';
+export { ArrowStartToSave } from './ArrowStartToSave';

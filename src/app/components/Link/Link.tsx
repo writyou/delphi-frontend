@@ -50,7 +50,7 @@ export const Link: React.FC<Props> = props => {
     const isActive = !!useRouteMatch(ref);
 
     return (
-      <NavLink key={label} to={ref} className={classes.root} activeClassName={classes.active} exact>
+      <NavLink key={label} to={ref} className={classes.root} activeClassName={classes.active}>
         {renderIcon && <div className={classes.icon}>{renderIcon(isActive)}</div>}
         {shouldRenderLabel && <div className={classes.label}>{t(label)}</div>}
       </NavLink>

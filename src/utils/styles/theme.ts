@@ -48,9 +48,9 @@ function getGradients(type: 'dark' | 'light') {
     landingIcon: makeGradient(
       type === 'dark'
         ? [colors.northWesternPurple, colors.darkPurple]
-        : [colors.lilac, colors.iris],
+        : [colors.blushPink2, colors.lavender],
     ),
-    landingText: makeGradient([colors.blueViolet, colors.lavenderBlue]),
+    landingText: makeGradient([colors.lilac, colors.grape]),
     poolBalanceChart: [
       makeGradient(['#fc87e2', '#f24cb6']),
       makeGradient(['#63afdd', '#574cf2']),
