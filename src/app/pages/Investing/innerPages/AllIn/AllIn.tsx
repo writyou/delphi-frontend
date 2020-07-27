@@ -3,14 +3,14 @@ import * as React from 'react';
 import { makeStyles } from 'utils/styles';
 import { ComingSoon } from 'components';
 
-import { AllInMock } from './AllInMock';
+import './investing-all-in@2x.png';
 
 export function AllIn() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <AllInMock className={classes.contentMock} />
+      <img src="/images/investing-all-in@2x.png" className={classes.contentMock} alt="all-in" />
       <ComingSoon position="overlay" />
     </div>
   );

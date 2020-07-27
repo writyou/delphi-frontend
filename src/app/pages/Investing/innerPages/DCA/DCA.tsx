@@ -3,14 +3,14 @@ import * as React from 'react';
 import { makeStyles } from 'utils/styles';
 import { ComingSoon } from 'components';
 
-import { DCAMock } from './DCAMock';
+import './investing-dca@2x.png';
 
 export function DCA() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <DCAMock className={classes.contentMock} />
+      <img src="/images/investing-dca@2x.png" className={classes.contentMock} alt="dca" />
       <ComingSoon position="overlay" />
     </div>
   );
