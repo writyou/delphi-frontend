@@ -55,9 +55,11 @@ export function Table<T, U = null>(props: Props<T, U>) {
         },
       ])}
     >
-      <thead>
-        <tr>{columns.map(renderTitle)}</tr>
-      </thead>
+      {columns.find(column => column?.renderTitle && column.renderTitle()) && (
+        <thead>
+          <tr>{columns.map(renderTitle)}</tr>
+        </thead>
+      )}
       <tbody>{renderEntriesAndSummary()}</tbody>
     </table>
   );
@@ -95,7 +97,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
         className={cn(classes.title, classes.cell, classes.topLevelTitle, getAlignClass(column))}
         key={columnIndex}
       >
-        {column.renderTitle()}
+        {column?.renderTitle && column.renderTitle()}
       </th>
     );
   }
@@ -189,7 +191,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
   function renderSubtableHeader(x: M.SubtableColumn<U>, columnIndex: number) {
     return (
       <th className={cn(classes.title, classes.cell)} key={columnIndex}>
-        {x.renderTitle()}
+        {x?.renderTitle && x.renderTitle()}
       </th>
     );
   }

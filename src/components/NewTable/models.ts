@@ -5,7 +5,7 @@ export type AlignProperty = 'left' | 'right' | 'center';
 export type Column<T, U = null> = {
   cellContent: CellContent<T, U>;
   align?: AlignProperty;
-  renderTitle(): React.ReactNode;
+  renderTitle?(): React.ReactNode;
 };
 
 export type CellContent<T, U> = SimpleCellContent<T> | CellContentForRowExpander<T, U>;
@@ -34,7 +34,7 @@ export type ExpandedAreaWithinSubtable<T, U> = {
 };
 
 export type SubtableColumn<T> = {
-  renderTitle(): React.ReactNode;
+  renderTitle?(): React.ReactNode;
   renderCell(subtableEntry: T): React.ReactNode;
 };
 
