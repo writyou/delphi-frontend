@@ -8,6 +8,7 @@ import { useStyles } from './CompositionChart.style';
 
 type Props = {
   title?: string;
+  withoutLegend?: boolean;
   labelColors: string[];
 };
 
@@ -16,6 +17,7 @@ function CompositionChart({
   sectorColors,
   labelColors,
   chartData,
+  withoutLegend,
 }: Props & Omit<PieChartProps, 'size'>) {
   const classes = useStyles();
 
@@ -56,7 +58,7 @@ function CompositionChart({
             paddingAngle={5}
           />
         </div>
-        {renderLegend()}
+        {!withoutLegend && renderLegend()}
       </div>
     </div>
   );
