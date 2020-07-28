@@ -1,17 +1,6 @@
 import BN from 'bn.js';
 
-import type { Fraction } from './entities/Fraction';
-
-// TODO remove this
-export type TokenType = 'dai' | 'ptk';
-
-export const repaymentMethods = ['fromOwnBalance', 'fromAvailablePoolBalance'] as const;
-
-export type RepaymentMethod = typeof repaymentMethods[number];
-
-export const withdrawMethods = ['availableBalance', 'defiYield'] as const;
-
-export type WithdrawMethod = typeof withdrawMethods[number];
+import type { Fraction } from '../entities/Fraction';
 
 export interface ICurrency {
   readonly symbol: string;
