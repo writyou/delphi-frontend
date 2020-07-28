@@ -44,6 +44,7 @@ export const colors = {
   anakiwa: '#7cd7ff',
   melrose: '#a38cff',
   blushPink: '#ff79ff',
+  blushPink2: '#ffe3f6',
   heliotrope3: '#d93cef',
   pictonBlue: '#4cadf2',
   turquoise: '#3cefaf',
@@ -90,11 +91,13 @@ export const colors = {
   trueV: '#7357D2',
   obsidian: '#0a0a0e',
   northWesternPurple: '#4d2c66',
-  darkPurple: '#1d134a',
-  lilac: '#e8e4fc',
+  darkPurple: '#2a134a',
+  lilac: '#e0abff',
   iris: '#b2a1ff',
   blueViolet: '#8f70d2',
   lavenderBlue: '#6742f4',
+  grape: '#8a43ba',
+  lavender: '#edc4ed',
 
   // v2
   charade: '#2d2d40',

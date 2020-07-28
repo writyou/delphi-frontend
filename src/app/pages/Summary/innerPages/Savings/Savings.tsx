@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, ComingSoon } from 'components';
-import { percentAmount, tokenAmount } from 'utils/mock';
+import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, FormattedAmount } from 'components';
+import { percentAmount, tokenAmount, liquidityAmount } from 'utils/mock';
 
 import * as tableData from './tableData';
 
@@ -56,7 +56,18 @@ export function Savings() {
           <Grid container className={classes.table}>
             <ComingSoon position="overlay" />
             <Grid item xs={8}>
-              <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
+              <NewTable.Component
+                columns={tableData.columnsWithSubtable}
+                entries={entries}
+                summary={{
+                  renderLabel: () => (
+                    <>
+                      Total Allocated: <FormattedAmount sum={liquidityAmount} variant="plain" />
+                    </>
+                  ),
+                  renderValue: () => '',
+                }}
+              />
             </Grid>
             <Grid item xs>
               <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />

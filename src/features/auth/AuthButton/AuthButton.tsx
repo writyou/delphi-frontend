@@ -12,15 +12,17 @@ import { Button, Loading, Typography, Grid } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
-export function AuthButton() {
+type Props = { text?: string };
+
+export function AuthButton({ text }: Props) {
   const [isOpened, setIsOpened] = React.useState(false);
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account, [], null);
-  const [status] = useSubscribable(() => api.web3Manager.status, [], 'pending');
-  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet, [], null);
+  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [], null);
+  const [status] = useSubscribable(() => api.web3Manager.status$, [], 'pending');
+  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet$, [], null);
 
   const connectCommunication = useCommunication(api.web3Manager.connect, []);
 
@@ -80,7 +82,7 @@ export function AuthButton() {
             </>
           ) : (
             <Typography className={classes.connect}>
-              {t(tKeys.features.auth.connect.getKey())}
+              {text || t(tKeys.features.auth.connect.getKey())}
             </Typography>
           )}
         </Loading>

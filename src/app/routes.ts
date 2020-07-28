@@ -1,7 +1,8 @@
-import build from 'build-route-tree';
+import build, { getParam } from 'build-route-tree';
 
 const rawTree = {
   demo: null,
+  summaryEmpty: null,
   summary: {
     savings: null,
     investment: null,
@@ -11,6 +12,9 @@ const rawTree = {
   savings: {
     allocate: null,
     withdraw: null,
+    pool: {
+      id: getParam(null),
+    },
   },
   investing: {
     all: null,

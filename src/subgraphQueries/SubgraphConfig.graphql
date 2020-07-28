@@ -1,0 +1,5 @@
+subscription SubgraphConfig {
+  subgraphConfig(id: "ID") {
+  	aprDecimals
+  }
+}

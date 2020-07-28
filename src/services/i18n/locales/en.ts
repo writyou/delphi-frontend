@@ -50,6 +50,11 @@ const en = {
         success: 'Approving %{amount} transfer. Successful',
         error: 'Approving %{amount} transfer. Failed',
       },
+      'savings.deposit': {
+        pending: 'Deposit to savings pool. Pending',
+        success: 'Deposit to savings pool. Successful',
+        error: 'Deposit to savings pool. Failed',
+      },
     },
     networkWarning: {
       title: 'You are connected to the wrong network',

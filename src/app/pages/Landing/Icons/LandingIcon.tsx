@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 
 let hackForGradientUpdating = 1;
 
-export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
+function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -33,13 +33,13 @@ export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
   }, [gradientStops]);
 
   return (
-    <SvgIcon {...props} classes={classes} viewBox="0 0 96 66">
-      {/* chrome bug: it doesn't rerender gradient inside svg after theme change, but rerenders after defs remount */}
+    <SvgIcon {...props} classes={classes} viewBox="0 0 113 66">
+      {/* chome bug: it doesn't rerender gradient inside svg after theme change, but rerenders after defs remount */}
       <defs key={hackForGradientUpdating}>
         <linearGradient id="LandingIcon-gradient-a" x1="50%" x2="50%" y1="0%" y2="100%">
           {gradientStops}
         </linearGradient>
-        <linearGradient id="LandingIcon-gradient-b" x1="100%" x2="0%" y1="50%" y2="50%">
+        <linearGradient id="LandingIcon-gradient-b" x1="0%" y1="50%" y2="50%">
           {gradientStops}
         </linearGradient>
         <g id="LandingIcon-shape">
@@ -49,7 +49,11 @@ export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
           />
           <path
             fill="url(#LandingIcon-gradient-b)"
-            d="M95.88 32.83a8.6 8.6 0 0 0-1.19-4.47L82.62 7.24a8.7 8.7 0 0 0-7.59-4.47H50.98a8.7 8.7 0 0 0-7.58 4.47L31.4 28.36a8.6 8.6 0 0 0-1.18 4.47 8.6 8.6 0 0 0 1.19 4.46l11.97 21.12a8.69 8.69 0 0 0 7.6 4.47h24.04a8.7 8.7 0 0 0 7.6-4.47L94.68 37.3a9.6 9.6 0 0 0 1.19-4.46z"
+            d="M56.45 0A8.6 8.6 0 0 0 52 1.19L30.87 13.26a8.69 8.69 0 0 0-4.47 7.59V44.9c0 3.14 1.7 6.04 4.47 7.59l21.12 11.97a8.6 8.6 0 0 0 4.46 1.2 8.6 8.6 0 0 0 4.47-1.2L82.04 52.5a8.7 8.7 0 0 0 4.47-7.6V20.86a8.7 8.7 0 0 0-4.47-7.59L60.92 1.19A9.6 9.6 0 0 0 56.45 0z"
+          />
+          <path
+            fill="url(#LandingIcon-gradient-a)"
+            d="M82.85 0a8.6 8.6 0 0 0-4.46 1.19L57.27 13.26a8.69 8.69 0 0 0-4.47 7.59V44.9c0 3.14 1.7 6.04 4.47 7.59l21.12 11.97a8.6 8.6 0 0 0 4.46 1.2 8.6 8.6 0 0 0 4.47-1.2l21.12-11.97a8.7 8.7 0 0 0 4.47-7.6V20.86a8.7 8.7 0 0 0-4.47-7.59L87.32 1.19A9.6 9.6 0 0 0 82.85 0z"
           />
         </g>
       </defs>
@@ -60,3 +64,5 @@ export function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
     </SvgIcon>
   );
 }
+
+export { LandingIcon };

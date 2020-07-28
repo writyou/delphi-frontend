@@ -1,50 +1,32 @@
 import * as React from 'react';
 
-import { Layout, Benefits } from 'components';
 import { Header } from 'app/components/LandingHeader/Header';
 import { Footer } from 'app/components/Footer/Footer';
-import { makeStyles } from 'utils/styles';
+import { Layout, Benefits } from 'components';
+import { tKeys, useTranslate } from 'services/i18n';
 
 import { LandingIntro } from './Intro/Intro';
-import { benefits, footerNavItems } from './constants';
+import { benefits } from './constants';
+import { useStyles } from './Landing.styles';
 
-export function Landing() {
+function Landing() {
   const classes = useStyles();
+  const { t } = useTranslate();
+
   return (
     <Layout>
       <Layout.Header>
-        <Header />
+        <Header authButtonText={t(tKeys.modules.navigation.app.getKey())} customNavItems={[]} />
       </Layout.Header>
-      <Layout.Container>
+      <Layout.Container className={classes.main}>
         <LandingIntro />
-        <Benefits benefits={benefits} className={classes.section} />
+        <Benefits className={classes.benefits} benefits={benefits} />
       </Layout.Container>
       <Layout.Footer>
-        <Footer customNavItems={footerNavItems} />
+        <Footer />
       </Layout.Footer>
     </Layout>
   );
 }
 
-const useStyles = makeStyles(theme => ({
-  '@global': {
-    body: {
-      backgroundColor:
-        theme.palette.type === 'light' ? theme.colors.athensGray : theme.colors.obsidian,
-    },
-  },
-
-  section: {
-    marginTop: theme.spacing(5),
-    [theme.breakpoints.up('tabletSM')]: {
-      marginTop: theme.spacing(7.5),
-    },
-
-    '&:last-child': {
-      marginBottom: theme.spacing(3.75),
-      [theme.breakpoints.up('tabletSM')]: {
-        marginBottom: theme.spacing(7.5),
-      },
-    },
-  },
-}));
+export { Landing };

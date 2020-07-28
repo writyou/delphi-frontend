@@ -25,41 +25,42 @@ export function SavingsPage() {
 
   const classes = useStyles();
 
-  return (
-    <Grid className={classes.root}>
-      <TabContext value={selectedPage}>
-        <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-            <Tab
-              label="Allocate"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.allocate.getElementKey()}
-              to={routes.savings.allocate.getRedirectPath()}
-            />
-            <Tab
-              label="Withdraw"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.withdraw.getElementKey()}
-              to={routes.savings.withdraw.getRedirectPath()}
-            />
-          </TabsList>
-        </div>
-        <TabPanel value={routes.savings.allocate.getElementKey()}>
-          Allocate not implemented
-          <div className={classes.cardsContainer}>
-            <Card value={3} />
-            <Card value={3} />
-            <Card value={3} />
+  return renderTabs();
+
+  function renderTabs() {
+    return (
+      <Grid className={classes.root}>
+        <TabContext value={selectedPage}>
+          <div className={classes.navigationBar}>
+            <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
+              <Tab
+                label="Allocate"
+                className={classes.tab}
+                component={Link}
+                value={routes.savings.allocate.getElementKey()}
+                to={routes.savings.allocate.getRedirectPath()}
+              />
+              <Tab
+                label="Withdraw"
+                className={classes.tab}
+                component={Link}
+                value={routes.savings.withdraw.getElementKey()}
+                to={routes.savings.withdraw.getRedirectPath()}
+              />
+            </TabsList>
           </div>
-        </TabPanel>
-        <TabPanel value={routes.savings.withdraw.getElementKey()}>
-          Withdraw not implemented
-        </TabPanel>
-      </TabContext>
-    </Grid>
-  );
+          <TabPanel value={routes.savings.allocate.getElementKey()}>
+            <Card value={3} />
+            <Card value={3} />
+            <Card value={3} />
+          </TabPanel>
+          <TabPanel value={routes.savings.withdraw.getElementKey()}>
+            Withdraw not implemented
+          </TabPanel>
+        </TabContext>
+      </Grid>
+    );
+  }
 }
 
 const useStyles = makeStyles(

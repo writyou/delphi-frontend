@@ -21,6 +21,7 @@ export { default as FormControlLabel } from '@material-ui/core/FormControlLabel'
 export { default as Radio } from '@material-ui/core/Radio';
 export { default as Link, LinkProps } from '@material-ui/core/Link';
 export { default as Tab } from '@material-ui/core/Tab';
+export { default as Divider } from '@material-ui/core/Divider';
 
 export { default as Skeleton } from '@material-ui/lab/Skeleton';
 export { default as TabsList } from '@material-ui/lab/TabList';
@@ -67,3 +68,4 @@ export * from './Profit/Profit';
 export * from './ChartProfit/ChartProfit';
 export * from './ChartBlock/ChartBlock';
 export * from './TokenIcon/TokenIcon';
+export * from './form';

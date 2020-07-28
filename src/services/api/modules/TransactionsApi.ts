@@ -16,7 +16,7 @@ export class TransactionsApi {
     return this.submittedTransaction;
   }
 
-  public pushToSubmittedTransactions$<T extends SubmittedTransactionType>(
+  public pushToSubmittedTransactions<T extends SubmittedTransactionType>(
     transactionName: T,
     promiEvent: PromiEvent<any>,
     payload: ExtractSubmittedTransaction<T>['payload'],
