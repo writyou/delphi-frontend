@@ -57,7 +57,7 @@ function LandingIcon(props: React.ComponentProps<typeof SvgIcon>) {
           />
         </g>
       </defs>
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <use xlinkHref="#LandingIcon-shape" />
         <use xlinkHref="#LandingIcon-shape" />
       </g>
