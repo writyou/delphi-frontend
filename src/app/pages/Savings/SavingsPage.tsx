@@ -7,6 +7,8 @@ import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel } from 'components';
 
+import { Card } from './Card/Card';
+
 export function SavingsPage() {
   const match = useRouteMatch<{ page: string }>('/savings/:page');
   const [selectedPage, setSelectedPage] = React.useState('allocate');
@@ -46,6 +48,11 @@ export function SavingsPage() {
         </div>
         <TabPanel value={routes.savings.allocate.getElementKey()}>
           Allocate not implemented
+          <div className={classes.cardsContainer}>
+            <Card value={3} />
+            <Card value={3} />
+            <Card value={3} />
+          </div>
         </TabPanel>
         <TabPanel value={routes.savings.withdraw.getElementKey()}>
           Withdraw not implemented
@@ -69,6 +76,11 @@ const useStyles = makeStyles(
     navigationBar: {
       display: 'flex',
       alignItems: 'flex-start',
+      justifyContent: 'space-between',
+    },
+    cardsContainer: {
+      paddingTop: 60,
+      display: 'flex',
       justifyContent: 'space-between',
     },
   }),
