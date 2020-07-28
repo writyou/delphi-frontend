@@ -5,14 +5,14 @@ export const useStyles = makeStyles(
     root: {
       padding: ' 0 30px 30px 30px',
       width: 413,
-      height: 214,
       backgroundColor: '#2d2d40',
       borderRadius: 6,
       color: 'white',
     },
     header: {
-      marginTop: -15,
-      marginBottom: 40,
+      position: 'relative',
+      top: '-15px',
+      marginBottom: 20,
       height: 30,
       display: 'flex',
       justifyContent: 'space-between',
@@ -33,17 +33,19 @@ export const useStyles = makeStyles(
       width: 30,
       height: 30,
       borderRadius: 15,
-      backgroundColor: '#f5ac37',
+    },
+    tokenIcon: {
+      width: '100%',
+      height: '100%',
     },
     row: {
       marginBottom: 30,
       display: 'flex',
       justifyContent: 'space-between',
+      alignItems: 'baseline',
     },
-    value: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
+    balance: {
+      fontSize: 32,
     },
   }),
   { name: 'SavingsCard' },
