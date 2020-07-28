@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Button, Grid, FormTemplate, SwitchInputField } from 'components';
+import { Button, Grid } from 'components';
 import {
   PoolLiquidity,
   PoolLiquidityAPY,
@@ -45,7 +45,7 @@ const mockSectors = [
 ];
 
 export function SavingsPoolPage() {
-  const match = useRouteMatch<{ id: string }>('/savings/:id');
+  const match = useRouteMatch<{ id: string }>('/savings/pool/:id');
   const id = match ? match.params.id : null;
 
   const history = useHistory();
@@ -107,39 +107,33 @@ export function SavingsPoolPage() {
 
   function renderForm() {
     return (
-      <FormTemplate onSubmit={() => undefined} onCancel={() => undefined}>
-        <Grid container direction="column">
-          <Grid item className={classes.allocateTitle}>
-            Allocate
+      <Grid container direction="column">
+        <Grid item className={classes.allocateTitle}>
+          Allocate
+        </Grid>
+        <Grid container item>
+          <Grid item xs={8}>
+            Token input
           </Grid>
-          <Grid container item>
-            <Grid item xs={8}>
-              Token input
-            </Grid>
-            <Grid item xs={4}>
-              <Grid container justify="flex-end">
-                <SwitchInputField
-                  name="InfiniteUnlock"
-                  label="Infinite unlock"
-                  helperText="Infinite unlock"
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid container item className={classes.row}>
-            <Grid item xs={8}>
-              Estimated Gas Price
-            </Grid>
-            <Grid item xs={4}>
-              <Grid container justify="flex-end">
-                <Button color="primary" variant="contained">
-                  Allocate
-                </Button>
-              </Grid>
+          <Grid item xs={4}>
+            <Grid container justify="flex-end">
+              Switch
             </Grid>
           </Grid>
         </Grid>
-      </FormTemplate>
+        <Grid container item className={classes.row}>
+          <Grid item xs={8}>
+            Estimated Gas Price
+          </Grid>
+          <Grid item xs={4}>
+            <Grid container justify="flex-end">
+              <Button color="primary" variant="contained">
+                Allocate
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
     );
   }
 
