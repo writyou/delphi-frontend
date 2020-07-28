@@ -36,7 +36,7 @@ export function DepositToPoolForm({
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
   const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getTokenBalance(currentToken.address) : empty()),
+    () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()),
     [api, currentToken],
   );
 

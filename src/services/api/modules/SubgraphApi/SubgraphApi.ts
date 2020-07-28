@@ -15,7 +15,7 @@ export class SubgraphApi {
   constructor(private apolloClient: ApolloClient<any>) {}
 
   @memoize(R.identity)
-  public loadUser(address: string): Observable<User | null> {
+  public loadUser$(address: string): Observable<User | null> {
     return this.sdk.User({ id: address.toLowerCase() }).pipe(
       map(({ user }) => {
         return user ? convertUser(user) : null;
@@ -24,7 +24,7 @@ export class SubgraphApi {
   }
 
   @memoize(R.identity)
-  public loadSavingsPool(address: string): Observable<SavingsPool | null> {
+  public loadSavingsPool$(address: string): Observable<SavingsPool | null> {
     return this.sdk.SavingsPool({ id: address.toLowerCase() }).pipe(
       map(({ savingsPool }) => {
         return savingsPool ? convertSavingsPool(savingsPool) : null;
@@ -33,7 +33,7 @@ export class SubgraphApi {
   }
 
   @memoize()
-  public loadSavingsPools(): Observable<SavingsPool[]> {
+  public loadSavingsPools$(): Observable<SavingsPool[]> {
     return this.sdk.SavingsPools().pipe(
       map(({ savingsPools }) => {
         return savingsPools.map(convertSavingsPool);

@@ -20,9 +20,9 @@ export function AuthButton({ text }: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account, [], null);
-  const [status] = useSubscribable(() => api.web3Manager.status, [], 'pending');
-  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet, [], null);
+  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [], null);
+  const [status] = useSubscribable(() => api.web3Manager.status$, [], 'pending');
+  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet$, [], null);
 
   const connectCommunication = useCommunication(api.web3Manager.connect, []);
 

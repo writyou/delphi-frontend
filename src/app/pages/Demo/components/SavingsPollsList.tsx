@@ -8,7 +8,7 @@ import { Pool } from './Pool';
 
 export function SavingsPollsList() {
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools(), [api]);
+  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]);
 
   return (
     <Loading meta={poolsMeta}>

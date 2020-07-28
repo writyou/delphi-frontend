@@ -6,7 +6,7 @@ import { useSubscribable } from 'utils/react';
 
 export function MyTokenBalance({ address }: { address: string }) {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(() => api.user.getTokenBalance(address), [
+  const [balance, balanceMeta] = useSubscribable(() => api.user.getTokenBalance$(address), [
     api,
     address,
   ]);

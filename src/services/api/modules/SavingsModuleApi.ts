@@ -8,9 +8,8 @@ import { ETH_NETWORK_CONFIG } from 'env';
 import { createSavingsModule } from 'generated/contracts';
 
 import { Erc20Api } from './Erc20Api';
-import { Contracts } from '../types';
+import { Contracts, Web3ManagerModule } from '../types';
 import { SubgraphApi } from './SubgraphApi';
-import { Web3Manager } from './Web3Manager';
 import { TransactionsApi } from './TransactionsApi';
 
 export class SavingsModuleApi {
@@ -18,7 +17,7 @@ export class SavingsModuleApi {
   private txContract = new BehaviorSubject<null | Contracts['savingsModule']>(null);
 
   constructor(
-    private web3Manager: Web3Manager,
+    private web3Manager: Web3ManagerModule,
     private transactionsApi: TransactionsApi,
     private erc20: Erc20Api,
     private subgraph: SubgraphApi,
@@ -28,7 +27,7 @@ export class SavingsModuleApi {
     //   ETH_NETWORK_CONFIG.contracts.savingsModule,
     // );
 
-    this.web3Manager.txWeb3
+    this.web3Manager.txWeb3$
       .pipe(
         map(
           txWeb3 =>
@@ -38,18 +37,18 @@ export class SavingsModuleApi {
       .subscribe(this.txContract);
   }
 
-  public getPools() {
-    return this.subgraph.loadSavingsPools();
+  public getPools$() {
+    return this.subgraph.loadSavingsPools$();
   }
 
-  public getPool(address: string) {
-    return this.subgraph.loadSavingsPool(address);
+  public getPool$(address: string) {
+    return this.subgraph.loadSavingsPool$(address);
   }
 
   @autobind
   public async deposit(deposits: DepositToSavingsPool[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
 
     await this.erc20.approveMultiple(
       from,
@@ -66,7 +65,7 @@ export class SavingsModuleApi {
       { from },
     );
 
-    this.transactionsApi.pushToSubmittedTransactions$('savings.deposit', promiEvent, {
+    this.transactionsApi.pushToSubmittedTransactions('savings.deposit', promiEvent, {
       deposits,
       fromAddress: from,
     });

@@ -56,7 +56,7 @@ const initialStorageState: StorageState = {
 };
 
 export class Web3Manager {
-  public connectedWallet = new BehaviorSubject<WalletType | null>(null);
+  public connectedWallet$ = new BehaviorSubject<WalletType | null>(null);
 
   private storage = new Storage<[StorageState]>(
     'walletManager',
@@ -78,25 +78,25 @@ export class Web3Manager {
     return this.manager.web3;
   }
 
-  get txWeb3() {
+  get txWeb3$() {
     return this.manager.txWeb3;
   }
 
-  get account() {
+  get account$() {
     return this.manager.account;
   }
 
-  get chainId() {
+  get chainId$() {
     return this.manager.chainId;
   }
 
-  get status() {
+  get status$() {
     return this.manager.status;
   }
 
   @autobind
   async disconnect() {
-    this.connectedWallet.next(null);
+    this.connectedWallet$.next(null);
     this.storage.setItem('lastProvider', null);
     await this.manager.disconnect();
   }
@@ -104,7 +104,7 @@ export class Web3Manager {
   @autobind
   async connect(wallet: WalletType) {
     const payload = await this.manager.connect(connectors[wallet]);
-    this.connectedWallet.next(wallet);
+    this.connectedWallet$.next(wallet);
     this.storage.setItem('lastProvider', wallet);
     return payload;
   }

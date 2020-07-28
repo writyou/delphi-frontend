@@ -41,7 +41,7 @@ export class Erc20Api {
       { from: fromAddress },
     );
 
-    this.transactionsApi.pushToSubmittedTransactions$('erc20.approve', promiEvent, {
+    this.transactionsApi.pushToSubmittedTransactions('erc20.approve', promiEvent, {
       spender,
       fromAddress,
       value: amount,
@@ -60,7 +60,7 @@ export class Erc20Api {
   }
 
   @autobind
-  public toTokenAmount(tokenAddress: string, amount$: Observable<BN>): Observable<TokenAmount> {
+  public toTokenAmount$(tokenAddress: string, amount$: Observable<BN>): Observable<TokenAmount> {
     return combineLatest([this.getToken$(tokenAddress), amount$]).pipe(
       map(([token, amount]) => new TokenAmount(amount, token)),
     );
@@ -70,7 +70,7 @@ export class Erc20Api {
   public getBalance$(tokenAddress: string, account: string): Observable<TokenAmount> {
     const contract = this.getErc20ReadonlyContract(tokenAddress);
 
-    return this.toTokenAmount(
+    return this.toTokenAmount$(
       tokenAddress,
       contract.methods.balanceOf({ account }, [
         contract.events.Transfer({ filter: { from: account } }),
@@ -92,14 +92,14 @@ export class Erc20Api {
   @memoize(R.identity)
   public getTotalSupply$(address: string): Observable<TokenAmount> {
     const contract = this.getErc20ReadonlyContract(address);
-    return this.toTokenAmount(
+    return this.toTokenAmount$(
       address,
       contract.methods.totalSupply(undefined, contract.events.Transfer()),
     );
   }
 
   private getErc20TxContract(address: string): Contracts['erc20'] {
-    const txWeb3 = getCurrentValueOrThrow(this.web3Manager.txWeb3);
+    const txWeb3 = getCurrentValueOrThrow(this.web3Manager.txWeb3$);
 
     return createErc20(txWeb3, address);
   }

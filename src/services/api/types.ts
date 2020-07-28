@@ -38,5 +38,6 @@ export type ExtractSubmittedTransaction<T extends SubmittedTransactionType> = Ex
 
 export interface Web3ManagerModule {
   web3: Web3;
-  txWeb3: BehaviorSubject<Web3 | null>;
+  account$: BehaviorSubject<string | null>;
+  txWeb3$: BehaviorSubject<Web3 | null>;
 }
