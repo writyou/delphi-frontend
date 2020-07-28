@@ -1,21 +1,23 @@
 import * as React from 'react';
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Avatar from '@material-ui/core/Avatar';
+import { useHistory } from 'react-router';
 
 import { NETWORK_ID } from 'env';
 import { useApi } from 'services/api';
 import { getShortAddress } from 'utils/format';
-import { useSubscribable, useCommunication } from 'utils/react';
+import { useSubscribable, useCommunication, useOnChangeState } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Button, Loading, Typography, Grid } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
-type Props = { text?: string };
+type Props = { text?: string; redirectTo?: string };
 
-export function AuthButton({ text }: Props) {
+export function AuthButton({ text, redirectTo }: Props) {
   const [isOpened, setIsOpened] = React.useState(false);
+  const [needToRedirect, setNeedToRedirect] = React.useState(false);
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
@@ -28,6 +30,7 @@ export function AuthButton({ text }: Props) {
 
   const toggleIsOpened = React.useCallback(() => {
     setIsOpened(!isOpened);
+    !isOpened && setNeedToRedirect(true);
   }, [isOpened]);
 
   const handleDisconnectClick = React.useCallback(() => {
@@ -35,6 +38,19 @@ export function AuthButton({ text }: Props) {
     connectCommunication.reset();
     setIsOpened(false);
   }, [connectCommunication.reset]);
+
+  const history = useHistory();
+
+  redirectTo &&
+    useOnChangeState(
+      { needToRedirect, connectedWallet },
+      (prev, cur) => cur.needToRedirect && !prev.connectedWallet && !!cur.connectedWallet,
+      () => {
+        history.push(redirectTo);
+        setIsOpened(false);
+        setNeedToRedirect(false);
+      },
+    );
 
   return (
     <>
