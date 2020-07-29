@@ -48,7 +48,7 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
 
     return chartData.map((pool, index) => {
       return {
-        percent: new PercentAmount(totalValue.div(pool.value).mul(10)),
+        percent: new PercentAmount(pool.value).div(totalValue).mul(100),
         label: pool.label,
         color: colors[index],
         value: pool.value,
