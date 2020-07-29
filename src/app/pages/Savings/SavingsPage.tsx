@@ -1,11 +1,12 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
-import { TabsList, TabContext, Tab, TabPanel } from 'components';
+import { TabsList, TabContext, Tab, TabPanel, Grid } from 'components';
+
+import { AllocateTab } from './AllocateTab';
 
 export function SavingsPage() {
   const match = useRouteMatch<{ page: string }>('/savings/:page');
@@ -48,7 +49,7 @@ export function SavingsPage() {
             </TabsList>
           </div>
           <TabPanel value={routes.savings.allocate.getElementKey()}>
-            Allocate not implemented
+            <AllocateTab />
           </TabPanel>
           <TabPanel value={routes.savings.withdraw.getElementKey()}>
             Withdraw not implemented

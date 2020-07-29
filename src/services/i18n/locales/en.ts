@@ -32,6 +32,11 @@ const en = {
       history: 'History',
       copyright: 'Sparta v1.0 by Akropolis Decentralised Ltd',
     },
+    savings: {
+      mySupplyBalance: 'My Supply Balance',
+      poolLiquidity: 'Pool Liquidity',
+      viewDetails: 'View Details',
+    },
   },
   features: {
     auth: {
