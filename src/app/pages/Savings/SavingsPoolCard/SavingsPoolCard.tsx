@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { tKeys, useTranslate } from 'services/i18n';
 import { LiquidityAmount } from 'model/entities';
@@ -62,10 +63,9 @@ export function WithViewDetails({ link, content, additionalElement }: ViewProps)
       <div className={classes.row}>
         {content}
         <Link
-          href={link}
+          component={RouterLink}
+          to={link}
           color="textPrimary"
-          target="_blank"
-          rel="noopener noreferrer"
           title={t(tKeys.modules.savings.viewDetails.getKey())}
         >
           {t(tKeys.modules.savings.viewDetails.getKey())}
