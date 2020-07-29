@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthButton } from 'features/auth';
+import { ThemeButton } from 'services/theme';
 
 import * as CustomLink from '../Link';
 import { useStyles } from './NewHeader.style';
@@ -29,8 +30,11 @@ export const NewHeader: React.FC = () => {
       </div>
       <div className={classes.rightPart}>
         <CustomLink.Link link={wikiLink} shouldRenderLabel />
-        <div className={classes.authButton}>
-          <AuthButton />
+        <div className={classes.button}>
+          <ThemeButton />
+        </div>
+        <div className={classes.button}>
+          <AuthButton disconnectRedirectPath="/" />
         </div>
       </div>
     </header>

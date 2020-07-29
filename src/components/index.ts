@@ -15,8 +15,6 @@ export { default as Typography, TypographyProps } from '@material-ui/core/Typogr
 export { default as IconButton } from '@material-ui/core/IconButton';
 export { default as Badge } from '@material-ui/core/Badge';
 export { default as Tooltip } from '@material-ui/core/Tooltip';
-export { default as Card } from '@material-ui/core/Card';
-export { default as CardContent } from '@material-ui/core/CardContent';
 export { default as FormControlLabel } from '@material-ui/core/FormControlLabel';
 export { default as Radio } from '@material-ui/core/Radio';
 export { default as Link, LinkProps } from '@material-ui/core/Link';
@@ -69,3 +67,4 @@ export * from './ChartBlock/ChartBlock';
 export * from './TokenIcon/TokenIcon';
 export * from './form';
 export * from './CompositionChart';
+export * from './Card/Card';
