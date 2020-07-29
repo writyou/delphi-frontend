@@ -17,13 +17,18 @@ export function AllocateTab() {
       <Grid container alignItems="flex-start" spacing={3}>
         {pools &&
           pools.map(pool => (
-            <Grid item xs={4}>
+            <Grid key={pool.address} item xs={4}>
               <SavingsPoolCard
                 pool={pool}
                 footerElement={
                   <WithViewDetails
                     link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-                    content={<span><SwitchInput />Allocate</span>}
+                    content={
+                      <span>
+                        <SwitchInput />
+                        Allocate
+                      </span>
+                    }
                     additionalElement={
                       <DepositToPoolForm poolAddress={pool.address} supportedTokens={pool.tokens} />
                     }

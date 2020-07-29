@@ -63,16 +63,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
 
-  extra: {
-    '&$top': {
-      marginBottom: theme.spacing(1.5),
-    },
-    '&$bottom': {
-      paddingTop: theme.spacing(2.5),
-      marginTop: 'auto',
-    },
-  },
-
   label: {
     position: 'absolute',
     top: 0,
