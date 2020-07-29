@@ -22,7 +22,7 @@ export const columnForChart: Array<NewTable.models.Column<
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <CompositionChart chartData={x} />,
+      render: x => <CompositionChart chartData={x} legendType="simple" />,
     },
   },
 ];

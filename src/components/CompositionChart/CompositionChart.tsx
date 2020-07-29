@@ -67,7 +67,7 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
         {sortedData.map(({ label, percent, color }) => (
           <li className={classes.legendItem} key={label} style={{ color: color.label }}>
             <span className={classes.label}>
-              {`${percent}`}&nbsp;{label}
+              {`${percent}%`}&nbsp;{label}
             </span>
           </li>
         ))}
@@ -100,7 +100,7 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
             paddingAngle={5}
           />
         </div>
-        {legendType && (legendType ? renderLegend() : renderTableLegend())}
+        {legendType && (legendType === 'simple' ? renderLegend() : renderTableLegend())}
       </div>
     </div>
   );

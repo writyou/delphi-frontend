@@ -9,7 +9,7 @@ export const useStyles = makeStyles(
       marginTop: 25,
       display: 'flex',
       alignItems: 'center',
-      flexWrap: 'wrap',
+      flexWrap: 'nowrap',
     },
     chart: {
       width: CHART_WIDTH,
