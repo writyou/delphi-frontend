@@ -7,9 +7,13 @@ import { NavInline, Link } from 'components';
 import { LogoWithNameIcon } from 'components/icons';
 import { IMenuItem } from 'utils/types/common';
 import { AuthButton } from 'features/auth';
+import { useSubscribable } from 'utils/react';
+import { useApi } from 'services/api';
+import { routes } from 'app/routes';
 
 import { menuItems } from './constants';
 import { useStyles } from './Header.style';
+import { AppButton } from './components/AppButton/AppButton';
 
 interface Props {
   authButtonText?: string;
@@ -21,6 +25,9 @@ const AKROPOLIS_LINK = 'https://akropolis.io/';
 
 export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
   const classes = useStyles();
+
+  const api = useApi();
+  const [connectedWallet] = useSubscribable(() => api.web3Manager.connectedWallet$, [], null);
 
   return (
     <header className={classes.root}>
@@ -51,14 +58,12 @@ export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
               <ThemeButton />
             </Adaptive>
           </React.Fragment>,
-          <React.Fragment key="1">
-            <Adaptive to="tabletXS">
-              <AuthButton text={authButtonText} />
-            </Adaptive>
-            <Adaptive from="tabletXS">
-              <AuthButton text={authButtonText} />
-            </Adaptive>
-          </React.Fragment>,
+          <AuthButton
+            key="1"
+            text={authButtonText}
+            connectRedirectPath={routes.summary.getRedirectPath()}
+          />,
+          ...(connectedWallet ? [<AppButton key="2" />] : []),
         ]}
       />
     </header>
