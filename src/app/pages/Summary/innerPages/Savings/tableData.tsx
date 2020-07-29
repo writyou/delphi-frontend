@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { NewTable, FormattedAmount } from 'components';
-import { TokenAmount, PercentAmount } from 'model/entities';
+import { NewTable, FormattedAmount, PieCurrency, CompositionChart } from 'components';
+import { TokenAmount, PercentAmount, Amount, Currency, Token } from 'model/entities';
 
 import { IconsBlock } from '../../Components/IconsBlock';
-import { PieChart, PieSector } from '../../Components/PieChart';
 import { PoolTitle } from '../../Components/PoolTitle';
 
 export type Order = {
@@ -16,12 +15,14 @@ export type Order = {
   poolFullTitle?: string;
 };
 
-export const columnForChart: Array<NewTable.models.Column<PieSector[]>> = [
+export const columnForChart: Array<NewTable.models.Column<
+  PieCurrency<Amount<Currency | Token>>[]
+>> = [
   {
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <PieChart sectors={x} />,
+      render: x => <CompositionChart chartData={x} />,
     },
   },
 ];

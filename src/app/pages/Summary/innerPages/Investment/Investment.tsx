@@ -20,28 +20,27 @@ const entries: tableData.Order[] = [
 export const entriesForChart = [
   [
     {
-      value: 10,
+      value: tokenAmount,
       label: 'RSV',
     },
     {
-      value: 30,
+      value: tokenAmount,
       label: 'DAI',
     },
     {
-      value: 20,
+      value: tokenAmount,
       label: 'USDT',
     },
     {
-      value: 10,
+      value: tokenAmount,
       label: 'TUSD',
     },
     {
-      value: 30,
+      value: tokenAmount,
       label: 'USDC',
     },
   ],
 ];
-
 export function Investment() {
   const classes = useStyles();
 

@@ -40,6 +40,17 @@ export const useStyles = makeStyles(
     label: {
       color: theme.palette.text.primary,
     },
+    hidden: {
+      height: 0,
+      visibility: 'hidden',
+      width: 0,
+      position: 'absolute',
+      zIndex: -100,
+    },
+    table: {
+      marginLeft: 25,
+      marginTop: 15,
+    },
   }),
   { name: 'CompositionChart' },
 );

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid, ComingSoon } from 'components';
-import { percentAmount, liquidityAmount } from 'utils/mock';
+import { percentAmount, liquidityAmount, tokenAmount } from 'utils/mock';
 
 import * as tableData from './tableData';
 
@@ -18,23 +18,23 @@ const entries: tableData.Order[] = [
 export const entriesForChart = [
   [
     {
-      value: 10,
+      value: tokenAmount,
       label: 'RSV',
     },
     {
-      value: 30,
+      value: tokenAmount,
       label: 'DAI',
     },
     {
-      value: 20,
+      value: tokenAmount,
       label: 'USDT',
     },
     {
-      value: 10,
+      value: tokenAmount,
       label: 'TUSD',
     },
     {
-      value: 30,
+      value: tokenAmount,
       label: 'USDC',
     },
   ],

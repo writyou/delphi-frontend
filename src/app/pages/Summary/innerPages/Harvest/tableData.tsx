@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { NewTable, FormattedAmount } from 'components';
-import { LiquidityAmount, PercentAmount } from 'model/entities';
-
-import { PieChart, PieSector } from '../../Components/PieChart';
+import { NewTable, FormattedAmount, CompositionChart, PieCurrency } from 'components';
+import { LiquidityAmount, PercentAmount, Amount, Currency, Token } from 'model/entities';
 
 export type Order = {
   asset: string;
@@ -46,12 +44,14 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
   },
 ];
 
-export const columnForChart: Array<NewTable.models.Column<PieSector[]>> = [
+export const columnForChart: Array<NewTable.models.Column<
+  PieCurrency<Amount<Currency | Token>>[]
+>> = [
   {
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <PieChart sectors={x} />,
+      render: x => <CompositionChart chartData={x} />,
     },
   },
 ];
