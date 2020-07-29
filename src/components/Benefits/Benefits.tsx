@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cn from 'classnames';
 
-import { Card } from 'app/components/Card';
+import { Card } from 'components/Card/Card';
 import { makeStyles } from 'utils/styles';
 
 import { Preview } from '../Preview/Preview';

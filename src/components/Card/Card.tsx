@@ -9,13 +9,11 @@ interface CardProps {
   variant?: 'outlined' | 'contained';
   label?: string;
   children: React.ReactNode;
-  extraTop?: React.ReactNode;
-  extraBottom?: React.ReactNode;
   icons?: React.ReactNode[];
 }
 
 export function Card(props: CardProps) {
-  const { label, variant = 'outlined', children, extraTop, extraBottom, icons, className } = props;
+  const { label, variant = 'outlined', children, icons, className } = props;
   const classes = useStyles();
   return (
     <div
@@ -24,9 +22,7 @@ export function Card(props: CardProps) {
         [classes.contained]: variant === 'contained',
       })}
     >
-      {extraTop && <div className={cn(classes.extra, classes.top)}>{extraTop}</div>}
       {children}
-      {extraBottom && <div className={cn(classes.extra, classes.bottom)}>{extraBottom}</div>}
       {label && (
         <Typography component="div" className={classes.label}>
           <span>{label}</span>
@@ -115,9 +111,6 @@ const useStyles = makeStyles(theme => ({
       marginRight: 0,
     },
   },
-
-  top: {},
-  bottom: {},
   outlined: {},
   contained: {},
 }));
