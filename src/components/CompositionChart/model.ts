@@ -1,4 +1,5 @@
 import { Amount, Currency, Token, PercentAmount } from 'model/entities';
+import { Fraction } from 'model/entities/Fraction';
 
 export type PieCurrency<T extends Amount<Currency | Token>> = {
   value: T;
@@ -14,5 +15,6 @@ export type PieSector<T extends Amount<Currency | Token>> = {
   percent: PercentAmount;
   label: string;
   color: ChartColor;
-  value: T;
+  value: Fraction;
+  originalValue: T;
 };

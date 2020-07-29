@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { CompositionChart } from 'components';
+import { CompositionChart, TokensTableLegend } from 'components';
 import { TokenAmount, Token } from 'model/entities';
 
 const zeroAddress = '0x0000000000000000000000000000000000000000';
@@ -26,7 +26,7 @@ function PoolPieChart() {
 
   return (
     <div className={classes.root}>
-      <CompositionChart chartData={entries} legendType="table" />
+      <CompositionChart chartData={entries} renderLegend={TokensTableLegend} />
     </div>
   );
 }

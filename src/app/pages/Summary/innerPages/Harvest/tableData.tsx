@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { NewTable, FormattedAmount, CompositionChart, PieCurrency } from 'components';
+import {
+  NewTable,
+  FormattedAmount,
+  CompositionChart,
+  TokensListLegend,
+  PieCurrency,
+} from 'components';
 import { LiquidityAmount, PercentAmount, Amount, Currency, Token } from 'model/entities';
 
 export type Order = {
@@ -51,7 +57,7 @@ export const columnForChart: Array<NewTable.models.Column<
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <CompositionChart chartData={x} legendType="simple" />,
+      render: x => <CompositionChart chartData={x} renderLegend={TokensListLegend} />,
     },
   },
 ];

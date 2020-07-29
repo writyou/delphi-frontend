@@ -15,28 +15,6 @@ export const useStyles = makeStyles(
       width: CHART_WIDTH,
       height: CHART_WIDTH,
     },
-    legend: {
-      marginLeft: 23,
-      padding: 0,
-      listStyle: 'none',
-      fontSize: 13,
-      fontWeight: 300,
-    },
-    legendItem: {
-      display: 'flex',
-      alignItems: 'center',
-      color: theme.palette.primary.main,
-
-      '&:before': {
-        content: "''",
-        width: 10,
-        height: 10,
-        marginRight: 10,
-        flexShrink: 0,
-        borderRadius: '50%',
-        background: 'currentColor',
-      },
-    },
     label: {
       color: theme.palette.text.primary,
     },
@@ -46,10 +24,6 @@ export const useStyles = makeStyles(
       width: 0,
       position: 'absolute',
       zIndex: -100,
-    },
-    table: {
-      marginLeft: 25,
-      marginTop: 15,
     },
   }),
   { name: 'CompositionChart' },

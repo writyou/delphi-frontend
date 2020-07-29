@@ -5,19 +5,19 @@ import { Amount, Currency, Token, PercentAmount } from 'model/entities';
 import { useTheme } from 'utils/styles';
 
 import { PieChart } from '../PieChart/PieChart';
-import { Component as NewTable, models as NewTableModels } from '../NewTable';
-import { FormattedAmount } from '../FormattedAmount/FormattedAmount';
 import { PieCurrency, ChartColor, PieSector } from './model';
 import { useStyles } from './CompositionChart.style';
-import { PoolTitle } from './PoolTitle';
-import { SectorColorLabel } from './SectorColorLabel';
+import { normalizeAmounts } from './normalizeAmounts';
 
 type Props<T extends Amount<Currency | Token>> = {
   chartData: PieCurrency<T>[];
-  legendType?: 'simple' | 'table';
+  renderLegend?: (chartData: PieSector<T>[]) => React.ReactNode;
 };
 
-function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legendType }: Props<T>) {
+function CompositionChart<T extends Amount<Currency | Token>>({
+  chartData,
+  renderLegend,
+}: Props<T>) {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -44,14 +44,19 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
   );
 
   function getSectors() {
-    const totalValue = R.pluck('value', chartData).reduce((total, current) => total.add(current));
+    const normalizedData = normalizeAmounts(R.pluck('value', chartData));
 
-    return chartData.map((pool, index) => {
+    const totalValue = R.pluck('value', normalizedData).reduce((total, current) =>
+      total.add(current),
+    );
+
+    return normalizedData.map((amount, index) => {
       return {
-        percent: new PercentAmount(pool.value).div(totalValue).mul(100),
-        label: pool.label,
+        percent: new PercentAmount(amount.value).div(totalValue).mul(100),
+        label: chartData[index].label,
         color: colors[index],
-        value: pool.value,
+        value: amount.value,
+        originalValue: chartData[index].value,
       };
     });
   }
@@ -60,30 +65,6 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
     const sortByValue = R.descend(R.prop('value'));
     return R.sort(sortByValue, getSectors());
   }, [chartData]);
-
-  const renderLegend = React.useCallback(
-    () => (
-      <ul className={classes.legend}>
-        {sortedData.map(({ label, percent, color }) => (
-          <li className={classes.legendItem} key={label} style={{ color: color.label }}>
-            <span className={classes.label}>
-              {`${percent}%`}&nbsp;{label}
-            </span>
-          </li>
-        ))}
-      </ul>
-    ),
-    [sortedData],
-  );
-
-  const renderTableLegend = React.useCallback(
-    () => (
-      <div className={classes.table}>
-        <NewTable columns={columnForLegend} entries={sortedData} />
-      </div>
-    ),
-    [sortedData],
-  );
 
   return (
     <div className={classes.root}>
@@ -100,36 +81,10 @@ function CompositionChart<T extends Amount<Currency | Token>>({ chartData, legen
             paddingAngle={5}
           />
         </div>
-        {legendType && (legendType === 'simple' ? renderLegend() : renderTableLegend())}
+        {renderLegend && renderLegend(sortedData)}
       </div>
     </div>
   );
 }
-
-const columnForLegend: Array<NewTableModels.Column<PieSector<Amount<Currency | Token>>>> = [
-  {
-    cellContent: {
-      kind: 'simple',
-      render: x => <PoolTitle title={x.label} />,
-    },
-  },
-  {
-    cellContent: {
-      kind: 'simple',
-      render: x => (
-        <SectorColorLabel
-          title={<FormattedAmount sum={x.percent} variant="plain" />}
-          color={x.color.label}
-        />
-      ),
-    },
-  },
-  {
-    cellContent: {
-      kind: 'simple',
-      render: x => <FormattedAmount sum={x.value} variant="plain" />,
-    },
-  },
-];
 
 export { CompositionChart };
