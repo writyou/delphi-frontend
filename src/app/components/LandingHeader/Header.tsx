@@ -9,6 +9,7 @@ import { IMenuItem } from 'utils/types/common';
 import { AuthButton } from 'features/auth';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
+import { routes } from 'app/routes';
 
 import { menuItems } from './constants';
 import { useStyles } from './Header.style';
@@ -57,26 +58,12 @@ export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
               <ThemeButton />
             </Adaptive>
           </React.Fragment>,
-          <React.Fragment key="1">
-            <Adaptive to="tabletXS">
-              <AuthButton text={authButtonText} redirectTo="/summary" />
-            </Adaptive>
-            <Adaptive from="tabletXS">
-              <AuthButton text={authButtonText} redirectTo="/summary" />
-            </Adaptive>
-          </React.Fragment>,
-          ...(connectedWallet
-            ? [
-                <React.Fragment key="1">
-                  <Adaptive to="tabletXS">
-                    <AppButton />
-                  </Adaptive>
-                  <Adaptive from="tabletXS">
-                    <AppButton />
-                  </Adaptive>
-                </React.Fragment>,
-              ]
-            : []),
+          <AuthButton
+            key="1"
+            text={authButtonText}
+            connectRedirectPath={routes.summary.getRedirectPath()}
+          />,
+          ...(connectedWallet ? [<AppButton key="2" />] : []),
         ]}
       />
     </header>

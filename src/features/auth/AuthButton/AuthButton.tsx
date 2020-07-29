@@ -13,9 +13,13 @@ import { Button, Loading, Typography, Grid } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
-type Props = { text?: string; redirectTo?: string };
+interface Props {
+  text?: string;
+  connectRedirectPath?: string;
+  disconnectRedirectPath?: string;
+}
 
-export function AuthButton({ text, redirectTo }: Props) {
+export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }: Props) {
   const [isOpened, setIsOpened] = React.useState(false);
   const [needToRedirect, setNeedToRedirect] = React.useState(false);
   const api = useApi();
@@ -41,16 +45,19 @@ export function AuthButton({ text, redirectTo }: Props) {
 
   const history = useHistory();
 
-  redirectTo &&
-    useOnChangeState(
-      { needToRedirect, connectedWallet },
-      (prev, cur) => cur.needToRedirect && !prev.connectedWallet && !!cur.connectedWallet,
-      () => {
-        history.push(redirectTo);
-        setIsOpened(false);
-        setNeedToRedirect(false);
-      },
-    );
+  useOnChangeState(
+    { needToRedirect, connectedWallet },
+    (prev, cur) => prev.connectedWallet !== cur.connectedWallet,
+    (_, cur) => {
+      setNeedToRedirect(false);
+
+      if (!cur.connectedWallet) {
+        disconnectRedirectPath && history.push(disconnectRedirectPath);
+      } else {
+        connectRedirectPath && cur.needToRedirect && history.push(connectRedirectPath);
+      }
+    },
+  );
 
   return (
     <>

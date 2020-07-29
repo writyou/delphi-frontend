@@ -30,11 +30,11 @@ export const NewHeader: React.FC = () => {
       </div>
       <div className={classes.rightPart}>
         <CustomLink.Link link={wikiLink} shouldRenderLabel />
-        <div className={classes.authButton}>
+        <div className={classes.button}>
           <ThemeButton />
         </div>
-        <div className={classes.authButton}>
-          <AuthButton />
+        <div className={classes.button}>
+          <AuthButton disconnectRedirectPath="/" />
         </div>
       </div>
     </header>
