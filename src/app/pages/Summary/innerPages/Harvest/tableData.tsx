@@ -1,9 +1,15 @@
 import React from 'react';
 
-import { NewTable, FormattedAmount } from 'components';
-import { LiquidityAmount, PercentAmount } from 'model/entities';
+import {
+  NewTable,
+  FormattedAmount,
+  CompositionChart,
+  SimpleLegend,
+  PieChartData,
+} from 'components';
+import { LiquidityAmount, PercentAmount, TokenAmount } from 'model/entities';
 
-import { PieChart, PieSector } from '../../Components/PieChart';
+import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
 export type Order = {
   asset: string;
@@ -46,12 +52,26 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
   },
 ];
 
-export const columnForChart: Array<NewTable.models.Column<PieSector[]>> = [
+export const columnForChart: Array<NewTable.models.Column<
+  PieChartData<LiquidityAmount, TokenAmount>[]
+>> = [
   {
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <PieChart sectors={x} />,
+      render: x => (
+        <CompositionChart
+          chartData={x}
+          Legend={({ sectors }) => (
+            <SimpleLegend
+              sectors={sectors}
+              renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+            />
+          )}
+          InnerLegend={InnerLegendAPY}
+          size="extra-large"
+        />
+      ),
     },
   },
 ];

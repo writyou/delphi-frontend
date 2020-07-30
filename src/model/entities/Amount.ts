@@ -6,7 +6,7 @@ import { Fraction } from './Fraction';
 
 export type Value = number | string | BN | IToBN | Fraction | IToFraction;
 
-export abstract class Amount<C extends ICurrency> implements IToBN, IToFraction {
+export abstract class Amount<C extends ICurrency = ICurrency> implements IToBN, IToFraction {
   public abstract _type: symbol;
   private value: Fraction;
 

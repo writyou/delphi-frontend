@@ -1,11 +1,18 @@
 import React from 'react';
 
-import { NewTable, FormattedAmount } from 'components';
-import { TokenAmount, PercentAmount } from 'model/entities';
+import {
+  NewTable,
+  FormattedAmount,
+  CompositionChart,
+  SimpleLegend,
+  PieChartData,
+} from 'components';
+import { TokenAmount, PercentAmount, LiquidityAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
 
 import { IconsBlock } from '../../Components/IconsBlock';
-import { PieChart, PieSector } from '../../Components/PieChart';
 import { PoolTitle } from '../../Components/PoolTitle';
+import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
 export type Order = {
   pool: string;
@@ -16,12 +23,26 @@ export type Order = {
   poolFullTitle?: string;
 };
 
-export const columnForChart: Array<NewTable.models.Column<PieSector[]>> = [
+export const columnForChart: Array<NewTable.models.Column<
+  PieChartData<LiquidityAmount, SavingsPool>[]
+>> = [
   {
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <PieChart sectors={x} />,
+      render: x => (
+        <CompositionChart
+          chartData={x}
+          Legend={({ sectors }) => (
+            <SimpleLegend
+              sectors={sectors}
+              renderLabel={({ pieData }) => pieData.payload.devName}
+            />
+          )}
+          InnerLegend={InnerLegendAPY}
+          size="extra-large"
+        />
+      ),
     },
   },
 ];

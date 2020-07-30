@@ -1,8 +1,10 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, ComingSoon } from 'components';
-import { percentAmount, tokenAmount } from 'utils/mock';
+import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, PieChartData } from 'components';
+import { percentAmount, tokenAmount, liquidityAmount, zeroAddress } from 'utils/mock';
+import { LiquidityAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
 
 import * as tableData from './tableData';
 
@@ -18,28 +20,15 @@ const entries: tableData.Order[] = [
 ];
 
 export const entriesForChart = [
-  [
-    {
-      value: 10,
-      label: 'RSV',
+  new Array<PieChartData<LiquidityAmount, SavingsPool>>(5).fill({
+    value: liquidityAmount,
+    payload: {
+      address: zeroAddress,
+      devName: 'sUSD',
+      poolToken: tokenAmount.currency,
+      tokens: [],
     },
-    {
-      value: 30,
-      label: 'DAI',
-    },
-    {
-      value: 20,
-      label: 'USDT',
-    },
-    {
-      value: 10,
-      label: 'TUSD',
-    },
-    {
-      value: 30,
-      label: 'USDC',
-    },
-  ],
+  }),
 ];
 
 export function Investment() {
