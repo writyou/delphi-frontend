@@ -9,6 +9,8 @@ import {
 } from 'components';
 import { LiquidityAmount, PercentAmount, Amount, Currency, Token } from 'model/entities';
 
+import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
+
 export type Order = {
   asset: string;
   amount: number;
@@ -57,7 +59,13 @@ export const columnForChart: Array<NewTable.models.Column<
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <CompositionChart chartData={x} renderLegend={TokensListLegend} />,
+      render: x => (
+        <CompositionChart
+          chartData={x}
+          renderLegend={TokensListLegend}
+          renderInnerLegend={InnerLegendAPY}
+        />
+      ),
     },
   },
 ];

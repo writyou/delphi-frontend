@@ -11,6 +11,7 @@ import { TokenAmount, PercentAmount, Amount, Currency, Token } from 'model/entit
 
 import { IconsBlock } from '../../Components/IconsBlock';
 import { PoolTitle } from '../../Components/PoolTitle';
+import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
 export type Order = {
   pool: string;
@@ -28,7 +29,13 @@ export const columnForChart: Array<NewTable.models.Column<
     renderTitle: () => 'Composition',
     cellContent: {
       kind: 'simple',
-      render: x => <CompositionChart chartData={x} renderLegend={TokensListLegend} />,
+      render: x => (
+        <CompositionChart
+          chartData={x}
+          renderLegend={TokensListLegend}
+          renderInnerLegend={InnerLegendAPY}
+        />
+      ),
     },
   },
 ];

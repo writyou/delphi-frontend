@@ -40,7 +40,7 @@ const columnForLegend: Array<NewTableModels.Column<PieSector<Amount<Currency | T
   {
     cellContent: {
       kind: 'simple',
-      render: x => x.value.toBN().toString(),
+      render: x => <FormattedAmount sum={x.originalValue} variant="plain" />,
     },
   },
 ];

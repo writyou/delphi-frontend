@@ -12,11 +12,13 @@ import { normalizeAmounts } from './normalizeAmounts';
 type Props<T extends Amount<Currency | Token>> = {
   chartData: PieCurrency<T>[];
   renderLegend?: (chartData: PieSector<T>[]) => React.ReactNode;
+  renderInnerLegend?: (chartData?: PieSector<T>[]) => React.ReactNode;
 };
 
 function CompositionChart<T extends Amount<Currency | Token>>({
   chartData,
   renderLegend,
+  renderInnerLegend,
 }: Props<T>) {
   const classes = useStyles();
   const theme = useTheme();
@@ -61,20 +63,26 @@ function CompositionChart<T extends Amount<Currency | Token>>({
     });
   }
 
+  const sectors = getSectors();
+
   const sortedData = React.useMemo(() => {
-    const sortByValue = R.descend(R.prop('value'));
-    return R.sort(sortByValue, getSectors());
-  }, [chartData]);
+    const sortByValue = R.descend(R.prop('percent'));
+    return R.sort(sortByValue, sectors);
+  }, [sectors]);
 
   return (
     <div className={classes.root}>
       <div className={classes.hidden}>{renderGradients()}</div>
       <div className={classes.chartContainer}>
         <div className={classes.chart}>
+          {renderInnerLegend && (
+            <div className={classes.innerLegend}>{renderInnerLegend(sortedData)}</div>
+          )}
           <PieChart
-            chartData={sortedData.map(sector => {
-              return { value: sector.percent.toNumber(), label: sector.label };
-            })}
+            chartData={sortedData.map(sector => ({
+              value: sector.percent.toNumber(),
+              label: sector.label,
+            }))}
             sectorColors={R.pluck('color', sortedData).map(chartColor => chartColor.sector)}
             startAngle={90}
             endAngle={-270}

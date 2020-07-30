@@ -12,8 +12,17 @@ export const useStyles = makeStyles(
       flexWrap: 'nowrap',
     },
     chart: {
+      position: 'relative',
       width: CHART_WIDTH,
       height: CHART_WIDTH,
+    },
+    innerLegend: {
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     label: {
       color: theme.palette.text.primary,
