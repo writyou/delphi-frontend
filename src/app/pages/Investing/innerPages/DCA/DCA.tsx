@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { ComingSoon } from 'components';
 
 import image from './investing-dca@2x.png';
 
@@ -11,7 +10,6 @@ export function DCA() {
   return (
     <div className={classes.root}>
       <img src={image} className={classes.contentMock} alt="dca" />
-      <ComingSoon position="overlay" />
     </div>
   );
 }

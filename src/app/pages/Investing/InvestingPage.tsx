@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
-import { TabsList, TabContext, Tab, TabPanel } from 'components';
+import { TabsList, TabContext, Tab, TabPanel, Label } from 'components';
 
 import * as innerPages from './innerPages';
 
@@ -45,6 +45,7 @@ export function InvestingPage() {
               to={routes.investing.dca.getRedirectPath()}
             />
           </TabsList>
+          <Label withComingSoon />
         </div>
         <TabPanel value={routes.investing.all.getElementKey()}>
           <innerPages.AllIn />
@@ -62,16 +63,14 @@ const useStyles = makeStyles(
     root: {
       padding: '50px 60px',
     },
-    tabs: {
-      marginBottom: 40,
-    },
+    tabs: {},
     tab: {
       minWidth: 112,
     },
     navigationBar: {
+      marginBottom: 40,
       display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      alignItems: 'center',
     },
   }),
   { name: 'InvestingPage' },

@@ -15,7 +15,7 @@ export function ActiveMembers() {
       <Metric
         title={
           <span className={classes.title}>
-            <Label>ActiveMembers</Label>
+            <Label withComingSoon>ActiveMembers</Label>
           </span>
         }
         value={valueMock}

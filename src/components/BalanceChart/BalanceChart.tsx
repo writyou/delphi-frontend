@@ -1,12 +1,11 @@
 import * as React from 'react';
 
 import { Chart, IPoint } from 'components/Chart';
-import { Label } from 'components/Label/Label';
 
 import { useStyles } from './BalanceChart.style';
 
 interface IProps<P extends IPoint> {
-  title: string;
+  title: React.ReactNode;
   chartPoints: P[];
   chartLines: Array<keyof P>;
   chartLineColors?: Partial<Record<keyof P, string>>;
@@ -37,7 +36,7 @@ function BalanceChart<P extends IPoint>(props: IProps<P>) {
 
   return (
     <div className={classes.root}>
-      <Label>{title}</Label>
+      {title}
       <div className={classes.graphic}>
         <Chart
           points={chartPoints}

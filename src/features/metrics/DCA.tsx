@@ -11,7 +11,7 @@ export function DCA() {
     <Metric
       title={
         <Grid container direction="column" className={classes.container}>
-          <Label>DCA</Label>
+          <Label withComingSoon>DCA</Label>
           <div className={classes.chart}>
             <ChartMock />
           </div>
