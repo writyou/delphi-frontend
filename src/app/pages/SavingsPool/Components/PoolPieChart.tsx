@@ -3,17 +3,11 @@ import * as React from 'react';
 import { makeStyles } from 'utils/styles';
 import { CompositionChart, TokensTableLegend, PieChartData } from 'components';
 import { TokenAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
-import { tokenAmount, zeroAddress } from 'utils/mock';
+import { tokenAmount } from 'utils/mock';
 
-export const entries = new Array<PieChartData<TokenAmount, SavingsPool>>(5).fill({
+export const entries = new Array<PieChartData<TokenAmount>>(5).fill({
   value: tokenAmount,
-  payload: {
-    address: zeroAddress,
-    devName: 'Curve',
-    poolToken: tokenAmount.currency,
-    tokens: [],
-  },
+  payload: undefined,
 });
 
 function PoolPieChart() {
@@ -23,12 +17,7 @@ function PoolPieChart() {
     <div className={classes.root}>
       <CompositionChart
         chartData={entries}
-        Legend={({ sectors }) => (
-          <TokensTableLegend
-            sectors={sectors}
-            renderLabel={({ pieData }) => pieData.payload.devName}
-          />
-        )}
+        Legend={({ sectors }) => <TokensTableLegend sectors={sectors} />}
         size="medium"
       />
     </div>

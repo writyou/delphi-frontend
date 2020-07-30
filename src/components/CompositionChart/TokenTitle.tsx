@@ -5,17 +5,18 @@ import { makeStyles } from 'utils/styles';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 
 type Props = {
+  address: string;
   title: string;
 };
 
-export function PoolTitle(props: Props) {
-  const { title } = props;
+export function TokenTitle(props: Props) {
+  const { title, address } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <div className={classes.icon}>
-        <TokenIcon tokenAddress={title} />
+        <TokenIcon tokenAddress={address} />
       </div>
       <div className={classes.title}>{title}</div>
     </div>
@@ -33,5 +34,5 @@ const useStyles = makeStyles(
     },
     icon: {},
   }),
-  { name: 'PoolTitle' },
+  { name: 'TokenTitle' },
 );

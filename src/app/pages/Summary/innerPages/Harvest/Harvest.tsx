@@ -2,9 +2,8 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, PieChartData } from 'components';
-import { percentAmount, liquidityAmount, tokenAmount, zeroAddress } from 'utils/mock';
-import { LiquidityAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { percentAmount, liquidityAmount, tokenAmount } from 'utils/mock';
+import { LiquidityAmount, TokenAmount } from 'model/entities';
 
 import * as tableData from './tableData';
 
@@ -18,14 +17,9 @@ const entries: tableData.Order[] = [
 ];
 
 export const entriesForChart = [
-  new Array<PieChartData<LiquidityAmount, SavingsPool>>(5).fill({
+  new Array<PieChartData<LiquidityAmount, TokenAmount>>(5).fill({
     value: liquidityAmount,
-    payload: {
-      address: zeroAddress,
-      devName: 'sUSD',
-      poolToken: tokenAmount.currency,
-      tokens: [],
-    },
+    payload: tokenAmount,
   }),
 ];
 

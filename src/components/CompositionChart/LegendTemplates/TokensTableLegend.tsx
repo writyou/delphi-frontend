@@ -2,15 +2,14 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 import { TokenAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
 
 import { Component as NewTable, models as NewTableModels } from '../../NewTable';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
 import { PieSector, CompositionChartLegendProps } from '../model';
 import { SectorColorLabel } from '../SectorColorLabel';
-import { PoolTitle } from '../PoolTitle';
+import { TokenTitle } from '../TokenTitle';
 
-export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount, SavingsPool>) {
+export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
   const { sectors } = props;
   const classes = useStyles();
 
@@ -21,11 +20,16 @@ export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount
   );
 }
 
-const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount, SavingsPool>>> = [
+const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount>>> = [
   {
     cellContent: {
       kind: 'simple',
-      render: x => <PoolTitle title={x.pieData.payload.devName} />,
+      render: x => (
+        <TokenTitle
+          title={x.pieData.value.currency.symbol}
+          address={x.pieData.value.currency.address}
+        />
+      ),
     },
   },
   {
@@ -42,7 +46,7 @@ const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount, Saving
   {
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.pieData.value} variant="plain" />,
+      render: x => <FormattedAmount sum={x.pieData.value} variant="plain" hideSymbol />,
     },
   },
 ];

@@ -20,5 +20,4 @@ export type PieSector<T extends Amount, P = void> = {
 
 export type CompositionChartLegendProps<T extends Amount, P = void> = {
   sectors: PieSector<T, P>[];
-  renderLabel(sector: PieSector<T, P>): React.ReactNode;
 };

@@ -7,8 +7,7 @@ import {
   SimpleLegend,
   PieChartData,
 } from 'components';
-import { LiquidityAmount, PercentAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { LiquidityAmount, PercentAmount, TokenAmount } from 'model/entities';
 
 import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
@@ -54,7 +53,7 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
 ];
 
 export const columnForChart: Array<NewTable.models.Column<
-  PieChartData<LiquidityAmount, SavingsPool>[]
+  PieChartData<LiquidityAmount, TokenAmount>[]
 >> = [
   {
     renderTitle: () => 'Composition',
@@ -66,7 +65,7 @@ export const columnForChart: Array<NewTable.models.Column<
           Legend={({ sectors }) => (
             <SimpleLegend
               sectors={sectors}
-              renderLabel={({ pieData }) => pieData.value.currency.symbol}
+              renderLabel={({ pieData }) => pieData.payload.currency.symbol}
             />
           )}
           InnerLegend={InnerLegendAPY}

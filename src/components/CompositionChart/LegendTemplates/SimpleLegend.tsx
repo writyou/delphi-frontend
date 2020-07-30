@@ -3,9 +3,13 @@ import * as React from 'react';
 import { makeStyles } from 'utils/styles';
 import { Amount } from 'model/entities';
 
-import { CompositionChartLegendProps } from '../model';
+import { CompositionChartLegendProps, PieSector } from '../model';
 
-export function SimpleLegend<T extends Amount, P = void>(props: CompositionChartLegendProps<T, P>) {
+type Props<T extends Amount, P = void> = CompositionChartLegendProps<T, P> & {
+  renderLabel(sector: PieSector<T, P>): React.ReactNode;
+};
+
+export function SimpleLegend<T extends Amount, P = void>(props: Props<T, P>) {
   const { sectors, renderLabel } = props;
   const classes = useStyles();
 
