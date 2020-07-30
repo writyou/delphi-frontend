@@ -14,13 +14,13 @@ import { fromBaseUnit, toBaseUnit, bnToBn } from 'utils/bn';
 import { toObservable } from 'utils/rxjs';
 import { Amount } from 'model/entities';
 import { makeStyles } from 'utils/styles';
-import { ICurrency, IToBN } from 'model/types';
+import { IToBN } from 'model/types';
 import { useSubscribable } from 'utils/react';
 
 import { Button } from '../Button/Button';
 import { TextInput } from './TextInput';
 
-interface IOwnProps<A extends Amount<ICurrency>> {
+interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
   value: A | null | '';
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
@@ -29,12 +29,12 @@ interface IOwnProps<A extends Amount<ICurrency>> {
   getCurrencyIdentifier(currency: A['currency']): string;
 }
 
-export type AmountInputProps<A extends Amount<ICurrency>> = IOwnProps<A> &
+export type AmountInputProps<A extends Amount> = IOwnProps<A> &
   Omit<ComponentPropsWithoutRef<typeof TextInput>, 'onChange'>;
 
 // TODO add support of negative value
 // TODO move value changing logic to DecimalsInput
-export function AmountInput<A extends Amount<ICurrency>>(props: AmountInputProps<A>) {
+export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
   const {
     onChange,
     value,

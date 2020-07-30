@@ -2,35 +2,35 @@ import * as React from 'react';
 import * as R from 'ramda';
 import cn from 'classnames';
 
-import { Amount, Currency, Token, PercentAmount } from 'model/entities';
+import { Amount, PercentAmount } from 'model/entities';
 import { useTheme } from 'utils/styles';
 
 import { PieChart } from '../PieChart/PieChart';
-import { PieCurrency, ChartColor, PieSector } from './model';
+import { PieChartData, ChartColor, PieSector } from './model';
 import { useStyles } from './CompositionChart.style';
 import { normalizeAmounts } from './normalizeAmounts';
 
-type Props<T extends Amount<Currency | Token>> = {
-  chartData: PieCurrency<T>[];
-  renderLegend?: (chartData: PieSector<T>[]) => React.ReactNode;
-  renderInnerLegend?: (chartData?: PieSector<T>[]) => React.ReactNode;
+type Props<T extends Amount, P = void> = {
+  chartData: PieChartData<T, P>[];
+  Legend?: React.FC<{ sectors: PieSector<T, P>[] }>;
+  InnerLegend?: React.FC<{ sectors: PieSector<T, P>[] }>;
   size?: 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
 };
 
-function CompositionChart<T extends Amount<Currency | Token>>({
+function CompositionChart<T extends Amount, P = void>({
   chartData,
-  renderLegend,
-  renderInnerLegend,
+  Legend,
+  InnerLegend,
   size = 'large',
-}: Props<T>) {
+}: Props<T, P>) {
   const classes = useStyles();
   const theme = useTheme();
 
   const colors: ChartColor[] = React.useMemo(
     () =>
-      theme.gradients.poolCompositionChart.map(({ points }, index) => ({
-        sector: `url(#poolCompositionSector${index})`,
-        label: R.last(points)!.color,
+      theme.gradients.poolCompositionChart.map<ChartColor>(({ points }, index) => ({
+        svgGradientID: `url(#poolCompositionSector${index})`,
+        rgb: R.last(points)!.color,
       })),
     [theme],
   );
@@ -48,7 +48,7 @@ function CompositionChart<T extends Amount<Currency | Token>>({
     [theme],
   );
 
-  function getSectors() {
+  function getSectors(): PieSector<T, P>[] {
     const normalizedData = normalizeAmounts(R.pluck('value', chartData));
 
     const totalValue = R.pluck('value', normalizedData).reduce((total, current) =>
@@ -58,10 +58,9 @@ function CompositionChart<T extends Amount<Currency | Token>>({
     return normalizedData.map((amount, index) => {
       return {
         percent: new PercentAmount(amount.value).div(totalValue).mul(100),
-        label: chartData[index].label,
         color: colors[index],
-        value: amount.value,
-        originalValue: chartData[index].value,
+        normalizedValue: amount.value,
+        pieData: chartData[index],
       };
     });
   }
@@ -86,21 +85,20 @@ function CompositionChart<T extends Amount<Currency | Token>>({
             [classes.isExtraLarge]: size === 'extra-large',
           })}
         >
-          {renderInnerLegend && (
-            <div className={classes.innerLegend}>{renderInnerLegend(sortedData)}</div>
+          {InnerLegend && (
+            <div className={classes.innerLegend}>
+              <InnerLegend sectors={sortedData} />
+            </div>
           )}
           <PieChart
-            chartData={sortedData.map(sector => ({
-              value: sector.percent.toNumber(),
-              label: sector.label,
-            }))}
-            sectorColors={R.pluck('color', sortedData).map(chartColor => chartColor.sector)}
+            chartData={sortedData.map(sector => sector.percent.toNumber())}
+            sectorColors={R.pluck('color', sortedData).map(chartColor => chartColor.svgGradientID)}
             startAngle={90}
             endAngle={-270}
             paddingAngle={5}
           />
         </div>
-        {renderLegend && renderLegend(sortedData)}
+        {Legend && <Legend sectors={sortedData} />}
       </div>
     </div>
   );

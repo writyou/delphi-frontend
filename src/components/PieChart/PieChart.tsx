@@ -4,13 +4,8 @@ import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer } from 're
 
 import { useTheme, makeStyles } from 'utils/styles';
 
-export type Sector = {
-  value: number;
-  label: string;
-};
-
 export type Props = {
-  chartData: Sector[];
+  chartData: number[];
   sectorColors: string[];
   withBackground?: boolean;
 };
@@ -21,6 +16,8 @@ function PieChart(props: Props & Partial<React.ComponentProps<typeof Pie>>) {
 
   const { chartData, sectorColors, withBackground, innerRadius = '90%', ...rest } = props;
 
+  const sectors = React.useMemo(() => chartData.map(x => ({ value: x })), [chartData]);
+
   return (
     <ResponsiveContainer>
       <RechartsPieChart className={classes.root}>
@@ -28,7 +25,7 @@ function PieChart(props: Props & Partial<React.ComponentProps<typeof Pie>>) {
           <Pie
             {...rest}
             className={classes.backgroundPath}
-            data={[{ value: R.sum(R.pluck('value', chartData)) }]}
+            data={[{ value: R.sum(chartData) }]}
             innerRadius={innerRadius}
             outerRadius="100%"
             cornerRadius="50%"
@@ -39,7 +36,7 @@ function PieChart(props: Props & Partial<React.ComponentProps<typeof Pie>>) {
         )}
         <Pie
           {...rest}
-          data={chartData}
+          data={sectors}
           innerRadius={innerRadius}
           outerRadius="100%"
           cornerRadius="50%"
@@ -47,9 +44,9 @@ function PieChart(props: Props & Partial<React.ComponentProps<typeof Pie>>) {
           isAnimationActive={false}
           stroke="none"
         >
-          {chartData.map(({ label }, index) => (
+          {chartData.map((_, index) => (
             <Cell
-              key={label}
+              key={index}
               fill={sectorColors[index] || theme.palette.primary.main}
               stroke="none"
             />

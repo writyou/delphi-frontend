@@ -8,30 +8,18 @@ import { useStyles } from './ProgressChart.style';
 type Props = {
   value: number;
   total: number;
-  label?: string;
   withLabels?: boolean;
   renderTitle?: () => {};
 };
-
-const createDataEntry = (value: number, label: string) => ({ value, label });
 
 function ProgressChart(props: Props & Partial<React.ComponentProps<typeof PieChart>>) {
   const classes = useStyles();
   const theme = useTheme();
 
-  const {
-    value,
-    total,
-    label,
-    withLabels,
-    renderTitle,
-    startAngle = 180,
-    endAngle = 0,
-    ...rest
-  } = props;
+  const { value, total, withLabels, renderTitle, startAngle = 180, endAngle = 0, ...rest } = props;
 
-  const chartData = React.useMemo(() => {
-    return [createDataEntry(value, label || 'progress'), createDataEntry(total - value, 'rest')];
+  const chartData: number[] = React.useMemo(() => {
+    return [value, total - value];
   }, [value, total]);
 
   return (

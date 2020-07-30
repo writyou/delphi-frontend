@@ -1,32 +1,36 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { CompositionChart, TokensTableLegend } from 'components';
-import { TokenAmount, Token } from 'model/entities';
+import { CompositionChart, TokensTableLegend, PieChartData } from 'components';
+import { TokenAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
+import { tokenAmount, zeroAddress } from 'utils/mock';
 
-const zeroAddress = '0x0000000000000000000000000000000000000000';
-
-const entries = [
-  {
-    value: new TokenAmount('1111111111111111111', new Token(zeroAddress, 'Mock', 18)),
-    label: 'DAI',
+export const entries = new Array<PieChartData<TokenAmount, SavingsPool>>(5).fill({
+  value: tokenAmount,
+  payload: {
+    address: zeroAddress,
+    devName: 'Curve',
+    poolToken: tokenAmount.currency,
+    tokens: [],
   },
-  {
-    value: new TokenAmount('222222222222222222', new Token(zeroAddress, 'Mock', 18)),
-    label: 'DAI',
-  },
-  {
-    value: new TokenAmount('333333333333333333', new Token(zeroAddress, 'Mock', 18)),
-    label: 'USDC',
-  },
-];
+});
 
 function PoolPieChart() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <CompositionChart chartData={entries} renderLegend={TokensTableLegend} size="medium" />
+      <CompositionChart
+        chartData={entries}
+        Legend={({ sectors }) => (
+          <TokensTableLegend
+            sectors={sectors}
+            renderLabel={({ pieData }) => pieData.payload.devName}
+          />
+        )}
+        size="medium"
+      />
     </div>
   );
 }

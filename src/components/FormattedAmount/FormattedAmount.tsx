@@ -4,14 +4,13 @@ import BN from 'bn.js';
 import cn from 'classnames';
 
 import { Amount, LiquidityAmount, TokenAmount, PercentAmount } from 'model/entities';
-import { ICurrency } from 'model/types';
 import { getDecimal } from 'utils/format';
 import { makeStyles } from 'utils/styles';
 
 import { Decimal } from './Decimal';
 
 interface IProps {
-  sum: Amount<ICurrency>;
+  sum: Amount;
   precision?: number;
   hideSymbol?: boolean;
   className?: string;

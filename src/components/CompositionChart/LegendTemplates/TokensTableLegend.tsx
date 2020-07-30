@@ -1,29 +1,31 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Amount, Currency, Token } from 'model/entities';
+import { TokenAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
 
 import { Component as NewTable, models as NewTableModels } from '../../NewTable';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
-import { PieSector } from '../model';
+import { PieSector, CompositionChartLegendProps } from '../model';
 import { SectorColorLabel } from '../SectorColorLabel';
 import { PoolTitle } from '../PoolTitle';
 
-export function TokensTableLegend<T extends Amount<Currency | Token>>(chartData: PieSector<T>[]) {
+export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount, SavingsPool>) {
+  const { sectors } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.table}>
-      <NewTable columns={columnForLegend} entries={chartData} />
+      <NewTable columns={columnForLegend} entries={sectors} />
     </div>
   );
 }
 
-const columnForLegend: Array<NewTableModels.Column<PieSector<Amount<Currency | Token>>>> = [
+const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount, SavingsPool>>> = [
   {
     cellContent: {
       kind: 'simple',
-      render: x => <PoolTitle title={x.label} />,
+      render: x => <PoolTitle title={x.pieData.payload.devName} />,
     },
   },
   {
@@ -32,7 +34,7 @@ const columnForLegend: Array<NewTableModels.Column<PieSector<Amount<Currency | T
       render: x => (
         <SectorColorLabel
           title={<FormattedAmount sum={x.percent} variant="plain" />}
-          color={x.color.label}
+          color={x.color.rgb}
         />
       ),
     },
@@ -40,7 +42,7 @@ const columnForLegend: Array<NewTableModels.Column<PieSector<Amount<Currency | T
   {
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.originalValue} variant="plain" />,
+      render: x => <FormattedAmount sum={x.pieData.value} variant="plain" />,
     },
   },
 ];

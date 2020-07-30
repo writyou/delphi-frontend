@@ -1,19 +1,20 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Amount, Currency, Token } from 'model/entities';
+import { Amount } from 'model/entities';
 
-import { PieSector } from '../model';
+import { CompositionChartLegendProps } from '../model';
 
-export function TokensListLegend<T extends Amount<Currency | Token>>(chartData: PieSector<T>[]) {
+export function SimpleLegend<T extends Amount, P = void>(props: CompositionChartLegendProps<T, P>) {
+  const { sectors, renderLabel } = props;
   const classes = useStyles();
 
   return (
     <ul className={classes.legend}>
-      {chartData.map(({ label, percent, color }) => (
-        <li className={classes.legendItem} key={label} style={{ color: color.label }}>
+      {sectors.map((sector, index) => (
+        <li className={classes.legendItem} key={index} style={{ color: sector.color.rgb }}>
           <span className={classes.label}>
-            {`${percent}%`}&nbsp;{label}
+            {sector.percent.toFormattedString()}&nbsp;{renderLabel(sector)}
           </span>
         </li>
       ))}
@@ -49,5 +50,5 @@ export const useStyles = makeStyles(
       color: theme.palette.text.primary,
     },
   }),
-  { name: 'TokensListLegend' },
+  { name: 'SimpleLegend' },
 );

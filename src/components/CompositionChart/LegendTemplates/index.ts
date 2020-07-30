@@ -1,2 +1,2 @@
-export { TokensListLegend } from './TokensListLegend';
+export { SimpleLegend } from './SimpleLegend';
 export { TokensTableLegend } from './TokensTableLegend';

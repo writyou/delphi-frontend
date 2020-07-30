@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import BN from 'bn.js';
 
 import { Amount } from 'model/entities';
-import { ICurrency, IToBN } from 'model/types';
+import { IToBN } from 'model/types';
 import {
   isRequired,
   validatePositiveNumber,
@@ -44,7 +44,7 @@ export function useValidateAmount(options: ValidateAmountOptions) {
   );
 
   return useMemo(() => {
-    return (amount: '' | Amount<ICurrency> | null) => {
+    return (amount: '' | Amount | null) => {
       if (!amount) {
         return required ? isRequired(amount) : undefined;
       }

@@ -3,11 +3,12 @@ import React from 'react';
 import {
   NewTable,
   FormattedAmount,
-  PieCurrency,
-  TokensListLegend,
+  PieChartData,
+  SimpleLegend,
   CompositionChart,
 } from 'components';
-import { TokenAmount, PercentAmount, Amount, Currency, Token } from 'model/entities';
+import { TokenAmount, PercentAmount, LiquidityAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
 
 import { IconsBlock } from '../../Components/IconsBlock';
 import { PoolTitle } from '../../Components/PoolTitle';
@@ -23,7 +24,7 @@ export type Order = {
 };
 
 export const columnForChart: Array<NewTable.models.Column<
-  PieCurrency<Amount<Currency | Token>>[]
+  PieChartData<LiquidityAmount, SavingsPool>[]
 >> = [
   {
     renderTitle: () => 'Composition',
@@ -32,8 +33,13 @@ export const columnForChart: Array<NewTable.models.Column<
       render: x => (
         <CompositionChart
           chartData={x}
-          renderLegend={TokensListLegend}
-          renderInnerLegend={InnerLegendAPY}
+          Legend={({ sectors }) => (
+            <SimpleLegend
+              sectors={sectors}
+              renderLabel={({ pieData }) => pieData.payload.devName}
+            />
+          )}
+          InnerLegend={InnerLegendAPY}
           size="extra-large"
         />
       ),
