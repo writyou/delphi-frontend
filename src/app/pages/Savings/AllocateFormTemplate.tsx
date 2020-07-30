@@ -16,10 +16,12 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   submitButton?: string;
 };
 
-export function CustomFormTemplate<FormValues extends AnyObject>(
+export function AllocateFormTemplate<FormValues extends AnyObject>(
   props: FormTemplateProps<FormValues>,
 ) {
   const { submitButton, ...restProps } = props;
+
+  const children = React.Children.toArray(restProps.children);
 
   return (
     <Form
@@ -28,7 +30,14 @@ export function CustomFormTemplate<FormValues extends AnyObject>(
     >
       {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit }) => (
         <form onSubmit={handleSubmit}>
-          {restProps.children}
+          <Grid container alignItems="flex-start" spacing={3}>
+            {children.map((child, index) => (
+              <Grid key={index} item xs={4}>
+                {child}
+              </Grid>
+            ))}
+          </Grid>
+          {}
           {!dirtySinceLastSubmit && !!submitError && (
             <Grid item xs={12}>
               <Hint>

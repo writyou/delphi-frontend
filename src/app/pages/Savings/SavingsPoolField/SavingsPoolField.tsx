@@ -22,7 +22,7 @@ type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | '
 
 type FormData = Record<string, TokenAmount>;
 
-export function SavingsPoolFieldComponent(props: Props) {
+function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue$, ...rest } = props;
   const { t } = useTranslate();
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
@@ -42,8 +42,11 @@ export function SavingsPoolFieldComponent(props: Props) {
           link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
           content={
             <span>
-              <SwitchInput checked={isAllocated} onChange={handleSwitch} />
-              {t(tKeys.modules.savings.allocate.getKey())}
+              <SwitchInput
+                checked={isAllocated}
+                label={t(tKeys.modules.savings.allocate.getKey())}
+                onChange={handleSwitch}
+              />
             </span>
           }
           additionalElement={

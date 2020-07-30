@@ -1,11 +1,13 @@
 import { autobind } from 'core-decorators';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as R from 'ramda';
 
 import { getCurrentValueOrThrow } from 'utils/rxjs';
 import { DepositToSavingsPool } from 'model/types';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { createSavingsModule } from 'generated/contracts';
+import { TokenAmount } from 'model/entities';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -53,7 +55,7 @@ export class SavingsModuleApi {
     await this.erc20.approveMultiple(
       from,
       ETH_NETWORK_CONFIG.contracts.savingsModule,
-      deposits.map(x => x.amount),
+      sumAmountsByToken(R.pluck('amount', deposits)),
     );
 
     const promiEvent = txContract.methods.deposit(
@@ -72,4 +74,14 @@ export class SavingsModuleApi {
 
     await promiEvent;
   }
+}
+
+function sumAmountsByToken(amounts: TokenAmount[]): TokenAmount[] {
+  const reducedAmounts = amounts.reduce((acc, cur) => {
+    const prev = acc.get(cur.currency.address)?.toFraction() || 0;
+    acc.set(cur.currency.address, cur.add(prev));
+    return acc;
+  }, new Map<string, TokenAmount>());
+
+  return Array.from(reducedAmounts.values());
 }

@@ -38,7 +38,8 @@ const en = {
       viewDetails: 'View Details',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
-      allocateTabText: 'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
+      allocateTabText:
+        'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
     },
   },
   features: {
