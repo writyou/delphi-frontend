@@ -64,6 +64,7 @@ export const columnForChart: Array<NewTable.models.Column<
           chartData={x}
           renderLegend={TokensListLegend}
           renderInnerLegend={InnerLegendAPY}
+          size="extra-large"
         />
       ),
     },

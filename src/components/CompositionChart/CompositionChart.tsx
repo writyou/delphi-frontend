@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as R from 'ramda';
+import cn from 'classnames';
 
 import { Amount, Currency, Token, PercentAmount } from 'model/entities';
 import { useTheme } from 'utils/styles';
@@ -13,12 +14,14 @@ type Props<T extends Amount<Currency | Token>> = {
   chartData: PieCurrency<T>[];
   renderLegend?: (chartData: PieSector<T>[]) => React.ReactNode;
   renderInnerLegend?: (chartData?: PieSector<T>[]) => React.ReactNode;
+  size?: 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
 };
 
 function CompositionChart<T extends Amount<Currency | Token>>({
   chartData,
   renderLegend,
   renderInnerLegend,
+  size = 'large',
 }: Props<T>) {
   const classes = useStyles();
   const theme = useTheme();
@@ -74,7 +77,15 @@ function CompositionChart<T extends Amount<Currency | Token>>({
     <div className={classes.root}>
       <div className={classes.hidden}>{renderGradients()}</div>
       <div className={classes.chartContainer}>
-        <div className={classes.chart}>
+        <div
+          className={cn(classes.chart, {
+            [classes.isExtraSmall]: size === 'extra-small',
+            [classes.isSmall]: size === 'small',
+            [classes.isMedium]: size === 'medium',
+            [classes.isLarge]: size === 'large',
+            [classes.isExtraLarge]: size === 'extra-large',
+          })}
+        >
           {renderInnerLegend && (
             <div className={classes.innerLegend}>{renderInnerLegend(sortedData)}</div>
           )}

@@ -26,7 +26,7 @@ function PoolPieChart() {
 
   return (
     <div className={classes.root}>
-      <CompositionChart chartData={entries} renderLegend={TokensTableLegend} />
+      <CompositionChart chartData={entries} renderLegend={TokensTableLegend} size="medium" />
     </div>
   );
 }
