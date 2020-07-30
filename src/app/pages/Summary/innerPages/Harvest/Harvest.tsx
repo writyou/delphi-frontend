@@ -1,8 +1,9 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, ComingSoon } from 'components';
-import { percentAmount, liquidityAmount } from 'utils/mock';
+import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, PieChartData } from 'components';
+import { percentAmount, liquidityAmount, tokenAmount } from 'utils/mock';
+import { LiquidityAmount, TokenAmount } from 'model/entities';
 
 import * as tableData from './tableData';
 
@@ -16,28 +17,10 @@ const entries: tableData.Order[] = [
 ];
 
 export const entriesForChart = [
-  [
-    {
-      value: 10,
-      label: 'RSV',
-    },
-    {
-      value: 30,
-      label: 'DAI',
-    },
-    {
-      value: 20,
-      label: 'USDT',
-    },
-    {
-      value: 10,
-      label: 'TUSD',
-    },
-    {
-      value: 30,
-      label: 'USDC',
-    },
-  ],
+  new Array<PieChartData<LiquidityAmount, TokenAmount>>(5).fill({
+    value: liquidityAmount,
+    payload: tokenAmount,
+  }),
 ];
 
 export function Harvest() {

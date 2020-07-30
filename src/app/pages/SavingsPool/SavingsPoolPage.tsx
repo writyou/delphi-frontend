@@ -16,34 +16,6 @@ import {
 
 import { PoolPieChart } from './Components/PoolPieChart';
 
-const mockSectors = [
-  {
-    value: 10,
-    currency: 31654654364,
-    label: 'RSV',
-  },
-  {
-    value: 30,
-    currency: 31654654364,
-    label: 'DAI',
-  },
-  {
-    value: 20,
-    currency: 5465468498,
-    label: 'USDT',
-  },
-  {
-    value: 10,
-    currency: 316654364,
-    label: 'TUSD',
-  },
-  {
-    value: 30,
-    currency: 516516,
-    label: 'USDC',
-  },
-];
-
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>('/savings/pool/:id');
   const id = match ? match.params.id : null;
@@ -51,9 +23,6 @@ export function SavingsPoolPage() {
   const history = useHistory();
 
   const classes = useStyles();
-
-  // eslint-disable-next-line no-console
-  console.log(history.length);
 
   return (
     <Grid container direction="column" className={classes.root}>
@@ -87,11 +56,11 @@ export function SavingsPoolPage() {
       <Grid container className={cn(classes.withBorder, classes.row)}>
         <Grid container item xs={6} className={classes.paddingRight}>
           Approximate Reward Weekly
-          <PoolPieChart sectors={mockSectors} />
+          <PoolPieChart />
         </Grid>
         <Grid container item xs={4}>
           Currency Reserves
-          <PoolPieChart sectors={mockSectors} />
+          <PoolPieChart />
         </Grid>
       </Grid>
       <Grid container>
