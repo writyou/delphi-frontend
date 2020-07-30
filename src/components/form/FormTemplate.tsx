@@ -14,7 +14,7 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   FormProps<FormValues>,
   'subscription'
 > & {
-  title: string;
+  title?: string;
   cancelButton?: string;
   submitButton?: string;
   onCancel?: () => void;
@@ -34,9 +34,11 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
         <form onSubmit={handleSubmit}>
           <Grid container justify="center" spacing={2}>
             <Grid item xs={12}>
-              <Typography variant="h5" gutterBottom>
-                {title}
-              </Typography>
+              {title && (
+                <Typography variant="h5" gutterBottom>
+                  {title}
+                </Typography>
+              )}
 
               {children[0]}
             </Grid>

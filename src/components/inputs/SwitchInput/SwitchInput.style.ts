@@ -12,6 +12,7 @@ export const useStyles = makeStyles(
       height: thumbSize + 2 * borderOffset,
       padding: 0,
       marginRight: 10,
+      marginLeft: 11,
     },
     switchBase: {
       padding: borderOffset,
