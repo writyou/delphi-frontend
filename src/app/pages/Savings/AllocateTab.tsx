@@ -7,7 +7,9 @@ import { Loading, Grid } from 'components';
 import { TokenAmount } from 'model/entities';
 import { makeStyles } from 'utils/styles';
 import { FormWithConfirmation } from 'components/form';
+import { DepositToSavingsPool } from 'model/types';
 
+import { CustomFormTemplate } from './CustomFormTemplate';
 import { SavingsPoolField } from './SavingsPoolField/SavingsPoolField';
 
 type FormData = Record<string, TokenAmount>;
@@ -20,12 +22,12 @@ export function AllocateTab() {
 
   const handleFormSubmit = (data: FormData) => {
     const filteredData = Object.keys(data).reduce((acc, key) => {
-      const address = key.substring(3);
-      const value = data[key];
+      const poolAddress = key.substring(3);
+      const amount = data[key];
 
-      return value.isZero() ? acc : { ...acc, [address]: value };
-    }, {});
-    console.log('submit', data, filteredData);
+      return amount.isZero() ? acc : [...acc, { amount, poolAddress }];
+    }, [] as DepositToSavingsPool[]);
+    return filteredData.length ? api.savings.deposit(filteredData) : undefined;
   };
 
   return (
@@ -37,14 +39,15 @@ export function AllocateTab() {
         {pools && (
           <FormWithConfirmation<FormData>
             initialValues={{}}
-            getConfirmationMessage={() => 'some text'}
+            getConfirmationMessage={() => t(tKeys.modules.savings.allocateDialog.getKey())}
             onSubmit={handleFormSubmit}
             submitButton={t(tKeys.modules.savings.allocate.getKey())}
+            CustomFormTemplate={CustomFormTemplate}
           >
             <Grid container alignItems="flex-start" spacing={3}>
               {pools.map(pool => (
                 <Grid key={pool.address} item xs={4}>
-                  <SavingsPoolField pool={pool} name={'key' + pool.address} />
+                  <SavingsPoolField pool={pool} name={`key${pool.address}`} />
                 </Grid>
               ))}
             </Grid>

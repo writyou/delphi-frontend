@@ -14,12 +14,13 @@ export type FormWithConfirmationProps<FormData extends AnyObject> = Omit<
   never
 > & {
   getConfirmationMessage: (values: FormData) => Observable<string> | string;
+  CustomFormTemplate?: React.FC<FormTemplateProps<FormData>>;
 };
 
 export function FormWithConfirmation<FormData extends AnyObject>(
   props: FormWithConfirmationProps<FormData>,
 ) {
-  const { getConfirmationMessage, onSubmit, onCancel, ...restProps } = props;
+  const { getConfirmationMessage, onSubmit, onCancel, CustomFormTemplate, ...restProps } = props;
 
   type SubmittingArgs = Parameters<typeof onSubmit>;
   const [submittingArgs, setArgs] = useState<SubmittingArgs | null>(null);
@@ -48,9 +49,11 @@ export function FormWithConfirmation<FormData extends AnyObject>(
     '⏳',
   );
 
+  const Template = CustomFormTemplate || FormTemplate;
+
   return (
     <>
-      <FormTemplate<FormData> {...restProps} onSubmit={handleSubmit} onCancel={onCancel} />
+      <Template<FormData> {...restProps} onSubmit={handleSubmit} onCancel={onCancel} />
       <ConfirmationDialog
         isOpen={!!submittingArgs}
         message={confirmationMessage}
