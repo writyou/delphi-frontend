@@ -2,10 +2,10 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { LiquidityAmount } from 'model/entities';
-import { Link, TokenIcon, FormattedAmount, Card } from 'components';
+import { Link, TokenIcon, FormattedAmount, Card, Loading } from 'components';
 import { SavingsPool } from 'model/types';
-import { liquidityAmount } from 'utils/mock';
+import { useSubscribable } from 'utils/react';
+import { useApi } from 'services/api';
 
 import { useStyles } from './SavingsPoolCard.style';
 
@@ -14,10 +14,17 @@ type Props = {
   footerElement?: JSX.Element;
 };
 
-export function SavingsPoolCard({ pool: { devName, tokens }, footerElement }: Props) {
+export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElement }: Props) {
   const classes = useStyles();
-  const liquidity: LiquidityAmount = liquidityAmount;
-  const balance: LiquidityAmount = liquidityAmount;
+  const api = useApi();
+  const [balance, balanceMeta] = useSubscribable(() => api.user.getSavingsPoolBalance$(address), [
+    api,
+    address,
+  ]);
+  const [liquidity, liquidityMeta] = useSubscribable(() => api.savings.getPoolBalance$(address), [
+    api,
+    address,
+  ]);
   const { t } = useTranslate();
   return (
     <Card
@@ -34,13 +41,17 @@ export function SavingsPoolCard({ pool: { devName, tokens }, footerElement }: Pr
         <div className={classes.row}>
           <span>{t(tKeys.modules.savings.mySupplyBalance.getKey())}</span>
           <span className={classes.balance}>
-            <FormattedAmount sum={balance} variant="plain" />
+            <Loading meta={balanceMeta}>
+              {balance && <FormattedAmount sum={balance} variant="plain" />}
+            </Loading>
           </span>
         </div>
         <div className={classes.row}>
           <span>{t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>
-            <FormattedAmount sum={liquidity} variant="plain" />
+            <Loading meta={liquidityMeta}>
+              {liquidity && <FormattedAmount sum={liquidity} variant="plain" />}
+            </Loading>
           </span>
         </div>
         {footerElement}

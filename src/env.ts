@@ -37,7 +37,7 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xEbc77a8542Afd7340eAa584f5048c3045A11Dadf',
+    savingsModule: '0x2C6c379F44e9e929F206D115C9d1cd9c2be41562',
   },
   tokens: {
     dai: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
@@ -69,8 +69,7 @@ export const ETH_NETWORK_CONFIG = configsByMode[getEnv().mode];
 export const NETWORK_ID: NetworkID = ETH_NETWORK_CONFIG.id;
 export const SWARM_GATEWAY_URL = 'https://swarm-gateways.net';
 // TODO take from contract
-export const MIN_COLLATERAL_PERCENT_FOR_BORROWER = 50;
-export const PLEDGE_MARGIN_DIVIDER = 1000000;
+export const LONG_POOLING_TIMEOUT = 5 * 1000;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
