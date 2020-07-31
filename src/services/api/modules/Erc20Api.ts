@@ -98,6 +98,21 @@ export class Erc20Api {
     );
   }
 
+  // eslint-disable-next-line class-methods-use-this, @typescript-eslint/no-unused-vars
+  public hasInfinityApprove(_tokenAddress: string, _account: string, _spender: string) {
+    return true;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public infiniteApproveMultiple(fromAddress: string, spender: string, tokens: Token[]) {
+    return { fromAddress, spender, tokens };
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  public revertInfiniteApproveMultiple(fromAddress: string, spender: string, tokens: Token[]) {
+    return { fromAddress, spender, tokens };
+  }
+
   private getErc20TxContract(address: string): Contracts['erc20'] {
     const txWeb3 = getCurrentValueOrThrow(this.web3Manager.txWeb3$);
 
