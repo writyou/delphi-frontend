@@ -7,6 +7,7 @@ import { makeStyles } from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel, Grid } from 'components';
 
 import { AllocateTab } from './AllocateTab';
+import { WithdrawTab } from './WithdrawTab';
 
 export function SavingsPage() {
   const match = useRouteMatch<{ page: string }>('/savings/:page');
@@ -52,7 +53,7 @@ export function SavingsPage() {
             <AllocateTab />
           </TabPanel>
           <TabPanel value={routes.savings.withdraw.getElementKey()}>
-            Withdraw not implemented
+            <WithdrawTab />
           </TabPanel>
         </TabContext>
       </Grid>

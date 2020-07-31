@@ -1,5 +1,6 @@
 import BN from 'bn.js';
 
+import type { Amount } from '../entities/Amount';
 import type { Fraction } from '../entities/Fraction';
 
 export interface ICurrency {
@@ -28,4 +29,10 @@ export interface IToFraction {
 
 export function isToBN(value: unknown): value is IToBN {
   return typeof value === 'object' && !!value && 'toBN' in value;
+}
+
+export interface NormalizedAmount<T extends Amount> {
+  decimals: number;
+  value: Fraction;
+  original: T;
 }

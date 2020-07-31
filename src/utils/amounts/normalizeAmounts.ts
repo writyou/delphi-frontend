@@ -1,12 +1,6 @@
 import { Amount } from 'model/entities';
-import { Fraction } from 'model/entities/Fraction';
 import { decimalsToWei } from 'utils/bn';
-
-interface NormalizedAmount<T extends Amount> {
-  decimals: number;
-  value: Fraction;
-  original: T;
-}
+import { NormalizedAmount } from 'model/types';
 
 export function normalizeAmounts<T extends Amount>(amounts: T[]): NormalizedAmount<T>[] {
   const maxDecimal = amounts

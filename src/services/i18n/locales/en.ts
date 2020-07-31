@@ -36,6 +36,9 @@ const en = {
       mySupplyBalance: 'My Supply Balance',
       poolLiquidity: 'Pool Liquidity',
       viewDetails: 'View Details',
+      withdraw: 'Withdraw',
+      withdrawDialog: 'Are you sure you want to withdraw?',
+      withdrawTabText: 'Short friendly description how it works',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
       allocateTabText:
@@ -63,6 +66,16 @@ const en = {
         pending: 'Deposit to savings pool. Pending',
         success: 'Deposit to savings pool. Successful',
         error: 'Deposit to savings pool. Failed',
+      },
+      'savings.withdraw': {
+        pending: 'Withdraw from savings pool. Pending',
+        success: 'Withdraw from savings pool. Successful',
+        error: 'Withdraw from savings pool. Failed',
+      },
+      'savings.withdrawAll': {
+        pending: 'Withdraw from savings pool. Pending',
+        success: 'Withdraw from savings pool. Successful',
+        error: 'Withdraw from savings pool. Failed',
       },
     },
     networkWarning: {

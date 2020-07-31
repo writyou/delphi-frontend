@@ -4,6 +4,7 @@ import * as R from 'ramda';
 
 import { memoize } from 'utils/decorators';
 import { TokenAmount, LiquidityAmount } from 'model/entities';
+import { SavingsPool } from 'model/types';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
@@ -36,6 +37,13 @@ export class UserApi {
   public getSavingsPoolBalance$(address: string): Observable<LiquidityAmount> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.savings.getUserBalance$(address, account) : empty())),
+    );
+  }
+
+  @memoize()
+  public getMySavingsPools$(): Observable<SavingsPool[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.savings.getPools$() : empty())), // TODO take from subgraph
     );
   }
 }
