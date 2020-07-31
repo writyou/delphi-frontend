@@ -11,7 +11,7 @@ export function MyInvestment() {
     <Metric
       title={
         <Grid container direction="column" className={classes.container}>
-          <Label>My Investment</Label>
+          <Label withComingSoon>My Investment</Label>
           <div className={classes.chart}>
             <ChartMock />
           </div>

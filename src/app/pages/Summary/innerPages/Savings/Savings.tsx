@@ -7,7 +7,6 @@ import {
   Typography,
   Hint,
   Grid,
-  ComingSoon,
   FormattedAmount,
   PieChartData,
 } from 'components';
@@ -52,7 +51,6 @@ export function Savings() {
           </Hint>
         ) : (
           <Grid container className={classes.table}>
-            <ComingSoon position="overlay" />
             <Grid item xs={8}>
               <NewTable.Component
                 columns={tableData.columnsWithSubtable}

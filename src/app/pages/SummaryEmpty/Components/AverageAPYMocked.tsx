@@ -21,7 +21,7 @@ export function AverageAPYMocked(props: Props) {
       <Metric
         title={
           <Grid container direction="column" className={classes.container}>
-            <Label>{title}</Label>
+            <Label withComingSoon>{title}</Label>
             <div className={classes.chart}>{icon && icon}</div>
             Average APY
           </Grid>

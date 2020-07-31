@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, PieChartData } from 'components';
+import { NewTable, Loading, Typography, Hint, Grid, PieChartData } from 'components';
 import { percentAmount, tokenAmount, liquidityAmount, zeroAddress } from 'utils/mock';
 import { LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
@@ -43,7 +43,6 @@ export function Investment() {
           </Hint>
         ) : (
           <Grid container className={classes.table}>
-            <ComingSoon position="overlay" />
             <Grid item xs={8}>
               <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
             </Grid>

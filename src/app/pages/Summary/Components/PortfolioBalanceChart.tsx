@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 
-import { BalanceChart, Loading } from 'components';
+import { BalanceChart, Loading, Label } from 'components';
 import { makeStyles, useTheme } from 'utils/styles';
 
 export const useStyles = makeStyles(() => ({
@@ -55,7 +55,7 @@ function PortfolioBalanceChart() {
           lEnterPrice: 'url(#lEnterPriceGradient)',
           lExitPrice: 'url(#lExitPriceGradient)',
         }}
-        title="Portfolio balance"
+        title={<Label withComingSoon>Portfolio balance</Label>}
         renderCurrentBalance={renderCurrentBalance}
       />
     </Loading>

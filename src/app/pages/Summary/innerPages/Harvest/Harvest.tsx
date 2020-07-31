@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, ComingSoon, PieChartData } from 'components';
+import { NewTable, Loading, Typography, Hint, Grid, PieChartData } from 'components';
 import { percentAmount, liquidityAmount, tokenAmount } from 'utils/mock';
 import { LiquidityAmount, TokenAmount } from 'model/entities';
 
@@ -35,7 +35,6 @@ export function Harvest() {
           </Hint>
         ) : (
           <Grid container className={classes.table}>
-            <ComingSoon position="overlay" />
             <Grid item xs={8}>
               <NewTable.Component
                 columns={tableData.columnsWithoutExpandableRows}

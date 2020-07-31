@@ -11,7 +11,7 @@ export function MyHarvest() {
     <Metric
       title={
         <Grid container direction="column" className={classes.container}>
-          <Label>My Harvest</Label>
+          <Label withComingSoon>My Harvest</Label>
           <div className={classes.chart}>
             <ChartMock />
           </div>

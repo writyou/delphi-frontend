@@ -11,7 +11,7 @@ export function TotalValueLocked() {
     <Metric
       title={
         <span className={classes.title}>
-          <Label>Total value locked</Label>
+          <Label withComingSoon>Total value locked</Label>
         </span>
       }
       value={<FormattedAmount sum={liquidityAmount} />}

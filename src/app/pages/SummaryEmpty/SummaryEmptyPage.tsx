@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Grid, Button, ComingSoon } from 'components';
+import { Grid, Button } from 'components';
 import { Fish, CatsPaw, ArrowStartToSave } from 'components/icons';
 import { makeStyles } from 'utils/styles';
 import { ActiveMembers, TotalValueLocked } from 'features/metrics';
@@ -27,7 +27,6 @@ export function SummaryEmptyPage() {
   function renderMetrics() {
     return (
       <Grid container direction="column" xs className={classes.metrics}>
-        <ComingSoon position="overlay" />
         <Grid container justify="space-between" className={classes.liveStats}>
           <Grid item>Live Stats</Grid>
           <Grid item>
