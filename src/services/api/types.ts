@@ -2,13 +2,19 @@ import PromiEvent from 'web3/promiEvent';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
 
-import { createErc20, createSavingsModule, createDefiProtocol } from 'generated/contracts';
+import {
+  createErc20,
+  createSavingsModule,
+  createDefiProtocol,
+  createSavingsPoolToken,
+} from 'generated/contracts';
 import { TokenAmount } from 'model/entities';
 import { DepositToSavingsPool } from 'model/types';
 
 export type Contracts = {
   erc20: ReturnType<typeof createErc20>;
   savingsModule: ReturnType<typeof createSavingsModule>;
+  savingsPoolToken: ReturnType<typeof createSavingsPoolToken>;
   defiProtocol: ReturnType<typeof createDefiProtocol>;
 };
 
