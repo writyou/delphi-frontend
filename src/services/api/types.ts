@@ -26,6 +26,14 @@ export type SubmittedTransaction =
   | IGenericSubmittedTransaction<
       'savings.deposit',
       { deposits: DepositToSavingsPool[]; fromAddress: string }
+    >
+  | IGenericSubmittedTransaction<
+      'savings.withdraw',
+      { deposit: DepositToSavingsPool; fromAddress: string }
+    >
+  | IGenericSubmittedTransaction<
+      'savings.withdrawAll',
+      { deposit: DepositToSavingsPool; fromAddress: string }
     >;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {

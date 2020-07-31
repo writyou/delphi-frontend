@@ -125,6 +125,50 @@ export class SavingsModuleApi {
     await promiEvent;
   }
 
+  @autobind
+  public async withdrawAll(deposit: DepositToSavingsPool): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdrawAll(
+      {
+        _protocol: deposit.poolAddress,
+        nAmount: deposit.amount.toBN(),
+      },
+      { from },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions('savings.withdrawAll', promiEvent, {
+      deposit,
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
+
+  @autobind
+  public async withdraw(deposit: DepositToSavingsPool): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdraw(
+      {
+        _protocol: deposit.poolAddress,
+        token: deposit.amount.currency.address,
+        dnAmount: deposit.amount.toBN(),
+        maxNAmount: new BN(0),
+      },
+      { from },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions('savings.withdraw', promiEvent, {
+      deposit,
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
+
   private getProtocolReadonlyContract(address: string): Contracts['defiProtocol'] {
     return createDefiProtocol(this.web3Manager.web3, address);
   }

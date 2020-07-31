@@ -8,6 +8,7 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount } from 'utils/react';
+import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -33,7 +34,7 @@ export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolForm
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
   const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()), // mocked
+    () => (currentToken ? api.user.getSavingsPoolBalance$(poolAddress) : empty()),
     [api, currentToken],
   );
 
@@ -54,7 +55,12 @@ export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolForm
 
   const handleFormSubmit = useCallback(
     ({ amount }: FormData) => {
-      return amount ? api.savings.deposit([{ amount, poolAddress }]) : undefined; // mocked
+      // eslint-disable-next-line no-nested-ternary
+      return amount
+        ? amount.currency === ALL_TOKEN
+          ? api.savings.withdrawAll({ amount, poolAddress })
+          : api.savings.withdraw({ amount, poolAddress })
+        : undefined;
     },
     [api],
   );
