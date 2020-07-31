@@ -24,7 +24,7 @@ export class Api {
     this.subgraphApi,
   );
 
-  public user = new UserApi(this.web3Manager, this.erc20, this.subgraphApi);
+  public user = new UserApi(this.web3Manager, this.subgraphApi, this.erc20, this.savings);
 
   constructor(private apolloClient: ApolloClient<any>) {}
 }
