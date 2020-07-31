@@ -74,6 +74,7 @@ export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolForm
     >
       <>
         <TokenAmountField
+          allowSelectAllCoin
           name={fieldNames.amount}
           currencies={supportedTokens}
           placeholder="Enter sum"
