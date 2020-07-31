@@ -67,6 +67,16 @@ const en = {
         success: 'Deposit to savings pool. Successful',
         error: 'Deposit to savings pool. Failed',
       },
+      'savings.withdraw': {
+        pending: 'Withdraw from savings pool. Pending',
+        success: 'Withdraw from savings pool. Successful',
+        error: 'Withdraw from savings pool. Failed',
+      },
+      'savings.withdrawAll': {
+        pending: 'Withdraw from savings pool. Pending',
+        success: 'Withdraw from savings pool. Successful',
+        error: 'Withdraw from savings pool. Failed',
+      },
     },
     networkWarning: {
       title: 'You are connected to the wrong network',

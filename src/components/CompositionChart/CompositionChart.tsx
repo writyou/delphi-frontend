@@ -2,13 +2,13 @@ import * as React from 'react';
 import * as R from 'ramda';
 import cn from 'classnames';
 
+import { normalizeAmounts } from 'utils/amounts';
 import { Amount, PercentAmount } from 'model/entities';
 import { useTheme } from 'utils/styles';
 
 import { PieChart } from '../PieChart/PieChart';
 import { PieChartData, ChartColor, PieSector } from './model';
 import { useStyles } from './CompositionChart.style';
-import { normalizeAmounts } from './normalizeAmounts';
 
 type Props<T extends Amount, P = void> = {
   chartData: PieChartData<T, P>[];

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import BN from 'bn.js';
 // eslint-disable-next-line no-restricted-imports
 import { Grid } from '@material-ui/core';
@@ -12,12 +12,15 @@ import { TokenIcon } from '../TokenIcon/TokenIcon';
 export type TokenAmountInputProps = Omit<
   AmountInputProps<TokenAmount>,
   'makeAmount' | 'getCurrencyIdentifier' | 'getCurrencyLabel'
-> & { allowSelectAllCoin?: boolean };
+> & { allowSelectAllToken?: boolean };
 
 export function TokenAmountInput(props: TokenAmountInputProps) {
-  const { allowSelectAllCoin, currencies, ...rest } = props;
-  const tokens =
-    allowSelectAllCoin && currencies.length > 1 ? [...currencies, ALL_TOKEN] : currencies;
+  const { allowSelectAllToken, currencies, ...rest } = props;
+  const tokens = useMemo(
+    () => (allowSelectAllToken && currencies.length > 1 ? [...currencies, ALL_TOKEN] : currencies),
+    [allowSelectAllToken, currencies],
+  );
+
   return (
     <AmountInput<TokenAmount>
       {...rest}

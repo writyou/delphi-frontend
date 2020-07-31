@@ -11,3 +11,8 @@ export type DepositToSavingsPool = {
   poolAddress: string;
   amount: TokenAmount;
 };
+
+export type WithdrawFromSavingsPool = {
+  poolAddress: string;
+  amount: TokenAmount;
+};

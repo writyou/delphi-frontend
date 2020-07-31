@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -9,14 +10,16 @@ import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'co
 import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount } from 'utils/react';
 import { ALL_TOKEN } from 'utils/mock';
+import { denormolizeAmount } from 'utils/amounts';
 
 interface FormData {
   amount: TokenAmount | null;
 }
 
-interface DepositToPoolFormProps {
+interface WithdrawFormProps {
   supportedTokens: Token[];
   poolAddress: string;
+  onSuccessfulWithdraw?(): void;
 }
 
 const fieldNames: FieldNames<FormData> = {
@@ -27,14 +30,23 @@ const initialValues: FormData = {
   amount: null,
 };
 
-export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolFormProps) {
+export function WithdrawForm({
+  poolAddress,
+  supportedTokens,
+  onSuccessfulWithdraw,
+}: WithdrawFormProps) {
   const api = useApi();
   const { t } = useTranslate();
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
   const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getSavingsPoolBalance$(poolAddress) : empty()),
+    () =>
+      currentToken
+        ? api.user
+            .getSavingsPoolBalance$(poolAddress)
+            .pipe(map(balance => denormolizeAmount(balance, currentToken)))
+        : empty(),
     [api, currentToken],
   );
 
@@ -54,15 +66,16 @@ export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolForm
   );
 
   const handleFormSubmit = useCallback(
-    ({ amount }: FormData) => {
-      // eslint-disable-next-line no-nested-ternary
-      return amount
-        ? amount.currency === ALL_TOKEN
-          ? api.savings.withdrawAll({ amount, poolAddress })
-          : api.savings.withdraw({ amount, poolAddress })
-        : undefined;
+    async ({ amount }: FormData) => {
+      if (!amount) return;
+
+      await (amount.currency === ALL_TOKEN
+        ? api.savings.withdrawAll({ amount, poolAddress })
+        : api.savings.withdraw({ amount, poolAddress }));
+
+      onSuccessfulWithdraw && onSuccessfulWithdraw();
     },
-    [api],
+    [api, poolAddress],
   );
 
   const getConfirmationMessage = useCallback(({ amount }: FormData) => {
@@ -80,7 +93,7 @@ export function WithdrawForm({ poolAddress, supportedTokens }: DepositToPoolForm
     >
       <>
         <TokenAmountField
-          allowSelectAllCoin
+          allowSelectAllToken
           name={fieldNames.amount}
           currencies={supportedTokens}
           placeholder="Enter sum"

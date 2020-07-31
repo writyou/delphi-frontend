@@ -9,7 +9,7 @@ import {
   createSavingsPoolToken,
 } from 'generated/contracts';
 import { TokenAmount } from 'model/entities';
-import { DepositToSavingsPool } from 'model/types';
+import { DepositToSavingsPool, WithdrawFromSavingsPool } from 'model/types';
 
 export type Contracts = {
   erc20: ReturnType<typeof createErc20>;
@@ -29,11 +29,11 @@ export type SubmittedTransaction =
     >
   | IGenericSubmittedTransaction<
       'savings.withdraw',
-      { deposit: DepositToSavingsPool; fromAddress: string }
+      { withdraw: WithdrawFromSavingsPool; fromAddress: string }
     >
   | IGenericSubmittedTransaction<
       'savings.withdrawAll',
-      { deposit: DepositToSavingsPool; fromAddress: string }
+      { withdraw: WithdrawFromSavingsPool; fromAddress: string }
     >;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {

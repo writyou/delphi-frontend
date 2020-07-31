@@ -15,7 +15,7 @@ export function WithdrawTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]); // mocked
+  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
 
   return (
     <>
@@ -34,12 +34,17 @@ export function WithdrawTab() {
                       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
                       content={
                         <ModalButton
-                          modalType="dialog"
                           color="primary"
                           variant="outlined"
                           content={t(tKeys.modules.savings.withdraw.getKey())}
                         >
-                          <WithdrawForm poolAddress={pool.address} supportedTokens={pool.tokens} />
+                          {({ closeModal }) => (
+                            <WithdrawForm
+                              poolAddress={pool.address}
+                              supportedTokens={pool.tokens}
+                              onSuccessfulWithdraw={closeModal}
+                            />
+                          )}
                         </ModalButton>
                       }
                     />

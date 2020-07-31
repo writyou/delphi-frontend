@@ -27,7 +27,7 @@ interface IOwnProps<A extends Amount> {
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
   getCurrencyIdentifier(currency: A['currency']): string;
-  getCurrencyLabel(currency: A['currency'], currencys: A['currency'][]): JSX.Element | string;
+  getCurrencyLabel(currency: A['currency'], currencies: A['currency'][]): JSX.Element | string;
 }
 
 export type AmountInputProps<A extends Amount> = IOwnProps<A> &
