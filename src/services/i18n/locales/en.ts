@@ -36,6 +36,9 @@ const en = {
       mySupplyBalance: 'My Supply Balance',
       poolLiquidity: 'Pool Liquidity',
       viewDetails: 'View Details',
+      withdraw: 'Withdraw',
+      withdrawDialog: 'Are you sure you want to withdraw?',
+      withdrawTabText: 'Short friendly description how it works',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
       allocateTabText:

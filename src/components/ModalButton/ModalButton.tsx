@@ -2,6 +2,7 @@ import * as React from 'react';
 import Dialog, { DialogProps } from '@material-ui/core/Dialog';
 import Drawer from '@material-ui/core/Drawer';
 import DialogContent from '@material-ui/core/DialogContent';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { makeStyles, WithDarkTheme } from 'utils/styles';
 
@@ -39,6 +40,7 @@ function ModalButton(props: IProps) {
       {modalType === 'dialog' && (
         <Dialog fullWidth maxWidth={dialogMaxWidth || 'sm'} open={isOpened} onClose={closeModal}>
           <DialogContent className={classes.dialogContent}>
+            <CloseIcon className={classes.closeButton} onClick={closeModal} />
             {typeof children === 'function' ? children({ closeModal }) : children}
           </DialogContent>
         </Dialog>
@@ -54,9 +56,16 @@ function ModalButton(props: IProps) {
   );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   dialogContent: {
-    padding: theme.spacing(2.5),
+    padding: '50px !important',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 24,
+    right: 24,
+    opacity: 0.5,
+    cursor: 'pointer',
   },
 }));
 
