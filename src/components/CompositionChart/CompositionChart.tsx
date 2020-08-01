@@ -37,7 +37,7 @@ function CompositionChart<T extends Amount, P = void>({
 
   const renderGradients = React.useCallback(
     () => (
-      <svg>
+      <svg className={classes.hidden}>
         {theme.gradients.poolCompositionChart.map((gradient, index) => (
           <React.Fragment key={index}>
             {gradient.svgLinear(`poolCompositionSector${index}`)}
