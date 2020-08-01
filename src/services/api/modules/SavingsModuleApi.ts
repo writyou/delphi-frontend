@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import BN from 'bn.js';
 
 import { getCurrentValueOrThrow } from 'utils/rxjs';
-import { DepositToSavingsPool, IToBN } from 'model/types';
+import { DepositToSavingsPool, IToBN, WithdrawFromSavingsPool } from 'model/types';
 import { ETH_NETWORK_CONFIG, LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
@@ -119,6 +119,50 @@ export class SavingsModuleApi {
 
     this.transactionsApi.pushToSubmittedTransactions('savings.deposit', promiEvent, {
       deposits,
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
+
+  @autobind
+  public async withdrawAll(withdraw: WithdrawFromSavingsPool): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdrawAll(
+      {
+        _protocol: withdraw.poolAddress,
+        nAmount: withdraw.amount.toBN(),
+      },
+      { from },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions('savings.withdrawAll', promiEvent, {
+      withdraw,
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
+
+  @autobind
+  public async withdraw(withdraw: WithdrawFromSavingsPool): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdraw(
+      {
+        _protocol: withdraw.poolAddress,
+        token: withdraw.amount.currency.address,
+        dnAmount: withdraw.amount.toBN(),
+        maxNAmount: new BN(0),
+      },
+      { from },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions('savings.withdraw', promiEvent, {
+      withdraw,
       fromAddress: from,
     });
 

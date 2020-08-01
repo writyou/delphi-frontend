@@ -7,7 +7,7 @@ import { AmountInput, AmountInputProps } from './AmountInput';
 
 export type LiquidityAmountInputProps = Omit<
   AmountInputProps<LiquidityAmount>,
-  'makeAmount' | 'getCurrencyIdentifier'
+  'makeAmount' | 'getCurrencyIdentifier' | 'getCurrencyLabel'
 >;
 
 export function LiquidityAmountInput(props: LiquidityAmountInputProps) {
@@ -16,11 +16,16 @@ export function LiquidityAmountInput(props: LiquidityAmountInputProps) {
       {...props}
       makeAmount={makeAmount}
       getCurrencyIdentifier={getCurrencyIdentifier}
+      getCurrencyLabel={getCurrencyLabel}
     />
   );
 }
 
 function getCurrencyIdentifier(currency: Currency) {
+  return currency.symbol;
+}
+
+function getCurrencyLabel(currency: Currency) {
   return currency.symbol;
 }
 

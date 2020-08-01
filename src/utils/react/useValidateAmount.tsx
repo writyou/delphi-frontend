@@ -21,12 +21,13 @@ interface ValidateAmountOptions {
   positive?: boolean;
   moreThenZero?: boolean;
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
+  maxErrorTKey?: string;
   minValue?: BN | IToBN | Observable<BN | IToBN>;
 }
 
 // TODO return validation error if not all Observables is loaded
 export function useValidateAmount(options: ValidateAmountOptions) {
-  const { positive, required, moreThenZero } = options;
+  const { positive, required, moreThenZero, maxErrorTKey } = options;
 
   const [{ maxValue, minValue }] = useSubscribable<{
     maxValue?: BN;
@@ -56,10 +57,13 @@ export function useValidateAmount(options: ValidateAmountOptions) {
             amount.withValue(minValue).toFormattedString(),
           )) ||
         (maxValue &&
-          lessThenOrEqual(maxValue, amount.toBN(), () =>
-            amount.withValue(maxValue).toFormattedString(),
+          lessThenOrEqual(
+            maxValue,
+            amount.toBN(),
+            () => amount.withValue(maxValue).toFormattedString(),
+            maxErrorTKey,
           ))
       );
     };
-  }, [maxValue?.toString(), minValue?.toString()]);
+  }, [maxValue?.toString(), minValue?.toString(), maxErrorTKey]);
 }

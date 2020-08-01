@@ -27,6 +27,7 @@ interface IOwnProps<A extends Amount> {
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
   getCurrencyIdentifier(currency: A['currency']): string;
+  getCurrencyLabel(currency: A['currency'], currencies: A['currency'][]): JSX.Element | string;
 }
 
 export type AmountInputProps<A extends Amount> = IOwnProps<A> &
@@ -43,6 +44,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     currencies,
     makeAmount,
     getCurrencyIdentifier,
+    getCurrencyLabel,
     ...restInputProps
   } = props;
   const classes = useStyles();
@@ -170,7 +172,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
           const id = getCurrencyIdentifier(item);
           return (
             <MenuItem key={id} value={id}>
-              {item.symbol}
+              {getCurrencyLabel(item, currencies)}
             </MenuItem>
           );
         })}

@@ -8,6 +8,8 @@ export const tokenAmount = new TokenAmount(
   new Token(zeroAddress, 'MOCK', 18),
 );
 
+export const ALL_TOKEN = new Token(zeroAddress, 'All Coins', 18);
+
 export const liquidityAmount = new LiquidityAmount('1123123123123123123123', new Currency('$', 18));
 
 export const percentAmount = new PercentAmount(new Fraction('15555', '100000'));
