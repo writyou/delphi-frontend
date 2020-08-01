@@ -2,9 +2,7 @@ import BN from 'bn.js';
 
 import { ICurrency, IToBN, IToFraction, Decimal } from 'model/types';
 
-import { Fraction } from './Fraction';
-
-export type Value = number | string | BN | IToBN | Fraction | IToFraction;
+import { Fraction, toFraction, Value } from './Fraction';
 
 export abstract class Amount<C extends ICurrency = ICurrency> implements IToBN, IToFraction {
   public abstract _type: symbol;
@@ -69,14 +67,4 @@ export abstract class Amount<C extends ICurrency = ICurrency> implements IToBN, 
   public toString(base?: number | 'hex' | undefined, length?: number | undefined): string {
     return this.toBN().toString(base, length);
   }
-}
-
-function toFraction(value: Value): Fraction {
-  if (value instanceof Fraction) {
-    return value;
-  }
-  if (typeof value === 'object' && 'toFraction' in value) {
-    return value.toFraction();
-  }
-  return new Fraction(value);
 }

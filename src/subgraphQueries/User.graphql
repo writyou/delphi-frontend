@@ -1,5 +1,24 @@
-subscription User($id: ID!) {
+subscription User($id: ID!, $savingsPoolsAPYsDateGT: BigInt!) {
   user(id: $id) {
     id
+
+    savingsPools {
+      id
+      poolToken {
+        id
+        name
+        symbol
+        decimals
+      }
+      tokens {
+        id
+        symbol
+        decimals
+      }
+      aprHistory(where: {date_gt: $savingsPoolsAPYsDateGT}) {
+        amount
+        duration
+      }
+    }
   }
 }

@@ -1,8 +1,10 @@
 import BN from 'bn.js';
 
-import { IToBN, Decimal } from 'model/types';
+import { IToBN, Decimal, IToFraction } from 'model/types';
 import { bnToBn } from 'utils/bn';
 import { getDecimal } from 'utils/format';
+
+export type Value = number | string | BN | IToBN | Fraction | IToFraction;
 
 export class Fraction implements IToBN {
   public readonly numerator: BN;
@@ -33,7 +35,7 @@ export class Fraction implements IToBN {
     );
   }
 
-  add(value: Fraction | BN | IToBN) {
+  add(value: Value) {
     const { denominator, numerator } = toFraction(value);
     return new Fraction(
       this.numerator.mul(denominator).add(numerator.mul(this.denominator)),
@@ -41,7 +43,7 @@ export class Fraction implements IToBN {
     );
   }
 
-  sub(value: Fraction | BN | IToBN) {
+  sub(value: Value) {
     const { denominator, numerator } = toFraction(value);
     return new Fraction(
       this.numerator.mul(denominator).sub(numerator.mul(this.denominator)),
@@ -49,17 +51,17 @@ export class Fraction implements IToBN {
     );
   }
 
-  div(value: number | Fraction | BN | IToBN) {
+  div(value: Value) {
     const { denominator, numerator } = toFraction(value);
     return new Fraction(this.numerator.mul(denominator), this.denominator.mul(numerator));
   }
 
-  mul(value: number | Fraction | BN | IToBN) {
+  mul(value: Value) {
     const { denominator, numerator } = toFraction(value);
     return new Fraction(this.numerator.mul(numerator), this.denominator.mul(denominator));
   }
 
-  gt(value: number | Fraction | BN | IToBN): boolean {
+  gt(value: Value): boolean {
     const { denominator, numerator } = toFraction(value);
     return this.numerator.mul(denominator).gt(numerator.mul(this.denominator));
   }
@@ -73,9 +75,12 @@ export class Fraction implements IToBN {
   }
 }
 
-function toFraction(value: number | Fraction | BN | IToBN): Fraction {
+export function toFraction(value: Value): Fraction {
   if (value instanceof Fraction) {
     return value;
   }
-  return new Fraction(bnToBn(value));
+  if (typeof value === 'object' && 'toFraction' in value) {
+    return value.toFraction();
+  }
+  return new Fraction(value);
 }

@@ -1,22 +1,23 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { TokenIcon } from 'components';
+import { Token } from 'model/entities';
+import { TokenIcon } from 'components/TokenIcon/TokenIcon';
 
 type Props = {
-  icons: string[];
+  tokens: Token[];
 };
 
-export function IconsBlock(props: Props) {
+export function TokensIcons(props: Props) {
   const classes = useStyles();
-  const { icons } = props;
+  const { tokens } = props;
 
   return (
     <div className={classes.root}>
-      {icons.map(icon => {
+      {tokens.map(({ address }) => {
         return (
-          <div className={classes.icon} key={icon}>
-            <TokenIcon tokenAddress={icon} />
+          <div className={classes.icon} key={address}>
+            <TokenIcon tokenAddress={address} />
           </div>
         );
       })}
@@ -34,5 +35,5 @@ const useStyles = makeStyles(
       marginLeft: -7,
     },
   }),
-  { name: 'IconsBlock' },
+  { name: 'TokensIcons' },
 );

@@ -1,10 +1,11 @@
-import { Observable, empty } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { Observable, empty, combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
 
 import { memoize } from 'utils/decorators';
-import { TokenAmount, LiquidityAmount } from 'model/entities';
+import { TokenAmount, LiquidityAmount, PercentAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
+import { calcAvg } from 'utils/amounts';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
@@ -33,6 +34,43 @@ export class UserApi {
     );
   }
 
+  @memoize()
+  public getSavingsPoolsAvgAPY$(): Observable<PercentAmount> {
+    return this.getMySavingsPools$().pipe(
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+          ),
+        ),
+      ),
+      map(
+        balances =>
+          new PercentAmount(
+            calcAvg(...balances.map(({ balance, pool }) => ({ value: pool.apy, weight: balance }))),
+          ),
+      ),
+    );
+  }
+
+  @memoize()
+  public getAllSavingsPoolsBalances$(): Observable<
+    Array<{
+      balance: LiquidityAmount;
+      pool: SavingsPool;
+    }>
+  > {
+    return this.getMySavingsPools$().pipe(
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+          ),
+        ),
+      ),
+    );
+  }
+
   @memoize(R.identity)
   public getSavingsPoolBalance$(address: string): Observable<LiquidityAmount> {
     return this.web3Manager.account$.pipe(
@@ -43,7 +81,7 @@ export class UserApi {
   @memoize()
   public getMySavingsPools$(): Observable<SavingsPool[]> {
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.savings.getPools$() : empty())), // TODO take from subgraph
+      switchMap(account => (account ? this.subgraph.loadUserSavingsPools$(account) : empty())),
     );
   }
 }

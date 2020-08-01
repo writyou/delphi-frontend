@@ -1,7 +1,8 @@
 import { formatBalance } from 'utils/format';
 
 import { Token } from './Token';
-import { Amount, Value } from './Amount';
+import { Amount } from './Amount';
+import { Value } from './Fraction';
 
 const uniqType = Symbol('TokenAmount');
 
