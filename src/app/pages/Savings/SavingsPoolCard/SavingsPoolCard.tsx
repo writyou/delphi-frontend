@@ -2,10 +2,9 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { Link, TokenIcon, FormattedAmount, Card, Loading } from 'components';
+import { Link, TokenIcon, Card } from 'components';
 import { SavingsPool } from 'model/types';
-import { useSubscribable } from 'utils/react';
-import { useApi } from 'services/api';
+import { SavingsPoolLiquidity, UserSavingsPoolBalance } from 'features/savingsPools';
 
 import { useStyles } from './SavingsPoolCard.style';
 
@@ -16,16 +15,8 @@ type Props = {
 
 export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElement }: Props) {
   const classes = useStyles();
-  const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(() => api.user.getSavingsPoolBalance$(address), [
-    api,
-    address,
-  ]);
-  const [liquidity, liquidityMeta] = useSubscribable(() => api.savings.getPoolBalance$(address), [
-    api,
-    address,
-  ]);
   const { t } = useTranslate();
+
   return (
     <Card
       className={classes.root}
@@ -41,17 +32,13 @@ export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElem
         <div className={classes.row}>
           <span>{t(tKeys.modules.savings.mySupplyBalance.getKey())}</span>
           <span className={classes.balance}>
-            <Loading meta={balanceMeta}>
-              {balance && <FormattedAmount sum={balance} variant="plain" />}
-            </Loading>
+            <UserSavingsPoolBalance poolAddress={address} />
           </span>
         </div>
         <div className={classes.row}>
           <span>{t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>
-            <Loading meta={liquidityMeta}>
-              {liquidity && <FormattedAmount sum={liquidity} variant="plain" />}
-            </Loading>
+            <SavingsPoolLiquidity poolAddress={address} />
           </span>
         </div>
         {footerElement}
@@ -59,7 +46,6 @@ export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElem
     </Card>
   );
 }
-
 type ViewProps = {
   link: string;
   content: JSX.Element;

@@ -5,6 +5,7 @@ import { Grid } from '@material-ui/core';
 
 import { TokenAmount, Token } from 'model/entities';
 import { ALL_TOKEN } from 'utils/mock';
+import { TokensIcons } from 'components/TokensIcons/TokensIcons';
 
 import { AmountInput, AmountInputProps } from './AmountInput';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
@@ -38,15 +39,9 @@ function getCurrencyIdentifier(currency: Token) {
 
 function getCurrencyLabel(currency: Token, currencies: Token[]) {
   return currency === ALL_TOKEN ? (
-    <Grid container alignItems="center">
-      {currencies
-        .filter(t => t !== ALL_TOKEN)
-        .map(t => (
-          <>
-            <TokenIcon tokenAddress={t.address} />
-            &nbsp;
-          </>
-        ))}
+    <Grid container alignItems="center" wrap="nowrap">
+      <TokensIcons tokens={currencies.filter(t => t !== ALL_TOKEN)} />
+      &nbsp;
       {currency.symbol}
     </Grid>
   ) : (

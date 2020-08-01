@@ -14,25 +14,8 @@ export const liquidityAmount = new LiquidityAmount('1123123123123123123123', new
 
 export const percentAmount = new PercentAmount(new Fraction('15555', '100000'));
 
-export const mockSectors = [
-  {
-    value: 10,
-    label: 'RSV',
-  },
-  {
-    value: 30,
-    label: 'DAI',
-  },
-  {
-    value: 20,
-    label: 'USDT',
-  },
-  {
-    value: 10,
-    label: 'TUSD',
-  },
-  {
-    value: 30,
-    label: 'USDC',
-  },
+export const mockedTokens: Token[] = [
+  new Token('0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea', 'dai', 18),
+  new Token('0x4dbcdf9b62e891a7cec5a2568c3f4faf9e8abe2b', 'usdc', 6),
+  new Token('0xd9ba894e0097f8cc2bbc9d24d308b98e36dc6d02', 'usdt', 18),
 ];

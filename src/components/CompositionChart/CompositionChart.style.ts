@@ -49,6 +49,7 @@ export const useStyles = makeStyles(
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
+      textAlign: 'center',
     },
     label: {
       color: theme.palette.text.primary,

@@ -26,6 +26,7 @@ export const entriesForChart = [
       address: zeroAddress,
       devName: 'sUSD',
       poolToken: tokenAmount.currency,
+      apy: percentAmount,
       tokens: [],
     },
   }),

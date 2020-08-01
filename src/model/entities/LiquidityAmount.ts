@@ -1,7 +1,8 @@
 import { formatBalance } from 'utils/format';
 
-import { Amount, Value } from './Amount';
+import { Amount } from './Amount';
 import { Currency } from './Currency';
+import { Value } from './Fraction';
 
 const uniqType = Symbol('LiquidityAmount type');
 
