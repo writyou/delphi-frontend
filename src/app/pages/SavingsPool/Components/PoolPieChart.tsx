@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { CompositionChart, TokensTableLegend, PieChartData } from 'components';
+import { CompositionChart, TokensTableLegend, PieChartData, CompositionLegend } from 'components';
 import { TokenAmount } from 'model/entities';
 import { tokenAmount } from 'utils/mock';
 
@@ -15,11 +15,8 @@ function PoolPieChart() {
 
   return (
     <div className={classes.root}>
-      <CompositionChart
-        chartData={entries}
-        Legend={({ sectors }) => <TokensTableLegend sectors={sectors} />}
-        size="medium"
-      />
+      <CompositionChart chartData={entries} size="medium" />
+      <CompositionLegend chartData={entries} Template={TokensTableLegend} />
     </div>
   );
 }

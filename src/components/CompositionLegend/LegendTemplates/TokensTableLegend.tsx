@@ -5,9 +5,9 @@ import { TokenAmount } from 'model/entities';
 
 import { Component as NewTable, models as NewTableModels } from '../../NewTable';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
-import { PieSector, CompositionChartLegendProps } from '../model';
-import { SectorColorLabel } from '../SectorColorLabel';
-import { TokenTitle } from '../TokenTitle';
+import { PieSector, CompositionChartLegendProps } from '../../CompositionChart/model';
+import { SectorColorLabel } from '../../CompositionChart/SectorColorLabel';
+import { TokenTitle } from '../../CompositionChart/TokenTitle';
 
 export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
   const { sectors } = props;

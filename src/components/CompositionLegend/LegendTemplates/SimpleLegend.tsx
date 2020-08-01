@@ -3,10 +3,10 @@ import * as React from 'react';
 import { makeStyles } from 'utils/styles';
 import { Amount } from 'model/entities';
 
-import { CompositionChartLegendProps, PieSector } from '../model';
+import { CompositionChartLegendProps, PieSector } from '../../CompositionChart/model';
 
 type Props<T extends Amount, P = void> = CompositionChartLegendProps<T, P> & {
-  renderLabel(sector: PieSector<T, P>): React.ReactNode;
+  renderLabel?(sector: PieSector<T, P>): React.ReactNode;
 };
 
 export function SimpleLegend<T extends Amount, P = void>(props: Props<T, P>) {
@@ -18,7 +18,7 @@ export function SimpleLegend<T extends Amount, P = void>(props: Props<T, P>) {
       {sectors.map((sector, index) => (
         <li className={classes.legendItem} key={index} style={{ color: sector.color.rgb }}>
           <span className={classes.label}>
-            {sector.percent.toFormattedString()}&nbsp;{renderLabel(sector)}
+            {sector.percent.toFormattedString()}&nbsp;{renderLabel && renderLabel(sector)}
           </span>
         </li>
       ))}

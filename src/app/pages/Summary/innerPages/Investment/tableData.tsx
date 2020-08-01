@@ -6,6 +6,8 @@ import {
   CompositionChart,
   SimpleLegend,
   PieChartData,
+  CompositionLegend,
+  Grid,
 } from 'components';
 import { TokenAmount, PercentAmount, LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
@@ -31,17 +33,14 @@ export const columnForChart: Array<NewTable.models.Column<
     cellContent: {
       kind: 'simple',
       render: x => (
-        <CompositionChart
-          chartData={x}
-          Legend={({ sectors }) => (
-            <SimpleLegend
-              sectors={sectors}
-              renderLabel={({ pieData }) => pieData.payload.devName}
-            />
-          )}
-          InnerLegend={InnerLegendAPY}
-          size="extra-large"
-        />
+        <Grid container>
+          <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
+          <CompositionLegend<LiquidityAmount, SavingsPool>
+            chartData={x}
+            Template={SimpleLegend}
+            renderLabel={({ pieData }) => pieData.payload.devName}
+          />
+        </Grid>
       ),
     },
   },

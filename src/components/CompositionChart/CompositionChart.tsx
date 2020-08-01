@@ -11,14 +11,12 @@ import { usePieSectors } from './usePieSectors';
 
 type Props<T extends Amount, P = void> = {
   chartData: PieChartData<T, P>[];
-  Legend?: React.FC<{ sectors: PieSector<T, P>[] }>;
   InnerLegend?: React.FC<{ sectors: PieSector<T, P>[] }>;
   size?: 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
 };
 
 export function CompositionChart<T extends Amount, P = void>({
   chartData,
-  Legend,
   InnerLegend,
   size = 'large',
 }: Props<T, P>) {
@@ -54,7 +52,6 @@ export function CompositionChart<T extends Amount, P = void>({
             paddingAngle={5}
           />
         </div>
-        {Legend && <Legend sectors={sectors} />}
       </div>
     </div>
   );
