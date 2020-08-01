@@ -10,6 +10,7 @@ import { TokenAmount, Token } from 'model/entities';
 import { routes } from 'app/routes';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount } from 'utils/react';
+import { SpyField } from 'components';
 
 import { SavingsPoolCard, WithViewDetails } from '../SavingsPoolCard/SavingsPoolCard';
 
@@ -34,6 +35,11 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
+  const error =
+    typeof rest.error === 'boolean'
+      ? rest.error && meta.error && t(meta.error)
+      : meta.touched && meta.error && t(meta.error);
+
   return (
     <SavingsPoolCard
       pool={pool}
@@ -53,8 +59,10 @@ function SavingsPoolFieldComponent(props: Props) {
             isAllocated ? (
               <>
                 <TokenAmountInput
-                  {...input}
                   {...rest}
+                  {...input}
+                  helperText={error}
+                  error={Boolean(error)}
                   name={`key${pool.address}`}
                   currencies={pool.tokens}
                   placeholder="Enter sum"
@@ -93,6 +101,7 @@ export function SavingsPoolField(props: { name: string; pool: SavingsPool }) {
 
   const validateAmount = useValidateAmount({
     maxValue: maxValue$,
+    maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
 
   return (
@@ -103,6 +112,7 @@ export function SavingsPoolField(props: { name: string; pool: SavingsPool }) {
         currentToken={currentToken}
         maxValue$={maxValue$}
       />
+      <SpyField name="_" fieldValue={validateAmount} />
       <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
     </>
   );

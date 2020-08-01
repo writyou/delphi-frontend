@@ -1,25 +1,25 @@
-import React from 'react';
-import { Form, FormProps } from 'react-final-form';
+import React, { ReactNode } from 'react';
+import { Form } from 'react-final-form';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Button } from 'components';
+import { Button, FormTemplateProps } from 'components';
 import { Hint } from 'components/Hint/Hint';
 
 type AnyObject = Record<string, any>;
 
-export type FormTemplateProps<FormValues extends AnyObject> = Omit<
-  FormProps<FormValues>,
-  'subscription'
+export type AllocateFormTemplateProps<FormValues extends AnyObject> = FormTemplateProps<
+  FormValues
 > & {
-  submitButton?: string;
+  infiniteUnlock: ReactNode;
+  gasPriceField?: ReactNode;
 };
 
 export function AllocateFormTemplate<FormValues extends AnyObject>(
-  props: FormTemplateProps<FormValues>,
+  props: AllocateFormTemplateProps<FormValues>,
 ) {
-  const { submitButton, ...restProps } = props;
+  const { submitButton, infiniteUnlock, gasPriceField, ...restProps } = props;
 
   const children = React.Children.toArray(restProps.children);
 
@@ -45,17 +45,23 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
               </Hint>
             </Grid>
           )}
-          <Grid container justify="flex-end" spacing={2}>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                type="submit"
-                fullWidth
-                disabled={submitting}
-              >
-                {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
-              </Button>
+          <Grid container justify="space-between" alignItems="flex-start" spacing={6}>
+            {gasPriceField && <Grid item>{gasPriceField}</Grid>}
+            <Grid item xs>
+              <Grid container spacing={6} justify="flex-end" alignItems="center">
+                <Grid item>{infiniteUnlock}</Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    disabled={submitting}
+                  >
+                    {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
         </form>
