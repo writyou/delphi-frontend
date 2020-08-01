@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { switchMap, map } from 'rxjs/operators';
 import { empty, combineLatest, of } from 'rxjs';
 import * as R from 'ramda';
@@ -7,7 +7,7 @@ import { useCommunication, useSubscribable } from 'utils/react';
 import { Token } from 'model/entities';
 import { useApi } from 'services/api';
 import { SwitchInput } from 'components/inputs';
-import { Loading, Label, Box } from 'components';
+import { Loading, Label, Box, Grid } from 'components';
 
 type Props = {
   tokens: Token[];
@@ -87,7 +87,7 @@ export function InfiniteApproveSwitch(props: Props) {
   });
 
   return (
-    <>
+    <Grid container wrap="nowrap">
       <Box mr={1}>
         <Loading
           meta={tokensWithApprovesMeta}
@@ -103,6 +103,6 @@ export function InfiniteApproveSwitch(props: Props) {
         onChange={handleOnChange}
         label={<Label hint="Hint for infinite unlock">Infinite unlock</Label>}
       />
-    </>
+    </Grid>
   );
 }

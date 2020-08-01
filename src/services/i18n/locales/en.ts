@@ -86,6 +86,7 @@ const en = {
       moreThen: 'Should be more then %{value}',
       moreThenOrEqual: 'Should be more then or equal %{value}',
       lessThenOrEqual: 'Should be less then or equal %{value}',
+      insufficientFunds: 'Insufficient funds, your balance is %{value}',
       notDefault: 'Value must be different from initial',
       maxStringLength: 'Text should be less then %{max} letters',
       onEnglishPlease: 'Should contain only english letters, numbers and ",.!:\'""',
