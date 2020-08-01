@@ -55,8 +55,8 @@ export const useStyles = makeStyles(
     },
     hidden: {
       height: 0,
-      visibility: 'hidden',
       width: 0,
+      visibility: 'hidden',
       position: 'absolute',
       zIndex: -100,
     },
