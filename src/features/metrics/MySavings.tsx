@@ -1,8 +1,14 @@
 import * as React from 'react';
 
-import { Metric, Label, FormattedAmount, ChartMock, Grid } from 'components';
-import { percentAmount } from 'utils/mock';
+import { Metric, Label, FormattedAmount, Grid, CompositionChart, PieChartData } from 'components';
+import { percentAmount, tokenAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
+import { TokenAmount } from 'model/entities';
+
+const entries = new Array<PieChartData<TokenAmount>>(5).fill({
+  value: tokenAmount,
+  payload: undefined,
+});
 
 export function MySavings() {
   const classes = useStyles();
@@ -13,7 +19,7 @@ export function MySavings() {
         <Grid container direction="column" className={classes.container}>
           <Label withComingSoon>My Savings</Label>
           <div className={classes.chart}>
-            <ChartMock />
+            <CompositionChart chartData={entries} size="extra-small" />
           </div>
           APY
         </Grid>
