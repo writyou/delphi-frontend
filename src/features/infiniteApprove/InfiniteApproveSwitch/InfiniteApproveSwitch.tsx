@@ -1,18 +1,39 @@
-import React, { useCallback } from 'react';
-import { switchMap } from 'rxjs/operators';
-import { never, combineLatest } from 'rxjs';
-import R from 'ramda';
+import React, { useCallback, useMemo } from 'react';
+import { switchMap, map } from 'rxjs/operators';
+import { empty, combineLatest, of } from 'rxjs';
+import * as R from 'ramda';
 
 import { useCommunication, useSubscribable } from 'utils/react';
 import { Token } from 'model/entities';
 import { useApi } from 'services/api';
 import { SwitchInput } from 'components/inputs';
-import { Loading } from 'components';
+import { Loading, Label, Box } from 'components';
 
 type Props = {
   tokens: Token[];
   spender: string;
 };
+
+function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], spender: string) {
+  return api.web3Manager.account$.pipe(
+    switchMap(account => {
+      if (!account) return empty();
+
+      return tokens.length
+        ? combineLatest(
+            tokens.map(token =>
+              api.erc20.hasInfiniteApprove(token.address, account, spender).pipe(
+                map(hasInfiniteApprove => ({
+                  token,
+                  hasInfiniteApprove,
+                })),
+              ),
+            ),
+          )
+        : of([]);
+    }),
+  );
+}
 
 export function InfiniteApproveSwitch(props: Props) {
   const { tokens, spender } = props;
@@ -20,62 +41,68 @@ export function InfiniteApproveSwitch(props: Props) {
   const api = useApi();
   const [account] = useSubscribable(() => api.web3Manager.account$, [api]);
 
-  const onConfirm = useCallback(
+  const [tokensWithApproves, tokensWithApprovesMeta] = useSubscribable(
+    () => getInfiniteApproves$(api, tokens, spender),
+    [api, R.pluck('address', tokens).join(), spender],
+  );
+
+  const communication = useCommunication(
     async (checked: boolean) => {
       if (!account) return;
       if (checked) {
         await api.erc20.infiniteApproveMultiple(
           account,
           spender,
-          R.pluck('token', tokensWithApproves?.filter(token => !token.hasInfinity) || []),
+          R.pluck('token', tokensWithApproves?.filter(token => !token.hasInfiniteApprove) || []),
         );
       } else {
         await api.erc20.revertInfiniteApproveMultiple(
           account,
           spender,
-          R.pluck('token', tokensWithApproves?.filter(token => token.hasInfinity) || []),
+          R.pluck('token', tokensWithApproves?.filter(token => token.hasInfiniteApprove) || []),
         );
       }
     },
-    [api],
+    [api, account, tokensWithApproves],
   );
 
-  const communication = useCommunication(onConfirm, []);
-
-  const [tokensWithApproves, tokensWithApprovesMeta] = useSubscribable(
-    () => getInfinityApproves$(api, tokens, spender),
-    [api, tokens, spender],
+  const handleOnChange = useCallback(
+    (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+      communication.execute(checked);
+    },
+    [communication.execute],
   );
 
-  const isChecked = tokensWithApproves?.every(x => x.hasInfinity) || false;
+  const isChecked =
+    (tokensWithApproves?.length && tokensWithApproves?.every(x => x.hasInfiniteApprove)) || false;
+  const isDisabled =
+    !tokensWithApproves?.length ||
+    communication.status === 'pending' ||
+    !tokensWithApprovesMeta.loaded;
 
-  const handleOnChange = useCallback((_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    communication.execute(checked);
-  }, []);
+  React.useDebugValue({
+    isChecked,
+    isDisabled,
+    tokensWithApproves,
+  });
 
   return (
     <>
-      <Loading meta={tokensWithApprovesMeta} progressVariant="circle" ignoreError />
+      <Box mr={1}>
+        <Loading
+          meta={tokensWithApprovesMeta}
+          communication={communication}
+          progressVariant="circle"
+          ignoreError
+          progressProps={{ size: 20 }}
+        />
+      </Box>
       <SwitchInput
-        disabled={communication.status === 'pending' || !tokensWithApprovesMeta.loaded}
+        disabled={isDisabled}
         checked={isChecked}
         onChange={handleOnChange}
+        label={<Label hint="Hint for infinite unlock">Infinite unlock</Label>}
       />
     </>
-  );
-}
-
-function getInfinityApproves$(api: ReturnType<typeof useApi>, tokens: Token[], spender: string) {
-  return api.web3Manager.account$.pipe(
-    switchMap(account =>
-      account
-        ? combineLatest([
-            tokens.map(token => ({
-              token,
-              hasInfinity: api.erc20.hasInfinityApprove(token.address, account, spender),
-            })),
-          ])
-        : never(),
-    ),
   );
 }
