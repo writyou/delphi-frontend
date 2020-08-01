@@ -1,5 +1,5 @@
 export { Landing } from './Landing/Landing';
-export { SummaryPage } from './Summary/SummaryPage';
+export { Summary } from './Summary/Summary';
 export { DemoPage } from './Demo/DemoPage';
 export { SavingsPage } from './Savings/SavingsPage';
 export { InvestingPage } from './Investing/InvestingPage';

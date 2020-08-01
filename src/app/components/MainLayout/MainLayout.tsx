@@ -4,11 +4,7 @@ import { NewHeader } from '../NewHeader';
 import { useStyles } from './MainLayout.style';
 import { AppFooter } from '../AppFooter/AppFooter';
 
-type Props = {
-  Content: React.FC;
-};
-
-export const MainLayout: React.FC<Props> = props => {
+export const MainLayout: React.FC = ({ children }) => {
   const classes = useStyles();
 
   return (
@@ -17,9 +13,7 @@ export const MainLayout: React.FC<Props> = props => {
         <div className={classes.header}>
           <NewHeader />
         </div>
-        <div className={classes.content}>
-          <props.Content />
-        </div>
+        <div className={classes.content}>{children}</div>
         <div className={classes.footer}>
           <AppFooter />
         </div>

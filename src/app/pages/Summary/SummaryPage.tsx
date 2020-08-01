@@ -2,9 +2,7 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { useApi } from 'services/api';
 import { Grid, TabContext, TabsList, Tab, TabPanel, Label } from 'components';
-import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import {
@@ -18,12 +16,8 @@ import {
 
 import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
-import { SummaryEmptyPage } from '../SummaryEmpty/SummaryEmptyPage';
 
 export function SummaryPage() {
-  const api = useApi();
-  const [user] = useSubscribable(() => api.user.getUser$(), [api]);
-
   const classes = useStyles();
   const match = useRouteMatch<{ page: string }>('/summary/:page');
   const [selectedPage, setSelectedPage] = React.useState(routes.summary.savings.getElementKey());
@@ -37,10 +31,6 @@ export function SummaryPage() {
   React.useEffect(() => {
     setSelectedPage(page);
   }, [page]);
-
-  if (!user) {
-    return <SummaryEmptyPage />;
-  }
 
   return (
     <Grid container direction="column" className={classes.root}>
