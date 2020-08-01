@@ -19,7 +19,6 @@ import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 
 export function SummaryPage() {
   const classes = useStyles();
-
   const match = useRouteMatch<{ page: string }>('/summary/:page');
   const [selectedPage, setSelectedPage] = React.useState(routes.summary.savings.getElementKey());
 
