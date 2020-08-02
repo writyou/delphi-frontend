@@ -1,5 +1,5 @@
 import { autobind } from 'core-decorators';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { BehaviorSubject, Observable, of, timer, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
 import BN from 'bn.js';
@@ -14,6 +14,7 @@ import {
 } from 'generated/contracts';
 import { TokenAmount, LiquidityAmount, Currency } from 'model/entities';
 import { memoize } from 'utils/decorators';
+import { isEqualHex } from 'utils/hex';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -76,25 +77,34 @@ export class SavingsModuleApi {
   @memoize((...args: string[]) => args.join())
   public getPoolBalance$(poolAddress: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
-      this.subgraph
-        .loadSavingsPool$(poolAddress)
-        .pipe(
-          switchMap(pool =>
-            pool
-              ? timer(0, LONG_POOLING_TIMEOUT).pipe(
-                  switchMap(() =>
-                    this.getProtocolReadonlyContract(
-                      pool.address,
-                    ).methods.normalizedBalance.read(undefined, [
-                      this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
-                      this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
-                    ]),
-                  ),
-                )
-              : of(new BN(0)),
-          ),
+      timer(0, LONG_POOLING_TIMEOUT).pipe(
+        switchMap(() =>
+          this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(undefined, [
+            this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
+            this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
+          ]),
         ),
+      ),
     );
+  }
+
+  @memoize(R.identity)
+  public getPoolBalances$(poolAddress: string): Observable<TokenAmount[]> {
+    const contract = this.getProtocolReadonlyContract(poolAddress);
+    return combineLatest([
+      this.getPool$(poolAddress),
+      contract.methods.supportedTokens(),
+      timer(0, LONG_POOLING_TIMEOUT).pipe(switchMap(() => contract.methods.balanceOfAll.read())),
+    ]).pipe(
+      map(([pool, tokens, balances]) => {
+        return tokens.map((tokenAddress, index) => {
+          const token = pool?.tokens.find(x => isEqualHex(x.address, tokenAddress));
+          if (!token) throw new Error('Token not found');
+
+          return new TokenAmount(balances[index], token);
+        });
+      }),
+    ) as any;
   }
 
   @autobind

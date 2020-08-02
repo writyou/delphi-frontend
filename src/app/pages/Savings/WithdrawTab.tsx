@@ -4,12 +4,12 @@ import Grid from '@material-ui/core/Grid';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribable } from 'utils/react';
-import { Loading, ModalButton } from 'components';
+import { Loading } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
+import { WithdrawFromSavingsPoolButton } from 'features/savingsPools';
 
 import { SavingsPoolCard, WithViewDetails } from './SavingsPoolCard/SavingsPoolCard';
-import { WithdrawForm } from './WithdrawForm';
 
 export function WithdrawTab() {
   const api = useApi();
@@ -33,19 +33,12 @@ export function WithdrawTab() {
                     <WithViewDetails
                       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
                       content={
-                        <ModalButton
+                        <WithdrawFromSavingsPoolButton
+                          size="small"
                           color="primary"
                           variant="outlined"
-                          content={t(tKeys.modules.savings.withdraw.getKey())}
-                        >
-                          {({ closeModal }) => (
-                            <WithdrawForm
-                              poolAddress={pool.address}
-                              supportedTokens={pool.tokens}
-                              onSuccessfulWithdraw={closeModal}
-                            />
-                          )}
-                        </ModalButton>
+                          pool={pool}
+                        />
                       }
                     />
                   }

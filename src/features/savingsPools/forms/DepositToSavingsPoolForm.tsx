@@ -2,51 +2,38 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount } from 'utils/react';
-import { ALL_TOKEN } from 'utils/mock';
-import { denormolizeAmount } from 'utils/amounts';
+import { SavingsPool } from 'model/types';
+import { Grid } from 'components';
+import { InfiniteApproveSwitch } from 'features/infiniteApprove';
+import { ETH_NETWORK_CONFIG } from 'env';
 
 interface FormData {
   amount: TokenAmount | null;
 }
 
-interface WithdrawFormProps {
-  supportedTokens: Token[];
-  poolAddress: string;
-  onSuccessfulWithdraw?(): void;
+interface DepositFormProps {
+  pool: SavingsPool;
+  onSuccessfulDeposit?(): void;
 }
 
 const fieldNames: FieldNames<FormData> = {
   amount: 'amount',
 };
 
-const initialValues: FormData = {
-  amount: null,
-};
-
-export function WithdrawForm({
-  poolAddress,
-  supportedTokens,
-  onSuccessfulWithdraw,
-}: WithdrawFormProps) {
+export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositFormProps) {
   const api = useApi();
   const { t } = useTranslate();
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
   const maxValue$ = useMemo(
-    () =>
-      currentToken
-        ? api.user
-            .getSavingsPoolBalance$(poolAddress)
-            .pipe(map(balance => denormolizeAmount(balance, currentToken)))
-        : empty(),
+    () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()),
     [api, currentToken],
   );
 
@@ -54,6 +41,7 @@ export function WithdrawForm({
     required: true,
     moreThenZero: true,
     maxValue: maxValue$,
+    maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
 
   const handleFormChange = useCallback(
@@ -69,37 +57,46 @@ export function WithdrawForm({
     async ({ amount }: FormData) => {
       if (!amount) return;
 
-      await (amount.currency === ALL_TOKEN
-        ? api.savings.withdrawAll({ amount, poolAddress })
-        : api.savings.withdraw({ amount, poolAddress }));
+      await api.savings.deposit([{ amount, poolAddress: pool.address }]);
 
-      onSuccessfulWithdraw && onSuccessfulWithdraw();
+      onSuccessfulDeposit && onSuccessfulDeposit();
     },
-    [api, poolAddress],
+    [api, pool.address],
   );
 
   const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.savings.withdrawDialog.getKey())} ${
-      amount ? amount.toFormattedString() : '⏳'
-    }`;
+    return `${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
+      amount: amount ? amount.toFormattedString() : '⏳',
+    })}`;
   }, []);
 
   return (
     <FormWithConfirmation<FormData>
-      title="Withdraw"
-      initialValues={initialValues}
+      title="Allocate"
       getConfirmationMessage={getConfirmationMessage}
       onSubmit={handleFormSubmit}
+      submitButton="Allocate"
     >
       <>
-        <TokenAmountField
-          allowSelectAllToken
-          name={fieldNames.amount}
-          currencies={supportedTokens}
-          placeholder="Enter sum"
-          validate={validateAmount}
-          maxValue={maxValue$}
-        />
+        <Grid container spacing={10} alignItems="center">
+          <Grid item xs>
+            <TokenAmountField
+              name={fieldNames.amount}
+              currencies={pool.tokens}
+              placeholder="Enter sum"
+              validate={validateAmount}
+              maxValue={maxValue$}
+            />
+          </Grid>
+          {currentToken && (
+            <Grid item>
+              <InfiniteApproveSwitch
+                tokens={currentToken}
+                spender={ETH_NETWORK_CONFIG.contracts.savingsModule}
+              />
+            </Grid>
+          )}
+        </Grid>
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
