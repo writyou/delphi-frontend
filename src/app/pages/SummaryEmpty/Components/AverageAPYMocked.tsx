@@ -8,12 +8,13 @@ import { Fraction } from 'model/entities/Fraction';
 type Props = {
   value: string;
   title: string;
+  withComingSoon?: boolean;
   icon?: React.ReactNode;
   button?: React.ReactNode;
 };
 
 export function AverageAPYMocked(props: Props) {
-  const { value, title, icon, button } = props;
+  const { value, title, icon, button, withComingSoon } = props;
   const classes = useStyles();
 
   return (
@@ -21,7 +22,7 @@ export function AverageAPYMocked(props: Props) {
       <Metric
         title={
           <Grid container direction="column" className={classes.container}>
-            <Label withComingSoon>{title}</Label>
+            <Label withComingSoon={withComingSoon}>{title}</Label>
             <div className={classes.chart}>{icon && icon}</div>
             Average APY
           </Grid>

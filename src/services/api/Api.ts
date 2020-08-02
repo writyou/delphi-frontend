@@ -7,6 +7,7 @@ import { SwarmApi } from './modules/SwarmApi';
 import { SubgraphApi } from './modules/SubgraphApi';
 import { SavingsModuleApi } from './modules/SavingsModuleApi';
 import { UserApi } from './modules/UserApi';
+import { GlobalStatsApi } from './modules/GlobalStatsApi';
 
 export class Api {
   private subgraphApi = new SubgraphApi(this.apolloClient);
@@ -25,6 +26,8 @@ export class Api {
   );
 
   public user = new UserApi(this.web3Manager, this.subgraphApi, this.erc20, this.savings);
+
+  public globalStats = new GlobalStatsApi(this.subgraphApi, this.savings);
 
   constructor(private apolloClient: ApolloClient<any>) {}
 }

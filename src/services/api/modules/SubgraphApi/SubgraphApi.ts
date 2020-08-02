@@ -19,6 +19,16 @@ export class SubgraphApi {
 
   constructor(private apolloClient: ApolloClient<any>) {}
 
+  @memoize()
+  public loadUsersLength$(): Observable<number> {
+    // TODO use another query, it should be aggregated in subgraph
+    return this.sdk.AllUsers().pipe(
+      map(({ users }) => {
+        return users.length;
+      }),
+    );
+  }
+
   @memoize(R.identity)
   public loadUser$(address: string): Observable<User | null> {
     return this.sdk
