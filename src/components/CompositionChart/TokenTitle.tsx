@@ -15,9 +15,7 @@ export function TokenTitle(props: Props) {
 
   return (
     <div className={classes.root}>
-      <div className={classes.icon}>
-        <TokenIcon tokenAddress={address} />
-      </div>
+      <TokenIcon tokenAddress={address} />
       <div className={classes.title}>{title}</div>
     </div>
   );
@@ -32,7 +30,6 @@ const useStyles = makeStyles(
     title: {
       marginLeft: 10,
     },
-    icon: {},
   }),
   { name: 'TokenTitle' },
 );

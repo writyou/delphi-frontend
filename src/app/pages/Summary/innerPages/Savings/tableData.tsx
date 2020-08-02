@@ -33,13 +33,18 @@ export const columnForChart: Array<NewTable.models.Column<
     cellContent: {
       kind: 'simple',
       render: x => (
-        <Grid container>
-          <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
-          <CompositionLegend<LiquidityAmount, SavingsPool>
-            chartData={x}
-            Template={SimpleLegend}
-            renderLabel={({ pieData }) => pieData.payload.devName}
-          />
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item>
+            <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
+          </Grid>
+          <Grid item>
+            <CompositionLegend<LiquidityAmount, SavingsPool>
+              chartData={x}
+              Template={props => (
+                <SimpleLegend {...props} renderLabel={({ pieData }) => pieData.payload.devName} />
+              )}
+            />
+          </Grid>
         </Grid>
       ),
     },

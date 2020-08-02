@@ -29,7 +29,7 @@ export function SimpleLegend<T extends Amount, P = void>(props: Props<T, P>) {
 export const useStyles = makeStyles(
   theme => ({
     legend: {
-      marginLeft: 23,
+      margin: 0,
       padding: 0,
       listStyle: 'none',
       fontSize: 13,

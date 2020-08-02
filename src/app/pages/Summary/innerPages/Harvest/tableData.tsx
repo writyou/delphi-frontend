@@ -62,13 +62,21 @@ export const columnForChart: Array<NewTable.models.Column<
     cellContent: {
       kind: 'simple',
       render: x => (
-        <Grid container>
-          <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
-          <CompositionLegend<LiquidityAmount, TokenAmount>
-            chartData={x}
-            Template={SimpleLegend}
-            renderLabel={({ pieData }) => pieData.payload.currency.symbol}
-          />
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item>
+            <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
+          </Grid>
+          <Grid item>
+            <CompositionLegend<LiquidityAmount, TokenAmount>
+              chartData={x}
+              Template={props => (
+                <SimpleLegend
+                  {...props}
+                  renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+                />
+              )}
+            />
+          </Grid>
         </Grid>
       ),
     },
