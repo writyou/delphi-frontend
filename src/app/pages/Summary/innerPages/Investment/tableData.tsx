@@ -36,7 +36,12 @@ export const columnForChart: Array<NewTable.models.Column<
       render: x => (
         <Grid container alignItems="center" spacing={3}>
           <Grid item>
-            <CompositionChart chartData={x} InnerLegend={InnerLegendAPY} size="extra-large" />
+            <CompositionChart
+              withBackground
+              chartData={x}
+              InnerLegend={InnerLegendAPY}
+              size="extra-large"
+            />
           </Grid>
           <Grid item>
             <CompositionLegend<LiquidityAmount, SavingsPool>

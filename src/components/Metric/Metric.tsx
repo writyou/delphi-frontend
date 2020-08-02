@@ -30,7 +30,7 @@ const useStyles = makeStyles(
     root: {},
     title: {
       fontSize: 16,
-      marginBottom: 16,
+      marginBottom: 12,
     },
     value: {
       display: 'flex',

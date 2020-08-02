@@ -19,7 +19,7 @@ function PoolPieChart() {
   return (
     <Grid container spacing={3} wrap="nowrap">
       <Grid item>
-        <CompositionChart chartData={entries} size="medium" />
+        <CompositionChart withBackground chartData={entries} size="medium" />
       </Grid>
       <Grid item>
         <CompositionLegend chartData={entries} Template={TokensTableLegend} />
