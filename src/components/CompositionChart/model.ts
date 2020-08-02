@@ -7,6 +7,7 @@ export type PieChartData<T extends Amount, P = void> = {
 };
 
 export type ChartColor = {
+  svgGradient: React.ReactElement;
   svgGradientID: string;
   rgb: string;
 };

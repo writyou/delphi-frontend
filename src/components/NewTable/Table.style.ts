@@ -18,6 +18,7 @@ export const useStyles = makeStyles(
       root: {
         width: '100%',
         borderSpacing: 0,
+        fontSize: 16,
 
         '& tr:not($subtableRow) + $subtableRow $cell': {
           paddingTop: 30,

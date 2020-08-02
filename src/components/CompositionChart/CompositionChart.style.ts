@@ -1,10 +1,10 @@
 import { makeStyles } from 'utils/styles';
 
-const CHART_WIDTH_EXTRA_SMALL = 55;
-const CHART_WIDTH_SMALL = 80;
-const CHART_WIDTH_MEDIUM = 100;
-const CHART_WIDTH_LARGE = 135;
-const CHART_WIDTH_EXTRA_LARGE = 155;
+const CHART_WIDTH_EXTRA_SMALL = 60;
+const CHART_WIDTH_SMALL = 85;
+const CHART_WIDTH_MEDIUM = 114;
+const CHART_WIDTH_LARGE = 140;
+const CHART_WIDTH_EXTRA_LARGE = 170;
 
 export const CHART_WIDTH = 135;
 

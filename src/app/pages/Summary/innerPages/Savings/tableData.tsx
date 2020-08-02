@@ -7,6 +7,8 @@ import {
   PieChartData,
   SimpleLegend,
   CompositionChart,
+  CompositionLegend,
+  Grid,
   Metric,
   Link,
   Box,
@@ -30,17 +32,24 @@ export const columnForChart: Array<NewTable.models.Column<
       kind: 'simple',
       render: x => (
         <Box ml={10}>
-          <CompositionChart
-            chartData={x}
-            Legend={({ sectors }) => (
-              <SimpleLegend
-                sectors={sectors}
-                renderLabel={({ pieData }) => pieData.payload.devName}
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item>
+              <CompositionChart
+                withBackground
+                chartData={x}
+                InnerLegend={ChartInnerLegend}
+                size="extra-large"
               />
-            )}
-            InnerLegend={ChartInnerLegend}
-            size="extra-large"
-          />
+            </Grid>
+            <Grid item>
+              <CompositionLegend<LiquidityAmount, SavingsPool>
+                chartData={x}
+                Template={props => (
+                  <SimpleLegend {...props} renderLabel={({ pieData }) => pieData.payload.devName} />
+                )}
+              />
+            </Grid>
+          </Grid>
         </Box>
       ),
     },

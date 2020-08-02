@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Button, Grid } from 'components';
+import { Button, Grid, Metric } from 'components';
 import {
   PoolLiquidity,
   PoolLiquidityAPY,
@@ -55,12 +55,10 @@ export function SavingsPoolPage() {
       </Grid>
       <Grid container className={cn(classes.withBorder, classes.row)}>
         <Grid container item xs={6} className={classes.paddingRight}>
-          Approximate Reward Weekly
-          <PoolPieChart />
+          <Metric title="Approximate Reward Weekly" value={<PoolPieChart />} />
         </Grid>
         <Grid container item xs={4}>
-          Currency Reserves
-          <PoolPieChart />
+          <Metric title="Currency Reserves" value={<PoolPieChart />} />
         </Grid>
       </Grid>
       <Grid container>

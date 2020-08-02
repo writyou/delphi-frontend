@@ -69,3 +69,4 @@ export * from './TokensIcons/TokensIcons';
 export * from './form';
 export * from './CompositionChart';
 export * from './Card/Card';
+export * from './CompositionLegend';
