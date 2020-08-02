@@ -82,7 +82,7 @@ export function SummaryPage() {
               to={routes.summary.harvest.getRedirectPath()}
             />
           </TabsList>
-          <Label withComingSoon />
+          {selectedPage !== routes.summary.savings.getElementKey() && <Label withComingSoon />}
         </div>
         <TabPanel value={routes.summary.savings.getElementKey()}>
           <innerPages.Savings />

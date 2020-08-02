@@ -1,4 +1,4 @@
-subscription SavingsPool($id: ID!) {
+subscription SavingsPool($id: ID!, $apysDateGT: BigInt!) {
   savingsPool(id: $id) {
     id
     poolToken {
@@ -11,6 +11,10 @@ subscription SavingsPool($id: ID!) {
       id
       symbol
       decimals
+    }
+    aprHistory(where: {date_gt: $apysDateGT}) {
+      amount
+      duration
     }
   }
 }

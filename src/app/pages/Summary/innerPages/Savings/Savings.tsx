@@ -1,67 +1,48 @@
 import * as React from 'react';
+import { map } from 'rxjs/operators';
 
 import { makeStyles } from 'utils/styles';
-import {
-  NewTable,
-  Loading,
-  Typography,
-  Hint,
-  Grid,
-  FormattedAmount,
-  PieChartData,
-} from 'components';
-import { percentAmount, tokenAmount, liquidityAmount, zeroAddress } from 'utils/mock';
-import { LiquidityAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { NewTable, Loading, Typography, Hint, Grid } from 'components';
+import { useSubscribable } from 'utils/react';
+import { useApi } from 'services/api';
+import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
 
 import * as tableData from './tableData';
-
-const entries: tableData.Order[] = [
-  {
-    pool: 'sUSD',
-    poolFullTitle: 'Curve',
-    tokens: ['USDT', 'DAI'],
-    APY: percentAmount,
-    balance: tokenAmount,
-    additionalTable: [0, 4],
-  },
-];
-
-export const entriesForChart = [
-  new Array<PieChartData<LiquidityAmount, SavingsPool>>(5).fill({
-    value: liquidityAmount,
-    payload: {
-      address: zeroAddress,
-      devName: 'sUSD',
-      poolToken: tokenAmount.currency,
-      tokens: [],
-    },
-  }),
-];
 
 export function Savings() {
   const classes = useStyles();
 
+  const api = useApi();
+  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+
+  const [entriesForChart, entriesForChartMeta] = useSubscribable(
+    () =>
+      api.user
+        .getAllSavingsPoolsBalances$()
+        .pipe(
+          map(balances => [
+            balances.map(({ balance, pool }) => ({ value: balance, payload: pool })),
+          ]),
+        ),
+    [api],
+  );
+
   return (
     <div className={classes.root}>
-      <Loading>
-        {!entries.length ? (
+      <Loading meta={[poolsMeta, entriesForChartMeta]}>
+        {!pools?.length || !entriesForChart ? (
           <Hint>
             <Typography>Not found</Typography>
           </Hint>
         ) : (
           <Grid container className={classes.table}>
-            <Grid item xs={8}>
+            <Grid item xs={7}>
               <NewTable.Component
                 columns={tableData.columnsWithSubtable}
-                entries={entries}
+                entries={pools}
                 summary={{
-                  renderLabel: () => (
-                    <>
-                      Total Allocated: <FormattedAmount sum={liquidityAmount} variant="plain" />
-                    </>
-                  ),
-                  renderValue: () => '',
+                  renderLabel: () => 'Total Allocated:',
+                  renderValue: () => <UserSavingsPoolsTotalBalance />,
                 }}
               />
             </Grid>

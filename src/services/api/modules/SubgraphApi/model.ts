@@ -13,3 +13,7 @@ type PromiseToObservable<F extends (...args: any[]) => Promise<any>> = (
 ) => Observable<UnboxPromise<ReturnType<F>>>;
 
 type UnboxPromise<T extends Promise<any>> = T extends Promise<infer R> ? R : never;
+
+export type SubgraphConfig = {
+  aprDecimals: number;
+};

@@ -8,11 +8,12 @@ import {
   PieChartData,
   CompositionLegend,
   Grid,
+  TokensIcons,
 } from 'components';
 import { TokenAmount, PercentAmount, LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
+import { mockedTokens } from 'utils/mock';
 
-import { IconsBlock } from '../../Components/IconsBlock';
 import { PoolTitle } from '../../Components/PoolTitle';
 import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
@@ -56,7 +57,7 @@ export const columnsWithSubtable: Array<NewTable.models.Column<Order, number>> =
     renderTitle: () => '',
     cellContent: {
       kind: 'simple',
-      render: x => <IconsBlock icons={x.tokens} />,
+      render: () => <TokensIcons tokens={mockedTokens} />,
     },
   },
 

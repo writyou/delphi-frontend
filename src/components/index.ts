@@ -65,6 +65,7 @@ export * from './Profit/Profit';
 export * from './ChartProfit/ChartProfit';
 export * from './ChartBlock/ChartBlock';
 export * from './TokenIcon/TokenIcon';
+export * from './TokensIcons/TokensIcons';
 export * from './form';
 export * from './CompositionChart';
 export * from './Card/Card';
