@@ -1,42 +1,47 @@
 import * as React from 'react';
 
-import { Grid, Button } from 'components';
+import { Grid, Button, Divider } from 'components';
 import { Fish, CatsPaw, ArrowStartToSave } from 'components/icons';
 import { makeStyles } from 'utils/styles';
-import { ActiveMembers, TotalValueLocked } from 'features/metrics';
 
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 import { AverageAPYMocked } from './Components/AverageAPYMocked';
+import { LiveStats } from '../Summary/Components/LiveStats';
 
 export function SummaryEmptyPage() {
   const classes = useStyles();
 
   return (
-    <Grid container direction="column" className={classes.root}>
-      <Grid container xs>
-        <Grid item xs>
-          <div className={classes.chart}>
+    <div className={classes.root}>
+      <Grid container spacing={10}>
+        <Grid item xs={5} container direction="column" justify="space-between">
+          <Grid item xs>
             <PortfolioBalanceChart />
-          </div>
+          </Grid>
+          <Grid item>
+            <div className={classes.startToSave}>
+              You don’t have any pools yet. Start to save and invest to get the harvest!
+              <ArrowStartToSave className={classes.arrow} />
+            </div>
+          </Grid>
         </Grid>
-        {renderMetrics()}
+        <Grid item xs={7}>
+          {renderMetrics()}
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 
   function renderMetrics() {
     return (
-      <Grid container direction="column" xs className={classes.metrics}>
-        <Grid container justify="space-between" className={classes.liveStats}>
-          <Grid item>Live Stats</Grid>
-          <Grid item>
-            <ActiveMembers />
-          </Grid>
-          <Grid item>
-            <TotalValueLocked />
-          </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <LiveStats />
         </Grid>
-        <Grid container justify="space-between" xs className={classes.metrics}>
+        <Grid item xs={12}>
+          <Divider orientation="horizontal" />
+        </Grid>
+        <Grid item xs={3}>
           <AverageAPYMocked
             title="My Savings"
             value="10"
@@ -47,7 +52,10 @@ export function SummaryEmptyPage() {
               </Button>
             }
           />
+        </Grid>
+        <Grid item xs={3}>
           <AverageAPYMocked
+            withComingSoon
             title="My Investment"
             value="15"
             icon={<CatsPaw variant="turquoise" className={classes.icon} />}
@@ -57,7 +65,10 @@ export function SummaryEmptyPage() {
               </Button>
             }
           />
+        </Grid>
+        <Grid item xs={3}>
           <AverageAPYMocked
+            withComingSoon
             title="DCA"
             value="15"
             icon={<CatsPaw variant="violet" className={classes.icon} />}
@@ -67,15 +78,14 @@ export function SummaryEmptyPage() {
               </Button>
             }
           />
+        </Grid>
+        <Grid item xs={3}>
           <AverageAPYMocked
+            withComingSoon
             title="My Harvest"
             value="20"
             icon={<Fish className={classes.fishIcon} />}
           />
-          <div className={classes.startToSave}>
-            You don’t have any pools yet. Start to save and invest to get the harvest!
-            <ArrowStartToSave className={classes.arrow} />
-          </div>
         </Grid>
       </Grid>
     );
@@ -87,18 +97,6 @@ const useStyles = makeStyles(
     root: {
       padding: 50,
     },
-    chart: {
-      maxWidth: 537,
-      position: 'relative',
-    },
-    metrics: {
-      position: 'relative',
-    },
-    liveStats: {
-      borderBottom: '1px solid rgba(255,255,255,0.1)',
-      paddingBottom: 40,
-      marginBottom: 30,
-    },
     icon: {
       fontSize: 50,
     },
@@ -107,9 +105,6 @@ const useStyles = makeStyles(
       height: 50,
     },
     startToSave: {
-      position: 'absolute',
-      bottom: 0,
-      left: '-100%',
       display: 'flex',
       alignItems: 'center',
     },

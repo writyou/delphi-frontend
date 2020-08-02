@@ -2,20 +2,14 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Grid, TabContext, TabsList, Tab, TabPanel, Label } from 'components';
+import { Grid, TabContext, TabsList, Tab, TabPanel, Label, Divider } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
-import {
-  ActiveMembers,
-  TotalValueLocked,
-  MyHarvest,
-  DCA,
-  MyInvestment,
-  MySavings,
-} from 'features/metrics';
+import { MyHarvest, DCA, MyInvestment, MySavings } from 'features/metrics';
 
 import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
+import { LiveStats } from './Components/LiveStats';
 
 export function SummaryPage() {
   const classes = useStyles();
@@ -33,26 +27,26 @@ export function SummaryPage() {
   }, [page]);
 
   return (
-    <Grid container direction="column" className={classes.root}>
-      <Grid container xs>
-        <Grid item xs>
-          <div className={classes.chart}>
-            <PortfolioBalanceChart />
-          </div>
+    <div className={classes.root}>
+      <Grid container spacing={10}>
+        <Grid item xs={5}>
+          <PortfolioBalanceChart />
         </Grid>
-        {renderMetrics()}
+        <Grid item xs={7}>
+          {renderMetrics()}
+        </Grid>
+        <Grid item xs={12}>
+          {renderTabs()}
+        </Grid>
       </Grid>
-      <Grid container direction="column" xs className={classes.innerPages}>
-        {renderTabs()}
-      </Grid>
-    </Grid>
+    </div>
   );
 
   function renderTabs() {
     return (
       <TabContext value={selectedPage}>
         <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
+          <TabsList value={selectedPage} onChange={handleTabChange}>
             <Tab
               label="My Savings Pools"
               className={classes.tab}
@@ -102,20 +96,23 @@ export function SummaryPage() {
 
   function renderMetrics() {
     return (
-      <Grid container direction="column" xs className={classes.metrics}>
-        <Grid container justify="space-between" className={classes.liveStats}>
-          <Grid item>Live Stats</Grid>
-          <Grid item>
-            <ActiveMembers />
-          </Grid>
-          <Grid item>
-            <TotalValueLocked />
-          </Grid>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <LiveStats />
         </Grid>
-        <Grid container justify="space-between" xs>
+        <Grid item xs={12}>
+          <Divider orientation="horizontal" />
+        </Grid>
+        <Grid item xs={3}>
           <MySavings />
+        </Grid>
+        <Grid item xs={3}>
           <MyInvestment />
+        </Grid>
+        <Grid item xs={3}>
           <DCA />
+        </Grid>
+        <Grid item xs={3}>
           <MyHarvest />
         </Grid>
       </Grid>
@@ -128,19 +125,6 @@ const useStyles = makeStyles(
     root: {
       padding: 50,
     },
-    chart: {
-      maxWidth: 537,
-      position: 'relative',
-    },
-    metrics: {
-      position: 'relative',
-    },
-    liveStats: {
-      borderBottom: '1px solid rgba(255,255,255,0.1)',
-      paddingBottom: 40,
-      marginBottom: 30,
-    },
-    tabs: {},
     tab: {
       minWidth: 112,
     },

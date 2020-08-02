@@ -12,9 +12,10 @@ import {
   createDefiProtocol,
   createSavingsPoolToken,
 } from 'generated/contracts';
-import { TokenAmount, LiquidityAmount, Currency } from 'model/entities';
+import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -198,8 +199,6 @@ function sumAmountsByToken(amounts: TokenAmount[]): TokenAmount[] {
   return Array.from(reducedAmounts.values());
 }
 
-const defaultLiquidityCurrency = new Currency('$', 18);
-
 function toLiquidityAmount$(amount$: Observable<BN | IToBN>): Observable<LiquidityAmount>;
 function toLiquidityAmount$(amount$: Observable<Array<BN | IToBN>>): Observable<LiquidityAmount[]>;
 function toLiquidityAmount$(
@@ -208,8 +207,8 @@ function toLiquidityAmount$(
   return amount$.pipe(
     map(amounts =>
       Array.isArray(amounts)
-        ? amounts.map(amount => new LiquidityAmount(amount, defaultLiquidityCurrency))
-        : new LiquidityAmount(amounts, defaultLiquidityCurrency),
+        ? amounts.map(amount => new LiquidityAmount(amount, DEFAULT_LIQUIDITY_CURRENCY))
+        : new LiquidityAmount(amounts, DEFAULT_LIQUIDITY_CURRENCY),
     ),
   );
 }
