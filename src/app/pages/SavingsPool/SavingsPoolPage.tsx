@@ -5,18 +5,15 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Button, Grid, Metric, IconButton, Hint, Loading } from 'components';
-import {
-  PoolLiquidity,
-  PoolLiquidityAPY,
-  DailyTradeVolume,
-  PoolSwapFee,
-  MySupplyBalance,
-} from 'features/metrics';
+import { Button, Grid, Metric, IconButton, Hint, Loading, FormattedAmount } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { SavingsPoolBalancesComposition } from 'features/savingsPools';
+import {
+  SavingsPoolBalancesComposition,
+  SavingsPoolLiquidity,
+  UserSavingsPoolBalance,
+} from 'features/savingsPools';
 
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>(routes.savings.pool.id.getRoutePath());
@@ -59,14 +56,11 @@ export function SavingsPoolPage() {
           <Grid container className={classes.row}>
             <Grid item xs={6} className={classes.paddingRight}>
               <Grid container justify="space-between">
-                <PoolLiquidity />
-                <PoolLiquidityAPY />
-              </Grid>
-            </Grid>
-            <Grid item xs={4}>
-              <Grid container justify="space-between">
-                <DailyTradeVolume />
-                <PoolSwapFee />
+                <Metric
+                  title="Pool Liquidity"
+                  value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
+                />
+                <Metric title="APY" value={<FormattedAmount sum={pool.apy} />} />
               </Grid>
             </Grid>
           </Grid>
@@ -86,7 +80,10 @@ export function SavingsPoolPage() {
           </Grid>
           <Grid container>
             <Grid item xs={6}>
-              <MySupplyBalance />
+              <Metric
+                title="My Supply Balance"
+                value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
+              />
             </Grid>
             <Grid item xs={6}>
               {renderForm()}
