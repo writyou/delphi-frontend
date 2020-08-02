@@ -30,7 +30,7 @@ const initialValues: FormData = {
   amount: null,
 };
 
-export function WithdrawForm({
+export function WithdrawFromSavingsPoolForm({
   poolAddress,
   supportedTokens,
   onSuccessfulWithdraw,

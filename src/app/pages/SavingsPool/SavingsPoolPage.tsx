@@ -13,6 +13,7 @@ import {
   SavingsPoolBalancesComposition,
   SavingsPoolLiquidity,
   UserSavingsPoolBalance,
+  WithdrawFromSavingsPoolButton,
 } from 'features/savingsPools';
 
 export function SavingsPoolPage() {
@@ -48,9 +49,12 @@ export function SavingsPoolPage() {
               </Grid>
             </Grid>
             <Grid item>
-              <Button color="primary" variant="outlined">
-                Withdraw
-              </Button>
+              <WithdrawFromSavingsPoolButton
+                size="small"
+                color="primary"
+                variant="outlined"
+                pool={pool}
+              />
             </Grid>
           </Grid>
           <Grid container className={classes.row}>
