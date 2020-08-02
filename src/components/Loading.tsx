@@ -9,13 +9,14 @@ import { SubscriptionResult } from '@apollo/react-common';
 import { SubSet } from '_helpers';
 
 import { CommunicationState } from 'utils/react';
+import { toArray } from 'utils/array';
 
 interface IMeta {
   loaded: boolean;
   error?: string | null;
 }
 
-type MaybeArray<T> = T | T[];
+export type MaybeArray<T> = T | T[];
 type ProgressVariant = 'linear' | 'circle' | 'skeleton';
 
 type DefaultProgressVariant = SubSet<ProgressVariant, 'skeleton'>;
@@ -42,10 +43,6 @@ const useStyles = makeStyles({
     flexGrow: 1,
   },
 });
-
-function toArray<T>(value: MaybeArray<T>): T[] {
-  return Array.isArray(value) ? value : [value];
-}
 
 function communicationsToMetas(values: MaybeArray<CommunicationState<any, any>>): IMeta[] {
   return toArray(values).map<IMeta>(value => ({

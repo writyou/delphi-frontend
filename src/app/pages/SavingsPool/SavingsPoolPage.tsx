@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Button, Grid, Metric, IconButton, Hint, Loading, FormattedAmount } from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -14,6 +14,7 @@ import {
   SavingsPoolLiquidity,
   UserSavingsPoolBalance,
   WithdrawFromSavingsPoolButton,
+  DepositToSavingsPoolForm,
 } from 'features/savingsPools';
 
 export function SavingsPoolPage() {
@@ -42,7 +43,6 @@ export function SavingsPoolPage() {
             <Grid item>
               <Grid container alignItems="center">
                 <IconButton size="small" onClick={handleBackOnClick}>
-                  {/* <Back className={classes.backButton} /> */}
                   <Back />
                 </IconButton>
                 <div className={classes.poolTitle}>{pool.devName}</div>
@@ -90,7 +90,7 @@ export function SavingsPoolPage() {
               />
             </Grid>
             <Grid item xs={6}>
-              {renderForm()}
+              <DepositToSavingsPoolForm pool={pool} />
             </Grid>
           </Grid>
         </Grid>
@@ -99,38 +99,6 @@ export function SavingsPoolPage() {
       )}
     </Loading>
   );
-
-  function renderForm() {
-    return (
-      <Grid container direction="column">
-        <Grid item className={classes.allocateTitle}>
-          Allocate
-        </Grid>
-        <Grid container item>
-          <Grid item xs={8}>
-            Token input
-          </Grid>
-          <Grid item xs={4}>
-            <Grid container justify="flex-end">
-              Switch
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid container item className={classes.row}>
-          <Grid item xs={8}>
-            Estimated Gas Price
-          </Grid>
-          <Grid item xs={4}>
-            <Grid container justify="flex-end">
-              <Button color="primary" variant="contained">
-                Allocate
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
-    );
-  }
 
   function handleBackOnClick() {
     if (history.length > 2) {
@@ -163,12 +131,6 @@ const useStyles = makeStyles(
     },
     row: {
       paddingTop: 50,
-    },
-    allocateTitle: {
-      marginBottom: 20,
-    },
-    backButton: {
-      cursor: 'pointer',
     },
   }),
   { name: 'SavingsPoolPage' },

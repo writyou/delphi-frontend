@@ -41,6 +41,7 @@ const en = {
       withdrawTabText: 'Short friendly description how it works',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
+      allocateToOnePoolDialog: 'Are you sure you want to allocate %{amount}?',
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
     },

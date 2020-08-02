@@ -8,9 +8,10 @@ import { Token } from 'model/entities';
 import { useApi } from 'services/api';
 import { SwitchInput } from 'components/inputs';
 import { Loading, Label, Box, Grid } from 'components';
+import { toArray } from 'utils/array';
 
 type Props = {
-  tokens: Token[];
+  tokens: Token | Token[];
   spender: string;
 };
 
@@ -36,7 +37,9 @@ function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], s
 }
 
 export function InfiniteApproveSwitch(props: Props) {
-  const { tokens, spender } = props;
+  const { spender } = props;
+  // eslint-disable-next-line react/destructuring-assignment
+  const tokens = toArray(props.tokens);
 
   const api = useApi();
   const [account] = useSubscribable(() => api.web3Manager.account$, [api]);
@@ -88,7 +91,7 @@ export function InfiniteApproveSwitch(props: Props) {
 
   return (
     <Grid container wrap="nowrap">
-      <Box mr={1}>
+      <Box mr={1} display="flex">
         <Loading
           meta={tokensWithApprovesMeta}
           communication={communication}
