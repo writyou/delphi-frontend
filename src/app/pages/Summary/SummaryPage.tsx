@@ -124,10 +124,10 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Metric
-              title="My Savings"
-              value={<UserSavingsPoolsBalancesComposition size="extra-small" />}
-            />
+            <Label>My Savings</Label>
+          </Grid>
+          <Grid item className={classes.chart}>
+            <UserSavingsPoolsBalancesComposition size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />
@@ -135,10 +135,10 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Metric
-              title={<Label withComingSoon>My Investment</Label>}
-              value={<CompositionChart chartData={entries} size="extra-small" />}
-            />
+            <Label withComingSoon>My Investment</Label>
+          </Grid>
+          <Grid item className={classes.chart}>
+            <CompositionChart chartData={entries} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -146,10 +146,10 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Metric
-              title={<Label withComingSoon>DCA</Label>}
-              value={<CompositionChart chartData={entries} size="extra-small" />}
-            />
+            <Label withComingSoon>DCA</Label>
+          </Grid>
+          <Grid item className={classes.chart}>
+            <CompositionChart chartData={entries} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -157,10 +157,10 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Metric
-              title={<Label withComingSoon>My Harvest</Label>}
-              value={<CompositionChart chartData={entries} size="extra-small" />}
-            />
+            <Label withComingSoon>My Harvest</Label>
+          </Grid>
+          <Grid item className={classes.chart}>
+            <CompositionChart chartData={entries} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -186,6 +186,9 @@ const useStyles = makeStyles(
     },
     innerPages: {
       marginTop: 60,
+    },
+    chart: {
+      marginTop: 'auto',
     },
   }),
   { name: 'SummaryPage' },
