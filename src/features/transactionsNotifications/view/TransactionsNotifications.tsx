@@ -4,6 +4,8 @@ import { useSnackbar } from 'notistack';
 import { useSubscribable } from 'utils/react';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useApi, SubmittedTransaction } from 'services/api';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
+import { LiquidityAmount } from 'model/entities';
 
 const tKeys = tKeysAll.features.notifications;
 
@@ -65,6 +67,17 @@ function getTranslateParams(transaction: SubmittedTransaction): Record<string, s
     case 'erc20.approve':
       return {
         amount: transaction.payload.value.toFormattedString(),
+      };
+    case 'savings.withdraw':
+      return {
+        amount: transaction.payload.withdraw.amount.toFormattedString(),
+      };
+    case 'savings.withdrawAll':
+      return {
+        amount: new LiquidityAmount(
+          transaction.payload.withdraw.amount,
+          DEFAULT_LIQUIDITY_CURRENCY,
+        ).toFormattedString(),
       };
     default:
       return {};

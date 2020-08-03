@@ -69,14 +69,14 @@ const en = {
         error: 'Deposit to savings pool. Failed',
       },
       'savings.withdraw': {
-        pending: 'Withdraw from savings pool. Pending',
-        success: 'Withdraw from savings pool. Successful',
-        error: 'Withdraw from savings pool. Failed',
+        pending: 'Withdraw %{amount} from savings pool. Pending',
+        success: 'Withdraw %{amount} from savings pool. Successful',
+        error: 'Withdraw %{amount} from savings pool. Failed',
       },
       'savings.withdrawAll': {
-        pending: 'Withdraw from savings pool. Pending',
-        success: 'Withdraw from savings pool. Successful',
-        error: 'Withdraw from savings pool. Failed',
+        pending: 'Withdraw %{amount} from savings pool. Pending',
+        success: 'Withdraw %{amount} from savings pool. Successful',
+        error: 'Withdraw %{amount} from savings pool. Failed',
       },
     },
     networkWarning: {
