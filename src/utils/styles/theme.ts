@@ -371,6 +371,59 @@ function getTheme(type: 'light' | 'dark'): Theme {
           padding: 0,
         },
       },
+
+      MuiOutlinedInput: {
+        root: {
+          '&$focused': {
+            background: '#191924',
+          },
+
+          '&$disabled': {
+            color: 'rgba(255, 255, 255, 0.2)',
+          },
+
+          '&$focused, &$disabled, &:hover': {
+            '& $notchedOutline': {
+              border: '1px solid #40404b',
+            },
+          },
+
+          '&$error $notchedOutline': {
+            borderColor: '#643d3d',
+          },
+        },
+
+        adornedEnd: {
+          paddingRight: 0,
+        },
+
+        input: {
+          fontWeight: 300,
+          padding: defaultTheme.spacing(1.125, 1.375),
+
+          '&::placeholder': {
+            color: 'rgba(255, 255, 255, 0.5)',
+          },
+
+          '&:-webkit-autofill': {
+            background: 'transparent',
+          },
+        },
+
+        notchedOutline: {
+          borderColor: '#40404b',
+        },
+      },
+
+      MuiFormHelperText: {
+        root: {
+          fontWeight: 300,
+
+          '&$error': {
+            margin: '5px 0 0',
+          },
+        },
+      },
     },
   });
 }

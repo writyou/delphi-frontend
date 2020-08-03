@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState, useMemo, ComponentPropsWithout
 import BN from 'bn.js';
 
 import { fromBaseUnit, toBaseUnit } from 'utils/bn';
+import { makeStyles } from 'utils/styles';
 import { IToBN } from 'model/types';
 
 import { Button } from '../Button/Button';
@@ -18,6 +19,7 @@ interface IOwnProps {
 type IProps = IOwnProps & Omit<ComponentPropsWithoutRef<typeof TextInput>, 'onChange'>;
 
 function DecimalsInput(props: IProps) {
+  const classes = useStyles();
   const {
     onChange,
     baseDecimals,
@@ -94,7 +96,7 @@ function DecimalsInput(props: IProps) {
       onChange={handleInputChange}
       InputProps={{
         endAdornment: maxValue && (
-          <Button disabled={disabled} color="primary" onClick={handleMaxButtonClick}>
+          <Button disabled={disabled} onClick={handleMaxButtonClick} className={classes.maxButton}>
             MAX
           </Button>
         ),
@@ -102,5 +104,13 @@ function DecimalsInput(props: IProps) {
     />
   );
 }
+
+const useStyles = makeStyles(() => ({
+  maxButton: {
+    fontSize: 10,
+    padding: 11,
+    minWidth: 'unset',
+  },
+}));
 
 export { DecimalsInput };
