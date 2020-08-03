@@ -2,14 +2,33 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Grid, TabContext, TabsList, Tab, TabPanel, Label, Divider } from 'components';
+import {
+  Grid,
+  TabContext,
+  TabsList,
+  Tab,
+  TabPanel,
+  Label,
+  Divider,
+  Metric,
+  FormattedAmount,
+  CompositionChart,
+  PieChartData,
+} from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
-import { MyHarvest, DCA, MyInvestment, MySavings } from 'features/metrics';
+import { UserSavingsPoolsAvgAPY, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
+import { percentAmount, tokenAmount } from 'utils/mock';
+import { TokenAmount } from 'model/entities';
 
 import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 import { LiveStats } from './Components/LiveStats';
+
+const entries = new Array<PieChartData<TokenAmount>>(5).fill({
+  value: tokenAmount,
+  payload: undefined,
+});
 
 export function SummaryPage() {
   const classes = useStyles();
@@ -103,17 +122,49 @@ export function SummaryPage() {
         <Grid item xs={12}>
           <Divider orientation="horizontal" />
         </Grid>
-        <Grid item xs={3}>
-          <MySavings />
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
+          <Grid item>
+            <Metric
+              title="My Savings"
+              value={<UserSavingsPoolsBalancesComposition size="extra-small" />}
+            />
+          </Grid>
+          <Grid item>
+            <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <MyInvestment />
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
+          <Grid item>
+            <Metric
+              title={<Label withComingSoon>My Investment</Label>}
+              value={<CompositionChart chartData={entries} size="extra-small" />}
+            />
+          </Grid>
+          <Grid item>
+            <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <DCA />
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
+          <Grid item>
+            <Metric
+              title={<Label withComingSoon>DCA</Label>}
+              value={<CompositionChart chartData={entries} size="extra-small" />}
+            />
+          </Grid>
+          <Grid item>
+            <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <MyHarvest />
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
+          <Grid item>
+            <Metric
+              title={<Label withComingSoon>My Harvest</Label>}
+              value={<CompositionChart chartData={entries} size="extra-small" />}
+            />
+          </Grid>
+          <Grid item>
+            <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
+          </Grid>
         </Grid>
       </Grid>
     );

@@ -9,7 +9,7 @@ import { TabsList, TabContext, Tab, TabPanel, Label } from 'components';
 
 import * as innerPages from './innerPages';
 
-export function InvestingPage() {
+export function InvestmentsPage() {
   const match = useRouteMatch<{ page: string }>('/investing/:page');
   const [selectedPage, setSelectedPage] = React.useState('all');
 
@@ -34,23 +34,23 @@ export function InvestingPage() {
               label="All-in"
               className={classes.tab}
               component={Link}
-              value={routes.investing.all.getElementKey()}
-              to={routes.investing.all.getRedirectPath()}
+              value={routes.investments.all.getElementKey()}
+              to={routes.investments.all.getRedirectPath()}
             />
             <Tab
               label="DCA"
               className={classes.tab}
               component={Link}
-              value={routes.investing.dca.getElementKey()}
-              to={routes.investing.dca.getRedirectPath()}
+              value={routes.investments.dca.getElementKey()}
+              to={routes.investments.dca.getRedirectPath()}
             />
           </TabsList>
           <Label withComingSoon />
         </div>
-        <TabPanel value={routes.investing.all.getElementKey()}>
+        <TabPanel value={routes.investments.all.getElementKey()}>
           <innerPages.AllIn />
         </TabPanel>
-        <TabPanel value={routes.investing.dca.getElementKey()}>
+        <TabPanel value={routes.investments.dca.getElementKey()}>
           <innerPages.DCA />
         </TabPanel>
       </TabContext>

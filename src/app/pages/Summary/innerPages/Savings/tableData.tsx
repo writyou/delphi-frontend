@@ -1,27 +1,12 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import {
-  NewTable,
-  FormattedAmount,
-  PieChartData,
-  SimpleLegend,
-  CompositionChart,
-  CompositionLegend,
-  Grid,
-  Metric,
-  Link,
-  Box,
-  TokensIcons,
-} from 'components';
-import { LiquidityAmount } from 'model/entities';
+import { NewTable, FormattedAmount, Link, Box, TokensIcons } from 'components';
 import { SavingsPool } from 'model/types';
-import { UserSavingsPoolBalance, UserSavingsPoolsAvgAPY } from 'features/savingsPools';
+import { UserSavingsPoolBalance, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { routes } from 'app/routes';
 
-export const columnForChart: Array<NewTable.models.Column<
-  PieChartData<LiquidityAmount, SavingsPool>[]
->> = [
+export const columnForChart: Array<NewTable.models.Column<{}>> = [
   {
     renderTitle: () => (
       <Box ml={10} component="span">
@@ -30,35 +15,18 @@ export const columnForChart: Array<NewTable.models.Column<
     ),
     cellContent: {
       kind: 'simple',
-      render: x => (
+      render: () => (
         <Box ml={10}>
-          <Grid container alignItems="center" spacing={3}>
-            <Grid item>
-              <CompositionChart
-                withBackground
-                chartData={x}
-                InnerLegend={ChartInnerLegend}
-                size="extra-large"
-              />
-            </Grid>
-            <Grid item>
-              <CompositionLegend<LiquidityAmount, SavingsPool>
-                chartData={x}
-                Template={props => (
-                  <SimpleLegend {...props} renderLabel={({ pieData }) => pieData.payload.devName} />
-                )}
-              />
-            </Grid>
-          </Grid>
+          <UserSavingsPoolsBalancesComposition
+            withCompositionLegend
+            withInnerLegend
+            size="extra-large"
+          />
         </Box>
       ),
     },
   },
 ];
-
-function ChartInnerLegend() {
-  return <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />;
-}
 
 export const columnsWithSubtable: Array<NewTable.models.Column<SavingsPool, number>> = [
   {

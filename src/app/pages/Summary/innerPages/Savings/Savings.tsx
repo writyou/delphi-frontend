@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { map } from 'rxjs/operators';
 
 import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid } from 'components';
@@ -15,22 +14,10 @@ export function Savings() {
   const api = useApi();
   const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
 
-  const [entriesForChart, entriesForChartMeta] = useSubscribable(
-    () =>
-      api.user
-        .getAllSavingsPoolsBalances$()
-        .pipe(
-          map(balances => [
-            balances.map(({ balance, pool }) => ({ value: balance, payload: pool })),
-          ]),
-        ),
-    [api],
-  );
-
   return (
     <div className={classes.root}>
-      <Loading meta={[poolsMeta, entriesForChartMeta]}>
-        {!pools?.length || !entriesForChart ? (
+      <Loading meta={[poolsMeta]}>
+        {!pools?.length ? (
           <Hint>
             <Typography>Not found</Typography>
           </Hint>
@@ -47,7 +34,7 @@ export function Savings() {
               />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />
+              <NewTable.Component columns={tableData.columnForChart} entries={[{}]} />
             </Grid>
           </Grid>
         )}
