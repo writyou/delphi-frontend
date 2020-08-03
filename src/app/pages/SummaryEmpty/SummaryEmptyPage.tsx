@@ -45,7 +45,8 @@ export function SummaryEmptyPage() {
         </Grid>
         {[
           {
-            chart: <Metric title="My Savings" value={<CatsPaw className={classes.icon} />} />,
+            title: <Label>My Savings</Label>,
+            chart: <CatsPaw className={classes.icon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: (
               <Button
@@ -60,41 +61,30 @@ export function SummaryEmptyPage() {
             ),
           },
           {
-            chart: (
-              <Metric
-                title={<Label withComingSoon>My Investment</Label>}
-                value={<CatsPaw variant="turquoise" className={classes.icon} />}
-              />
-            ),
+            title: <Label withComingSoon>My Investment</Label>,
+            chart: <CatsPaw variant="turquoise" className={classes.icon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: renderMockedButton('Invest'),
           },
           {
-            chart: (
-              <Metric
-                title={<Label withComingSoon>DCA</Label>}
-                value={<CatsPaw variant="violet" className={classes.icon} />}
-              />
-            ),
+            title: <Label withComingSoon>DCA</Label>,
+            chart: <CatsPaw variant="violet" className={classes.icon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: renderMockedButton('DCA'),
           },
           {
-            chart: (
-              <Metric
-                title={<Label withComingSoon>My Harvest</Label>}
-                value={<Fish className={classes.fishIcon} />}
-              />
-            ),
+            title: <Label withComingSoon>My Harvest</Label>,
+            chart: <Fish className={classes.fishIcon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: renderMockedButton('Hidden', true),
           },
-        ].map(({ apy, button, chart }, index) => (
+        ].map(({ apy, button, chart, title }, index) => (
           <Grid key={index} item xs container direction="column" spacing={3}>
-            <Grid item>{chart}</Grid>
-            <Grid item className={classes.apyMetric}>
-              {apy}
+            <Grid item>{title}</Grid>
+            <Grid item className={classes.chart}>
+              {chart}
             </Grid>
+            <Grid item>{apy}</Grid>
             <Grid item>{button}</Grid>
           </Grid>
         ))}
@@ -139,7 +129,7 @@ const useStyles = makeStyles(
       marginLeft: 20,
       height: 30,
     },
-    apyMetric: {
+    chart: {
       marginTop: 'auto',
     },
     hidden: {
