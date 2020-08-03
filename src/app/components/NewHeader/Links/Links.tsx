@@ -18,7 +18,7 @@ const links: Link.models.Link[] = [
   {
     kind: 'internal',
     label: 'Investments',
-    ref: routes.investing.getRoutePath(),
+    ref: routes.investments.getRoutePath(),
   },
 ];
 

@@ -15,7 +15,7 @@ const rawTree = {
       id: getParam(null),
     },
   },
-  investing: {
+  investments: {
     all: null,
     dca: null,
   },

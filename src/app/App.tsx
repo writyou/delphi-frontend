@@ -24,7 +24,7 @@ export function App() {
               component={pages.SavingsPoolPage}
             />
             <Route path={routes.savings.getRoutePath()} component={pages.SavingsPage} />
-            <Route path={routes.investing.getRoutePath()} component={pages.InvestingPage} />
+            <Route path={routes.investments.getRoutePath()} component={pages.InvestmentsPage} />
             <Redirect to="/" />
           </Switch>
         </MainLayout>
