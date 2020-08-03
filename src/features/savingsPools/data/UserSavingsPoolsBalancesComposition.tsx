@@ -13,7 +13,8 @@ import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
-import { UserSavingsPoolsAvgAPY } from 'features/savingsPools';
+
+import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
 
 type Props = {
   size: 'extra-small' | 'extra-large';
