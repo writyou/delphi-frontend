@@ -30,7 +30,7 @@ const en = {
       borrow: 'Borrow',
       liquidations: 'Liquidations',
       history: 'History',
-      copyright: 'Sparta v1.0 by Akropolis Decentralised Ltd',
+      copyright: 'Delphi v0.1-alpha by Akropolis Decentralised Ltd',
     },
     savings: {
       mySupplyBalance: 'My Supply Balance',
