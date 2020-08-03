@@ -174,7 +174,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
       },
     },
     typography: {
-      fontFamily: ['Helvetica Neue', 'Arial', 'sans-serif'].join(','),
+      fontFamily: ['"Helvetica Neue"', 'Arial', 'sans-serif'].join(','),
       h6: {
         fontSize: 16,
         fontWeight: 400,
