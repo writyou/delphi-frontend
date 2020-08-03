@@ -1,24 +1,16 @@
-import React, {
-  useEffect,
-  useMemo,
-  useCallback,
-  ComponentPropsWithoutRef,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useCallback, ComponentPropsWithoutRef, useRef, useState } from 'react';
 import BN from 'bn.js';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Observable } from 'rxjs';
 
-import { fromBaseUnit, toBaseUnit, bnToBn } from 'utils/bn';
 import { toObservable } from 'utils/rxjs';
 import { Amount } from 'model/entities';
 import { makeStyles } from 'utils/styles';
 import { IToBN } from 'model/types';
 import { useSubscribable } from 'utils/react';
 
-import { Button } from '../Button/Button';
 import { TextInput } from './TextInput';
+import { DecimalsInput } from './DecimalsInput';
 
 interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
@@ -34,7 +26,6 @@ export type AmountInputProps<A extends Amount> = IOwnProps<A> &
   Omit<ComponentPropsWithoutRef<typeof TextInput>, 'onChange'>;
 
 // TODO add support of negative value
-// TODO move value changing logic to DecimalsInput
 export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
   const {
     onChange,
@@ -74,64 +65,14 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     }
   }, [currentCurrency, currencies]);
 
-  const [suffix, setSuffix] = React.useState('');
-  const [needToShowEmpty, setNeedToShowEmpty] = React.useState(() => !value || value.isZero());
-
-  useEffect(() => {
-    needToShowEmpty && value && !value.toBN().isZero() && setNeedToShowEmpty(false);
-  }, [needToShowEmpty, value]);
-
-  useEffect(() => setSuffix(''), [currentValue.toString(), currentDecimals]);
-
-  const inputValue = useMemo(
-    () => currentValue && fromBaseUnit(currentValue, currentDecimals) + suffix,
-    [currentValue, suffix, currentDecimals],
-  );
-
   const handleInputChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      const maxFractionLength = currentDecimals;
-      const inputValidationRegExp = new RegExp(
-        `^$|^\\d+?${maxFractionLength > 0 ? `(\\.?\\d{0,${maxFractionLength}})` : ''}$`,
-      );
-
-      if (inputValidationRegExp.test(event.target.value)) {
-        if (!event.target.value) {
-          setNeedToShowEmpty(true);
-          setSuffix('');
-          !currentValue.isZero() &&
-            currentCurrency &&
-            onChange(makeAmount(new BN(0), currentCurrency));
-          return;
-        }
-
-        setNeedToShowEmpty(false);
-
-        const nextValue = toBaseUnit(event.target.value, currentDecimals);
-
-        if (!nextValue.eq(currentValue)) {
-          currentCurrency && onChange(makeAmount(nextValue, currentCurrency));
-        }
-
-        const suffixMatch = event.target.value.match(/^.+?((\.|\.0+)|(\.[0-9]*?(0*)))$/);
-
-        if (suffixMatch) {
-          const [, , dotWithZeros, , zerosAfterDot] = suffixMatch;
-          setSuffix(dotWithZeros || zerosAfterDot || '');
-        } else {
-          setSuffix('');
-        }
-      }
+    (nextValue: string) => {
+      currentCurrency && onChange(makeAmount(new BN(nextValue), currentCurrency));
     },
-    [currentDecimals, currentCurrencyUpdatingTrigger, currentValue.toString()],
+    [currentDecimals, currentCurrencyUpdatingTrigger],
   );
 
   const [maxValue] = useSubscribable(() => toObservable(max), [max]);
-
-  const handleMaxButtonClick = React.useCallback(() => {
-    setSuffix('');
-    maxValue && currentCurrency && onChange(makeAmount(bnToBn(maxValue), currentCurrency));
-  }, [onChange, maxValue?.toString(), currentCurrencyUpdatingTrigger]);
 
   const handleCurrencyChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,22 +86,14 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   return (
     <div className={classes.root}>
-      <TextInput
+      <DecimalsInput
         {...restInputProps}
-        disabled={disabled}
-        value={needToShowEmpty ? '' : inputValue}
-        variant="outlined"
-        fullWidth
+        baseDecimals={currentDecimals}
+        value={currentValue.toString()}
+        maxValue={maxValue}
         onChange={handleInputChange}
-        InputProps={{
-          endAdornment: maxValue && (
-            <Button disabled={disabled} color="primary" onClick={handleMaxButtonClick}>
-              MAX
-            </Button>
-          ),
-        }}
-        className={classes.amount}
       />
+      {/* TODO: replace with customized Select */}
       <TextInput
         select
         disabled={isDisabledCurrencySelector}
