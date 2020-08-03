@@ -22,7 +22,7 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: zeroAddress,
+    savingsModule: '0x2C6c379F44e9e929F206D115C9d1cd9c2be41562',
   },
   tokens: {
     dai: '0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea',
