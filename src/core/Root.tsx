@@ -10,6 +10,7 @@ import { ThemeProvider } from 'services/theme';
 import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
 import { AdaptabilityProvider } from 'services/adaptability';
 import { NetworkWarning } from 'features/networkWarning';
+import { TransactionsNotifications } from 'features/transactionsNotifications';
 
 export function Root(): React.ReactElement<{}> {
   return (
@@ -40,6 +41,7 @@ function ApiWrapper() {
             <AdaptabilityProvider>
               <CssBaseline />
               <App />
+              <TransactionsNotifications />
               <NetworkWarning />
             </AdaptabilityProvider>
           </Snackbar>
