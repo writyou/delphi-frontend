@@ -122,7 +122,7 @@ export function SummaryPage() {
         <Grid item xs={12}>
           <Divider orientation="horizontal" />
         </Grid>
-        <Grid item xs={3} container direction="column" spacing={3} justify="space-between">
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
             <Metric
               title="My Savings"
@@ -133,7 +133,7 @@ export function SummaryPage() {
             <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />
           </Grid>
         </Grid>
-        <Grid item xs={3} container direction="column" spacing={3} justify="space-between">
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
             <Metric
               title={<Label withComingSoon>My Investment</Label>}
@@ -144,7 +144,7 @@ export function SummaryPage() {
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
           </Grid>
         </Grid>
-        <Grid item xs={3} container direction="column" spacing={3} justify="space-between">
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
             <Metric
               title={<Label withComingSoon>DCA</Label>}
@@ -155,7 +155,7 @@ export function SummaryPage() {
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
           </Grid>
         </Grid>
-        <Grid item xs={3} container direction="column" spacing={3} justify="space-between">
+        <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
             <Metric
               title={<Label withComingSoon>My Harvest</Label>}

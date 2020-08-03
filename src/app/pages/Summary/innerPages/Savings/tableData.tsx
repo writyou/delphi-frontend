@@ -3,9 +3,8 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { NewTable, FormattedAmount, Link, Box, TokensIcons } from 'components';
 import { SavingsPool } from 'model/types';
-import { UserSavingsPoolBalance } from 'features/savingsPools';
+import { UserSavingsPoolBalance, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { routes } from 'app/routes';
-import { UserSavingsPoolsBalancesComposition } from 'features/savingsPools/data/UserSavingsPoolsBalancesComposition';
 
 export const columnForChart: Array<NewTable.models.Column<{}>> = [
   {
