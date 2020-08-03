@@ -1,6 +1,8 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, LinkProps, Intro } from 'components';
+import { Button, Link, Intro } from 'components';
+import { routes } from 'app/routes';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -46,16 +48,13 @@ function LandingIntro() {
         </div> */}
         <div className={classes.button}>
           <Button
+            component={RouterLink}
+            to={routes.savings.getRedirectPath()}
             size="large"
             color="primary"
             variant="outlined"
-            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
-            underline="none"
-            href="https://docs.google.com/forms/d/1OcvOT-zSG2brjjoR1F_yZiswg8DkNOcRNumitqcoGS4"
-            target="_blank"
-            rel="noopener noreferrer"
           >
-            Join Waitlist
+            Rinkeby
           </Button>
         </div>
         {/* <div className={classes.button}>
