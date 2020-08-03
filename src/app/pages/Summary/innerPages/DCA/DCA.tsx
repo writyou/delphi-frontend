@@ -24,7 +24,7 @@ export const entriesForChart = [
     value: liquidityAmount,
     payload: {
       address: zeroAddress,
-      devName: 'sUSD',
+      poolName: 'sUSD',
       poolToken: tokenAmount.currency,
       apy: percentAmount,
       tokens: [],

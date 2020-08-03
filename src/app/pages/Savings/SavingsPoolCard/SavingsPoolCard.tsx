@@ -13,7 +13,7 @@ type Props = {
   footerElement?: JSX.Element;
 };
 
-export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElement }: Props) {
+export function SavingsPoolCard({ pool: { address, poolName, tokens }, footerElement }: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
 
@@ -21,7 +21,7 @@ export function SavingsPoolCard({ pool: { address, devName, tokens }, footerElem
     <Card
       className={classes.root}
       variant="contained"
-      label={devName}
+      label={poolName}
       icons={tokens.map(x => (
         <div key={x.address} className={classes.token}>
           <TokenIcon className={classes.tokenIcon} diameter={30} tokenAddress={x.address} />

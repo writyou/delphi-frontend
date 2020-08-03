@@ -46,9 +46,9 @@ export const columnsWithSubtable: Array<NewTable.models.Column<SavingsPool, numb
           component={RouterLink}
           to={routes.savings.pool.id.getRedirectPath({ id: x.address })}
           color="textPrimary"
-          title={x.devName}
+          title={x.poolName}
         >
-          {x.devName}
+          {x.poolName}
         </Link>
       ),
     },

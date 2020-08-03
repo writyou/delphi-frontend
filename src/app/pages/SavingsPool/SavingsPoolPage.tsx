@@ -45,7 +45,7 @@ export function SavingsPoolPage() {
                 <IconButton size="small" onClick={handleBackOnClick}>
                   <Back />
                 </IconButton>
-                <div className={classes.poolTitle}>{pool.devName}</div>
+                <div className={classes.poolTitle}>{pool.poolName}</div>
               </Grid>
             </Grid>
             <Grid item>

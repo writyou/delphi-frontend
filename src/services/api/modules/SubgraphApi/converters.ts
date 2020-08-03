@@ -14,12 +14,17 @@ export function convertSavingsPool(
 ): SavingsPool {
   return {
     address: d.id,
-    devName: d.poolToken.name,
+    poolName: poolNameByPoolTokenSymbol[d.poolToken.symbol] || d.poolToken.name,
     poolToken: new Token(d.poolToken.id, d.poolToken.symbol, d.poolToken.decimals),
     tokens: d.tokens.map(token => new Token(token.id, token.symbol, token.decimals)),
     apy: convertAPRHistoryToAvgAPR(d.aprHistory, aprDecimals),
   };
 }
+
+const poolNameByPoolTokenSymbol: Record<string, string> = {
+  'ADST-CF-Y': 'Delphi CurveFi yPool',
+  'ADST-COMP-DAI': 'Delphi Compound DAI',
+};
 
 export function convertUser(d: Pick<SR.User, 'id'>): User {
   return {

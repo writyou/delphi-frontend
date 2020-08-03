@@ -47,7 +47,7 @@ export const columnForChart: Array<NewTable.models.Column<
             <CompositionLegend<LiquidityAmount, SavingsPool>
               chartData={x}
               Template={props => (
-                <SimpleLegend {...props} renderLabel={({ pieData }) => pieData.payload.devName} />
+                <SimpleLegend {...props} renderLabel={({ pieData }) => pieData.payload.poolName} />
               )}
             />
           </Grid>

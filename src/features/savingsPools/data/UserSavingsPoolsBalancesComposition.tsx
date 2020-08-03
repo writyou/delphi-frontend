@@ -54,7 +54,7 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
                 Template={legendProps => (
                   <SimpleLegend
                     {...legendProps}
-                    renderLabel={({ pieData }) => pieData.payload.devName}
+                    renderLabel={({ pieData }) => pieData.payload.poolName}
                   />
                 )}
               />
