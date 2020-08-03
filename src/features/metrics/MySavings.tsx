@@ -1,14 +1,9 @@
 import * as React from 'react';
 
-import { Metric, Label, FormattedAmount, Grid, CompositionChart, PieChartData } from 'components';
-import { percentAmount, tokenAmount } from 'utils/mock';
+import { Metric, Label, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
-import { TokenAmount } from 'model/entities';
-
-const entries = new Array<PieChartData<TokenAmount>>(5).fill({
-  value: tokenAmount,
-  payload: undefined,
-});
+import { UserSavingsPoolsBalancesComposition } from 'features/savingsPools/data/UserSavingsPoolsBalancesComposition';
+import { UserSavingsPoolsAvgAPY } from 'features/savingsPools';
 
 export function MySavings() {
   const classes = useStyles();
@@ -17,14 +12,14 @@ export function MySavings() {
     <Metric
       title={
         <Grid container direction="column" className={classes.container}>
-          <Label withComingSoon>My Savings</Label>
+          <Label>My Savings</Label>
           <div className={classes.chart}>
-            <CompositionChart chartData={entries} size="extra-small" />
+            <UserSavingsPoolsBalancesComposition size="extra-small" />
           </div>
           APY
         </Grid>
       }
-      value={<FormattedAmount sum={percentAmount} />}
+      value={<UserSavingsPoolsAvgAPY />}
     />
   );
 }
