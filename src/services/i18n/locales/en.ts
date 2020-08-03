@@ -38,7 +38,8 @@ const en = {
       viewDetails: 'View Details',
       withdraw: 'Withdraw',
       withdrawDialog: 'Are you sure you want to withdraw?',
-      withdrawTabText: 'Short friendly description how it works',
+      withdrawTabText:
+        'If you want to withdraw liquidity, simply choose the pool and amount you want to withdraw',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
       allocateToOnePoolDialog: 'Are you sure you want to allocate %{amount}?',

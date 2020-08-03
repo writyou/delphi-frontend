@@ -1,10 +1,10 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribable } from 'utils/react';
-import { Loading } from 'components';
+import { Loading, Hint, Grid, Button } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { WithdrawFromSavingsPoolButton } from 'features/savingsPools';
@@ -24,7 +24,7 @@ export function WithdrawTab() {
       </div>
       <Loading meta={poolsMeta}>
         <Grid container alignItems="flex-start" spacing={3}>
-          {pools &&
+          {pools && pools.length ? (
             pools.map(pool => (
               <Grid key={pool.address} item xs={4}>
                 <SavingsPoolCard
@@ -44,7 +44,26 @@ export function WithdrawTab() {
                   }
                 />
               </Grid>
-            ))}
+            ))
+          ) : (
+            <Grid item xs={12}>
+              <Hint
+                button={
+                  <Button
+                    component={RouterLink}
+                    to={routes.savings.getRedirectPath()}
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                  >
+                    Save
+                  </Button>
+                }
+              >
+                You don’t have any active savings pools yet.
+              </Hint>
+            </Grid>
+          )}
         </Grid>
       </Loading>
     </>

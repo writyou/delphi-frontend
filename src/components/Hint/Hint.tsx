@@ -3,32 +3,32 @@ import cn from 'classnames';
 
 import { useStyles } from './Hint.style';
 
-type Props = React.PropsWithChildren<{
+export type Props = React.PropsWithChildren<{
   size?: 'small' | 'medium';
   color?: 'error' | 'default';
-  position?: 'overlay' | 'default';
+  renderIcon?: () => React.ReactNode;
+  button?: React.ReactNode;
 }>;
 
 function Hint(props: Props) {
-  const { children, size = 'medium', color = 'default', position = 'default' } = props;
+  const { children, renderIcon, button, size = 'medium', color = 'default' } = props;
   const classes = useStyles();
 
-  const className = cn(
-    classes.root,
-    {
-      [classes.isSmall]: size === 'small',
-      [classes.isMedium]: size === 'medium',
-    },
-    {
-      [classes.colorDefault]: color === 'default',
-      [classes.colorError]: color === 'error',
-    },
-    {
-      [classes.withOverlay]: position === 'overlay',
-    },
-  );
+  const className = cn(classes.root, {
+    [classes.isSmall]: size === 'small',
+    [classes.isMedium]: size === 'medium',
+    [classes.colorDefault]: color === 'default',
+    [classes.colorError]: color === 'error',
+    [classes.withButton]: button !== undefined,
+  });
 
-  return <div className={className}>{children}</div>;
+  return (
+    <div className={className}>
+      {children}
+      {renderIcon && <div className={classes.icon}>{renderIcon()}</div>}
+      {button && <div className={classes.button}>{button}</div>}
+    </div>
+  );
 }
 
 export { Hint };
