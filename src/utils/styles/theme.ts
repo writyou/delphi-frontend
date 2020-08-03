@@ -371,6 +371,12 @@ function getTheme(type: 'light' | 'dark'): Theme {
           padding: 0,
         },
       },
+
+      MuiBackdrop: {
+        root: {
+          backgroundColor: 'rgba(0, 0, 0, 0.15)',
+        },
+      },
     },
   });
 }
