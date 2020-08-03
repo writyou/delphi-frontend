@@ -173,9 +173,7 @@ export function SummaryPage() {
 
 const useStyles = makeStyles(
   () => ({
-    root: {
-      padding: 50,
-    },
+    root: {},
     tab: {
       minWidth: 112,
     },

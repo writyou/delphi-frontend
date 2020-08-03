@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
-import { TabsList, TabContext, Tab, TabPanel, Grid } from 'components';
+import { TabsList, TabContext, Tab, TabPanel } from 'components';
 
 import { AllocateTab } from './AllocateTab';
 import { WithdrawTab } from './WithdrawTab';
@@ -29,43 +29,38 @@ export function SavingsPage() {
 
   function renderTabs() {
     return (
-      <Grid className={classes.root}>
-        <TabContext value={selectedPage}>
-          <div className={classes.navigationBar}>
-            <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-              <Tab
-                label="Allocate"
-                className={classes.tab}
-                component={Link}
-                value={routes.savings.allocate.getElementKey()}
-                to={routes.savings.allocate.getRedirectPath()}
-              />
-              <Tab
-                label="Withdraw"
-                className={classes.tab}
-                component={Link}
-                value={routes.savings.withdraw.getElementKey()}
-                to={routes.savings.withdraw.getRedirectPath()}
-              />
-            </TabsList>
-          </div>
-          <TabPanel value={routes.savings.allocate.getElementKey()}>
-            <AllocateTab />
-          </TabPanel>
-          <TabPanel value={routes.savings.withdraw.getElementKey()}>
-            <WithdrawTab />
-          </TabPanel>
-        </TabContext>
-      </Grid>
+      <TabContext value={selectedPage}>
+        <div className={classes.navigationBar}>
+          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
+            <Tab
+              label="Allocate"
+              className={classes.tab}
+              component={Link}
+              value={routes.savings.allocate.getElementKey()}
+              to={routes.savings.allocate.getRedirectPath()}
+            />
+            <Tab
+              label="Withdraw"
+              className={classes.tab}
+              component={Link}
+              value={routes.savings.withdraw.getElementKey()}
+              to={routes.savings.withdraw.getRedirectPath()}
+            />
+          </TabsList>
+        </div>
+        <TabPanel value={routes.savings.allocate.getElementKey()}>
+          <AllocateTab />
+        </TabPanel>
+        <TabPanel value={routes.savings.withdraw.getElementKey()}>
+          <WithdrawTab />
+        </TabPanel>
+      </TabContext>
     );
   }
 }
 
 const useStyles = makeStyles(
   () => ({
-    root: {
-      padding: '50px 60px',
-    },
     tabs: {
       marginBottom: 40,
     },

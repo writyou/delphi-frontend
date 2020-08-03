@@ -1,5 +1,4 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -26,43 +25,38 @@ export function InvestmentsPage() {
   const classes = useStyles();
 
   return (
-    <Grid className={classes.root}>
-      <TabContext value={selectedPage}>
-        <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-            <Tab
-              label="All-in"
-              className={classes.tab}
-              component={Link}
-              value={routes.investments.all.getElementKey()}
-              to={routes.investments.all.getRedirectPath()}
-            />
-            <Tab
-              label="DCA"
-              className={classes.tab}
-              component={Link}
-              value={routes.investments.dca.getElementKey()}
-              to={routes.investments.dca.getRedirectPath()}
-            />
-          </TabsList>
-          <Label withComingSoon />
-        </div>
-        <TabPanel value={routes.investments.all.getElementKey()}>
-          <innerPages.AllIn />
-        </TabPanel>
-        <TabPanel value={routes.investments.dca.getElementKey()}>
-          <innerPages.DCA />
-        </TabPanel>
-      </TabContext>
-    </Grid>
+    <TabContext value={selectedPage}>
+      <div className={classes.navigationBar}>
+        <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
+          <Tab
+            label="All-in"
+            className={classes.tab}
+            component={Link}
+            value={routes.investments.all.getElementKey()}
+            to={routes.investments.all.getRedirectPath()}
+          />
+          <Tab
+            label="DCA"
+            className={classes.tab}
+            component={Link}
+            value={routes.investments.dca.getElementKey()}
+            to={routes.investments.dca.getRedirectPath()}
+          />
+        </TabsList>
+        <Label withComingSoon />
+      </div>
+      <TabPanel value={routes.investments.all.getElementKey()}>
+        <innerPages.AllIn />
+      </TabPanel>
+      <TabPanel value={routes.investments.dca.getElementKey()}>
+        <innerPages.DCA />
+      </TabPanel>
+    </TabContext>
   );
 }
 
 const useStyles = makeStyles(
   () => ({
-    root: {
-      padding: '50px 60px',
-    },
     tabs: {},
     tab: {
       minWidth: 112,

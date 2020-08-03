@@ -110,9 +110,7 @@ export function SummaryEmptyPage() {
 
 const useStyles = makeStyles(
   () => ({
-    root: {
-      padding: 50,
-    },
+    root: {},
     icon: {
       fontSize: 50,
     },
