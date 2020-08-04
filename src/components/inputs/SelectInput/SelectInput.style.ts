@@ -18,6 +18,7 @@ export const useStyles = makeStyles(
         minWidth: 100,
 
         '& $input': {
+          backgroundColor: 'inherit',
           borderColor: 'transparent',
           color: '#fff',
         },

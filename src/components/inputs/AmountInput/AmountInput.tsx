@@ -62,7 +62,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     Boolean(a && b && a.equals(b)),
   );
 
-  const isDisabledCurrencySelector = Boolean(currencies.length <= 1 && currentCurrency);
+  const isSingleOptionSelect = Boolean(currencies.length <= 1 && currentCurrency);
 
   const [maxValue] = useSubscribable(() => toObservable(max), [max]);
 
@@ -86,12 +86,30 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   const handleCurrencyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      const nextValue = event.target.value;
+      const nextCurrency = event.target.value;
       const currency =
-        getCurrencyIdentifier && currencies.find(item => getCurrencyIdentifier(item) === nextValue);
-      currency && onChange(makeAmount(currentValue, currency));
+        getCurrencyIdentifier &&
+        currencies.find(item => getCurrencyIdentifier(item) === nextCurrency);
+
+      const nextDecimals = currency?.decimals;
+      currency && nextDecimals && onChange(makeAmount(adjustCurrentValue(nextDecimals), currency));
     },
     [onChange, currencies, currentValue.toString()],
+  );
+
+  const adjustCurrentValue = useCallback(
+    (nextDecimals: number) => {
+      const decimalsDiff = nextDecimals ? new BN(nextDecimals - currentDecimals) : new BN(0);
+      if (decimalsDiff.eqn(0)) {
+        return currentValue;
+      }
+
+      const decimalCorrectionFactor = new BN(10).pow(decimalsDiff);
+      return decimalsDiff.gtn(0)
+        ? new BN(currentValue).mul(decimalCorrectionFactor)
+        : new BN(currentValue).div(decimalCorrectionFactor);
+    },
+    [currentDecimals, currentValue.toString()],
   );
 
   const currencySelectOptions = useMemo(
@@ -109,7 +127,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     <div className={classes.root}>
       <div
         className={cn(classes.decimalInputWrapper, {
-          [classes.withCurrencySelect]: !hideCurrencySelect && !isDisabledCurrencySelector,
+          [classes.withCurrencySelect]: !hideCurrencySelect && !isSingleOptionSelect,
         })}
       >
         <DecimalsInput
@@ -130,7 +148,6 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
             onChange={handleCurrencyChange}
             value={currentCurrency && getCurrencyIdentifier(currentCurrency)}
             InputProps={{ className: classes.selectInput }}
-            disabled={isDisabledCurrencySelector}
           />
         </div>
       )}

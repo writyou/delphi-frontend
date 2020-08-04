@@ -23,6 +23,7 @@ export function SelectInput(props: SelectInputProps) {
   const { options, InputProps = {}, ...restProps } = props;
   const { className: inputClassName, ...restInputProps } = InputProps;
   const classes = useStyles();
+  const hasSingleOption = options.length <= 1;
 
   const [isMenuOpen, setIsOpen] = useState(false);
 
@@ -55,13 +56,14 @@ export function SelectInput(props: SelectInputProps) {
       {...restProps}
       select
       variant="outlined"
+      disabled={hasSingleOption}
       className={cn(
         classes.root,
         {
           [classes.isOpen]: isMenuOpen,
         },
         {
-          [classes.withSingleOption]: options.length <= 1,
+          [classes.withSingleOption]: hasSingleOption,
         },
       )}
       InputProps={{
