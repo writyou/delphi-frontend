@@ -414,6 +414,82 @@ function getTheme(type: 'light' | 'dark'): Theme {
         },
       },
 
+      MuiOutlinedInput: {
+        root: {
+          background: colors.foggyNight,
+          borderColor: colors.darkMist,
+          borderRadius: 8,
+          minHeight: 36,
+
+          '&$focused': {
+            background: colors.blackRussian,
+          },
+
+          '&$disabled': {
+            color: 'rgba(255, 255, 255, 0.2)',
+          },
+
+          '&$error': {
+            borderColor: '#643d3d',
+          },
+        },
+
+        adornedEnd: {
+          paddingRight: 0,
+        },
+
+        input: {
+          fontWeight: 300,
+          padding: '8px 11px',
+
+          '&::placeholder': {
+            color: 'rgba(255, 255, 255, 0.5)',
+          },
+        },
+
+        notchedOutline: {
+          borderColor: 'inherit !important',
+          borderWidth: '1px !important',
+        },
+      },
+
+      MuiFormHelperText: {
+        root: {
+          fontWeight: 300,
+
+          '&$error': {
+            margin: '5px 0 0',
+          },
+        },
+      },
+
+      MuiMenuItem: {
+        root: {
+          fontWeight: 300,
+          padding: '10px 9px',
+
+          '&$selected, &$selected:hover': {
+            backgroundColor: colors.blackRussian,
+          },
+
+          '&:hover': {
+            backgroundColor: colors.darkMist,
+          },
+        },
+      },
+
+      MuiSelect: {
+        root: {
+          '&$select:focus': {
+            backgroundColor: colors.blackRussian,
+          },
+
+          '&:hover:not($disabled)': {
+            backgroundColor: colors.blackRussian,
+          },
+        },
+      },
+
       MuiBackdrop: {
         root: {
           backgroundColor: 'rgba(0, 0, 0, 0.15)',

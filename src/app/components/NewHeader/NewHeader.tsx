@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { AuthButton } from 'features/auth';
+import { MintTestnetTokenButton } from 'features/mintTestnetToken';
+import { ETH_NETWORK_CONFIG } from 'env';
 
 import * as CustomLink from '../Link';
 import { useStyles } from './NewHeader.style';
@@ -29,6 +31,11 @@ export const NewHeader: React.FC = () => {
       </div>
       <div className={classes.rightPart}>
         <CustomLink.Link link={wikiLink} shouldRenderLabel />
+        {ETH_NETWORK_CONFIG.id !== 1 && (
+          <div className={classes.button}>
+            <MintTestnetTokenButton color="primary" variant="outlined" />
+          </div>
+        )}
         <div className={classes.button}>
           <AuthButton disconnectRedirectPath="/" />
         </div>

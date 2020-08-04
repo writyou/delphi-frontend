@@ -59,6 +59,11 @@ const en = {
       connect: 'Connect to wallet',
     },
     notifications: {
+      'testnetERC20.mint': {
+        pending: 'Minting %{amount}. Pending',
+        success: 'Minting %{amount}. Successful',
+        error: 'Minting %{amount}. Failed',
+      },
       'erc20.approve': {
         pending: 'Approving %{amount} transfer. Pending',
         success: 'Approving %{amount} transfer. Successful',
