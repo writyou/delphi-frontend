@@ -30,7 +30,7 @@ const en = {
       borrow: 'Borrow',
       liquidations: 'Liquidations',
       history: 'History',
-      copyright: 'Sparta v1.0 by Akropolis Decentralised Ltd',
+      copyright: 'Delphi v0.1-alpha by Akropolis Decentralised Ltd',
     },
     savings: {
       mySupplyBalance: 'My Supply Balance',
@@ -38,7 +38,8 @@ const en = {
       viewDetails: 'View Details',
       withdraw: 'Withdraw',
       withdrawDialog: 'Are you sure you want to withdraw?',
-      withdrawTabText: 'Short friendly description how it works',
+      withdrawTabText:
+        'If you want to withdraw liquidity, simply choose the pool and amount you want to withdraw',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
       allocateToOnePoolDialog: 'Are you sure you want to allocate %{amount}?',
@@ -69,14 +70,14 @@ const en = {
         error: 'Deposit to savings pool. Failed',
       },
       'savings.withdraw': {
-        pending: 'Withdraw from savings pool. Pending',
-        success: 'Withdraw from savings pool. Successful',
-        error: 'Withdraw from savings pool. Failed',
+        pending: 'Withdraw %{amount} from savings pool. Pending',
+        success: 'Withdraw %{amount} from savings pool. Successful',
+        error: 'Withdraw %{amount} from savings pool. Failed',
       },
       'savings.withdrawAll': {
-        pending: 'Withdraw from savings pool. Pending',
-        success: 'Withdraw from savings pool. Successful',
-        error: 'Withdraw from savings pool. Failed',
+        pending: 'Withdraw %{amount} from savings pool. Pending',
+        success: 'Withdraw %{amount} from savings pool. Successful',
+        error: 'Withdraw %{amount} from savings pool. Failed',
       },
     },
     networkWarning: {

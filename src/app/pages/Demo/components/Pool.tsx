@@ -6,9 +6,9 @@ import { SavingsPool } from 'model/types';
 import { MyTokenBalance } from './MyTokenBalance';
 import { DepositToPoolForm } from './DepositToPoolForm';
 
-export function Pool({ address, devName, poolToken, tokens }: SavingsPool) {
+export function Pool({ address, poolName, poolToken, tokens }: SavingsPool) {
   return (
-    <Card label={devName}>
+    <Card label={poolName}>
       <Typography>
         Pool address: <ShortAddress address={address} />
       </Typography>

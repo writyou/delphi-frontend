@@ -7,19 +7,21 @@ import { makeStyles, rgba } from 'utils/styles';
 interface CardProps {
   className?: string;
   variant?: 'outlined' | 'contained';
+  color?: 'active' | 'default';
   label?: string;
   children: React.ReactNode;
   icons?: React.ReactNode[];
 }
 
 export function Card(props: CardProps) {
-  const { label, variant = 'outlined', children, icons, className } = props;
+  const { label, variant = 'outlined', color = 'default', children, icons, className } = props;
   const classes = useStyles();
   return (
     <div
       className={cn(className, classes.root, {
         [classes.outlined]: variant === 'outlined',
         [classes.contained]: variant === 'contained',
+        [classes.active]: color === 'active',
       })}
     >
       {children}
@@ -58,8 +60,11 @@ const useStyles = makeStyles(theme => ({
       backgroundClip: 'padding-box',
     },
     '&$contained': {
+      backgroundColor: theme.palette.background.paper,
+    },
+    '&$contained$active': {
       backgroundColor:
-        theme.palette.type === 'light' ? theme.colors.zumthor : theme.colors.scarpaFlow,
+        theme.palette.type === 'light' ? theme.colors.zumthor : theme.colors.steelGray,
     },
   },
 
@@ -103,4 +108,5 @@ const useStyles = makeStyles(theme => ({
   },
   outlined: {},
   contained: {},
+  active: {},
 }));

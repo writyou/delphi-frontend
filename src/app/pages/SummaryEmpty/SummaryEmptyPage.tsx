@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
-import { Grid, Button, Divider } from 'components';
+import { Grid, Button, Divider, Metric, Label, FormattedAmount } from 'components';
 import { Fish, CatsPaw, ArrowStartToSave } from 'components/icons';
 import { makeStyles } from 'utils/styles';
+import { percentAmount } from 'utils/mock';
+import { routes } from 'app/routes';
 
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
-import { AverageAPYMocked } from './Components/AverageAPYMocked';
 import { LiveStats } from '../Summary/Components/LiveStats';
 
 export function SummaryEmptyPage() {
@@ -41,62 +43,74 @@ export function SummaryEmptyPage() {
         <Grid item xs={12}>
           <Divider orientation="horizontal" />
         </Grid>
-        <Grid item xs={3}>
-          <AverageAPYMocked
-            title="My Savings"
-            value="10"
-            icon={<CatsPaw className={classes.icon} />}
-            button={
-              <Button color="primary" variant="contained">
+        {[
+          {
+            title: <Label>My Savings</Label>,
+            chart: <CatsPaw className={classes.icon} />,
+            apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
+            button: (
+              <Button
+                component={RouterLink}
+                to={routes.savings.getRedirectPath()}
+                size="small"
+                color="primary"
+                variant="contained"
+              >
                 Save
               </Button>
-            }
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <AverageAPYMocked
-            withComingSoon
-            title="My Investment"
-            value="15"
-            icon={<CatsPaw variant="turquoise" className={classes.icon} />}
-            button={
-              <Button color="primary" variant="contained">
-                Invest
-              </Button>
-            }
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <AverageAPYMocked
-            withComingSoon
-            title="DCA"
-            value="15"
-            icon={<CatsPaw variant="violet" className={classes.icon} />}
-            button={
-              <Button color="primary" variant="contained">
-                DCA
-              </Button>
-            }
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <AverageAPYMocked
-            withComingSoon
-            title="My Harvest"
-            value="20"
-            icon={<Fish className={classes.fishIcon} />}
-          />
-        </Grid>
+            ),
+          },
+          {
+            title: <Label withComingSoon>My Investment</Label>,
+            chart: <CatsPaw variant="turquoise" className={classes.icon} />,
+            apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
+            button: renderMockedButton('Invest'),
+          },
+          {
+            title: <Label withComingSoon>DCA</Label>,
+            chart: <CatsPaw variant="violet" className={classes.icon} />,
+            apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
+            button: renderMockedButton('DCA'),
+          },
+          {
+            title: <Label withComingSoon>My Harvest</Label>,
+            chart: <Fish className={classes.fishIcon} />,
+            apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
+            button: renderMockedButton('Hidden', true),
+          },
+        ].map(({ apy, button, chart, title }, index) => (
+          <Grid key={index} item xs container direction="column" spacing={3}>
+            <Grid item>{title}</Grid>
+            <Grid item className={classes.chart}>
+              {chart}
+            </Grid>
+            <Grid item>{apy}</Grid>
+            <Grid item>{button}</Grid>
+          </Grid>
+        ))}
       </Grid>
     );
+
+    function renderMockedButton(text: string, hidden?: boolean) {
+      return (
+        <Button
+          disabled
+          size="small"
+          color="primary"
+          variant="contained"
+          hidden={hidden}
+          className={hidden ? classes.hidden : undefined}
+        >
+          {text}
+        </Button>
+      );
+    }
   }
 }
 
 const useStyles = makeStyles(
   () => ({
-    root: {
-      padding: 50,
-    },
+    root: {},
     icon: {
       fontSize: 50,
     },
@@ -106,12 +120,18 @@ const useStyles = makeStyles(
     },
     startToSave: {
       display: 'flex',
-      alignItems: 'center',
+      alignItems: 'flex-end',
     },
     arrow: {
       fontSize: 50,
       marginLeft: 20,
-      height: 40,
+      height: 30,
+    },
+    chart: {
+      marginTop: 'auto',
+    },
+    hidden: {
+      visibility: 'hidden',
     },
   }),
   { name: 'SummaryEmptyPage' },

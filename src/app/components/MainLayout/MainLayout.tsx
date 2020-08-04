@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Card } from 'components';
+
 import { NewHeader } from '../NewHeader';
 import { useStyles } from './MainLayout.style';
 import { AppFooter } from '../AppFooter/AppFooter';
@@ -10,13 +12,13 @@ export const MainLayout: React.FC = ({ children }) => {
   return (
     <div className={classes.root}>
       <div className={classes.headerAndContent}>
-        <div className={classes.header}>
+        <Card variant="contained" className={classes.header}>
           <NewHeader />
-        </div>
+        </Card>
         <div className={classes.content}>{children}</div>
-        <div className={classes.footer}>
+        <Card variant="contained" className={classes.footer}>
           <AppFooter />
-        </div>
+        </Card>
       </div>
     </div>
   );

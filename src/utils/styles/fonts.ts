@@ -68,11 +68,12 @@ const generateFontRule = (
   fontStyle,
   fontWeight,
   src: `
-    url('${ttfUrl}') format('truetype'),
-    url('${svgUrl}#${svgId}') format('svg'),
+    url('${woff2Url}') format('woff2'),
     url('${woffUrl}') format('woff'),
-    url('${woff2Url}') format('woff2')
+    url('${ttfUrl}') format('truetype'),
+    url('${svgUrl}#${svgId}') format('svg')
   `,
+  fontDisplay: 'swap' as const,
 });
 
 export const helveticaNeueBold = generateFontRule(

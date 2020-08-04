@@ -2,7 +2,7 @@ import { Token, TokenAmount, PercentAmount } from 'model/entities';
 
 export type SavingsPool = {
   address: string;
-  devName: string;
+  poolName: string;
   poolToken: Token;
   apy: PercentAmount;
   tokens: Token[];

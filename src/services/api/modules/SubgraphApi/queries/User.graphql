@@ -1,4 +1,4 @@
-subscription User($id: ID!, $savingsPoolsAPYsDateGT: BigInt!) {
+subscription User($id: ID!) {
   user(id: $id) {
     id
 
@@ -15,7 +15,7 @@ subscription User($id: ID!, $savingsPoolsAPYsDateGT: BigInt!) {
         symbol
         decimals
       }
-      aprHistory(where: {date_gt: $savingsPoolsAPYsDateGT}) {
+      aprHistory(first: 10) {
         amount
         duration
       }
