@@ -1,8 +1,10 @@
-import * as React from 'react';
+import React, { useCallback, useEffect, useState, useMemo, ComponentPropsWithoutRef } from 'react';
 import BN from 'bn.js';
-import Grid from '@material-ui/core/Grid';
 
 import { fromBaseUnit, toBaseUnit } from 'utils/bn';
+import { makeStyles } from 'utils/styles';
+import { IToBN } from 'model/types';
+import { useOnChangeState } from 'utils/react';
 
 import { Button } from '../Button/Button';
 import { TextInput } from './TextInput';
@@ -11,13 +13,14 @@ interface IOwnProps {
   baseDecimals: number;
   baseUnitName?: string;
   value: string;
-  maxValue?: BN;
+  maxValue?: BN | IToBN;
   onChange: (value: string) => void;
 }
 
-type IProps = IOwnProps & Omit<React.ComponentProps<typeof TextInput>, 'ref'>;
+type IProps = IOwnProps & Omit<ComponentPropsWithoutRef<typeof TextInput>, 'onChange'>;
 
 function DecimalsInput(props: IProps) {
+  const classes = useStyles();
   const {
     onChange,
     baseDecimals,
@@ -25,23 +28,44 @@ function DecimalsInput(props: IProps) {
     maxValue,
     baseUnitName,
     disabled,
+    InputProps,
     ...restInputProps
   } = props;
 
-  const [suffix, setSuffix] = React.useState('');
-  const [needToShowEmpty, setNeedToShowEmpty] = React.useState(() => !value || value === '0');
+  const [suffix, setSuffix] = useState('');
+  const [needToShowEmpty, setNeedToShowEmpty] = useState(() => !value || value === '0');
 
-  React.useEffect(() => {
+  useEffect(() => {
     needToShowEmpty && value && value !== '0' && setNeedToShowEmpty(false);
   }, [needToShowEmpty, value]);
 
-  const amount = React.useMemo(() => value && fromBaseUnit(value, baseDecimals) + suffix, [
+  useEffect(() => setSuffix(''), [value, baseDecimals]);
+
+  useOnChangeState(
+    baseDecimals,
+    (prev, cur) => prev !== cur,
+    prevBaseDecimals => {
+      const decimalsDiff = prevBaseDecimals ? new BN(baseDecimals - prevBaseDecimals) : new BN(0);
+      if (decimalsDiff.eqn(0)) {
+        return;
+      }
+
+      const decimalCorrectionFactor = new BN(10).pow(decimalsDiff);
+      const adjustedValue = decimalsDiff.gtn(0)
+        ? new BN(value).mul(decimalCorrectionFactor)
+        : new BN(value).div(decimalCorrectionFactor);
+
+      onChange(adjustedValue.toString());
+    },
+  );
+
+  const amount = useMemo(() => value && fromBaseUnit(value, baseDecimals) + suffix, [
     value,
     suffix,
     baseDecimals,
   ]);
 
-  const handleInputChange = React.useCallback(
+  const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const maxFractionLength = baseDecimals;
       const inputValidationRegExp = new RegExp(
@@ -49,7 +73,20 @@ function DecimalsInput(props: IProps) {
       );
 
       if (inputValidationRegExp.test(event.target.value)) {
-        setNeedToShowEmpty(!event.target.value);
+        if (!event.target.value) {
+          setNeedToShowEmpty(true);
+          setSuffix('');
+          onChange('0');
+          return;
+        }
+
+        setNeedToShowEmpty(false);
+
+        const nextValue = toBaseUnit(event.target.value, baseDecimals).toString();
+
+        if (nextValue !== value) {
+          onChange(nextValue);
+        }
 
         const suffixMatch = event.target.value.match(/^.+?((\.|\.0+)|(\.[0-9]*?(0*)))$/);
 
@@ -59,11 +96,9 @@ function DecimalsInput(props: IProps) {
         } else {
           setSuffix('');
         }
-
-        onChange(event.target.value && toBaseUnit(event.target.value, baseDecimals).toString());
       }
     },
-    [baseDecimals],
+    [baseDecimals, value, onChange],
   );
 
   const handleMaxButtonClick = React.useCallback(() => {
@@ -72,33 +107,31 @@ function DecimalsInput(props: IProps) {
   }, [onChange, maxValue && maxValue.toString()]);
 
   return (
-    <>
-      <Grid container spacing={1}>
-        <Grid item xs={baseUnitName ? 10 : 12}>
-          <TextInput
-            {...restInputProps}
-            disabled={disabled}
-            value={needToShowEmpty ? '' : amount}
-            variant="outlined"
-            fullWidth
-            onChange={handleInputChange}
-            InputProps={{
-              endAdornment: maxValue && (
-                <Button disabled={disabled} color="primary" onClick={handleMaxButtonClick}>
-                  MAX
-                </Button>
-              ),
-            }}
-          />
-        </Grid>
-        {baseUnitName && (
-          <Grid item xs={2}>
-            <TextInput disabled value={baseUnitName} variant="outlined" fullWidth />
-          </Grid>
-        )}
-      </Grid>
-    </>
+    <TextInput
+      {...restInputProps}
+      disabled={disabled}
+      value={needToShowEmpty ? '' : amount}
+      variant="outlined"
+      fullWidth
+      onChange={handleInputChange}
+      InputProps={{
+        ...InputProps,
+        endAdornment: maxValue && (
+          <Button disabled={disabled} onClick={handleMaxButtonClick} className={classes.maxButton}>
+            MAX
+          </Button>
+        ),
+      }}
+    />
   );
 }
+
+const useStyles = makeStyles(() => ({
+  maxButton: {
+    fontSize: 10,
+    padding: 11,
+    minWidth: 'unset',
+  },
+}));
 
 export { DecimalsInput };
