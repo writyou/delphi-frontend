@@ -7,12 +7,11 @@ import { useApi } from 'services/api';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { TokenAmount, Token } from 'model/entities';
-import { routes } from 'app/routes';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount } from 'utils/react';
 import { SpyField } from 'components';
 
-import { SavingsPoolCard, WithViewDetails } from '../SavingsPoolCard/SavingsPoolCard';
+import { SavingsPoolCard } from '../SavingsPoolCard/SavingsPoolCard';
 
 type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | 'currencies'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement> & {
@@ -43,35 +42,26 @@ function SavingsPoolFieldComponent(props: Props) {
   return (
     <SavingsPoolCard
       pool={pool}
-      footerElement={
-        <WithViewDetails
-          link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-          content={
-            <span>
-              <SwitchInput
-                checked={isAllocated}
-                label={t(tKeys.modules.savings.allocate.getKey())}
-                onChange={handleSwitch}
-              />
-            </span>
-          }
-          additionalElement={
-            isAllocated ? (
-              <>
-                <TokenAmountInput
-                  {...rest}
-                  {...input}
-                  helperText={error}
-                  error={Boolean(error)}
-                  name={`key${pool.address}`}
-                  currencies={pool.tokens}
-                  placeholder="Enter sum"
-                  maxValue={maxValue$}
-                />
-              </>
-            ) : undefined
-          }
+      content={
+        <SwitchInput
+          checked={isAllocated}
+          label={t(tKeys.modules.savings.allocate.getKey())}
+          onChange={handleSwitch}
         />
+      }
+      additionalElement={
+        isAllocated ? (
+          <TokenAmountInput
+            {...rest}
+            {...input}
+            helperText={error}
+            error={Boolean(error)}
+            name={`key${pool.address}`}
+            currencies={pool.tokens}
+            placeholder="Enter sum"
+            maxValue={maxValue$}
+          />
+        ) : undefined
       }
     />
   );

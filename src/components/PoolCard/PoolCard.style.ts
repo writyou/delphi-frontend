@@ -30,5 +30,5 @@ export const useStyles = makeStyles(
       fontSize: 32,
     },
   }),
-  { name: 'SavingsPoolCard' },
+  { name: 'PoolCard' },
 );
