@@ -21,7 +21,7 @@ type Props = {
   poolBalance: JSX.Element;
   poolLiquidity: JSX.Element;
   additionalElement?: JSX.Element;
-  getPoolBalance(): Observable<LiquidityAmount>;
+  getPoolBalance(address: string): Observable<LiquidityAmount>;
 };
 
 export function PoolCard(props: Props) {
@@ -39,7 +39,7 @@ export function PoolCard(props: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [balance] = useSubscribable(getPoolBalance, [getPoolBalance, address]);
+  const [balance] = useSubscribable(() => getPoolBalance(address), [getPoolBalance, address]);
 
   return (
     <Card
