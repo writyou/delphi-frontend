@@ -1,16 +1,10 @@
-import React, {
-  useCallback,
-  useEffect,
-  useState,
-  useMemo,
-  ComponentPropsWithoutRef,
-  useRef,
-} from 'react';
+import React, { useCallback, useEffect, useState, useMemo, ComponentPropsWithoutRef } from 'react';
 import BN from 'bn.js';
 
 import { fromBaseUnit, toBaseUnit } from 'utils/bn';
 import { makeStyles } from 'utils/styles';
 import { IToBN } from 'model/types';
+import { useOnChangeState } from 'utils/react';
 
 import { Button } from '../Button/Button';
 import { TextInput } from './TextInput';
@@ -40,7 +34,6 @@ function DecimalsInput(props: IProps) {
 
   const [suffix, setSuffix] = useState('');
   const [needToShowEmpty, setNeedToShowEmpty] = useState(() => !value || value === '0');
-  const prevBaseDecimals = usePrevious(baseDecimals);
 
   useEffect(() => {
     needToShowEmpty && value && value !== '0' && setNeedToShowEmpty(false);
@@ -48,8 +41,10 @@ function DecimalsInput(props: IProps) {
 
   useEffect(() => setSuffix(''), [value, baseDecimals]);
 
-  useEffect(() => {
-    if (prevBaseDecimals !== baseDecimals) {
+  useOnChangeState(
+    baseDecimals,
+    (prev, cur) => prev !== cur,
+    prevBaseDecimals => {
       const decimalsDiff = prevBaseDecimals ? new BN(baseDecimals - prevBaseDecimals) : new BN(0);
       if (decimalsDiff.eqn(0)) {
         return;
@@ -61,8 +56,8 @@ function DecimalsInput(props: IProps) {
         : new BN(value).div(decimalCorrectionFactor);
 
       onChange(adjustedValue.toString());
-    }
-  }, [prevBaseDecimals, baseDecimals, value, onChange]);
+    },
+  );
 
   const amount = useMemo(() => value && fromBaseUnit(value, baseDecimals) + suffix, [
     value,
@@ -129,14 +124,6 @@ function DecimalsInput(props: IProps) {
       }}
     />
   );
-}
-
-function usePrevious<T extends {}>(value: T): T | undefined {
-  const ref = useRef<T>();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
 }
 
 const useStyles = makeStyles(() => ({
