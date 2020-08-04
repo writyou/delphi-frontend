@@ -27,6 +27,7 @@ function DecimalsInput(props: IProps) {
     maxValue,
     baseUnitName,
     disabled,
+    InputProps,
     ...restInputProps
   } = props;
 
@@ -95,6 +96,7 @@ function DecimalsInput(props: IProps) {
       fullWidth
       onChange={handleInputChange}
       InputProps={{
+        ...InputProps,
         endAdornment: maxValue && (
           <Button disabled={disabled} onClick={handleMaxButtonClick} className={classes.maxButton}>
             MAX

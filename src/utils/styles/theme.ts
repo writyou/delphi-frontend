@@ -416,21 +416,20 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiOutlinedInput: {
         root: {
+          background: colors.foggyNight,
+          borderColor: colors.darkMist,
+          borderRadius: 8,
+          minHeight: 36,
+
           '&$focused': {
-            background: '#191924',
+            background: colors.blackRussian,
           },
 
           '&$disabled': {
             color: 'rgba(255, 255, 255, 0.2)',
           },
 
-          '&$focused, &$disabled, &:hover': {
-            '& $notchedOutline': {
-              border: '1px solid #40404b',
-            },
-          },
-
-          '&$error $notchedOutline': {
+          '&$error': {
             borderColor: '#643d3d',
           },
         },
@@ -441,19 +440,16 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
         input: {
           fontWeight: 300,
-          padding: defaultTheme.spacing(1.125, 1.375),
+          padding: '8px 11px',
 
           '&::placeholder': {
             color: 'rgba(255, 255, 255, 0.5)',
           },
-
-          '&:-webkit-autofill': {
-            background: 'transparent',
-          },
         },
 
         notchedOutline: {
-          borderColor: '#40404b',
+          borderColor: 'inherit !important',
+          borderWidth: '1px !important',
         },
       },
 
@@ -464,6 +460,36 @@ function getTheme(type: 'light' | 'dark'): Theme {
           '&$error': {
             margin: '5px 0 0',
           },
+        },
+      },
+
+      MuiMenuItem: {
+        root: {
+          fontWeight: 300,
+          padding: '10px 9px',
+
+          '&$selected, &$selected:hover': {
+            backgroundColor: colors.blackRussian,
+          },
+
+          '&:hover': {
+            backgroundColor: colors.darkMist,
+          },
+        },
+      },
+
+      MuiSelect: {
+        root: {
+          '&$select:focus': {
+            backgroundColor: colors.foggyNight,
+          },
+
+          '&:hover': {
+            backgroundColor: colors.blackRussian,
+          },
+        },
+      },
+
       MuiBackdrop: {
         root: {
           backgroundColor: 'rgba(0, 0, 0, 0.15)',

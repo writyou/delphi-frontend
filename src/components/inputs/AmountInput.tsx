@@ -1,7 +1,15 @@
-import React, { useEffect, useCallback, ComponentPropsWithoutRef, useRef, useState } from 'react';
+// @ts-nocheck
+import React, {
+  useEffect,
+  useCallback,
+  ComponentPropsWithoutRef,
+  useRef,
+  useState,
+  useMemo,
+} from 'react';
 import BN from 'bn.js';
-import MenuItem from '@material-ui/core/MenuItem';
 import { Observable } from 'rxjs';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { toObservable } from 'utils/rxjs';
 import { Amount } from 'model/entities';
@@ -11,6 +19,7 @@ import { useSubscribable } from 'utils/react';
 
 import { TextInput } from './TextInput';
 import { DecimalsInput } from './DecimalsInput';
+import { SelectInput } from './SelectInput';
 
 interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
@@ -18,8 +27,8 @@ interface IOwnProps<A extends Amount> {
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
-  getCurrencyIdentifier(currency: A['currency']): string;
-  getCurrencyLabel(currency: A['currency'], currencies: A['currency'][]): JSX.Element | string;
+  getCurrencyIdentifier: (currency: A['currency']) => string;
+  getCurrencyLabel: (currency: A['currency'], currencies: A['currency'][]) => JSX.Element | string;
 }
 
 export type AmountInputProps<A extends Amount> = IOwnProps<A> &
@@ -74,26 +83,42 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   const [maxValue] = useSubscribable(() => toObservable(max), [max]);
 
-  const handleCurrencyChange = React.useCallback(
+  const handleCurrencyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const nextValue = event.target.value;
-      const currency = currencies.find(item => getCurrencyIdentifier(item) === nextValue);
+      const currency =
+        getCurrencyIdentifier && currencies.find(item => getCurrencyIdentifier(item) === nextValue);
 
       currency && onChange(makeAmount(currentValue, currency));
     },
     [onChange, maxValue?.toString(), currentCurrencyUpdatingTrigger],
   );
 
+  const currencySelectOptions = useMemo(
+    () =>
+      getCurrencyLabel && getCurrencyIdentifier
+        ? currencies.map(item => ({
+            id: getCurrencyIdentifier(item),
+            label: getCurrencyLabel(item, currencies),
+          }))
+        : [],
+    [currencies, getCurrencyIdentifier, getCurrencyLabel],
+  );
+
   return (
     <div className={classes.root}>
-      <DecimalsInput
-        {...restInputProps}
-        baseDecimals={currentDecimals}
-        value={currentValue.toString()}
-        maxValue={maxValue}
-        onChange={handleInputChange}
-      />
-      {/* TODO: replace with customized Select */}
+      <div className={classes.decimalInputWrapper}>
+        <DecimalsInput
+          {...restInputProps}
+          baseDecimals={currentDecimals}
+          value={currentValue.toString()}
+          maxValue={maxValue}
+          onChange={handleInputChange}
+          InputProps={{
+            className: classes.decimalInput,
+          }}
+        />
+      </div>
       <TextInput
         select
         disabled={isDisabledCurrencySelector}
@@ -114,16 +139,32 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
   );
 }
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-  },
-  amount: {
-    width: 0,
-    flexGrow: 1,
-    marginRight: theme.spacing(1),
-  },
-}));
+const useStyles = makeStyles(
+  () => ({
+    root: {
+      display: 'flex',
+    },
+    decimalInputWrapper: {
+      position: 'relative',
+      zIndex: 1,
+    },
+    decimalInput: {
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+    },
+    select: {
+      flexShrink: 0,
+
+      // Hint to merge select left border with the right border of the text input
+      marginLeft: -1,
+    },
+    selectInput: {
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
+    },
+  }),
+  { name: 'AmountInput' },
+);
 
 function useUpdatingTrigger<V>(deps: V, isEquals: (prev: V, cur: V) => boolean) {
   const prevValueRef = useRef<V>();
