@@ -12,13 +12,13 @@ import { Observable } from 'rxjs';
 
 import { toObservable } from 'utils/rxjs';
 import { Amount } from 'model/entities';
-import { makeStyles } from 'utils/styles';
 import { IToBN } from 'model/types';
 import { useSubscribable } from 'utils/react';
 
-import { TextInput } from './TextInput';
-import { DecimalsInput } from './DecimalsInput';
-import { SelectInput } from './SelectInput';
+import { SelectInput } from '../SelectInput/SelectInput';
+import { TextInput } from '../TextInput';
+import { DecimalsInput } from '../DecimalsInput';
+import { useStyles } from './AmountInput.style';
 
 interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
@@ -137,37 +137,6 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     </div>
   );
 }
-
-const useStyles = makeStyles(
-  () => ({
-    root: {
-      display: 'flex',
-    },
-    decimalInputWrapper: {
-      flexGrow: 1,
-      position: 'relative',
-      zIndex: 1,
-    },
-    withCurrencySelect: {
-      '& $decimalInput': {
-        borderTopRightRadius: 0,
-        borderBottomRightRadius: 0,
-      },
-    },
-    select: {
-      flexShrink: 0,
-
-      // Hint to merge select left border with the right border of the text input
-      marginLeft: -1,
-    },
-    selectInput: {
-      borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0,
-    },
-    decimalInput: {},
-  }),
-  { name: 'AmountInput' },
-);
 
 function useUpdatingTrigger<V>(deps: V, isEquals: (prev: V, cur: V) => boolean) {
   const prevValueRef = useRef<V>();
