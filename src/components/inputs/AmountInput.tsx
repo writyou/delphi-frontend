@@ -24,10 +24,11 @@ interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
   value: A | null | '';
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
+  hideCurrencySelect?: boolean;
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
-  getCurrencyIdentifier?: (currency: A['currency']) => string;
-  getCurrencyLabel?: (currency: A['currency'], currencies: A['currency'][]) => JSX.Element | string;
+  getCurrencyIdentifier: (currency: A['currency']) => string;
+  getCurrencyLabel: (currency: A['currency'], currencies: A['currency'][]) => JSX.Element | string;
 }
 
 export type AmountInputProps<A extends Amount> = IOwnProps<A> &
@@ -41,6 +42,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     maxValue: max,
     disabled,
     currencies,
+    hideCurrencySelect,
     makeAmount,
     getCurrencyIdentifier,
     getCurrencyLabel,
@@ -62,6 +64,8 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   const isDisabledCurrencySelector = Boolean(currencies.length <= 1 && currentCurrency);
 
+  const [maxValue] = useSubscribable(() => toObservable(max), [max]);
+
   // initialize or update value if currencies is not contain current currency
   useEffect(() => {
     const isWrongCurrentCurrency =
@@ -77,31 +81,28 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     (nextValue: string) => {
       currentCurrency && onChange(makeAmount(new BN(nextValue), currentCurrency));
     },
-    [currentDecimals, currentCurrencyUpdatingTrigger],
+    [onChange, currentCurrencyUpdatingTrigger],
   );
-
-  const [maxValue] = useSubscribable(() => toObservable(max), [max]);
 
   const handleCurrencyChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const nextValue = event.target.value;
       const currency =
         getCurrencyIdentifier && currencies.find(item => getCurrencyIdentifier(item) === nextValue);
-
       currency && onChange(makeAmount(currentValue, currency));
     },
-    [onChange, maxValue?.toString(), currentCurrencyUpdatingTrigger],
+    [onChange, currencies, currentValue.toString()],
   );
 
   const currencySelectOptions = useMemo(
     () =>
-      getCurrencyLabel && getCurrencyIdentifier
-        ? currencies.map(item => ({
+      hideCurrencySelect
+        ? []
+        : currencies.map(item => ({
             id: getCurrencyIdentifier(item),
             label: getCurrencyLabel(item, currencies),
-          }))
-        : [],
-    [currencies, getCurrencyIdentifier, getCurrencyLabel],
+          })),
+    [currencies, hideCurrencySelect],
   );
 
   return (
@@ -118,7 +119,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
           }}
         />
       </div>
-      {currencySelectOptions.length > 0 && getCurrencyIdentifier && (
+      {!hideCurrencySelect && (
         <div className={classes.select}>
           <SelectInput
             options={currencySelectOptions}

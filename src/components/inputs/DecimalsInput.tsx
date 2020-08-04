@@ -79,7 +79,7 @@ function DecimalsInput(props: IProps) {
         }
       }
     },
-    [baseDecimals, value],
+    [baseDecimals, value, onChange],
   );
 
   const handleMaxButtonClick = React.useCallback(() => {
