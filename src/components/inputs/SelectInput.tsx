@@ -4,6 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { MenuProps } from '@material-ui/core/Menu';
 
 import { makeStyles } from 'utils/styles';
+import { AngleArrow } from 'components/icons';
 
 import { TextInput } from './TextInput';
 
@@ -69,6 +70,7 @@ export function SelectInput(props: SelectInputProps) {
           },
           ...menuPositionProps,
         },
+        IconComponent: renderArrowIcon,
         onOpen: handleSelectOpen,
         onClose: handleSelectClose,
       }}
@@ -82,6 +84,14 @@ export function SelectInput(props: SelectInputProps) {
       })}
     </TextInput>
   );
+
+  function renderArrowIcon() {
+    return (
+      <div className={classes.arrowIcon}>
+        <AngleArrow fontSize="inherit" />
+      </div>
+    );
+  }
 }
 
 const useStyles = makeStyles(
@@ -98,6 +108,19 @@ const useStyles = makeStyles(
     isOpen: {
       borderBottomLeftRadius: 0,
       borderBottomRightRadius: 0,
+
+      '& $arrowIcon': {
+        transform: 'rotate(-90deg)',
+      },
+    },
+    arrowIcon: {
+      position: 'absolute',
+      right: 0,
+      padding: 8,
+      fontSize: 18,
+      transform: 'rotate(90deg)',
+      pointerEvents: 'none',
+      transition: '1s',
     },
   }),
   { name: 'SelectInput' },
