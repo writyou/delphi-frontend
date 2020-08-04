@@ -484,7 +484,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
             backgroundColor: colors.foggyNight,
           },
 
-          '&:hover': {
+          '&:hover:not($disabled)': {
             backgroundColor: colors.blackRussian,
           },
         },

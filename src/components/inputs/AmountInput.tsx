@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, {
   useEffect,
   useCallback,
@@ -8,8 +7,8 @@ import React, {
   useMemo,
 } from 'react';
 import BN from 'bn.js';
+import cn from 'classnames';
 import { Observable } from 'rxjs';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import { toObservable } from 'utils/rxjs';
 import { Amount } from 'model/entities';
@@ -27,8 +26,8 @@ interface IOwnProps<A extends Amount> {
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
-  getCurrencyIdentifier: (currency: A['currency']) => string;
-  getCurrencyLabel: (currency: A['currency'], currencies: A['currency'][]) => JSX.Element | string;
+  getCurrencyIdentifier?: (currency: A['currency']) => string;
+  getCurrencyLabel?: (currency: A['currency'], currencies: A['currency'][]) => JSX.Element | string;
 }
 
 export type AmountInputProps<A extends Amount> = IOwnProps<A> &
@@ -107,7 +106,7 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   return (
     <div className={classes.root}>
-      <div className={classes.decimalInputWrapper}>
+      <div className={cn({ [classes.withCurrencySelect]: currencySelectOptions.length > 0 })}>
         <DecimalsInput
           {...restInputProps}
           baseDecimals={currentDecimals}
@@ -119,22 +118,17 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
           }}
         />
       </div>
-      <TextInput
-        select
-        disabled={isDisabledCurrencySelector}
-        value={currentCurrency && getCurrencyIdentifier(currentCurrency!)}
-        variant="outlined"
-        onChange={handleCurrencyChange}
-      >
-        {currencies.map(item => {
-          const id = getCurrencyIdentifier(item);
-          return (
-            <MenuItem key={id} value={id}>
-              {getCurrencyLabel(item, currencies)}
-            </MenuItem>
-          );
-        })}
-      </TextInput>
+      {currencySelectOptions.length > 0 && getCurrencyIdentifier && (
+        <div className={classes.select}>
+          <SelectInput
+            options={currencySelectOptions}
+            onChange={handleCurrencyChange}
+            value={currentCurrency && getCurrencyIdentifier(currentCurrency)}
+            disabled={isDisabledCurrencySelector}
+            InputProps={{ className: classes.selectInput }}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -144,13 +138,14 @@ const useStyles = makeStyles(
     root: {
       display: 'flex',
     },
-    decimalInputWrapper: {
+    withCurrencySelect: {
       position: 'relative',
       zIndex: 1,
-    },
-    decimalInput: {
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
+
+      '& $decimalInput': {
+        borderTopRightRadius: 0,
+        borderBottomRightRadius: 0,
+      },
     },
     select: {
       flexShrink: 0,
@@ -162,6 +157,7 @@ const useStyles = makeStyles(
       borderTopLeftRadius: 0,
       borderBottomLeftRadius: 0,
     },
+    decimalInput: {},
   }),
   { name: 'AmountInput' },
 );
