@@ -481,7 +481,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
       MuiSelect: {
         root: {
           '&$select:focus': {
-            backgroundColor: colors.foggyNight,
+            backgroundColor: colors.blackRussian,
           },
 
           '&:hover:not($disabled)': {
