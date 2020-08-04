@@ -55,12 +55,18 @@ export function SelectInput(props: SelectInputProps) {
       {...restProps}
       select
       variant="outlined"
-      className={classes.root}
+      className={cn(
+        classes.root,
+        {
+          [classes.isOpen]: isMenuOpen,
+        },
+        {
+          [classes.withSingleOption]: options.length <= 1,
+        },
+      )}
       InputProps={{
         ...restInputProps,
-        className: cn(inputClassName, {
-          [classes.isOpen]: isMenuOpen,
-        }),
+        className: cn(inputClassName, classes.input),
       }}
       SelectProps={{
         MenuProps: {
@@ -98,20 +104,34 @@ const useStyles = makeStyles(
   theme => ({
     root: {
       minWidth: 129,
+
+      '&$isOpen $input': {
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+
+        '& $arrowIcon': {
+          transform: 'rotate(-90deg)',
+        },
+      },
+
+      '&$withSingleOption': {
+        minWidth: 100,
+
+        '& $input': {
+          borderColor: 'transparent',
+          color: '#fff',
+        },
+
+        '& $arrowIcon': {
+          display: 'none',
+        },
+      },
     },
     paper: {
       backgroundColor: theme.palette.background.paper,
       borderRadius: '0 0 8px 8px',
       borderColor: theme.colors.darkMist,
       borderTop: 'none',
-    },
-    isOpen: {
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
-
-      '& $arrowIcon': {
-        transform: 'rotate(-90deg)',
-      },
     },
     arrowIcon: {
       position: 'absolute',
@@ -122,6 +142,9 @@ const useStyles = makeStyles(
       pointerEvents: 'none',
       transition: '1s',
     },
+    isOpen: {},
+    withSingleOption: {},
+    input: {},
   }),
   { name: 'SelectInput' },
 );

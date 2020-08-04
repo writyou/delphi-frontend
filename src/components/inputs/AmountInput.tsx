@@ -107,7 +107,11 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   return (
     <div className={classes.root}>
-      <div className={cn({ [classes.withCurrencySelect]: currencySelectOptions.length > 0 })}>
+      <div
+        className={cn(classes.decimalInputWrapper, {
+          [classes.withCurrencySelect]: !hideCurrencySelect && !isDisabledCurrencySelector,
+        })}
+      >
         <DecimalsInput
           {...restInputProps}
           baseDecimals={currentDecimals}
@@ -125,8 +129,8 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
             options={currencySelectOptions}
             onChange={handleCurrencyChange}
             value={currentCurrency && getCurrencyIdentifier(currentCurrency)}
-            disabled={isDisabledCurrencySelector}
             InputProps={{ className: classes.selectInput }}
+            disabled={isDisabledCurrencySelector}
           />
         </div>
       )}
@@ -139,10 +143,12 @@ const useStyles = makeStyles(
     root: {
       display: 'flex',
     },
-    withCurrencySelect: {
+    decimalInputWrapper: {
+      flexGrow: 1,
       position: 'relative',
       zIndex: 1,
-
+    },
+    withCurrencySelect: {
       '& $decimalInput': {
         borderTopRightRadius: 0,
         borderBottomRightRadius: 0,
