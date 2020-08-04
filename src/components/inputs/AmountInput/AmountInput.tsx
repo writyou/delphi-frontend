@@ -91,25 +91,9 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
         getCurrencyIdentifier &&
         currencies.find(item => getCurrencyIdentifier(item) === nextCurrency);
 
-      const nextDecimals = currency?.decimals;
-      currency && nextDecimals && onChange(makeAmount(adjustCurrentValue(nextDecimals), currency));
+      currency && onChange(makeAmount(currentValue, currency));
     },
     [onChange, currencies, currentValue.toString()],
-  );
-
-  const adjustCurrentValue = useCallback(
-    (nextDecimals: number) => {
-      const decimalsDiff = nextDecimals ? new BN(nextDecimals - currentDecimals) : new BN(0);
-      if (decimalsDiff.eqn(0)) {
-        return currentValue;
-      }
-
-      const decimalCorrectionFactor = new BN(10).pow(decimalsDiff);
-      return decimalsDiff.gtn(0)
-        ? new BN(currentValue).mul(decimalCorrectionFactor)
-        : new BN(currentValue).div(decimalCorrectionFactor);
-    },
-    [currentDecimals, currentValue.toString()],
   );
 
   const currencySelectOptions = useMemo(
