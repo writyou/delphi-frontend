@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
-import { createErc20 } from 'generated/contracts';
+import { createErc20, createTestnetERC20 } from 'generated/contracts';
 import { Token, TokenAmount } from 'model/entities';
 import { getCurrentValueOrThrow, awaitFirst } from 'utils/rxjs';
 
@@ -132,9 +132,9 @@ export class Erc20Api {
     spender: string,
     amount: TokenAmount,
   ): Promise<void> {
-    const txDai = this.getErc20TxContract(amount.currency.address);
+    const txContract = this.getErc20TxContract(amount.currency.address);
 
-    const promiEvent = txDai.methods.approve(
+    const promiEvent = txContract.methods.approve(
       { spender, amount: amount.toBN() },
       { from: fromAddress },
     );
@@ -146,6 +146,31 @@ export class Erc20Api {
     });
 
     await promiEvent;
+  }
+
+  @autobind
+  public async mintTestTokens(amount: TokenAmount): Promise<void> {
+    const txContract = this.getTestnetErc20TxContract(amount.currency.address);
+    const fromAddress = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.allocateTo(
+      { recipient: fromAddress, value: amount.toBN() },
+      { from: fromAddress },
+    );
+
+    this.transactionsApi.pushToSubmittedTransactions('testnetERC20.mint', promiEvent, {
+      recipient: fromAddress,
+      fromAddress,
+      value: amount,
+    });
+
+    await promiEvent;
+  }
+
+  private getTestnetErc20TxContract(address: string): Contracts['testnetErc20'] {
+    const txWeb3 = getCurrentValueOrThrow(this.web3Manager.txWeb3$);
+
+    return createTestnetERC20(txWeb3, address);
   }
 
   private getErc20TxContract(address: string): Contracts['erc20'] {
