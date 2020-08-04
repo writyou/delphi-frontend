@@ -7,14 +7,11 @@ import { SavingsPool } from 'model/types';
 
 export const zeroAddress = '0x0000000000000000000000000000000000000000';
 
-export const tokenAmount = new TokenAmount(
-  '0000000000000000000000',
-  new Token(zeroAddress, 'MOCK', 18),
-);
+export const tokenAmount = new TokenAmount('0', new Token(zeroAddress, 'MOCK', 18));
 
-export const liquidityAmount = new LiquidityAmount('0000000000000000000000', new Currency('$', 18));
+export const liquidityAmount = new LiquidityAmount('0', new Currency('$', 18));
 
-export const percentAmount = new PercentAmount(new Fraction('000000', '100000'));
+export const percentAmount = new PercentAmount(new Fraction('0'));
 
 export const mockedTokens: Token[] = [
   new Token('0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea', 'MOCK', 18),
