@@ -13,22 +13,15 @@ import {
   Metric,
   FormattedAmount,
   CompositionChart,
-  PieChartData,
 } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { UserSavingsPoolsAvgAPY, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
-import { percentAmount, tokenAmount } from 'utils/mock';
-import { TokenAmount } from 'model/entities';
+import { percentAmount, compositionChartEntriesToken } from 'utils/mock';
 
 import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 import { LiveStats } from './Components/LiveStats';
-
-const entries = new Array<PieChartData<TokenAmount>>(5).fill({
-  value: tokenAmount,
-  payload: undefined,
-});
 
 export function SummaryPage() {
   const classes = useStyles();
@@ -138,7 +131,7 @@ export function SummaryPage() {
             <Label withComingSoon>My Investment</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={entries} size="extra-small" />
+            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -149,7 +142,7 @@ export function SummaryPage() {
             <Label withComingSoon>DCA</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={entries} size="extra-small" />
+            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -160,7 +153,7 @@ export function SummaryPage() {
             <Label withComingSoon>My Harvest</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={entries} size="extra-small" />
+            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />

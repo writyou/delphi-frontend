@@ -4,13 +4,26 @@ import moment from 'moment';
 import { BalanceChart, Loading, Label } from 'components';
 import { makeStyles, useTheme } from 'utils/styles';
 
-export const useStyles = makeStyles(() => ({
-  hidden: {
-    opacity: 0,
-    width: 0,
-    height: 0,
-  },
-}));
+import { ChartGraphMock } from './ChartGraphMock';
+
+export const useStyles = makeStyles(
+  () => ({
+    root: {
+      position: 'relative',
+    },
+    hidden: {
+      opacity: 0,
+      width: 0,
+      height: 0,
+    },
+    chartMock: {
+      position: 'absolute',
+      fontSize: 1000,
+      zIndex: 999,
+    },
+  }),
+  { name: 'PortfolioBalanceChart' },
+);
 
 interface PoolPoint {
   date: number;
@@ -41,24 +54,29 @@ function PortfolioBalanceChart() {
   };
 
   return (
-    <Loading>
-      <div className={classes.hidden}>
-        <svg>
-          {theme.gradients.poolBalanceChart[0].svgLinear('lEnterPriceGradient')}
-          {theme.gradients.poolBalanceChart[1].svgLinear('lExitPriceGradient')}
-        </svg>
-      </div>
-      <BalanceChart
-        chartPoints={chartPoints}
-        chartLines={['lExitPrice', 'lEnterPrice']}
-        chartLineColors={{
-          lEnterPrice: 'url(#lEnterPriceGradient)',
-          lExitPrice: 'url(#lExitPriceGradient)',
-        }}
-        title={<Label withComingSoon>Portfolio balance</Label>}
-        renderCurrentBalance={renderCurrentBalance}
-      />
-    </Loading>
+    <div className={classes.root}>
+      <Loading>
+        <div className={classes.hidden}>
+          <svg>
+            {theme.gradients.poolBalanceChart[0].svgLinear('lEnterPriceGradient')}
+            {theme.gradients.poolBalanceChart[1].svgLinear('lExitPriceGradient')}
+          </svg>
+        </div>
+        <div className={classes.chartMock}>
+          <ChartGraphMock />
+        </div>
+        <BalanceChart
+          chartPoints={chartPoints}
+          chartLines={['lExitPrice', 'lEnterPrice']}
+          chartLineColors={{
+            lEnterPrice: 'url(#lEnterPriceGradient)',
+            lExitPrice: 'url(#lExitPriceGradient)',
+          }}
+          title={<Label withComingSoon>Portfolio balance</Label>}
+          renderCurrentBalance={renderCurrentBalance}
+        />
+      </Loading>
+    </div>
   );
 }
 

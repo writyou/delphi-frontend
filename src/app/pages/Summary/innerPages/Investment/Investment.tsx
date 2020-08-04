@@ -1,35 +1,20 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid, PieChartData } from 'components';
-import { percentAmount, tokenAmount, liquidityAmount, zeroAddress } from 'utils/mock';
-import { LiquidityAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { NewTable, Loading, Typography, Hint, Grid } from 'components';
+import { percentAmount, tokenAmount, compositionChartEntriesLiquidity } from 'utils/mock';
 
 import * as tableData from './tableData';
 
 const entries: tableData.Order[] = [
   {
-    pool: 'sUSD',
+    pool: 'sBTC',
     poolFullTitle: 'Curve',
     tokens: ['USDT', 'DAI'],
     APY: percentAmount,
     balance: tokenAmount,
     additionalTable: [0, 4],
   },
-];
-
-export const entriesForChart = [
-  new Array<PieChartData<LiquidityAmount, SavingsPool>>(5).fill({
-    value: liquidityAmount,
-    payload: {
-      address: zeroAddress,
-      poolName: 'sUSD',
-      poolToken: tokenAmount.currency,
-      apy: percentAmount,
-      tokens: [],
-    },
-  }),
 ];
 
 export function Investment() {
@@ -48,7 +33,10 @@ export function Investment() {
               <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />
+              <NewTable.Component
+                columns={tableData.columnForChart}
+                entries={[compositionChartEntriesLiquidity(5)]}
+              />
             </Grid>
           </Grid>
         )}

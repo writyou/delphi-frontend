@@ -10,12 +10,13 @@ import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import {
-  SavingsPoolBalancesComposition,
   SavingsPoolLiquidity,
   UserSavingsPoolBalance,
   WithdrawFromSavingsPoolButton,
   DepositToSavingsPoolForm,
 } from 'features/savingsPools';
+
+import { RewardCompositionChartMock } from './RewardCompositionChartMock';
 
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>(routes.savings.pool.id.getRoutePath());
@@ -70,16 +71,10 @@ export function SavingsPoolPage() {
           </Grid>
           <Grid container className={cn(classes.withBorder, classes.row)}>
             <Grid container item xs={6} className={classes.paddingRight}>
-              <Metric
-                title="Approximate Reward Weekly"
-                value={<SavingsPoolBalancesComposition poolAddress={poolAddress} />}
-              />
+              <Metric title="Approximate Reward Weekly" value={<RewardCompositionChartMock />} />
             </Grid>
             <Grid container item xs={4}>
-              <Metric
-                title="Currency Reserves"
-                value={<SavingsPoolBalancesComposition poolAddress={poolAddress} />}
-              />
+              <Metric title="Currency Reserves" value={<RewardCompositionChartMock />} />
             </Grid>
           </Grid>
           <Grid container>
