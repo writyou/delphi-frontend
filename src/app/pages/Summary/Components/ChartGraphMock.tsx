@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
   return (
-    <SvgIcon {...props} width="553" height="276" viewBox="0 0 553 276">
+    <SvgIcon {...props} viewBox="0 0 553 276">
       <defs>
         <linearGradient id="grad0" x1="99.823%" x2="0%" y1="50%" y2="50%">
           <stop offset="0%" stopColor="#4CF2A1" />

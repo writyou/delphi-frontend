@@ -71,10 +71,16 @@ export function SavingsPoolPage() {
           </Grid>
           <Grid container className={cn(classes.withBorder, classes.row)}>
             <Grid container item xs={6} className={classes.paddingRight}>
-              <Metric title="Approximate Reward Weekly" value={<RewardCompositionChartMock />} />
+              <Metric
+                title="Approximate Reward Weekly"
+                value={<RewardCompositionChartMock poolsNumber={3} />}
+              />
             </Grid>
             <Grid container item xs={4}>
-              <Metric title="Currency Reserves" value={<RewardCompositionChartMock />} />
+              <Metric
+                title="Currency Reserves"
+                value={<RewardCompositionChartMock poolsNumber={4} />}
+              />
             </Grid>
           </Grid>
           <Grid container>

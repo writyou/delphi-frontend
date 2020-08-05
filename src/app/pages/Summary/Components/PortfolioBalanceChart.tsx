@@ -1,10 +1,11 @@
 import * as React from 'react';
 import moment from 'moment';
 
-import { BalanceChart, Loading, Label } from 'components';
+import { BalanceChart, Loading, Label, Grid } from 'components';
 import { makeStyles, useTheme } from 'utils/styles';
 
 import { ChartGraphMock } from './ChartGraphMock';
+import { PortfolioBalanceLegendItem } from './PortfolioBalanceLegendItem';
 
 export const useStyles = makeStyles(
   () => ({
@@ -18,8 +19,9 @@ export const useStyles = makeStyles(
     },
     chartMock: {
       position: 'absolute',
-      fontSize: 1000,
-      zIndex: 999,
+      maxWidth: 553,
+      width: '100%',
+      height: 276,
     },
   }),
   { name: 'PortfolioBalanceChart' },
@@ -50,7 +52,22 @@ function PortfolioBalanceChart() {
   const chartPoints: PoolPoint[] = mockedPoints;
 
   const renderCurrentBalance = () => {
-    return <div>Chart legend</div>;
+    return (
+      <Grid container spacing={3}>
+        <Grid item>
+          <PortfolioBalanceLegendItem title="Savings Yield" color="#d93cef" />
+        </Grid>
+        <Grid item>
+          <PortfolioBalanceLegendItem title="Capital Gains/Losses" color="#594cf2" />
+        </Grid>
+        <Grid item>
+          <PortfolioBalanceLegendItem title="Harvest" color="#5ef2ab" />
+        </Grid>
+        <Grid item>
+          <PortfolioBalanceLegendItem title="Savings Yield" color="#fce58d" />
+        </Grid>
+      </Grid>
+    );
   };
 
   return (
@@ -62,9 +79,7 @@ function PortfolioBalanceChart() {
             {theme.gradients.poolBalanceChart[1].svgLinear('lExitPriceGradient')}
           </svg>
         </div>
-        <div className={classes.chartMock}>
-          <ChartGraphMock />
-        </div>
+        <ChartGraphMock className={classes.chartMock} />
         <BalanceChart
           chartPoints={chartPoints}
           chartLines={['lExitPrice', 'lEnterPrice']}

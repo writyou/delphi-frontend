@@ -21,10 +21,7 @@ export const mockedTokens: Token[] = [
 
 export const compositionChartEntriesToken = (number: number): PieChartData<TokenAmount>[] =>
   new Array<number>(number).fill(0).map((_, index) => ({
-    value: new TokenAmount(
-      new BN(2000000 * (index + 1)),
-      new Token('0x5592ec0cfb4dbc12d3ab100b257153436a1f0fea', 'MOCK', 6),
-    ),
+    value: new TokenAmount(`${index + 1}634870000000000000000000`, mockedTokens[0]),
     payload: undefined,
   }));
 

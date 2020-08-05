@@ -38,8 +38,8 @@ export function CompositionChart<T extends Amount, P = void>({
 
   return (
     <div className={classes.root}>
-      <div className={classes.hidden}>
-        <svg>{sectors.map(sector => sector.color.svgGradient)}</svg>
+      <div>
+        <svg className={classes.hidden}>{sectors.map(sector => sector.color.svgGradient)}</svg>
       </div>
       <div className={classes.chartContainer}>
         <div
