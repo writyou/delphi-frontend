@@ -4,6 +4,7 @@ import moment from 'moment';
 import { BalanceChart, Loading } from 'components';
 import { makeStyles, useTheme } from 'utils/styles';
 import { ChartWithCat } from 'components/icons';
+import { ChartGraphMock } from 'app/pages/Summary/Components/ChartGraphMock';
 
 interface PoolPoint {
   date: number;
@@ -41,6 +42,7 @@ function PortfolioBalanceChart() {
           {theme.gradients.poolBalanceChart[1].svgLinear('lExitPriceGradient')}
         </svg>
       </div>
+      <ChartGraphMock className={classes.chartMock} />
       <div className={classes.container}>
         <BalanceChart
           chartPoints={chartPoints}
@@ -68,10 +70,16 @@ export const useStyles = makeStyles(
     cat: {
       fontSize: 500,
       position: 'absolute',
-      top: -100,
+      top: -80,
     },
     container: {
       position: 'relative',
+    },
+    chartMock: {
+      position: 'absolute',
+      maxWidth: 553,
+      width: '100%',
+      height: 276,
     },
   }),
   { name: 'PortfolioBalanceChart' },

@@ -21,102 +21,6 @@ function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
           <stop offset="0%" stopColor="#574CF2" />
           <stop offset="100%" stopColor="#63AFDD" />
         </linearGradient>
-        <filter
-          id="a3m8fiek1a"
-          width="105%"
-          height="128.8%"
-          x="-2.5%"
-          y="-14.2%"
-          filterUnits="objectBoundingBox"
-        >
-          <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="shadowSpreadOuter1" />
-          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
-          <feMorphology in="SourceAlpha" radius="1" result="shadowInner" />
-          <feOffset in="shadowInner" result="shadowInner" />
-          <feComposite
-            in="shadowOffsetOuter1"
-            in2="shadowInner"
-            operator="out"
-            result="shadowOffsetOuter1"
-          />
-          <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="4" />
-          <feColorMatrix
-            in="shadowBlurOuter1"
-            values="0 0 0 0 0.349019608 0 0 0 0 0.298039216 0 0 0 0 0.949019608 0 0 0 0.3 0"
-          />
-        </filter>
-        <filter
-          id="bb9awoepmd"
-          width="104.9%"
-          height="121.9%"
-          x="-2.5%"
-          y="-11%"
-          filterUnits="objectBoundingBox"
-        >
-          <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="shadowSpreadOuter1" />
-          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
-          <feMorphology in="SourceAlpha" radius="1" result="shadowInner" />
-          <feOffset in="shadowInner" result="shadowInner" />
-          <feComposite
-            in="shadowOffsetOuter1"
-            in2="shadowInner"
-            operator="out"
-            result="shadowOffsetOuter1"
-          />
-          <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="4" />
-          <feColorMatrix
-            in="shadowBlurOuter1"
-            values="0 0 0 0 0.349019608 0 0 0 0 0.298039216 0 0 0 0 0.949019608 0 0 0 0.3 0"
-          />
-        </filter>
-        <filter
-          id="cuu3yzv3gg"
-          width="104.9%"
-          height="115.7%"
-          x="-2.5%"
-          y="-7.8%"
-          filterUnits="objectBoundingBox"
-        >
-          <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="shadowSpreadOuter1" />
-          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
-          <feMorphology in="SourceAlpha" radius="1" result="shadowInner" />
-          <feOffset in="shadowInner" result="shadowInner" />
-          <feComposite
-            in="shadowOffsetOuter1"
-            in2="shadowInner"
-            operator="out"
-            result="shadowOffsetOuter1"
-          />
-          <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="4" />
-          <feColorMatrix
-            in="shadowBlurOuter1"
-            values="0 0 0 0 0.349019608 0 0 0 0 0.298039216 0 0 0 0 0.949019608 0 0 0 0.3 0"
-          />
-        </filter>
-        <filter
-          id="37ulo4yo8j"
-          width="105%"
-          height="116.4%"
-          x="-2.5%"
-          y="-8.1%"
-          filterUnits="objectBoundingBox"
-        >
-          <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="shadowSpreadOuter1" />
-          <feOffset in="shadowSpreadOuter1" result="shadowOffsetOuter1" />
-          <feMorphology in="SourceAlpha" radius="1" result="shadowInner" />
-          <feOffset in="shadowInner" result="shadowInner" />
-          <feComposite
-            in="shadowOffsetOuter1"
-            in2="shadowInner"
-            operator="out"
-            result="shadowOffsetOuter1"
-          />
-          <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="4" />
-          <feColorMatrix
-            in="shadowBlurOuter1"
-            values="0 0 0 0 0.349019608 0 0 0 0 0.298039216 0 0 0 0 0.949019608 0 0 0 0.3 0"
-          />
-        </filter>
         <path
           id="ui5yclq1cb"
           d="M2.904 256.256c26.858-22.478 80.835-45.047 139.596-44.41 60.5.654 107.5 35.616 167.5-.669s89.735 32.429 141.72.668c23.325-14.251 32.78-47.303 84.28-47.303"
@@ -136,11 +40,9 @@ function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
       </defs>
       <g fill="none" fillRule="evenodd">
         <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use fill="#000" filter="url(#a3m8fiek1a)" xlinkHref="#ui5yclq1cb" />
           <use stroke="url(#grad0)" strokeWidth="2" xlinkHref="#ui5yclq1cb" />
         </g>
         <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use fill="#000" filter="url(#bb9awoepmd)" xlinkHref="#xln70q0z0e" />
           <use stroke="url(#grad1)" strokeWidth="2" xlinkHref="#xln70q0z0e" />
         </g>
         <path stroke="#FFF" d="M1 257.364L535 257.364" transform="translate(7)" />
@@ -236,11 +138,9 @@ function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
         </text>
         <path stroke="#FFF" d="M1.5 42.743L1.5 258.422" transform="translate(7)" />
         <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use fill="#000" filter="url(#cuu3yzv3gg)" xlinkHref="#lzrjt8rq1h" />
           <use stroke="url(#grad2)" strokeWidth="2" xlinkHref="#lzrjt8rq1h" />
         </g>
         <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use fill="#000" filter="url(#37ulo4yo8j)" xlinkHref="#434ivwc2kk" />
           <use stroke="url(#grad3)" strokeWidth="2" xlinkHref="#434ivwc2kk" />
         </g>
       </g>
