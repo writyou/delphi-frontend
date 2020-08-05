@@ -1,19 +1,15 @@
 import * as React from 'react';
 import { useRouteMatch } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import {
   Grid,
-  TabContext,
-  TabsList,
-  Tab,
-  TabPanel,
   Label,
   Divider,
   Metric,
   FormattedAmount,
   CompositionChart,
   PieChartData,
+  Tabs,
 } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
@@ -30,12 +26,41 @@ const entries = new Array<PieChartData<TokenAmount>>(5).fill({
   payload: undefined,
 });
 
+const tabs = [
+  {
+    label: 'My Savings Pools',
+    value: routes.summary.savings.getElementKey(),
+    to: routes.summary.savings.getRedirectPath(),
+    renderContent: () => <innerPages.Savings />,
+  },
+  {
+    label: 'My Investment Pools',
+    value: routes.summary.investment.getElementKey(),
+    to: routes.summary.investment.getRedirectPath(),
+    renderContent: () => <innerPages.Investment />,
+  },
+  {
+    label: 'DCA',
+    value: routes.summary.dca.getElementKey(),
+    to: routes.summary.dca.getRedirectPath(),
+    renderContent: () => <innerPages.DCA />,
+  },
+  {
+    label: 'My Harvest',
+    value: routes.summary.harvest.getElementKey(),
+    to: routes.summary.harvest.getRedirectPath(),
+    renderContent: () => <innerPages.Harvest />,
+  },
+];
+
 export function SummaryPage() {
   const classes = useStyles();
-  const match = useRouteMatch<{ page: string }>('/summary/:page');
-  const [selectedPage, setSelectedPage] = React.useState(routes.summary.savings.getElementKey());
 
-  const page = match ? match.params.page : routes.summary.savings.getElementKey();
+  const defaultPage = routes.summary.savings.getElementKey();
+  const match = useRouteMatch<{ page: string }>('/summary/:page');
+  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
+
+  const page = match ? match.params.page : defaultPage;
 
   const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
     setSelectedPage(tab);
@@ -62,55 +87,7 @@ export function SummaryPage() {
   );
 
   function renderTabs() {
-    return (
-      <TabContext value={selectedPage}>
-        <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} onChange={handleTabChange}>
-            <Tab
-              label="My Savings Pools"
-              className={classes.tab}
-              component={Link}
-              value={routes.summary.savings.getElementKey()}
-              to={routes.summary.savings.getRedirectPath()}
-            />
-            <Tab
-              label="My Investment Pools"
-              className={classes.tab}
-              component={Link}
-              value={routes.summary.investment.getElementKey()}
-              to={routes.summary.investment.getRedirectPath()}
-            />
-            <Tab
-              label="DCA"
-              className={classes.tab}
-              component={Link}
-              value={routes.summary.dca.getElementKey()}
-              to={routes.summary.dca.getRedirectPath()}
-            />
-            <Tab
-              label="My Harvest"
-              className={classes.tab}
-              component={Link}
-              value={routes.summary.harvest.getElementKey()}
-              to={routes.summary.harvest.getRedirectPath()}
-            />
-          </TabsList>
-          {selectedPage !== routes.summary.savings.getElementKey() && <Label withComingSoon />}
-        </div>
-        <TabPanel value={routes.summary.savings.getElementKey()}>
-          <innerPages.Savings />
-        </TabPanel>
-        <TabPanel value={routes.summary.investment.getElementKey()}>
-          <innerPages.Investment />
-        </TabPanel>
-        <TabPanel value={routes.summary.dca.getElementKey()}>
-          <innerPages.DCA />
-        </TabPanel>
-        <TabPanel value={routes.summary.harvest.getElementKey()}>
-          <innerPages.Harvest />
-        </TabPanel>
-      </TabContext>
-    );
+    return <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange} />;
   }
 
   function renderMetrics() {
@@ -174,17 +151,6 @@ export function SummaryPage() {
 const useStyles = makeStyles(
   () => ({
     root: {},
-    tab: {
-      minWidth: 112,
-    },
-    navigationBar: {
-      marginBottom: 40,
-      display: 'flex',
-      alignItems: 'center',
-    },
-    innerPages: {
-      marginTop: 60,
-    },
     chart: {
       marginTop: 'auto',
     },

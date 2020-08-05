@@ -1,83 +1,41 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router';
-import { Link } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import {
-  makeStyles,
-  useInheritBackgroundHackStyles,
-  InheritBackgroundHackStyles,
-} from 'utils/styles';
-import { TabsList, TabContext, Tab, TabPanel } from 'components';
+import { Tabs } from 'components';
 
 import { AllocateTab } from './AllocateTab';
 import { WithdrawTab } from './WithdrawTab';
 
+const tabs = [
+  {
+    label: 'Allocate',
+    value: routes.savings.allocate.getElementKey(),
+    to: routes.savings.allocate.getRedirectPath(),
+    renderContent: () => <AllocateTab />,
+  },
+  {
+    label: 'Withdraw',
+    value: routes.savings.withdraw.getElementKey(),
+    to: routes.savings.withdraw.getRedirectPath(),
+    renderContent: () => <WithdrawTab />,
+  },
+];
+
 export function SavingsPage() {
+  const defaultPage = routes.savings.allocate.getElementKey();
   const match = useRouteMatch<{ page: string }>('/savings/:page');
-  const [selectedPage, setSelectedPage] = React.useState('allocate');
+  const page = match ? match.params.page : defaultPage;
 
-  const page = match ? match.params.page : 'allocate';
-
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
-  };
+  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
 
   React.useEffect(() => {
     setSelectedPage(page);
   }, [page]);
 
-  const backgroundColor = useInheritBackgroundHackStyles();
-  const classes = useStyles({ backgroundColor });
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
+    setSelectedPage(tab);
+  };
 
-  return renderTabs();
-
-  function renderTabs() {
-    return (
-      <TabContext value={selectedPage}>
-        <div className={classes.navigationBar}>
-          <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-            <Tab
-              label="Allocate"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.allocate.getElementKey()}
-              to={routes.savings.allocate.getRedirectPath()}
-            />
-            <Tab
-              label="Withdraw"
-              className={classes.tab}
-              component={Link}
-              value={routes.savings.withdraw.getElementKey()}
-              to={routes.savings.withdraw.getRedirectPath()}
-            />
-          </TabsList>
-        </div>
-        <TabPanel value={routes.savings.allocate.getElementKey()}>
-          <AllocateTab />
-        </TabPanel>
-        <TabPanel value={routes.savings.withdraw.getElementKey()}>
-          <WithdrawTab />
-        </TabPanel>
-      </TabContext>
-    );
-  }
+  return <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange} />;
 }
-
-const useStyles = makeStyles(
-  () => ({
-    tabs: {
-      marginBottom: 40,
-      backgroundColor: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
-    },
-    tab: {
-      minWidth: 112,
-    },
-    navigationBar: {
-      display: 'flex',
-      alignItems: 'flex-start',
-      justifyContent: 'space-between',
-    },
-  }),
-  { name: 'SavingsPage' },
-);
