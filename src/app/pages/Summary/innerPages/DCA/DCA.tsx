@@ -2,7 +2,13 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid, PieChartData } from 'components';
-import { percentAmount, tokenAmount, liquidityAmount, zeroAddress } from 'utils/mock';
+import {
+  percentAmount,
+  tokenAmount,
+  liquidityAmount,
+  zeroAddress,
+  getMockCompositionChartEntriesLiquidity,
+} from 'utils/mock';
 import { LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
 
@@ -10,7 +16,7 @@ import * as tableData from './tableData';
 
 const entries: tableData.Order[] = [
   {
-    pool: 'sUSD',
+    pool: 'sBTC',
     poolFullTitle: 'Curve',
     tokens: ['USDT', 'DAI'],
     APY: percentAmount,
@@ -24,7 +30,7 @@ export const entriesForChart = [
     value: liquidityAmount,
     payload: {
       address: zeroAddress,
-      poolName: 'sUSD',
+      poolName: 'sBTC',
       poolToken: tokenAmount.currency,
       apy: percentAmount,
       tokens: [],
@@ -48,7 +54,10 @@ export function DCA() {
               <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />
+              <NewTable.Component
+                columns={tableData.columnForChart}
+                entries={[getMockCompositionChartEntriesLiquidity(5)]}
+              />
             </Grid>
           </Grid>
         )}

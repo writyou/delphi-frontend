@@ -69,6 +69,16 @@ const en = {
         success: 'Approving %{amount} transfer. Successful',
         error: 'Approving %{amount} transfer. Failed',
       },
+      'erc20.revertApprove': {
+        pending: 'Reverting approve for infinite transfers %{symbol}. Pending',
+        success: 'Reverting approve for infinite transfers %{symbol}. Successful',
+        error: 'Reverting approve for infinite transfers %{symbol}. Failed',
+      },
+      'erc20.infiniteApprove': {
+        pending: 'Approving infinite transfers %{symbol}. Pending',
+        success: 'Approving infinite transfers %{symbol}. Successful',
+        error: 'Approving infinite transfers %{symbol}. Failed',
+      },
       'savings.deposit': {
         pending: 'Deposit to savings pool. Pending',
         success: 'Deposit to savings pool. Successful',

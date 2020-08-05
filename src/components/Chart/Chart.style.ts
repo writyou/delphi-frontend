@@ -10,11 +10,13 @@ export const useStyles = makeStyles(
     return {
       root: {
         height: '100%',
+        position: 'relative',
       },
 
       graphic: {
         height: graphicHeight,
         marginBottom: 14,
+        opacity: 0,
       },
 
       tick: {
@@ -22,6 +24,12 @@ export const useStyles = makeStyles(
         fontSize: 10,
         fontWeight: 300,
         opacity: 0.5,
+      },
+
+      periodSwitch: {
+        position: 'absolute',
+        top: -45,
+        right: 0,
       },
     };
   },

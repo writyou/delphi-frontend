@@ -61,10 +61,14 @@ export abstract class Amount<C extends ICurrency = ICurrency> implements IToBN, 
   }
 
   public toNumber(): number {
-    return this.toBN().toNumber();
+    return this.value.toNumber();
   }
 
   public toString(base?: number | 'hex' | undefined, length?: number | undefined): string {
     return this.toBN().toString(base, length);
+  }
+
+  public valueOf(): number {
+    return this.value.valueOf();
   }
 }
