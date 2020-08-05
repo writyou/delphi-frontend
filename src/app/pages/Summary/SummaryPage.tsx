@@ -17,7 +17,7 @@ import {
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { UserSavingsPoolsAvgAPY, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
-import { percentAmount, compositionChartEntriesToken } from 'utils/mock';
+import { percentAmount, getMockCompositionChartEntriesToken } from 'utils/mock';
 
 import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
@@ -131,7 +131,10 @@ export function SummaryPage() {
             <Label withComingSoon>My Investment</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
+            <CompositionChart
+              chartData={getMockCompositionChartEntriesToken(5)}
+              size="extra-small"
+            />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -142,7 +145,10 @@ export function SummaryPage() {
             <Label withComingSoon>DCA</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
+            <CompositionChart
+              chartData={getMockCompositionChartEntriesToken(5)}
+              size="extra-small"
+            />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
@@ -153,7 +159,10 @@ export function SummaryPage() {
             <Label withComingSoon>My Harvest</Label>
           </Grid>
           <Grid item className={classes.chart}>
-            <CompositionChart chartData={compositionChartEntriesToken(5)} size="extra-small" />
+            <CompositionChart
+              chartData={getMockCompositionChartEntriesToken(5)}
+              size="extra-small"
+            />
           </Grid>
           <Grid item>
             <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />

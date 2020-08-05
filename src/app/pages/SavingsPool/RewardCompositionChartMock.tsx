@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { CompositionChart, TokensTableLegend, CompositionLegend, Grid, Loading } from 'components';
-import { compositionChartEntriesToken } from 'utils/mock';
+import { getMockCompositionChartEntriesToken } from 'utils/mock';
 
 type Props = {
   poolsNumber: number;
@@ -14,13 +14,13 @@ function RewardCompositionChartMock({ poolsNumber }: Props) {
         <Grid item>
           <CompositionChart
             withBackground
-            chartData={compositionChartEntriesToken(poolsNumber)}
+            chartData={getMockCompositionChartEntriesToken(poolsNumber)}
             size="medium"
           />
         </Grid>
         <Grid item>
           <CompositionLegend
-            chartData={compositionChartEntriesToken(poolsNumber)}
+            chartData={getMockCompositionChartEntriesToken(poolsNumber)}
             Template={TokensTableLegend}
           />
         </Grid>

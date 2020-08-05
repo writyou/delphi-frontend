@@ -7,7 +7,7 @@ import {
   tokenAmount,
   liquidityAmount,
   zeroAddress,
-  compositionChartEntriesLiquidity,
+  getMockCompositionChartEntriesLiquidity,
 } from 'utils/mock';
 import { LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
@@ -56,7 +56,7 @@ export function DCA() {
             <Grid item xs>
               <NewTable.Component
                 columns={tableData.columnForChart}
-                entries={[compositionChartEntriesLiquidity(5)]}
+                entries={[getMockCompositionChartEntriesLiquidity(5)]}
               />
             </Grid>
           </Grid>

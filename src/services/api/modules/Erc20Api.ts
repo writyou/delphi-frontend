@@ -9,7 +9,7 @@ import { createErc20, createTestnetERC20 } from 'generated/contracts';
 import { Token, TokenAmount } from 'model/entities';
 import { getCurrentValueOrThrow, awaitFirst } from 'utils/rxjs';
 
-import { Contracts, Web3ManagerModule, SubmittedTransaction } from '../types';
+import { Contracts, Web3ManagerModule } from '../types';
 import { TransactionsApi } from './TransactionsApi';
 
 const INFINITE_APPROVE_MIN = new BN(2).pow(new BN(254));
@@ -37,13 +37,7 @@ export class Erc20Api {
       return;
     }
 
-    if (amount.isZero()) {
-      await this.approveBase(fromAddress, spender, amount, 'erc20.revertApprove');
-    } else if (amount.gt(INFINITE_APPROVE_MIN)) {
-      await this.approveBase(fromAddress, spender, amount, 'erc20.infiniteApprove');
-    } else {
-      await this.approveBase(fromAddress, spender, amount);
-    }
+    await this.approveBase(fromAddress, spender, amount);
   }
 
   @memoize(R.identity)
@@ -137,7 +131,6 @@ export class Erc20Api {
     fromAddress: string,
     spender: string,
     amount: TokenAmount,
-    transaction: SubmittedTransaction['type'] = 'erc20.approve',
   ): Promise<void> {
     const txContract = this.getErc20TxContract(amount.currency.address);
 
@@ -146,11 +139,17 @@ export class Erc20Api {
       { from: fromAddress },
     );
 
-    this.transactionsApi.pushToSubmittedTransactions(transaction, promiEvent, {
-      spender,
-      fromAddress,
-      value: amount,
-    });
+    this.transactionsApi.pushToSubmittedTransactions(
+      (amount.isZero() && 'erc20.revertApprove') ||
+        (amount.gt(INFINITE_APPROVE_MIN) && 'erc20.infiniteApprove') ||
+        'erc20.approve',
+      promiEvent,
+      {
+        spender,
+        fromAddress,
+        value: amount,
+      },
+    );
 
     await promiEvent;
   }
