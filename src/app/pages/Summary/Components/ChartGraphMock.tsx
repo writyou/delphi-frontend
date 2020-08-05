@@ -1,7 +1,8 @@
 import * as React from 'react';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
+function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon> & { withoutLines?: boolean }) {
+  const { withoutLines } = props;
   return (
     <SvgIcon {...props} viewBox="0 0 553 276">
       <defs>
@@ -39,12 +40,16 @@ function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
         />
       </defs>
       <g fill="none" fillRule="evenodd">
-        <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use stroke="url(#grad0)" strokeWidth="2" xlinkHref="#ui5yclq1cb" />
-        </g>
-        <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use stroke="url(#grad1)" strokeWidth="2" xlinkHref="#xln70q0z0e" />
-        </g>
+        {!withoutLines && (
+          <>
+            <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
+              <use stroke="url(#grad0)" strokeWidth="2" xlinkHref="#ui5yclq1cb" />
+            </g>
+            <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
+              <use stroke="url(#grad1)" strokeWidth="2" xlinkHref="#xln70q0z0e" />
+            </g>
+          </>
+        )}
         <path stroke="#FFF" d="M1 257.364L535 257.364" transform="translate(7)" />
         <path
           stroke="#FFF"
@@ -137,12 +142,16 @@ function ChartGraphMock(props: React.ComponentProps<typeof SvgIcon>) {
           </tspan>
         </text>
         <path stroke="#FFF" d="M1.5 42.743L1.5 258.422" transform="translate(7)" />
-        <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use stroke="url(#grad2)" strokeWidth="2" xlinkHref="#lzrjt8rq1h" />
-        </g>
-        <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
-          <use stroke="url(#grad3)" strokeWidth="2" xlinkHref="#434ivwc2kk" />
-        </g>
+        {!withoutLines && (
+          <>
+            <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
+              <use stroke="url(#grad2)" strokeWidth="2" xlinkHref="#lzrjt8rq1h" />
+            </g>
+            <g strokeLinecap="round" strokeLinejoin="round" transform="translate(7)">
+              <use stroke="url(#grad3)" strokeWidth="2" xlinkHref="#434ivwc2kk" />
+            </g>
+          </>
+        )}
       </g>
     </SvgIcon>
   );
