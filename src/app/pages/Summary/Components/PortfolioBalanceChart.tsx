@@ -11,6 +11,7 @@ export const useStyles = makeStyles(
   () => ({
     root: {
       position: 'relative',
+      maxWidth: 553,
     },
     hidden: {
       opacity: 0,
