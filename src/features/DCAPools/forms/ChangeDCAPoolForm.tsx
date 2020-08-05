@@ -68,7 +68,7 @@ export function ChangeDCAPoolForm({
     async ({ amount }: FormData) => {
       if (!amount) return;
 
-      await api.dca.change({ amount, poolAddress });
+      await api.dca.change({ weeklyAmount: amount, poolAddress });
 
       onSuccessfulWithdraw && onSuccessfulWithdraw();
     },

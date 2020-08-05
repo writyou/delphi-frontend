@@ -9,7 +9,7 @@ import { TabsList, TabContext, Tab, TabPanel, Label } from 'components';
 import * as innerPages from './innerPages';
 
 export function InvestmentsPage() {
-  const match = useRouteMatch<{ page: string }>('/investing/:page');
+  const match = useRouteMatch<{ page: string }>('/investments/:page');
   const [selectedPage, setSelectedPage] = React.useState('all');
 
   const page = match ? match.params.page : 'all';

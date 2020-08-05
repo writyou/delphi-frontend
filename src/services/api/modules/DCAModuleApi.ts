@@ -3,7 +3,7 @@
 import { Observable, of } from 'rxjs';
 import { autobind } from 'core-decorators';
 
-import { DCAPool, WithdrawFromDCAPool, DepositToDCAPool } from 'model/types';
+import { DCAPool, WithdrawFromDCAPool, DepositToDCAPool, ChangeWeeklyDCAAmount } from 'model/types';
 import { Token, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { zeroAddress, mockedTokens, percentAmount, liquidityAmount } from 'utils/mock';
@@ -65,7 +65,7 @@ export class DCAModuleApi {
   }
 
   @autobind
-  public async change(deposit: DepositToDCAPool): Promise<void> {
+  public async change(deposit: ChangeWeeklyDCAAmount): Promise<void> {
     console.log('mocked method', deposit);
   }
 }

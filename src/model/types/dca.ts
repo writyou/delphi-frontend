@@ -13,4 +13,13 @@ export type WithdrawFromDCAPool = {
   amount: TokenAmount;
 };
 
-export type DepositToDCAPool = WithdrawFromDCAPool;
+export type DepositToDCAPool = {
+  poolAddress: string;
+  depositAmount: TokenAmount;
+  weeklyAmount: any;
+};
+
+export type ChangeWeeklyDCAAmount = {
+  poolAddress: string;
+  weeklyAmount: any;
+};
