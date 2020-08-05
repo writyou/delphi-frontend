@@ -73,6 +73,20 @@ export class Fraction implements IToBN {
   isNeg() {
     return this.numerator.isNeg();
   }
+
+  toNumber() {
+    const fractionalPrecisionMultiplier = new BN(10).pow(new BN(20));
+
+    const integer = this.numerator.div(this.denominator);
+    const remainder = this.numerator.sub(this.denominator.mul(integer));
+    const fractional = remainder.mul(fractionalPrecisionMultiplier).div(this.denominator);
+
+    return parseFloat(`${integer}.${fractional}`);
+  }
+
+  valueOf() {
+    return this.toNumber();
+  }
 }
 
 export function toFraction(value: Value): Fraction {
