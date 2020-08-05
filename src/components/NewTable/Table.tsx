@@ -189,7 +189,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
   function renderSubtableHeader(x: M.SubtableColumn<U>, columnIndex: number) {
     return (
       <th className={cn(classes.title, classes.cell)} key={columnIndex}>
-        {x.renderTitle()}
+        {x.renderTitle && x.renderTitle()}
       </th>
     );
   }

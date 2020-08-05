@@ -34,7 +34,7 @@ export type ExpandedAreaWithinSubtable<T, U> = {
 };
 
 export type SubtableColumn<T> = {
-  renderTitle(): React.ReactNode;
+  renderTitle?(): React.ReactNode;
   renderCell(subtableEntry: T): React.ReactNode;
 };
 
