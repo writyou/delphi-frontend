@@ -9,7 +9,7 @@ import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { WithdrawFromSavingsPoolButton } from 'features/savingsPools';
 
-import { SavingsPoolCard, WithViewDetails } from './SavingsPoolCard/SavingsPoolCard';
+import { SavingsPoolCard } from './SavingsPoolCard/SavingsPoolCard';
 
 export function WithdrawTab() {
   const api = useApi();
@@ -29,17 +29,12 @@ export function WithdrawTab() {
               <Grid key={pool.address} item xs={4}>
                 <SavingsPoolCard
                   pool={pool}
-                  footerElement={
-                    <WithViewDetails
-                      link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-                      content={
-                        <WithdrawFromSavingsPoolButton
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                          pool={pool}
-                        />
-                      }
+                  content={
+                    <WithdrawFromSavingsPoolButton
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                      pool={pool}
                     />
                   }
                 />

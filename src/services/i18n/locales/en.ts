@@ -46,6 +46,13 @@ const en = {
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
     },
+    investments: {
+      dcaDepositDialog: 'investments.dcaDepositDialog',
+      dcaChangeDialog: 'investments.dcaChangeDialog',
+      dcaWithdrawDialog: 'investments.dcaWithdrawDialog',
+      dcaTabText:
+        '“All-in” or “DCA” into non-stablecoin pools. Higher risk-reward pools with higher volatility — higher potential capital gains and losses.',
+    },
   },
   features: {
     auth: {
