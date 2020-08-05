@@ -139,11 +139,17 @@ export class Erc20Api {
       { from: fromAddress },
     );
 
-    this.transactionsApi.pushToSubmittedTransactions('erc20.approve', promiEvent, {
-      spender,
-      fromAddress,
-      value: amount,
-    });
+    this.transactionsApi.pushToSubmittedTransactions(
+      (amount.isZero() && 'erc20.revertApprove') ||
+        (amount.gt(INFINITE_APPROVE_MIN) && 'erc20.infiniteApprove') ||
+        'erc20.approve',
+      promiEvent,
+      {
+        spender,
+        fromAddress,
+        value: amount,
+      },
+    );
 
     await promiEvent;
   }

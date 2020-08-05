@@ -46,6 +46,13 @@ const en = {
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
     },
+    investments: {
+      dcaDepositDialog: 'investments.dcaDepositDialog',
+      dcaChangeDialog: 'investments.dcaChangeDialog',
+      dcaWithdrawDialog: 'investments.dcaWithdrawDialog',
+      dcaTabText:
+        '“All-in” or “DCA” into non-stablecoin pools. Higher risk-reward pools with higher volatility — higher potential capital gains and losses.',
+    },
   },
   features: {
     auth: {
@@ -68,6 +75,16 @@ const en = {
         pending: 'Approving %{amount} transfer. Pending',
         success: 'Approving %{amount} transfer. Successful',
         error: 'Approving %{amount} transfer. Failed',
+      },
+      'erc20.revertApprove': {
+        pending: 'Reverting approve for infinite transfers %{symbol}. Pending',
+        success: 'Reverting approve for infinite transfers %{symbol}. Successful',
+        error: 'Reverting approve for infinite transfers %{symbol}. Failed',
+      },
+      'erc20.infiniteApprove': {
+        pending: 'Approving infinite transfers %{symbol}. Pending',
+        success: 'Approving infinite transfers %{symbol}. Successful',
+        error: 'Approving infinite transfers %{symbol}. Failed',
       },
       'savings.deposit': {
         pending: 'Deposit to savings pool. Pending',

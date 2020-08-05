@@ -11,6 +11,7 @@ import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
 import { SubgraphApi } from './SubgraphApi/SubgraphApi';
 import { SavingsModuleApi } from './SavingsModuleApi';
+import { DCAModuleApi } from './DCAModuleApi';
 
 export class UserApi {
   constructor(
@@ -18,6 +19,7 @@ export class UserApi {
     private subgraph: SubgraphApi,
     private erc20: Erc20Api,
     private savings: SavingsModuleApi,
+    private dca: DCAModuleApi,
   ) {}
 
   @memoize(R.identity)
@@ -82,6 +84,13 @@ export class UserApi {
   public getMySavingsPools$(): Observable<SavingsPool[]> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUserSavingsPools$(account) : empty())),
+    );
+  }
+
+  @memoize(R.identity)
+  public getDCAPoolBalance$(address: string): Observable<LiquidityAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.dca.getUserBalance$(address, account) : empty())),
     );
   }
 }
