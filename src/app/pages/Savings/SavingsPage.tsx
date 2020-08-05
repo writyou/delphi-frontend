@@ -3,7 +3,11 @@ import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { makeStyles } from 'utils/styles';
+import {
+  makeStyles,
+  useInheritBackgroundHackStyles,
+  InheritBackgroundHackStyles,
+} from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel } from 'components';
 
 import { AllocateTab } from './AllocateTab';
@@ -23,7 +27,8 @@ export function SavingsPage() {
     setSelectedPage(page);
   }, [page]);
 
-  const classes = useStyles();
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
 
   return renderTabs();
 
@@ -63,6 +68,7 @@ const useStyles = makeStyles(
   () => ({
     tabs: {
       marginBottom: 40,
+      backgroundColor: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
     },
     tab: {
       minWidth: 112,

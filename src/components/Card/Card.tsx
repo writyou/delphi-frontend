@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
-import { makeStyles, rgba } from 'utils/styles';
+import { makeStyles, useTheme, rgba, InheritBackgroundHackProvider } from 'utils/styles';
 
 interface CardProps {
   className?: string;
@@ -15,31 +15,38 @@ interface CardProps {
 
 export function Card(props: CardProps) {
   const { label, variant = 'outlined', color = 'default', children, icons, className } = props;
+
+  const theme = useTheme();
   const classes = useStyles();
+
   return (
-    <div
-      className={cn(className, classes.root, {
-        [classes.outlined]: variant === 'outlined',
-        [classes.contained]: variant === 'contained',
-        [classes.active]: color === 'active',
-      })}
+    <InheritBackgroundHackProvider
+      backgroundColor={variant === 'contained' ? theme.palette.background.paper : null}
     >
-      {children}
-      {label && (
-        <Typography component="div" className={classes.label}>
-          <span>{label}</span>
-        </Typography>
-      )}
-      {icons && (
-        <div className={classes.icons}>
-          {icons.map((icon, index) => (
-            <div className={classes.icon} key={index}>
-              {icon}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+      <div
+        className={cn(className, classes.root, {
+          [classes.outlined]: variant === 'outlined',
+          [classes.contained]: variant === 'contained',
+          [classes.active]: color === 'active',
+        })}
+      >
+        {children}
+        {label && (
+          <Typography component="div" className={classes.label}>
+            <span>{label}</span>
+          </Typography>
+        )}
+        {icons && (
+          <div className={classes.icons}>
+            {icons.map((icon, index) => (
+              <div className={classes.icon} key={index}>
+                {icon}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </InheritBackgroundHackProvider>
   );
 }
 

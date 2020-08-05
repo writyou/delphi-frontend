@@ -321,17 +321,29 @@ function getTheme(type: 'light' | 'dark'): Theme {
           minHeight: tabsHeight,
           borderRadius: tabsHeight / 2,
           padding: tabsIndicatorSpace,
-          background: 'linear-gradient(to left, #544cf2, #d93cef)',
 
           '&::before': {
+            zIndex: 1,
             content: "''",
             position: 'absolute',
             top: 1,
             left: 1,
             right: 1,
             bottom: 1,
-            borderRadius: tabsHeight / 2,
-            background: colors.foggyNight,
+            borderRadius: 'inherit',
+            background: 'inherit',
+          },
+
+          '&::after': {
+            zIndex: 0,
+            content: "''",
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            borderRadius: 'inherit',
+            background: 'linear-gradient(to left, #544cf2, #d93cef)',
           },
         },
 
@@ -416,7 +428,6 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiOutlinedInput: {
         root: {
-          background: colors.foggyNight,
           borderColor: colors.darkMist,
           borderRadius: 8,
           minHeight: 36,
@@ -480,6 +491,8 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
       MuiSelect: {
         root: {
+          overflow: 'hidden',
+
           '&$select:focus': {
             backgroundColor: colors.blackRussian,
           },

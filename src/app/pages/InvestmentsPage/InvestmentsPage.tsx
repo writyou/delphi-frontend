@@ -3,7 +3,11 @@ import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { makeStyles } from 'utils/styles';
+import {
+  makeStyles,
+  useInheritBackgroundHackStyles,
+  InheritBackgroundHackStyles,
+} from 'utils/styles';
 import { TabsList, TabContext, Tab, TabPanel, Label } from 'components';
 
 import * as innerPages from './innerPages';
@@ -22,7 +26,8 @@ export function InvestmentsPage() {
     setSelectedPage(page);
   }, [page]);
 
-  const classes = useStyles();
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
 
   return (
     <TabContext value={selectedPage}>
@@ -57,7 +62,9 @@ export function InvestmentsPage() {
 
 const useStyles = makeStyles(
   () => ({
-    tabs: {},
+    tabs: {
+      backgroundColor: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
+    },
     tab: {
       minWidth: 112,
     },
