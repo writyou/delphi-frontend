@@ -24,6 +24,7 @@ interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
   value: A | null | '';
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
+  hideToken?: boolean;
   onChange: (value: A) => void;
   makeAmount(value: BN, currency: A['currency']): A;
   getCurrencyIdentifier(currency: A['currency']): string;
@@ -45,9 +46,10 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
     makeAmount,
     getCurrencyIdentifier,
     getCurrencyLabel,
+    hideToken,
     ...restInputProps
   } = props;
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const tokenAmount = value || null;
 
@@ -161,22 +163,24 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
         }}
         className={classes.amount}
       />
-      <TextInput
-        select
-        disabled={isDisabledCurrencySelector}
-        value={currentCurrency && getCurrencyIdentifier(currentCurrency!)}
-        variant="outlined"
-        onChange={handleCurrencyChange}
-      >
-        {currencies.map(item => {
-          const id = getCurrencyIdentifier(item);
-          return (
-            <MenuItem key={id} value={id}>
-              {getCurrencyLabel(item, currencies)}
-            </MenuItem>
-          );
-        })}
-      </TextInput>
+      {hideToken ? null : (
+        <TextInput
+          select
+          disabled={isDisabledCurrencySelector}
+          value={currentCurrency && getCurrencyIdentifier(currentCurrency!)}
+          variant="outlined"
+          onChange={handleCurrencyChange}
+        >
+          {currencies.map(item => {
+            const id = getCurrencyIdentifier(item);
+            return (
+              <MenuItem key={id} value={id}>
+                {getCurrencyLabel(item, currencies)}
+              </MenuItem>
+            );
+          })}
+        </TextInput>
+      )}
     </div>
   );
 }
@@ -188,7 +192,7 @@ const useStyles = makeStyles(theme => ({
   amount: {
     width: 0,
     flexGrow: 1,
-    marginRight: theme.spacing(1),
+    marginRight: (props: IOwnProps<any>) => (props.hideToken ? 0 : theme.spacing(1)),
   },
 }));
 

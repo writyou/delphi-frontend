@@ -2,27 +2,18 @@ import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Grid } from 'components';
-import {
-  FormWithConfirmation,
-  TokenAmountField,
-  FieldNames,
-  SpyField,
-  DecimalsField,
-} from 'components/form';
-import { TokenAmount, Token, Fraction } from 'model/entities';
+import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
+import { TokenAmount, Token, Amount } from 'model/entities';
 import { useValidateAmount, useSubscribable } from 'utils/react';
-import { denormolizeAmount } from 'utils/amounts';
 import { lessThenOrEqual } from 'utils/validators';
-import { fromBaseUnit } from 'utils/bn';
 
 interface FormData {
   depositAmount: TokenAmount | null;
-  weeklyAmount: any;
+  weeklyAmount: TokenAmount | null;
 }
 
 interface WithdrawFormProps {
@@ -52,12 +43,7 @@ export function DepositDCAPoolForm({
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
   const [maxValue] = useSubscribable(
-    () =>
-      currentToken
-        ? api.user
-            .getDCAPoolBalance$(poolAddress)
-            .pipe(map(balance => denormolizeAmount(balance, currentToken)))
-        : empty(),
+    () => (currentToken ? api.user.getDCATokenToSellBalance$(currentToken.address) : empty()),
     [api, currentToken],
   );
 
@@ -67,14 +53,12 @@ export function DepositDCAPoolForm({
     maxValue,
   });
 
-  const val = (value: string, allValues: Object) => {
+  const validateWeeklyAmount = (value: '' | Amount | null, allValues: Object) => {
     const { depositAmount } = allValues as FormData;
-    if (depositAmount) {
-      const baseDecimals = depositAmount.currency.decimals;
-      const val1 = new Fraction(value).toBN();
-      const val2 = depositAmount.toBN();
-
-      return lessThenOrEqual(val2, val1, () => fromBaseUnit(val2, baseDecimals));
+    if (depositAmount && value) {
+      return lessThenOrEqual(depositAmount.toBN(), value.toBN(), () =>
+        depositAmount.toFormattedString(),
+      );
     }
     return undefined;
   };
@@ -90,7 +74,7 @@ export function DepositDCAPoolForm({
 
   const handleFormSubmit = useCallback(
     async ({ depositAmount, weeklyAmount }: FormData) => {
-      if (!depositAmount) return;
+      if (!depositAmount || !weeklyAmount) return;
 
       await api.dca.deposit({ depositAmount, poolAddress, weeklyAmount });
 
@@ -133,11 +117,12 @@ export function DepositDCAPoolForm({
             Weekly DCA Amount
           </Grid>
           <Grid item xs={8}>
-            <DecimalsField
+            <TokenAmountField
               name={fieldNames.weeklyAmount}
-              baseDecimals={currentToken?.decimals || 18}
+              currencies={currentToken ? [currentToken] : []}
               maxValue={maxValue?.toBN()}
-              validate={val}
+              validate={validateWeeklyAmount}
+              hideToken
             />
           </Grid>
         </Grid>

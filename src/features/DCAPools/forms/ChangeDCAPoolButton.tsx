@@ -1,20 +1,20 @@
 import React from 'react';
 
 import { ModalButton, ButtonProps } from 'components';
-import { SavingsPool } from 'model/types';
+import { DCAPool } from 'model/types';
 
 import { ChangeDCAPoolForm } from './ChangeDCAPoolForm';
 
 export function ChangeDCAPoolButton({
   pool,
   ...rest
-}: { pool: SavingsPool } & ButtonProps): JSX.Element {
+}: { pool: DCAPool } & ButtonProps): JSX.Element {
   return (
     <ModalButton {...rest} content="Change">
       {({ closeModal }) => (
         <ChangeDCAPoolForm
           poolAddress={pool.address}
-          supportedTokens={pool.tokens}
+          supportedTokens={[pool.tokenToSell]}
           onSuccessfulWithdraw={closeModal}
         />
       )}

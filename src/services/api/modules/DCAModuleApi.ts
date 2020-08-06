@@ -12,21 +12,21 @@ const DCAPoolsMock: DCAPool[] = [
   {
     address: zeroAddress,
     poolName: 'poolName1',
-    poolToken: new Token(zeroAddress, 'MOCK1', 18),
+    tokenToSell: new Token(zeroAddress, 'MOCK1', 18),
     apy: percentAmount,
     tokens: mockedTokens,
   },
   {
     address: zeroAddress,
     poolName: 'poolName2',
-    poolToken: new Token(zeroAddress, 'MOCK1', 18),
+    tokenToSell: new Token(zeroAddress, 'MOCK1', 18),
     apy: percentAmount,
     tokens: mockedTokens,
   },
   {
     address: zeroAddress,
     poolName: 'poolName3',
-    poolToken: new Token(zeroAddress, 'MOCK1', 18),
+    tokenToSell: new Token(zeroAddress, 'MOCK1', 18),
     apy: percentAmount,
     tokens: mockedTokens,
   },
@@ -40,6 +40,24 @@ export class DCAModuleApi {
   @memoize((...args: string[]) => args.join())
   public getUserBalance$(poolAddress: string, account: string): Observable<LiquidityAmount> {
     console.log('mocked method', poolAddress, account);
+    return of(liquidityAmount);
+  }
+
+  @memoize((...args: string[]) => args.join())
+  public getTokenToSellBalance$(
+    tokenAddress: string,
+    account: string,
+  ): Observable<LiquidityAmount> {
+    console.log('mocked method', tokenAddress, account);
+    return of(liquidityAmount);
+  }
+
+  @memoize((...args: string[]) => args.join())
+  public getTokenToChangeBalance$(
+    tokenAddress: string,
+    account: string,
+  ): Observable<LiquidityAmount> {
+    console.log('mocked method', tokenAddress, account);
     return of(liquidityAmount);
   }
 

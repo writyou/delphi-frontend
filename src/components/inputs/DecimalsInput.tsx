@@ -1,12 +1,8 @@
 import * as React from 'react';
 import BN from 'bn.js';
 import Grid from '@material-ui/core/Grid';
-import { Observable } from 'rxjs';
 
 import { fromBaseUnit, toBaseUnit } from 'utils/bn';
-import { useSubscribable } from 'utils/react';
-import { toObservable } from 'utils/rxjs';
-import { IToBN } from 'model/types';
 
 import { Button } from '../Button/Button';
 import { TextInput } from './TextInput';
@@ -15,7 +11,7 @@ interface IOwnProps {
   baseDecimals: number;
   baseUnitName?: string;
   value: string;
-  maxValue?: BN | IToBN | Observable<BN | IToBN>;
+  maxValue?: BN;
   onChange: (value: string) => void;
 }
 
@@ -26,7 +22,7 @@ function DecimalsInput(props: IProps) {
     onChange,
     baseDecimals,
     value,
-    maxValue: max,
+    maxValue,
     baseUnitName,
     disabled,
     ...restInputProps
@@ -69,7 +65,6 @@ function DecimalsInput(props: IProps) {
     },
     [baseDecimals],
   );
-  const [maxValue] = useSubscribable(() => toObservable(max), [max]);
 
   const handleMaxButtonClick = React.useCallback(() => {
     setSuffix('');

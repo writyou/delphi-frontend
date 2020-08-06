@@ -3,9 +3,9 @@ import { Token, PercentAmount, TokenAmount } from 'model/entities';
 export type DCAPool = {
   address: string;
   poolName: string;
-  poolToken: Token;
   apy: PercentAmount;
   tokens: Token[];
+  tokenToSell: Token;
 };
 
 export type WithdrawFromDCAPool = {
@@ -16,10 +16,10 @@ export type WithdrawFromDCAPool = {
 export type DepositToDCAPool = {
   poolAddress: string;
   depositAmount: TokenAmount;
-  weeklyAmount: any;
+  weeklyAmount: TokenAmount;
 };
 
 export type ChangeWeeklyDCAAmount = {
   poolAddress: string;
-  weeklyAmount: any;
+  weeklyAmount: TokenAmount;
 };
