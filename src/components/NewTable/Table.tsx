@@ -55,11 +55,9 @@ export function Table<T, U = null>(props: Props<T, U>) {
         },
       ])}
     >
-      {columns.find(column => column?.renderTitle && column.renderTitle()) && (
-        <thead>
-          <tr>{columns.map(renderTitle)}</tr>
-        </thead>
-      )}
+      <thead>
+        <tr>{columns.map(renderTitle)}</tr>
+      </thead>
       <tbody>{renderEntriesAndSummary()}</tbody>
     </table>
   );
@@ -97,7 +95,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
         className={cn(classes.title, classes.cell, classes.topLevelTitle, getAlignClass(column))}
         key={columnIndex}
       >
-        {column?.renderTitle && column.renderTitle()}
+        {column.renderTitle && column.renderTitle()}
       </th>
     );
   }
@@ -122,13 +120,13 @@ export function Table<T, U = null>(props: Props<T, U>) {
   function renderEntryExpandedArea(entry: T, area: M.ExpandedArea<T, U>) {
     switch (area.kind) {
       case 'single-cell':
-        return renderAreaWithingSingleCell(entry, area);
+        return renderAreaWithinSingleCell(entry, area);
       case 'subtable':
         return renderAreaWithinSubtable(entry, area);
     }
   }
 
-  function renderAreaWithingSingleCell(entry: T, area: M.ExpandedAreaWithinSingleCell<T>) {
+  function renderAreaWithinSingleCell(entry: T, area: M.ExpandedAreaWithinSingleCell<T>) {
     return (
       <tr>
         <td
@@ -163,7 +161,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
       }
 
       if (subtableColsNumber > tableColsNumber) {
-        console.warn('unexpeced subtable columns number > table columns number');
+        console.warn('unexpected subtable columns number > table columns number');
 
         return subtableCols.slice(0, subtableColsNumber);
       }
@@ -191,7 +189,7 @@ export function Table<T, U = null>(props: Props<T, U>) {
   function renderSubtableHeader(x: M.SubtableColumn<U>, columnIndex: number) {
     return (
       <th className={cn(classes.title, classes.cell)} key={columnIndex}>
-        {x?.renderTitle && x.renderTitle()}
+        {x.renderTitle && x.renderTitle()}
       </th>
     );
   }
@@ -224,7 +222,13 @@ export function Table<T, U = null>(props: Props<T, U>) {
 
   function renderEntryRow(entry: T, rowIndex: number, beforeSummary?: boolean) {
     return (
-      <tr className={cn({ [classes.rowBeforeSummary]: beforeSummary })}>
+      <tr
+        key={rowIndex}
+        className={cn({
+          [classes.rowBeforeSummary]: beforeSummary,
+          [classes.rowWithExpandedContent]: rowToExpanded[rowIndex],
+        })}
+      >
         {columns.map(makeCellRenderer(entry, rowIndex))}
       </tr>
     );

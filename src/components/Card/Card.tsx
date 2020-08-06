@@ -54,12 +54,12 @@ export function Card(props: CardProps) {
       </div>
     </InheritBackgroundHackProvider>
   );
+}
 
-  function getActiveBackgroundColor(currentTheme: Theme) {
-    return currentTheme.palette.type === 'light'
-      ? currentTheme.colors.zumthor
-      : currentTheme.colors.steelGray;
-  }
+function getActiveBackgroundColor(currentTheme: Theme) {
+  return currentTheme.palette.type === 'light'
+    ? currentTheme.colors.zumthor
+    : currentTheme.colors.steelGray;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -82,8 +82,7 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.background.paper,
     },
     '&$contained$isActive': {
-      backgroundColor:
-        theme.palette.type === 'light' ? theme.colors.zumthor : theme.colors.steelGray,
+      backgroundColor: getActiveBackgroundColor(theme),
     },
   },
 

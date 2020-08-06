@@ -25,7 +25,7 @@ const tabs = [
 export function InvestmentsPage() {
   const classes = useStyles();
 
-  const match = useRouteMatch<{ page: string }>('/investing/:page');
+  const match = useRouteMatch<{ page: string }>(`${routes.investments.getRoutePath()}/:page`);
   const defaultPage = routes.investments.all.getElementKey();
 
   const [selectedPage, setSelectedPage] = React.useState(defaultPage);

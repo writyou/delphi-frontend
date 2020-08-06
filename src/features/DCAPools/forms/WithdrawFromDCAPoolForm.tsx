@@ -17,6 +17,7 @@ interface FormData {
 }
 
 interface WithdrawFormProps {
+  tokenToSell: Token;
   supportedTokens: Token[];
   poolAddress: string;
   onSuccessfulWithdraw?(): void;
@@ -44,7 +45,7 @@ export function WithdrawFromDCAPoolForm({
     () =>
       currentToken
         ? api.user
-            .getDCAPoolBalance$(poolAddress)
+            .getDCAPoolBalance$(poolAddress) // todo change api and validation
             .pipe(map(balance => denormolizeAmount(balance, currentToken)))
         : empty(),
     [api, currentToken],
