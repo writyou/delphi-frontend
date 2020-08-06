@@ -25,10 +25,11 @@ type Props<T extends React.ElementType> = {
   tabs: TabItem<T>[];
   onChange: (_: React.ChangeEvent<{}>, tab: string) => void;
   component?: T;
+  children?: React.ReactNode;
 };
 
 export function Tabs<T extends React.ElementType = typeof Link>(props: Props<T>) {
-  const { tabs, currentValue, component = Link, onChange } = props;
+  const { tabs, currentValue, children, onChange, component = Link } = props;
 
   const backgroundColor = useInheritBackgroundHackStyles();
   const classes = useStyles({ backgroundColor });
@@ -47,6 +48,7 @@ export function Tabs<T extends React.ElementType = typeof Link>(props: Props<T>)
           onChange={onChange}
         >
           {tabs.map(tabItem => renderTab(tabItem))}
+          {children}
         </TabsList>
       </div>
       {tabs.map(({ value, renderContent }) => (
