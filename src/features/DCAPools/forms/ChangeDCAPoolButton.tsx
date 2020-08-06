@@ -14,7 +14,7 @@ export function ChangeDCAPoolButton({
       {({ closeModal }) => (
         <ChangeDCAPoolForm
           poolAddress={pool.address}
-          supportedTokens={[pool.tokenToSell]}
+          tokenToSell={pool.tokenToSell}
           onSuccessfulWithdraw={closeModal}
         />
       )}

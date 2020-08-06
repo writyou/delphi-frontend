@@ -14,7 +14,8 @@ export function WithdrawFromDCAPoolButton({
       {({ closeModal }) => (
         <WithdrawFromDCAPoolForm
           poolAddress={pool.address}
-          supportedTokens={[pool.tokenToSell]}
+          tokenToSell={pool.tokenToSell}
+          supportedTokens={pool.tokens}
           onSuccessfulWithdraw={closeModal}
         />
       )}

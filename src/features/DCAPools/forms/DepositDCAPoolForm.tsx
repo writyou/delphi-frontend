@@ -1,23 +1,22 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
+import { FieldValidator } from 'final-form';
 import { FormSpy } from 'react-final-form';
-import { FormState } from 'final-form';
-import { empty } from 'rxjs';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Grid } from 'components';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { TokenAmount, Token, Amount } from 'model/entities';
+import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount, useSubscribable } from 'utils/react';
 import { lessThenOrEqual } from 'utils/validators';
 
 interface FormData {
-  depositAmount: TokenAmount | null;
-  weeklyAmount: TokenAmount | null;
+  depositAmount: TokenAmount | null | '';
+  weeklyAmount: TokenAmount | null | '';
 }
 
 interface WithdrawFormProps {
-  supportedTokens: Token[];
+  tokenToSell: Token;
   poolAddress: string;
   onSuccessfulWithdraw?(): void;
 }
@@ -34,27 +33,23 @@ const initialValues: FormData = {
 
 export function DepositDCAPoolForm({
   poolAddress,
-  supportedTokens,
+  tokenToSell,
   onSuccessfulWithdraw,
 }: WithdrawFormProps) {
   const api = useApi();
   const { t } = useTranslate();
 
-  const [currentToken, setCurrentToken] = useState<Token | null>(null);
-
-  const [maxValue] = useSubscribable(
-    () => (currentToken ? api.user.getDCATokenToSellBalance$(currentToken.address) : empty()),
-    [api, currentToken],
-  );
+  const [maxValue] = useSubscribable(() => api.user.getTokenBalance$(tokenToSell.address), [api]);
 
   const validateAmount = useValidateAmount({
     required: true,
     moreThenZero: true,
     maxValue,
+    maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
 
-  const validateWeeklyAmount = (value: '' | Amount | null, allValues: Object) => {
-    const { depositAmount } = allValues as FormData;
+  const validateWeeklyAmount = (value: FormData['weeklyAmount'], allValues: FormData) => {
+    const { depositAmount } = allValues;
     if (depositAmount && value) {
       return lessThenOrEqual(depositAmount.toBN(), value.toBN(), () =>
         depositAmount.toFormattedString(),
@@ -62,15 +57,6 @@ export function DepositDCAPoolForm({
     }
     return undefined;
   };
-
-  const handleFormChange = useCallback(
-    ({ values: { depositAmount } }: FormState<FormData>) => {
-      if (!currentToken || !depositAmount || !currentToken.equals(depositAmount.currency)) {
-        setCurrentToken(depositAmount?.currency || null);
-      }
-    },
-    [currentToken],
-  );
 
   const handleFormSubmit = useCallback(
     async ({ depositAmount, weeklyAmount }: FormData) => {
@@ -105,7 +91,7 @@ export function DepositDCAPoolForm({
           <Grid item xs={8}>
             <TokenAmountField
               name={fieldNames.depositAmount}
-              currencies={supportedTokens}
+              currencies={[tokenToSell]}
               placeholder="Enter sum"
               validate={validateAmount}
               maxValue={maxValue}
@@ -117,16 +103,19 @@ export function DepositDCAPoolForm({
             Weekly DCA Amount
           </Grid>
           <Grid item xs={8}>
-            <TokenAmountField
-              name={fieldNames.weeklyAmount}
-              currencies={currentToken ? [currentToken] : []}
-              maxValue={maxValue}
-              validate={validateWeeklyAmount}
-              hideCurrencySelect
-            />
+            <FormSpy<FormData> subscription={{ values: true }}>
+              {({ values: { depositAmount } }) => (
+                <TokenAmountField
+                  name={fieldNames.weeklyAmount}
+                  currencies={[tokenToSell]}
+                  maxValue={depositAmount || undefined}
+                  validate={validateWeeklyAmount as FieldValidator<FormData['weeklyAmount']>}
+                  hideCurrencySelect
+                />
+              )}
+            </FormSpy>
           </Grid>
         </Grid>
-        <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
     </FormWithConfirmation>

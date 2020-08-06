@@ -1,7 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { FormSpy } from 'react-final-form';
-import { FormState } from 'final-form';
-import { empty } from 'rxjs';
+import React, { useCallback, useMemo } from 'react';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -14,7 +11,7 @@ interface FormData {
 }
 
 interface WithdrawFormProps {
-  supportedTokens: Token[];
+  tokenToSell: Token;
   poolAddress: string;
   onSuccessfulWithdraw?(): void;
 }
@@ -29,33 +26,19 @@ const initialValues: FormData = {
 
 export function ChangeDCAPoolForm({
   poolAddress,
-  supportedTokens,
+  tokenToSell,
   onSuccessfulWithdraw,
 }: WithdrawFormProps) {
   const api = useApi();
   const { t } = useTranslate();
 
-  const [currentToken, setCurrentToken] = useState<Token | null>(null);
-
-  const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getDCATokenToChangeBalance$(currentToken.address) : empty()),
-    [api, currentToken],
-  );
+  const maxValue$ = useMemo(() => api.user.getDCATokenToSellBalance$(poolAddress), [api]);
 
   const validateAmount = useValidateAmount({
     required: true,
     moreThenZero: true,
     maxValue: maxValue$,
   });
-
-  const handleFormChange = useCallback(
-    ({ values: { amount } }: FormState<FormData>) => {
-      if (!currentToken || !amount || !currentToken.equals(amount.currency)) {
-        setCurrentToken(amount?.currency || null);
-      }
-    },
-    [currentToken],
-  );
 
   const handleFormSubmit = useCallback(
     async ({ amount }: FormData) => {
@@ -85,12 +68,11 @@ export function ChangeDCAPoolForm({
         <TokenAmountField
           allowSelectAllToken
           name={fieldNames.amount}
-          currencies={supportedTokens}
+          currencies={[tokenToSell]}
           placeholder="Enter sum"
           validate={validateAmount}
           maxValue={maxValue$}
         />
-        <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
     </FormWithConfirmation>

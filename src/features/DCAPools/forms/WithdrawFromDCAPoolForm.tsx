@@ -17,6 +17,7 @@ interface FormData {
 }
 
 interface WithdrawFormProps {
+  tokenToSell: Token;
   supportedTokens: Token[];
   poolAddress: string;
   onSuccessfulWithdraw?(): void;

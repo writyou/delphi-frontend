@@ -14,7 +14,7 @@ export function DepositDCAPoolButton({
       {({ closeModal }) => (
         <DepositDCAPoolForm
           poolAddress={pool.address}
-          supportedTokens={[pool.tokenToSell]}
+          tokenToSell={pool.tokenToSell}
           onSuccessfulWithdraw={closeModal}
         />
       )}

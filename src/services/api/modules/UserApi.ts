@@ -95,17 +95,10 @@ export class UserApi {
   }
 
   @memoize(R.identity)
-  public getDCATokenToSellBalance$(address: string): Observable<LiquidityAmount> {
-    return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.dca.getTokenToSellBalance$(address, account) : empty())),
-    );
-  }
-
-  @memoize(R.identity)
-  public getDCATokenToChangeBalance$(address: string): Observable<LiquidityAmount> {
+  public getDCATokenToSellBalance$(poolAddress: string): Observable<TokenAmount> {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
-        account ? this.dca.getTokenToChangeBalance$(address, account) : empty(),
+        account ? this.dca.getTokenToSellBalance$(poolAddress, account) : empty(),
       ),
     );
   }
