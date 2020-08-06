@@ -10,7 +10,7 @@ type Props = {
   poolAddress: string;
 };
 
-export function WithdrawSupposedAmounts(props: Props) {
+export function WithdrawSupposedAmountsTable(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
   const [poolBalance, poolBalanceMeta] = useSubscribable(

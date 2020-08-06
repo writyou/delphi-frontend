@@ -14,7 +14,7 @@ import { denormolizeAmount } from 'utils/amounts';
 import { Typography } from 'components';
 
 import { WithdrawAdditionalFee } from '../data/WithdrawAdditionalFee';
-import { WithdrawSupposedAmounts } from '../data/WithdrawSupposedAmounts';
+import { WithdrawSupposedAmountsTable } from '../data/WithdrawSupposedAmountsTable';
 import { AlertHint } from '../view/AlertHint';
 
 interface FormData {
@@ -112,7 +112,7 @@ export function WithdrawFromSavingsPoolForm({
         {({ values: { amount } }) =>
           amount?.currency === ALL_TOKEN ? (
             <>
-              {amount && <WithdrawSupposedAmounts poolAddress={poolAddress} amount={amount} />}
+              {amount && <WithdrawSupposedAmountsTable poolAddress={poolAddress} amount={amount} />}
               <AlertHint />
             </>
           ) : (

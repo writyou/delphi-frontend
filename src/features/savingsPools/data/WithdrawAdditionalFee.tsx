@@ -13,11 +13,14 @@ type Props = {
 export function WithdrawAdditionalFee(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [fee, feeMeta] = useSubscribable(() => api.savings.getWithdrawFee$(poolAddress, amount), [
-    api,
-    poolAddress,
-    amount,
-  ]);
+  const [additionalFee, additionalFeeMeta] = useSubscribable(
+    () => api.savings.getWithdrawFee$(poolAddress, amount),
+    [api, poolAddress, amount],
+  );
 
-  return <Loading meta={feeMeta}>{fee && <FormattedAmount sum={fee} variant="plain" />}</Loading>;
+  return (
+    <Loading meta={additionalFeeMeta}>
+      {additionalFee && <FormattedAmount sum={additionalFee} variant="plain" />}
+    </Loading>
+  );
 }
