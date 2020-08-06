@@ -1,33 +1,39 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import cn from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
-import { makeStyles, useTheme, rgba, InheritBackgroundHackProvider } from 'utils/styles';
+import { makeStyles, useTheme, rgba, InheritBackgroundHackProvider, Theme } from 'utils/styles';
 
 interface CardProps {
   className?: string;
   variant?: 'outlined' | 'contained';
-  color?: 'active' | 'default';
+  isActive?: boolean;
   label?: string;
   children: React.ReactNode;
   icons?: React.ReactNode[];
 }
 
 export function Card(props: CardProps) {
-  const { label, variant = 'outlined', color = 'default', children, icons, className } = props;
+  const { label, variant = 'outlined', isActive, children, icons, className } = props;
 
   const theme = useTheme();
   const classes = useStyles();
 
+  const backgroundColor = useMemo(() => {
+    if (variant === 'contained') {
+      return isActive ? getActiveBackgroundColor(theme) : theme.palette.background.paper;
+    }
+
+    return null;
+  }, [variant, isActive, theme]);
+
   return (
-    <InheritBackgroundHackProvider
-      backgroundColor={variant === 'contained' ? theme.palette.background.paper : null}
-    >
+    <InheritBackgroundHackProvider backgroundColor={backgroundColor}>
       <div
         className={cn(className, classes.root, {
           [classes.outlined]: variant === 'outlined',
           [classes.contained]: variant === 'contained',
-          [classes.active]: color === 'active',
+          [classes.isActive]: isActive,
         })}
       >
         {children}
@@ -48,6 +54,12 @@ export function Card(props: CardProps) {
       </div>
     </InheritBackgroundHackProvider>
   );
+
+  function getActiveBackgroundColor(currentTheme: Theme) {
+    return currentTheme.palette.type === 'light'
+      ? currentTheme.colors.zumthor
+      : currentTheme.colors.steelGray;
+  }
 }
 
 const useStyles = makeStyles(theme => ({
@@ -69,7 +81,7 @@ const useStyles = makeStyles(theme => ({
     '&$contained': {
       backgroundColor: theme.palette.background.paper,
     },
-    '&$contained$active': {
+    '&$contained$isActive': {
       backgroundColor:
         theme.palette.type === 'light' ? theme.colors.zumthor : theme.colors.steelGray,
     },
@@ -115,5 +127,5 @@ const useStyles = makeStyles(theme => ({
   },
   outlined: {},
   contained: {},
-  active: {},
+  isActive: {},
 }));
