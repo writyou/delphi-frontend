@@ -46,7 +46,7 @@ export function PoolCard(props: Props) {
       className={classes.root}
       variant="contained"
       label={poolName}
-      color={balance && !balance.isZero() ? 'active' : 'default'}
+      isActive={balance && !balance.isZero()}
       icons={tokens.map(x => (
         <div key={x.address} className={classes.token}>
           <TokenIcon className={classes.tokenIcon} diameter={30} tokenAddress={x.address} />

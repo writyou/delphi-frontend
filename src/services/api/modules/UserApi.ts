@@ -93,4 +93,13 @@ export class UserApi {
       switchMap(account => (account ? this.dca.getUserBalance$(address, account) : empty())),
     );
   }
+
+  @memoize(R.identity)
+  public getDCATokenToSellBalance$(poolAddress: string): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.dca.getTokenToSellBalance$(poolAddress, account) : empty(),
+      ),
+    );
+  }
 }

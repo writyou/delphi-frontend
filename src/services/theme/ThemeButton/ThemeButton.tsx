@@ -3,6 +3,7 @@ import cn from 'classnames';
 
 import { ButtonBase } from 'components';
 import { Sun, Moon } from 'components/icons';
+import { useInheritBackgroundHackStyles } from 'utils/styles';
 
 import { useThemeContext } from '../ThemeContext';
 import { useStyles } from './ThemeButton.style';
@@ -13,7 +14,9 @@ interface Props {
 
 export function ThemeButton({ size }: Props) {
   const { changeTheme, currentTheme } = useThemeContext();
-  const classes = useStyles();
+
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
 
   const handleClick = useCallback(() => {
     changeTheme(currentTheme === 'light' ? 'dark' : 'light');

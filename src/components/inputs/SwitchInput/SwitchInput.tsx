@@ -5,6 +5,8 @@ import FormHelperText, { FormHelperTextProps } from '@material-ui/core/FormHelpe
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch, { SwitchProps } from '@material-ui/core/Switch';
 
+import { useInheritBackgroundHackStyles } from 'utils/styles';
+
 import { useStyles } from './SwitchInput.style';
 
 type IProps = SwitchProps &
@@ -27,7 +29,9 @@ interface INormalizedProps {
 function SwitchInput(props: IProps) {
   const { formControlProps, formHelperTextProps, switchProps, other } = normalizeProps(props);
   const { label, helperText } = other;
-  const classes = useStyles();
+
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
 
   return (
     <FormControl {...formControlProps}>

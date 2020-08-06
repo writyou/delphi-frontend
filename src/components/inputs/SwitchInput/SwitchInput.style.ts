@@ -1,4 +1,4 @@
-import { makeStyles } from 'utils/styles';
+import { makeStyles, InheritBackgroundHackStyles } from 'utils/styles';
 
 const thumbSize = 14;
 const borderOffset = 3;
@@ -61,7 +61,7 @@ export const useStyles = makeStyles(
         bottom: 1,
         left: 1,
         borderRadius,
-        background: theme.palette.background.paper,
+        background: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
       },
 
       '&:after': {
