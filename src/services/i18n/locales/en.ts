@@ -47,7 +47,7 @@ const en = {
         'You can choose what pools to supply liquidity to and deposit in one transaction - just specify amounts & stablecoins and click Allocate!',
     },
     investments: {
-      dcaDepositDialog: 'investments.dcaDepositDialog',
+      dcaDepositDialog: 'Are you sure you want to deposit?',
       dcaChangeDialog: 'investments.dcaChangeDialog',
       dcaWithdrawDialog: 'investments.dcaWithdrawDialog',
       dcaTabText:
