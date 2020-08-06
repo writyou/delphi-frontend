@@ -6,7 +6,7 @@ import BN from 'bn.js';
 
 import { getCurrentValueOrThrow } from 'utils/rxjs';
 import { DepositToSavingsPool, IToBN, WithdrawFromSavingsPool } from 'model/types';
-import { ETH_NETWORK_CONFIG, LONG_POOLING_TIMEOUT } from 'env';
+import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
   createDefiProtocol,
@@ -78,7 +78,7 @@ export class SavingsModuleApi {
   @memoize((...args: string[]) => args.join())
   public getPoolBalance$(poolAddress: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
-      timer(0, LONG_POOLING_TIMEOUT).pipe(
+      timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
         switchMap(() =>
           this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(undefined, [
             this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
@@ -95,7 +95,9 @@ export class SavingsModuleApi {
     return combineLatest([
       this.getPool$(poolAddress),
       contract.methods.supportedTokens(),
-      timer(0, LONG_POOLING_TIMEOUT).pipe(switchMap(() => contract.methods.balanceOfAll.read())),
+      timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
+        switchMap(() => contract.methods.balanceOfAll.read()),
+      ),
     ]).pipe(
       map(([pool, tokens, balances]) => {
         return tokens.map((tokenAddress, index) => {
