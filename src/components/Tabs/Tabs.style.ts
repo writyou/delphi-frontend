@@ -11,9 +11,9 @@ export const useStyles = makeStyles(
       display: 'flex',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
+      marginBottom: 40,
     },
     tabs: {
-      marginBottom: 40,
       position: 'relative',
       display: 'inline-flex',
       overflow: 'hidden',

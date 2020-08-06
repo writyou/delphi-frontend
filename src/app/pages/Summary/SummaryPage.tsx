@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 
-import { Grid, Label, Divider, Metric, FormattedAmount, CompositionChart, Tabs } from 'components';
+import {
+  Grid,
+  Label,
+  Divider,
+  Metric,
+  FormattedAmount,
+  CompositionChart,
+  Tabs,
+  ComingSoon,
+} from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { UserSavingsPoolsAvgAPY, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
@@ -72,7 +81,15 @@ export function SummaryPage() {
   );
 
   function renderTabs() {
-    return <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange} />;
+    return (
+      <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+        {selectedPage !== routes.summary.savings.getElementKey() && (
+          <div className={classes.comingSoon}>
+            <ComingSoon variant="label" />
+          </div>
+        )}
+      </Tabs>
+    );
   }
 
   function renderMetrics() {
@@ -145,6 +162,12 @@ export function SummaryPage() {
 const useStyles = makeStyles(
   () => ({
     root: {},
+    comingSoon: {
+      flexGrow: 1,
+      alignSelf: 'center',
+      display: 'flex',
+      marginLeft: 10,
+    },
     chart: {
       marginTop: 'auto',
     },

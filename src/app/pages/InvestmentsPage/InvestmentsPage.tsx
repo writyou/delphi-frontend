@@ -2,7 +2,8 @@ import React from 'react';
 import { useRouteMatch } from 'react-router';
 
 import { routes } from 'app/routes';
-import { Tabs } from 'components';
+import { Tabs, ComingSoon } from 'components';
+import { makeStyles } from 'utils/styles';
 
 import * as innerPages from './innerPages';
 
@@ -22,6 +23,8 @@ const tabs = [
 ];
 
 export function InvestmentsPage() {
+  const classes = useStyles();
+
   const match = useRouteMatch<{ page: string }>('/investing/:page');
   const defaultPage = routes.investments.all.getElementKey();
 
@@ -37,5 +40,23 @@ export function InvestmentsPage() {
     setSelectedPage(page);
   }, [page]);
 
-  return <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange} />;
+  return (
+    <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+      <div className={classes.comingSoon}>
+        <ComingSoon variant="label" />
+      </div>
+    </Tabs>
+  );
 }
+
+const useStyles = makeStyles(
+  () => ({
+    comingSoon: {
+      flexGrow: 1,
+      alignSelf: 'center',
+      display: 'flex',
+      marginLeft: 10,
+    },
+  }),
+  { name: 'InvestmentPage' },
+);

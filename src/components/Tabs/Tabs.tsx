@@ -48,8 +48,8 @@ export function Tabs<T extends React.ElementType = typeof Link>(props: Props<T>)
           onChange={onChange}
         >
           {tabs.map(tabItem => renderTab(tabItem))}
-          {children}
         </TabsList>
+        {children}
       </div>
       {tabs.map(({ value, renderContent }) => (
         <TabPanel value={value} key={value} classes={{ root: classes.tabPanel }}>
