@@ -1,4 +1,4 @@
-import { makeStyles } from 'utils/styles';
+import { makeStyles, InheritBackgroundHackStyles } from 'utils/styles';
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -28,8 +28,7 @@ export const useStyles = makeStyles(theme => ({
     bottom: 2,
     left: 2,
     borderRadius: theme.spacing(2),
-    backgroundColor:
-      theme.palette.type === 'light' ? theme.colors.athensGray : theme.colors.obsidian,
+    backgroundColor: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
     opacity: 1,
     transition: theme.transitions.create(['opacity', 'background-color']),
 

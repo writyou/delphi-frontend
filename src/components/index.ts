@@ -70,4 +70,5 @@ export * from './form';
 export * from './CompositionChart';
 export * from './Card/Card';
 export * from './CompositionLegend';
+export * from './Tabs/Tabs';
 export * from './PoolCard/PoolCard';

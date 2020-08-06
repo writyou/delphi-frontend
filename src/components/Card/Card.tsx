@@ -1,46 +1,65 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import cn from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
-import { makeStyles, rgba } from 'utils/styles';
+import { makeStyles, useTheme, rgba, InheritBackgroundHackProvider, Theme } from 'utils/styles';
 
 interface CardProps {
   className?: string;
   variant?: 'outlined' | 'contained';
-  color?: 'active' | 'default';
+  isActive?: boolean;
   label?: string;
   children: React.ReactNode;
   icons?: React.ReactNode[];
 }
 
 export function Card(props: CardProps) {
-  const { label, variant = 'outlined', color = 'default', children, icons, className } = props;
+  const { label, variant = 'outlined', isActive, children, icons, className } = props;
+
+  const theme = useTheme();
   const classes = useStyles();
+
+  const backgroundColor = useMemo(() => {
+    if (variant === 'contained') {
+      return isActive ? getActiveBackgroundColor(theme) : theme.palette.background.paper;
+    }
+
+    return null;
+  }, [variant, isActive, theme]);
+
   return (
-    <div
-      className={cn(className, classes.root, {
-        [classes.outlined]: variant === 'outlined',
-        [classes.contained]: variant === 'contained',
-        [classes.active]: color === 'active',
-      })}
-    >
-      {children}
-      {label && (
-        <Typography component="div" className={classes.label}>
-          <span>{label}</span>
-        </Typography>
-      )}
-      {icons && (
-        <div className={classes.icons}>
-          {icons.map((icon, index) => (
-            <div className={classes.icon} key={index}>
-              {icon}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    <InheritBackgroundHackProvider backgroundColor={backgroundColor}>
+      <div
+        className={cn(className, classes.root, {
+          [classes.outlined]: variant === 'outlined',
+          [classes.contained]: variant === 'contained',
+          [classes.isActive]: isActive,
+        })}
+      >
+        {children}
+        {label && (
+          <Typography component="div" className={classes.label}>
+            <span>{label}</span>
+          </Typography>
+        )}
+        {icons && (
+          <div className={classes.icons}>
+            {icons.map((icon, index) => (
+              <div className={classes.icon} key={index}>
+                {icon}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </InheritBackgroundHackProvider>
   );
+}
+
+function getActiveBackgroundColor(currentTheme: Theme) {
+  return currentTheme.palette.type === 'light'
+    ? currentTheme.colors.zumthor
+    : currentTheme.colors.steelGray;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -62,9 +81,8 @@ const useStyles = makeStyles(theme => ({
     '&$contained': {
       backgroundColor: theme.palette.background.paper,
     },
-    '&$contained$active': {
-      backgroundColor:
-        theme.palette.type === 'light' ? theme.colors.zumthor : theme.colors.steelGray,
+    '&$contained$isActive': {
+      backgroundColor: getActiveBackgroundColor(theme),
     },
   },
 
@@ -108,5 +126,5 @@ const useStyles = makeStyles(theme => ({
   },
   outlined: {},
   contained: {},
-  active: {},
+  isActive: {},
 }));

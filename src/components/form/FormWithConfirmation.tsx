@@ -57,8 +57,8 @@ export function FormWithConfirmation<FormData extends AnyObject>(
       <ConfirmationDialog
         isOpen={!!submittingArgs}
         message={confirmationMessage}
-        noText="no"
-        yesText="yes"
+        noText="No"
+        yesText="Yes"
         title="Confirm action"
         onCancel={handlePTokenExchangingConfirmationCancel}
         onConfirm={handleConfirmationClick}

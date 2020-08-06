@@ -3,17 +3,14 @@ import cn from 'classnames';
 import MuiButton, { ButtonTypeMap as MuiButtonTypeMap } from '@material-ui/core/Button';
 import { OverridableComponent, OverrideProps } from '@material-ui/core/OverridableComponent';
 
+import { useInheritBackgroundHackStyles } from 'utils/styles';
+
 import { useStyles } from './Button.style';
 
 type ButtonClassKey = keyof ReturnType<typeof useStyles>;
 
-// hint to support gradient borders
-export type OwnProps = {
-  backgroundColor?: string;
-};
-
 interface ButtonTypeMap<P = {}, D extends React.ElementType = 'button'> {
-  props: P & MuiButtonTypeMap['props'] & OwnProps;
+  props: P & MuiButtonTypeMap['props'];
   defaultComponent: D;
   classKey: ButtonClassKey;
 }
@@ -27,8 +24,10 @@ const Button: OverridableComponent<ButtonTypeMap> = function ButtonFunc<
   P = {},
   D extends React.ElementType = 'button'
 >(props: ButtonProps<D, P>) {
-  const classes = useStyles(props);
-  const { classes: muiClasses = {}, backgroundColor, ...rest } = props;
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
+
+  const { classes: muiClasses = {}, ...rest } = props;
 
   return (
     <MuiButton

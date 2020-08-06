@@ -4,6 +4,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { MenuProps } from '@material-ui/core/Menu';
 
 import { AngleArrow } from 'components/icons';
+import { useInheritBackgroundHackStyles } from 'utils/styles';
 
 import { TextInput } from '../TextInput';
 import { useStyles } from './SelectInput.style';
@@ -23,6 +24,8 @@ export function SelectInput(props: SelectInputProps) {
   const { options, InputProps = {}, ...restProps } = props;
   const { className: inputClassName, ...restInputProps } = InputProps;
   const classes = useStyles();
+  const backgroundColor = useInheritBackgroundHackStyles();
+
   const hasSingleOption = options.length <= 1;
 
   const [isMenuOpen, setIsOpen] = useState(false);
@@ -75,6 +78,7 @@ export function SelectInput(props: SelectInputProps) {
           PaperProps: {
             variant: 'outlined',
             className: classes.paper,
+            style: { backgroundColor },
           },
           ...menuPositionProps,
         },

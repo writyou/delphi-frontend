@@ -324,6 +324,34 @@
         "type": "address"
       },
       {
+        "internalType": "address",
+        "name": "poolToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "rewardToken",
+        "type": "address"
+      }
+    ],
+    "name": "rewardBalanceOf",
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "amounts",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{
+        "internalType": "address",
+        "name": "user",
+        "type": "address"
+      },
+      {
         "internalType": "address[]",
         "name": "rewardTokens",
         "type": "address[]"
@@ -348,15 +376,20 @@
       },
       {
         "internalType": "address",
-        "name": "rewardToken",
+        "name": "poolToken",
         "type": "address"
+      },
+      {
+        "internalType": "address[]",
+        "name": "rewardTokens",
+        "type": "address[]"
       }
     ],
     "name": "rewardBalanceOf",
     "outputs": [{
-      "internalType": "uint256",
-      "name": "amounts",
-      "type": "uint256"
+      "internalType": "uint256[]",
+      "name": "",
+      "type": "uint256[]"
     }],
     "payable": false,
     "stateMutability": "view",
@@ -423,12 +456,52 @@
   {
     "constant": false,
     "inputs": [{
+        "internalType": "address",
+        "name": "poolToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "rewardToken",
+        "type": "address"
+      }
+    ],
+    "name": "withdrawReward",
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{
       "internalType": "address",
       "name": "rewardToken",
       "type": "address"
     }],
     "name": "withdrawReward",
-    "outputs": [],
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "withdrawReward",
+    "outputs": [{
+      "internalType": "uint256[]",
+      "name": "",
+      "type": "uint256[]"
+    }],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -441,7 +514,11 @@
       "type": "address[]"
     }],
     "name": "withdrawReward",
-    "outputs": [],
+    "outputs": [{
+      "internalType": "uint256[]",
+      "name": "",
+      "type": "uint256[]"
+    }],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -506,7 +583,11 @@
       }
     ],
     "name": "deposit",
-    "outputs": [],
+    "outputs": [{
+      "internalType": "uint256[]",
+      "name": "",
+      "type": "uint256[]"
+    }],
     "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
@@ -583,6 +664,83 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{
+      "internalType": "address",
+      "name": "_protocol",
+      "type": "address"
+    }],
+    "name": "poolTokenByProtocol",
+    "outputs": [{
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{
+      "internalType": "address",
+      "name": "_protocol",
+      "type": "address"
+    }],
+    "name": "protocolByPoolToken",
+    "outputs": [{
+      "internalType": "address",
+      "name": "",
+      "type": "address"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [{
+      "internalType": "address",
+      "name": "_protocol",
+      "type": "address"
+    }],
+    "name": "rewardTokensByProtocol",
+    "outputs": [{
+      "internalType": "address[]",
+      "name": "",
+      "type": "address[]"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "registeredPoolTokens",
+    "outputs": [{
+      "internalType": "address[]",
+      "name": "poolTokens",
+      "type": "address[]"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "supportedRewardTokens",
+    "outputs": [{
+      "internalType": "address[]",
+      "name": "",
+      "type": "address[]"
+    }],
+    "payable": false,
+    "stateMutability": "view",
     "type": "function"
   }
 ]

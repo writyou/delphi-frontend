@@ -1,18 +1,36 @@
 import React from 'react';
 import { useRouteMatch } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import { routes } from 'app/routes';
+import { Tabs, ComingSoon } from 'components';
 import { makeStyles } from 'utils/styles';
-import { TabsList, TabContext, Tab, TabPanel, Label } from 'components';
 
 import * as innerPages from './innerPages';
 
-export function InvestmentsPage() {
-  const match = useRouteMatch<{ page: string }>('/investing/:page');
-  const [selectedPage, setSelectedPage] = React.useState('all');
+const tabs = [
+  {
+    label: 'All-in',
+    value: routes.investments.all.getElementKey(),
+    to: routes.investments.all.getRedirectPath(),
+    renderContent: () => <innerPages.AllIn />,
+  },
+  {
+    label: 'DCA',
+    value: routes.investments.dca.getElementKey(),
+    to: routes.investments.dca.getRedirectPath(),
+    renderContent: () => <innerPages.DCA />,
+  },
+];
 
-  const page = match ? match.params.page : 'all';
+export function InvestmentsPage() {
+  const classes = useStyles();
+
+  const match = useRouteMatch<{ page: string }>(`${routes.investments.getRoutePath()}/:page`);
+  const defaultPage = routes.investments.all.getElementKey();
+
+  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
+
+  const page = match ? match.params.page : defaultPage;
 
   const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
     setSelectedPage(tab);
@@ -22,50 +40,23 @@ export function InvestmentsPage() {
     setSelectedPage(page);
   }, [page]);
 
-  const classes = useStyles();
-
   return (
-    <TabContext value={selectedPage}>
-      <div className={classes.navigationBar}>
-        <TabsList value={selectedPage} className={classes.tabs} onChange={handleTabChange}>
-          <Tab
-            label="All-in"
-            className={classes.tab}
-            component={Link}
-            value={routes.investments.all.getElementKey()}
-            to={routes.investments.all.getRedirectPath()}
-          />
-          <Tab
-            label="DCA"
-            className={classes.tab}
-            component={Link}
-            value={routes.investments.dca.getElementKey()}
-            to={routes.investments.dca.getRedirectPath()}
-          />
-        </TabsList>
-        <Label withComingSoon />
+    <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+      <div className={classes.comingSoon}>
+        <ComingSoon variant="label" />
       </div>
-      <TabPanel value={routes.investments.all.getElementKey()}>
-        <innerPages.AllIn />
-      </TabPanel>
-      <TabPanel value={routes.investments.dca.getElementKey()}>
-        <innerPages.DCA />
-      </TabPanel>
-    </TabContext>
+    </Tabs>
   );
 }
 
 const useStyles = makeStyles(
   () => ({
-    tabs: {},
-    tab: {
-      minWidth: 112,
-    },
-    navigationBar: {
-      marginBottom: 40,
+    comingSoon: {
+      flexGrow: 1,
+      alignSelf: 'center',
       display: 'flex',
-      alignItems: 'center',
+      marginLeft: 10,
     },
   }),
-  { name: 'InvestingPage' },
+  { name: 'InvestmentPage' },
 );
