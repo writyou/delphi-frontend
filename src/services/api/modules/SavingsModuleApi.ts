@@ -15,7 +15,8 @@ import {
 import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
-import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
+import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
+import { denormolizeAmount } from 'utils/amounts';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -106,6 +107,23 @@ export class SavingsModuleApi {
         });
       }),
     ) as any;
+  }
+
+  @memoize((poolAddress: string, amount: TokenAmount) =>
+    [poolAddress, amount.toString(), amount.currency.address].join(),
+  )
+  public getWithdrawFee$(poolAddress: string, amount: TokenAmount): Observable<TokenAmount> {
+    return this.readonlyContract.methods.withdraw
+      .read({
+        _protocol: poolAddress,
+        token: amount.currency.address,
+        dnAmount: amount.toBN(),
+        maxNAmount: new BN(0),
+      })
+      .pipe(
+        map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
+        map(dnAmount => dnAmount.sub(amount)),
+      );
   }
 
   @autobind
