@@ -37,7 +37,7 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0x2C6c379F44e9e929F206D115C9d1cd9c2be41562',
+    savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -47,7 +47,7 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0x2C6c379F44e9e929F206D115C9d1cd9c2be41562',
+    savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
