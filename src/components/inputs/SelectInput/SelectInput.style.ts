@@ -18,7 +18,6 @@ export const useStyles = makeStyles(
         minWidth: 100,
 
         '& $input': {
-          backgroundColor: 'inherit',
           borderColor: 'transparent',
           color: '#fff',
         },
@@ -29,7 +28,6 @@ export const useStyles = makeStyles(
       },
     },
     paper: {
-      backgroundColor: theme.palette.background.paper,
       borderRadius: '0 0 8px 8px',
       borderColor: theme.colors.darkMist,
       borderTop: 'none',

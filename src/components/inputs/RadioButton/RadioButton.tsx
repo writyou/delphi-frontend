@@ -5,6 +5,8 @@ import FormHelperText, { FormHelperTextProps } from '@material-ui/core/FormHelpe
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio, { RadioProps } from '@material-ui/core/Radio';
 
+import { useInheritBackgroundHackStyles } from 'utils/styles';
+
 import { useStyles } from './RadioButton.style';
 
 type IProps = RadioProps & {
@@ -25,7 +27,8 @@ interface INormalizedProps {
 function RadioButton(props: IProps) {
   const { formHelperTextProps, radioProps, other } = normalizeProps(props);
   const { label, helperText } = other;
-  const classes = useStyles();
+  const backgroundColor = useInheritBackgroundHackStyles();
+  const classes = useStyles({ backgroundColor });
 
   return (
     <>
