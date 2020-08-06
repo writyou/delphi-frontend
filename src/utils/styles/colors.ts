@@ -108,4 +108,5 @@ export const colors = {
   foggyNight: '#13131b',
   independence: '#4d4b6c',
   steelGray: '#1c1c2a',
+  darkMist: '#40404b',
 };

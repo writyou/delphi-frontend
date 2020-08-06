@@ -18,7 +18,6 @@ export const useStyles = makeStyles(
       root: {
         width: '100%',
         borderSpacing: 0,
-        fontSize: 16,
 
         '& tr:not($subtableRow) + $subtableRow $cell': {
           paddingTop: 30,
@@ -47,9 +46,11 @@ export const useStyles = makeStyles(
       },
 
       withStripes: {
-        '& $cellData': {
+        '& tr:not($rowWithExpandedContent):not(:last-child) $cellData': {
           borderBottom: crossRowBorder,
+        },
 
+        '&$withOuterPadding tr:not($rowWithExpandedContent):not(:last-child) $cellData': {
           '&:first-child': crossRowBorderStyleForFirstCell,
           '&:last-child': crossRowBorderStyleForLastCell,
         },
@@ -60,7 +61,7 @@ export const useStyles = makeStyles(
       title: {
         textAlign: 'left',
         fontWeight: 'normal',
-        padding: '10px',
+        padding: '0 10px 20px',
       },
 
       cellAlignLeft: {
@@ -91,11 +92,11 @@ export const useStyles = makeStyles(
 
       cellData: {
         fontWeight: 300,
-        padding: '10px',
+        padding: '26px 10px',
       },
 
       singleCellExpandedArea: {
-        padding: '10px 50px',
+        padding: '32px 50px 23px',
         backgroundColor: theme.colors.jaguar,
       },
 
@@ -104,13 +105,15 @@ export const useStyles = makeStyles(
       },
 
       rowBeforeSummary: {
-        '& $cell': {
+        '&:not($rowWithExpandedContent) $cell': {
           borderBottom: crossRowBorder,
 
           '&:first-child': crossRowBorderStyleForFirstCell,
           '&:last-child': crossRowBorderStyleForLastCell,
         },
       },
+
+      rowWithExpandedContent: {},
     };
   },
   { name: 'Table' },

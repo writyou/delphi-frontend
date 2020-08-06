@@ -64,9 +64,18 @@ function NotificationText({ transaction, type: notType }: NotificationProps) {
 
 function getTranslateParams(transaction: SubmittedTransaction): Record<string, string> {
   switch (transaction.type) {
+    case 'testnetERC20.mint':
     case 'erc20.approve':
       return {
         amount: transaction.payload.value.toFormattedString(),
+      };
+    case 'erc20.revertApprove':
+      return {
+        symbol: transaction.payload.value.currency.symbol,
+      };
+    case 'erc20.infiniteApprove':
+      return {
+        symbol: transaction.payload.value.currency.symbol,
       };
     case 'savings.withdraw':
       return {

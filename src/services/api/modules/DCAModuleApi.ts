@@ -4,9 +4,9 @@ import { Observable, of } from 'rxjs';
 import { autobind } from 'core-decorators';
 
 import { DCAPool, WithdrawFromDCAPool, DepositToDCAPool, ChangeWeeklyDCAAmount } from 'model/types';
-import { Token, LiquidityAmount } from 'model/entities';
+import { Token, LiquidityAmount, Currency } from 'model/entities';
 import { memoize } from 'utils/decorators';
-import { zeroAddress, mockedTokens, percentAmount, liquidityAmount } from 'utils/mock';
+import { zeroAddress, mockedTokens, percentAmount } from 'utils/mock';
 
 const DCAPoolsMock: DCAPool[] = [
   {
@@ -31,6 +31,8 @@ const DCAPoolsMock: DCAPool[] = [
     tokens: mockedTokens,
   },
 ];
+
+export const liquidityAmount = new LiquidityAmount('123000000000000000000', new Currency('$', 18));
 
 export class DCAModuleApi {
   public getPools$() {

@@ -120,12 +120,13 @@ const useStyles = makeStyles(
     },
     startToSave: {
       display: 'flex',
-      alignItems: 'flex-end',
+      alignItems: 'center',
     },
     arrow: {
       fontSize: 50,
       marginLeft: 20,
       height: 30,
+      alignSelf: 'flex-end',
     },
     chart: {
       marginTop: 'auto',

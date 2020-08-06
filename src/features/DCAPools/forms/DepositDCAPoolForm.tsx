@@ -120,9 +120,9 @@ export function DepositDCAPoolForm({
             <TokenAmountField
               name={fieldNames.weeklyAmount}
               currencies={currentToken ? [currentToken] : []}
-              maxValue={maxValue?.toBN()}
+              maxValue={maxValue}
               validate={validateWeeklyAmount}
-              hideToken
+              hideCurrencySelect
             />
           </Grid>
         </Grid>

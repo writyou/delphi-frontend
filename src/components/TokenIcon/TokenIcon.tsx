@@ -12,10 +12,10 @@ type Props = {
 type CoinComponent = typeof DAIIcon;
 
 export const tokenIcons: Record<string, CoinComponent> = {
-  [ETH_NETWORK_CONFIG.tokens.dai.toLowerCase()]: DAIIcon,
-  [ETH_NETWORK_CONFIG.tokens.usdc.toLowerCase()]: USDCIcon,
-  [ETH_NETWORK_CONFIG.tokens.usdt.toLowerCase()]: USDTIcon,
-  [ETH_NETWORK_CONFIG.tokens.tusd.toLowerCase()]: TUSDIcon,
+  [ETH_NETWORK_CONFIG.tokens.DAI.toLowerCase()]: DAIIcon,
+  [ETH_NETWORK_CONFIG.tokens.USDC.toLowerCase()]: USDCIcon,
+  [ETH_NETWORK_CONFIG.tokens.USDT.toLowerCase()]: USDTIcon,
+  [ETH_NETWORK_CONFIG.tokens.TUSD.toLowerCase()]: TUSDIcon,
 };
 
 export function TokenIcon({ tokenAddress, className, diameter = 20 }: Props) {

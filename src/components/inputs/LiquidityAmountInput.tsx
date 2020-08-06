@@ -3,7 +3,7 @@ import BN from 'bn.js';
 
 import { LiquidityAmount, Currency } from 'model/entities';
 
-import { AmountInput, AmountInputProps } from './AmountInput';
+import { AmountInput, AmountInputProps } from './AmountInput/AmountInput';
 
 export type LiquidityAmountInputProps = Omit<
   AmountInputProps<LiquidityAmount>,

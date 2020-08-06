@@ -66,10 +66,25 @@ const en = {
       connect: 'Connect to wallet',
     },
     notifications: {
+      'testnetERC20.mint': {
+        pending: 'Minting %{amount}. Pending',
+        success: 'Minting %{amount}. Successful',
+        error: 'Minting %{amount}. Failed',
+      },
       'erc20.approve': {
         pending: 'Approving %{amount} transfer. Pending',
         success: 'Approving %{amount} transfer. Successful',
         error: 'Approving %{amount} transfer. Failed',
+      },
+      'erc20.revertApprove': {
+        pending: 'Reverting approve for infinite transfers %{symbol}. Pending',
+        success: 'Reverting approve for infinite transfers %{symbol}. Successful',
+        error: 'Reverting approve for infinite transfers %{symbol}. Failed',
+      },
+      'erc20.infiniteApprove': {
+        pending: 'Approving infinite transfers %{symbol}. Pending',
+        success: 'Approving infinite transfers %{symbol}. Successful',
+        error: 'Approving infinite transfers %{symbol}. Failed',
       },
       'savings.deposit': {
         pending: 'Deposit to savings pool. Pending',

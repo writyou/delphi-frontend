@@ -7,7 +7,7 @@ import { TokenAmount, Token } from 'model/entities';
 import { ALL_TOKEN } from 'utils/mock';
 import { TokensIcons } from 'components/TokensIcons/TokensIcons';
 
-import { AmountInput, AmountInputProps } from './AmountInput';
+import { AmountInput, AmountInputProps } from './AmountInput/AmountInput';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 
 export type TokenAmountInputProps = Omit<

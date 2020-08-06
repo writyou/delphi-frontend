@@ -85,6 +85,9 @@ function Chart<P extends IPoint>(props: IProps<P>) {
 
   return (
     <div className={classes.root}>
+      <div className={classes.periodSwitch}>
+        <PeriodSwitch period={period} onSelect={setPeriod} />
+      </div>
       <div className={classes.graphic}>
         <ResponsiveContainer>
           {/* TODO: Fix blank space on left */}
@@ -125,7 +128,6 @@ function Chart<P extends IPoint>(props: IProps<P>) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <PeriodSwitch period={period} onSelect={setPeriod} />
     </div>
   );
 }
