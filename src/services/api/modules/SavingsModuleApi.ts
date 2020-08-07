@@ -81,10 +81,14 @@ export class SavingsModuleApi {
     return toLiquidityAmount$(
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
         switchMap(() =>
-          this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(undefined, [
-            this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
-            this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
-          ]),
+          this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(
+            undefined,
+            { from: poolAddress },
+            [
+              this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
+              this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
+            ],
+          ),
         ),
       ),
     );
@@ -97,7 +101,7 @@ export class SavingsModuleApi {
       this.getPool$(poolAddress),
       contract.methods.supportedTokens(),
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
-        switchMap(() => contract.methods.balanceOfAll.read()),
+        switchMap(() => contract.methods.balanceOfAll.read(undefined, { from: poolAddress })),
       ),
     ]).pipe(
       map(([pool, tokens, balances]) => {
@@ -111,17 +115,26 @@ export class SavingsModuleApi {
     ) as any;
   }
 
-  @memoize((poolAddress: string, amount: TokenAmount) =>
-    [poolAddress, amount.toString(), amount.currency.address].join(),
+  @memoize((from: string, poolAddress: string, amount: TokenAmount) =>
+    [from, poolAddress, amount.toString(), amount.currency.address].join(),
   )
-  public getWithdrawFee$(poolAddress: string, amount: TokenAmount): Observable<TokenAmount> {
+  public getWithdrawFee$(
+    from: string,
+    poolAddress: string,
+    amount: TokenAmount,
+  ): Observable<TokenAmount> {
     return this.readonlyContract.methods.withdraw
-      .read({
-        _protocol: poolAddress,
-        token: amount.currency.address,
-        dnAmount: amount.toBN(),
-        maxNAmount: new BN(0),
-      })
+      .read(
+        {
+          _protocol: poolAddress,
+          token: amount.currency.address,
+          dnAmount: amount.toBN(),
+          maxNAmount: new BN(0),
+        },
+        {
+          from,
+        },
+      )
       .pipe(
         map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
         map(dnAmount => dnAmount.sub(amount)),

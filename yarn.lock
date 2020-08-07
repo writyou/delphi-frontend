@@ -14011,10 +14011,10 @@ type@^2.0.0:
   resolved "https://registry.yarnpkg.com/type/-/type-2.0.0.tgz#5f16ff6ef2eb44f260494dae271033b29c09a9c3"
   integrity sha512-KBt58xCHry4Cejnc2ISQAF7QY+ORngsWfxezO68+12hKV6lQY8P/psIkcbjeHWn7MqcgciWJyCCevFMJdIXpow==
 
-typechain-target-web3-rxjs@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/typechain-target-web3-rxjs/-/typechain-target-web3-rxjs-0.1.4.tgz#407189e31343ada9811961cd7bd2c1cdf17dd174"
-  integrity sha512-yMCBkCwQ435mGdtbPU5qYO1zB8KHpR5eTLQZIUC4tSyV0WkLrb7cyhA8iK7G+xrlL6QB3A3/nen+Dgvr54tR4g==
+typechain-target-web3-rxjs@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/typechain-target-web3-rxjs/-/typechain-target-web3-rxjs-0.1.5.tgz#55ddaf9478e4c00d108ca3dc8f0498fd0315a22b"
+  integrity sha512-jgBTZcWzGW9umgnYCpwnP5+4Xg0cRANFmxSlWgg6+e8YDsqih++mR66WHnA83vY8axq/0ME5XbCWRD03hWW2mg==
 
 typechain@^1.0.3:
   version "1.0.3"
