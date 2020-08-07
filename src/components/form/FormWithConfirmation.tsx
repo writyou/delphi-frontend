@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import { Observable } from 'rxjs';
 
-import { useSubscribable } from 'utils/react';
+// import { useSubscribable } from 'utils/react';
 import { ConfirmationDialog } from 'components/ConfirmationDialog/ConfirmationDialog';
-import { toObservable } from 'utils/rxjs';
+// import { toObservable } from 'utils/rxjs';
 
 import { FormTemplate, FormTemplateProps } from './FormTemplate';
 
@@ -13,14 +12,14 @@ export type FormWithConfirmationProps<FormData extends AnyObject> = Omit<
   FormTemplateProps<FormData>,
   never
 > & {
-  getConfirmationMessage: (values: FormData) => Observable<string> | string;
+  DialogContent: React.FC<FormData>;
   CustomFormTemplate?: React.FC<FormTemplateProps<FormData>>;
 };
 
 export function FormWithConfirmation<FormData extends AnyObject>(
   props: FormWithConfirmationProps<FormData>,
 ) {
-  const { getConfirmationMessage, onSubmit, onCancel, CustomFormTemplate, ...restProps } = props;
+  const { DialogContent, onSubmit, onCancel, CustomFormTemplate, ...restProps } = props;
 
   type SubmittingArgs = Parameters<typeof onSubmit>;
   const [submittingArgs, setArgs] = useState<SubmittingArgs | null>(null);
@@ -43,11 +42,11 @@ export function FormWithConfirmation<FormData extends AnyObject>(
     setArgs(null);
   }, []);
 
-  const confirmationMessage = useSubscribable(
-    () => toObservable(values ? getConfirmationMessage(values) : '⏳'),
-    [values, getConfirmationMessage],
+  /* const dialogContent = useSubscribable(
+    () => toObservable(values ? getDialogContent(values) : '⏳'),
+    [values, getDialogContent],
     '⏳',
-  );
+  ); */
 
   const Template = CustomFormTemplate || FormTemplate;
 
@@ -56,13 +55,14 @@ export function FormWithConfirmation<FormData extends AnyObject>(
       <Template<FormData> {...restProps} onSubmit={handleSubmit} onCancel={onCancel} />
       <ConfirmationDialog
         isOpen={!!submittingArgs}
-        message={confirmationMessage}
         noText="No"
         yesText="Yes"
         title="Confirm action"
         onCancel={handlePTokenExchangingConfirmationCancel}
         onConfirm={handleConfirmationClick}
-      />
+      >
+        {values && <DialogContent {...values} />}
+      </ConfirmationDialog>
     </>
   );
 }

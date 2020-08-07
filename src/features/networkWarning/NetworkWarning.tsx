@@ -24,12 +24,13 @@ export function NetworkWarning() {
   return (
     <ConfirmationDialog
       isOpen={isOpen}
-      message={t(tKeys.warning.getKey(), {
+      yesText={t(tKeys.disconnectButton.getKey())}
+      onConfirm={api.web3Manager.disconnect}
+    >
+      {t(tKeys.warning.getKey(), {
         name: t(tKeys.networkName[NETWORK_ID].getKey()),
         type: t(tKeys.networkType[NETWORK_ID].getKey()),
       })}
-      yesText={t(tKeys.disconnectButton.getKey())}
-      onConfirm={api.web3Manager.disconnect}
-    />
+    </ConfirmationDialog>
   );
 }

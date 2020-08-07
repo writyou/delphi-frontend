@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormSpy } from 'react-final-form';
 import * as R from 'ramda';
+import { of } from 'rxjs';
+import Typography from '@material-ui/core/Typography';
+import { switchMap } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -9,6 +12,8 @@ import { DepositToSavingsPool, SavingsPool } from 'model/types';
 import { TokenAmount } from 'model/entities';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { useSubscribable } from 'utils/react';
+import { Grid } from 'components';
 
 import { AllocateFormTemplate } from './AllocateFormTemplate';
 import { SavingsPoolField } from './SavingsPoolField/SavingsPoolField';
@@ -34,7 +39,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
 
   return (
     <FormWithConfirmation<FormData>
-      getConfirmationMessage={() => t(tKeys.modules.savings.allocateDialog.getKey())}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
       submitButton={t(tKeys.modules.savings.allocate.getKey())}
       CustomFormTemplate={props => (
@@ -62,6 +67,72 @@ export function AllocateForm({ pools }: AllocateFormProps) {
       </FormSpy>
     );
   }
+}
+
+function DialogContent(values: FormData) {
+  const { t } = useTranslate();
+  const spender = ETH_NETWORK_CONFIG.contracts.savingsModule;
+  const api = useApi();
+  const [account] = useSubscribable(() => api.web3Manager.account$, [api]);
+  const deposits = useMemo(() => getDeposits(values), [values]);
+
+  const [fees] = useSubscribable(
+    account
+      ? () =>
+          api.erc20
+            .hasMultipleInfiniteApprove(
+              deposits.map(d => d.amount.currency.address),
+              account,
+              spender,
+            )
+            .pipe(
+              switchMap(hasA => {
+                if (!hasA) {
+                  return of(false);
+                }
+                return api.user.getUserDepositFees$(deposits);
+              }),
+            )
+      : () => of(false),
+    [api, deposits, account, spender],
+  );
+
+  type Fees = Array<DepositToSavingsPool & { fee: TokenAmount }>;
+  // todo check fees table
+
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
+        <Typography>{t(tKeys.modules.savings.allocateDialog.getKey())}</Typography>
+      </Grid>
+      <Grid item xs={12} container>
+        {fees
+          ? (fees as Fees).map(fee => (
+              <>
+                <Grid item xs={4}>
+                  {fee.poolAddress}
+                </Grid>
+                <Grid item xs={4}>
+                  {fee.amount.currency.symbol}
+                </Grid>
+                <Grid item xs={4}>
+                  {fee.fee}
+                </Grid>
+              </>
+            ))
+          : t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())}
+      </Grid>
+      <Grid item xs={12}>
+        <InfiniteApproveSwitch
+          spender={spender}
+          tokens={R.uniqBy(
+            token => token.address.toLowerCase(),
+            deposits.map(x => x.amount.currency),
+          )}
+        />
+      </Grid>
+    </Grid>
+  );
 }
 
 function getDeposits({ _, ...data }: FormData): DepositToSavingsPool[] {

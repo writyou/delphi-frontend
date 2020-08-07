@@ -15,7 +15,8 @@ import {
 import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
-import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
+import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
+import { denormolizeAmount } from 'utils/amounts';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -80,10 +81,14 @@ export class SavingsModuleApi {
     return toLiquidityAmount$(
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
         switchMap(() =>
-          this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(undefined, [
-            this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
-            this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
-          ]),
+          this.getProtocolReadonlyContract(poolAddress).methods.normalizedBalance.read(
+            undefined,
+            { from: poolAddress },
+            [
+              this.readonlyContract.events.Deposit({ filter: { protocol: poolAddress } }),
+              this.readonlyContract.events.Withdraw({ filter: { protocol: poolAddress } }),
+            ],
+          ),
         ),
       ),
     );
@@ -96,7 +101,7 @@ export class SavingsModuleApi {
       this.getPool$(poolAddress),
       contract.methods.supportedTokens(),
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
-        switchMap(() => contract.methods.balanceOfAll.read()),
+        switchMap(() => contract.methods.balanceOfAll.read(undefined, { from: poolAddress })),
       ),
     ]).pipe(
       map(([pool, tokens, balances]) => {
@@ -188,6 +193,34 @@ export class SavingsModuleApi {
 
   private getPoolTokenReadonlyContract(address: string): Contracts['savingsPoolToken'] {
     return createSavingsPoolToken(this.web3Manager.web3, address);
+  }
+
+  public getDepositFees$(
+    userAddress: string,
+    deposits: DepositToSavingsPool[],
+  ): Observable<Array<DepositToSavingsPool & { fee: TokenAmount }>> {
+    return this.readonlyContract.methods.deposit
+      .read(
+        {
+          _protocols: deposits.map(x => x.poolAddress),
+          _tokens: deposits.map(x => x.amount.currency.address),
+          _dnAmounts: deposits.map(x => x.amount.toBN()),
+        },
+        { from: userAddress },
+      )
+      .pipe(
+        map(nDepositAmounts =>
+          nDepositAmounts.map((nDepositAmount, index) => ({
+            ...deposits[index],
+            fee: deposits[index].amount.sub(
+              denormolizeAmount(
+                new TokenAmount(nDepositAmount, ALL_TOKEN),
+                deposits[index].amount.currency,
+              ),
+            ),
+          })),
+        ),
+      );
   }
 }
 

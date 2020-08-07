@@ -7,27 +7,36 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { useCommunication, ISubscriptionMeta } from 'utils/react';
-import { Loading } from 'components/Loading';
+// import { Loading } from 'components/Loading';
 import { Hint } from 'components/Hint/Hint';
 import { makeStyles } from 'utils/styles';
 
 import { Button } from '../Button/Button';
 
-type AsyncMessage = [string, ISubscriptionMeta];
-
-interface IProps {
+export type ConfirmationDialogProps = {
   isOpen: boolean;
+  children: React.ReactNode;
+  contentMeta?: ISubscriptionMeta; // todo придумать/сделать
   title?: string;
-  message: string | AsyncMessage;
   yesButton?: React.ReactElement;
   yesText?: string;
   noText?: string;
   onConfirm: () => Promise<void>;
   onCancel?: () => void;
-}
+};
 
-function ConfirmationDialog(props: IProps) {
-  const { onCancel, onConfirm, isOpen, title, message, noText, yesText, yesButton } = props;
+function ConfirmationDialog(props: ConfirmationDialogProps) {
+  const {
+    onCancel,
+    onConfirm,
+    isOpen,
+    title,
+    children,
+    contentMeta,
+    noText,
+    yesText,
+    yesButton,
+  } = props;
 
   const communication = useCommunication(onConfirm, []);
   const { status, error } = communication;
@@ -39,7 +48,7 @@ function ConfirmationDialog(props: IProps) {
     communication.reset();
   }, [onCancel, communication.reset]);
 
-  const messageLoaded = typeof message === 'string' || message[1].loaded;
+  const contentLoaded = contentMeta ? contentMeta.loaded : true;
 
   return (
     <Dialog fullWidth maxWidth="sm" open={isOpen} onClose={handleCancel}>
@@ -52,13 +61,7 @@ function ConfirmationDialog(props: IProps) {
             </Grid>
           )}
           <Grid item xs={12}>
-            {typeof message === 'string' ? (
-              <Typography>{message}</Typography>
-            ) : (
-              <Loading meta={message[1]}>
-                <Typography>{message[0]}</Typography>
-              </Loading>
-            )}
+            {children}
           </Grid>
           {communication.status === 'error' && error && (
             <Grid item xs={12}>
@@ -87,7 +90,7 @@ function ConfirmationDialog(props: IProps) {
                 type="submit"
                 fullWidth
                 onClick={communication.execute}
-                disabled={status === 'pending' || !messageLoaded}
+                disabled={status === 'pending' || !contentLoaded}
               >
                 {status === 'pending' ? <CircularProgress size={24} /> : yesText}
               </Button>

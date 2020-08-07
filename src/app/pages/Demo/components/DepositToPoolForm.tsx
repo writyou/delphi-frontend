@@ -62,15 +62,15 @@ export function DepositToPoolForm({
     [api],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `Are you sure you want deposit ${amount ? amount.toFormattedString() : '⏳'}`;
-  }, []);
+  const DialogContent = ({ amount }: FormData) => {
+    return <>{`Are you sure you want deposit ${amount ? amount.toFormattedString() : '⏳'}`}</>;
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Deposit"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
       onCancel={onCancel}
     >

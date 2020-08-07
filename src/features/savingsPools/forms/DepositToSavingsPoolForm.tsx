@@ -64,16 +64,20 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, pool.address],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
-      amount: amount ? amount.toFormattedString() : '⏳',
-    })}`;
-  }, []);
+  const DialogContent = ({ amount }: FormData) => {
+    return (
+      <>
+        {`${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
+          amount: amount ? amount.toFormattedString() : '⏳',
+        })}`}
+      </>
+    );
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Allocate"
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
       submitButton="Allocate"
     >

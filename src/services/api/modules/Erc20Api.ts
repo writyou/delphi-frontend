@@ -89,6 +89,13 @@ export class Erc20Api {
   }
 
   @memoize((...args: string[]) => args.join())
+  public hasMultipleInfiniteApprove(tokenAddresses: string[], account: string, spender: string) {
+    return combineLatest(
+      tokenAddresses.map(address => this.hasInfiniteApprove(address, account, spender)),
+    ).pipe(map(b => b.every(x => x)));
+  }
+
+  @memoize((...args: string[]) => args.join())
   public hasInfiniteApprove(
     tokenAddress: string,
     owner: string,
