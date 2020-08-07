@@ -12,7 +12,7 @@ export function AlertHint() {
       <AlertIcon />
       <Typography className={classes.hint} align="left">
         {`Please note that you're withdrawing from Balancer liquidity pool, 
-    [something may occur]`}
+        [something may occur]`}
       </Typography>
     </Hint>
   );
