@@ -9,7 +9,7 @@ export function AllocateTab() {
 
   return (
     <div className={classes.root}>
-      <img src={image} className={classes.contentMock} alt="all-in" />
+      <img src={image} className={classes.contentMock} alt="pool-cards" />
     </div>
   );
 }
@@ -28,5 +28,5 @@ const useStyles = makeStyles(
       maxWidth: 1340,
     },
   }),
-  { name: 'AllIn' },
+  { name: 'AllocateTab' },
 );

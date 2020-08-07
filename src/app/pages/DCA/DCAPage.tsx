@@ -8,7 +8,7 @@ import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { DCAPoolLiquidity, UserDCAPoolBalance } from 'features/DCAPools';
 
-import { DCAPollCardButtons } from './DCAPollCardButtons';
+import { DCAPoolCardButtons } from './DCAPoolCardButtons/DCAPoolCardButtons';
 
 export function DCAPage() {
   const api = useApi();
@@ -30,7 +30,7 @@ export function DCAPage() {
                   poolName={pool.poolName}
                   tokens={pool.tokens}
                   link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-                  content={<DCAPollCardButtons pool={pool} />}
+                  content={<DCAPoolCardButtons pool={pool} />}
                   poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
                   poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
                   getPoolBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
@@ -43,8 +43,11 @@ export function DCAPage() {
   );
 }
 
-const useStyles = makeStyles(() => ({
-  description: {
-    marginBottom: 40,
-  },
-}));
+const useStyles = makeStyles(
+  () => ({
+    description: {
+      marginBottom: 40,
+    },
+  }),
+  { name: 'DCAPage' },
+);

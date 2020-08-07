@@ -51,7 +51,7 @@ const en = {
       changeDialog: 'investments.dcaChangeDialog',
       withdrawDialog: 'investments.dcaWithdrawDialog',
       description:
-        '“All-in” or “DCA” into non-stablecoin pools. Higher risk-reward pools with higher volatility — higher potential capital gains and losses.',
+        '“DCA” into non-stablecoin pools. Higher risk-reward pools with higher volatility — higher potential capital gains and losses.',
     },
   },
   features: {
