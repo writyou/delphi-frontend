@@ -13,7 +13,7 @@ import { Links } from './Links';
 const wikiLink: CustomLink.models.Link = {
   kind: 'external',
   label: 'Wiki',
-  ref: 'https://wiki.akropolis.io/spartafaq/',
+  ref: 'https://wiki.akropolis.io/delphi/',
 };
 
 export const NewHeader: React.FC = () => {
