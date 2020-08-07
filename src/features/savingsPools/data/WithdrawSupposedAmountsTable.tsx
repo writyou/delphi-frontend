@@ -23,7 +23,7 @@ export function WithdrawSupposedAmountsTable(props: Props) {
     [api, poolAddress],
   );
 
-  const balancePercent = poolBalance?.mul(amount).div(100);
+  const balancePercent = poolBalance && amount.div(poolBalance).mul(100);
 
   const entries = poolTokensBalances?.map(
     pool => balancePercent && pool.mul(balancePercent).div(100),
