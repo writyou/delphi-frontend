@@ -20,7 +20,12 @@ export function WithdrawAdditionalFee(props: Props) {
 
   return (
     <Loading meta={additionalFeeMeta}>
-      {additionalFee && <FormattedAmount sum={additionalFee} variant="plain" />}
+      {additionalFee &&
+        (additionalFee?.isNeg() ? (
+          'is zero'
+        ) : (
+          <FormattedAmount sum={additionalFee} variant="plain" />
+        ))}
     </Loading>
   );
 }
