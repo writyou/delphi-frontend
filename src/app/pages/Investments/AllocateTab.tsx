@@ -4,7 +4,7 @@ import { makeStyles } from 'utils/styles';
 
 import image from './investing-all-in@2x.png';
 
-export function AllIn() {
+export function AllocateTab() {
   const classes = useStyles();
 
   return (

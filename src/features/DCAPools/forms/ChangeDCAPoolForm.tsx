@@ -52,7 +52,7 @@ export function ChangeDCAPoolForm({
   );
 
   const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.investments.dcaChangeDialog.getKey())} ${
+    return `${t(tKeys.modules.dca.changeDialog.getKey())} ${
       amount ? amount.toFormattedString() : '⏳'
     }`;
   }, []);

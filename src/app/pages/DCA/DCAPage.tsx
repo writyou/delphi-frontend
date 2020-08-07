@@ -10,7 +10,7 @@ import { DCAPoolLiquidity, UserDCAPoolBalance } from 'features/DCAPools';
 
 import { DCAPollCardButtons } from './DCAPollCardButtons';
 
-export function DCA() {
+export function DCAPage() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
@@ -18,9 +18,7 @@ export function DCA() {
 
   return (
     <>
-      <div className={classes.dcaTabDescription}>
-        {t(tKeys.modules.investments.dcaTabText.getKey())}
-      </div>
+      <div className={classes.description}>{t(tKeys.modules.dca.description.getKey())}</div>
       <Loading meta={poolsMeta}>
         <Grid container alignItems="flex-start" spacing={3}>
           {pools &&
@@ -46,7 +44,7 @@ export function DCA() {
 }
 
 const useStyles = makeStyles(() => ({
-  dcaTabDescription: {
+  description: {
     marginBottom: 40,
   },
 }));

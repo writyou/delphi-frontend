@@ -70,7 +70,7 @@ export function DepositDCAPoolForm({
   );
 
   const getConfirmationMessage = useCallback(({ depositAmount }: FormData) => {
-    return `${t(tKeys.modules.investments.dcaDepositDialog.getKey())} ${
+    return `${t(tKeys.modules.dca.depositDialog.getKey())} ${
       depositAmount ? depositAmount.toFormattedString() : '⏳'
     }`;
   }, []);

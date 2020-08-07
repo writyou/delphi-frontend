@@ -80,7 +80,7 @@ export function WithdrawFromDCAPoolForm({
   );
 
   const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.investments.dcaWithdrawDialog.getKey())} ${
+    return `${t(tKeys.modules.dca.withdrawDialog.getKey())} ${
       amount ? amount.toFormattedString() : '⏳'
     }`;
   }, []);

@@ -5,20 +5,21 @@ import { routes } from 'app/routes';
 import { Tabs, ComingSoon } from 'components';
 import { makeStyles } from 'utils/styles';
 
-import * as innerPages from './innerPages';
+import { AllocateTab } from './AllocateTab';
+import { WithdrawTab } from './WithdrawTab';
 
 const tabs = [
   {
-    label: 'All-in',
-    value: routes.investments.all.getElementKey(),
-    to: routes.investments.all.getRedirectPath(),
-    renderContent: () => <innerPages.AllIn />,
+    label: 'Allocate',
+    value: routes.investments.allocate.getElementKey(),
+    to: routes.investments.allocate.getRedirectPath(),
+    renderContent: () => <AllocateTab />,
   },
   {
-    label: 'DCA',
-    value: routes.investments.dca.getElementKey(),
-    to: routes.investments.dca.getRedirectPath(),
-    renderContent: () => <innerPages.DCA />,
+    label: 'Withdraw',
+    value: routes.investments.withdraw.getElementKey(),
+    to: routes.investments.withdraw.getRedirectPath(),
+    renderContent: () => <WithdrawTab />,
   },
 ];
 
@@ -26,7 +27,7 @@ export function InvestmentsPage() {
   const classes = useStyles();
 
   const match = useRouteMatch<{ page: string }>(`${routes.investments.getRoutePath()}/:page`);
-  const defaultPage = routes.investments.all.getElementKey();
+  const defaultPage = routes.investments.allocate.getElementKey();
 
   const [selectedPage, setSelectedPage] = React.useState(defaultPage);
 
@@ -58,5 +59,5 @@ const useStyles = makeStyles(
       marginLeft: 10,
     },
   }),
-  { name: 'InvestmentPage' },
+  { name: 'InvestmentsPage' },
 );
