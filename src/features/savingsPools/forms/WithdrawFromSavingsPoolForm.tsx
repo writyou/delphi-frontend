@@ -108,18 +108,22 @@ export function WithdrawFromSavingsPoolForm({
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
-      <FormSpy<FormData> subscription={{ values: true }}>
-        {({ values: { amount } }) =>
+      <FormSpy<FormData> subscription={{ values: true, valid: true }}>
+        {({ values: { amount }, valid }) =>
           amount?.currency === ALL_TOKEN ? (
             <>
-              {amount && <WithdrawSupposedAmountsTable poolAddress={poolAddress} amount={amount} />}
+              {valid && amount && (
+                <WithdrawSupposedAmountsTable poolAddress={poolAddress} amount={amount} />
+              )}
               <AlertHint />
             </>
           ) : (
-            <Typography>
-              Additional fee{' '}
-              {amount && <WithdrawAdditionalFee poolAddress={poolAddress} amount={amount} />}
-            </Typography>
+            valid &&
+            amount && (
+              <Typography>
+                Additional fee <WithdrawAdditionalFee poolAddress={poolAddress} amount={amount} />
+              </Typography>
+            )
           )
         }
       </FormSpy>
