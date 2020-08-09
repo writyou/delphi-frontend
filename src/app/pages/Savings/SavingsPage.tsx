@@ -4,8 +4,8 @@ import { useRouteMatch } from 'react-router-dom';
 import { routes } from 'app/routes';
 import { Tabs } from 'components';
 
-import { AllocateTab } from './AllocateTab';
-import { WithdrawTab } from './WithdrawTab';
+import { AllocateTab } from './innerPages/AllocateTab';
+import { WithdrawTab } from './innerPages/WithdrawTab';
 
 const tabs = [
   {

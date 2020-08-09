@@ -69,17 +69,20 @@ export function DepositDCAPoolForm({
     [api, poolAddress],
   );
 
-  const getConfirmationMessage = useCallback(({ depositAmount }: FormData) => {
-    return `${t(tKeys.modules.dca.depositDialog.getKey())} ${
-      depositAmount ? depositAmount.toFormattedString() : '⏳'
-    }`;
-  }, []);
+  const DialogContent = ({ depositAmount }: FormData) => {
+    return (
+      <>
+        {t(tKeys.modules.dca.depositDialog.getKey())}{' '}
+        {depositAmount ? depositAmount.toFormattedString() : '⏳'}
+      </>
+    );
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Dollar Cost Average"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
       submitButton="Deposit"
     >

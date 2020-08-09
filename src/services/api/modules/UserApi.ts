@@ -4,7 +4,7 @@ import * as R from 'ramda';
 
 import { memoize } from 'utils/decorators';
 import { TokenAmount, LiquidityAmount, PercentAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { SavingsPool, DepositToSavingsPool } from 'model/types';
 import { calcAvg } from 'utils/amounts';
 
 import { Web3ManagerModule } from '../types';
@@ -84,6 +84,20 @@ export class UserApi {
   public getMySavingsPools$(): Observable<SavingsPool[]> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUserSavingsPools$(account) : empty())),
+    );
+  }
+
+  public getSavingsDepositFees$(deposits: DepositToSavingsPool[]) {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.savings.getDepositFees$(account, deposits) : empty())),
+    );
+  }
+
+  public getSavingsWithdrawFee$(poolAddress: string, amount: TokenAmount): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.savings.getWithdrawFee$(account, poolAddress, amount) : empty(),
+      ),
     );
   }
 

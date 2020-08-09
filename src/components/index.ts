@@ -64,6 +64,7 @@ export * from './ChartMock/ChartMock';
 export * from './Profit/Profit';
 export * from './ChartProfit/ChartProfit';
 export * from './ChartBlock/ChartBlock';
+export * from './TokenName/TokenName';
 export * from './TokenIcon/TokenIcon';
 export * from './TokensIcons/TokensIcons';
 export * from './form';

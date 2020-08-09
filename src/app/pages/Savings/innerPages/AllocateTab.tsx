@@ -6,7 +6,7 @@ import { useSubscribable } from 'utils/react';
 import { Loading } from 'components';
 import { makeStyles } from 'utils/styles';
 
-import { AllocateForm } from './AllocateForm';
+import { AllocateForm } from '../components/AllocateForm/AllocateForm';
 
 export function AllocateTab() {
   const api = useApi();

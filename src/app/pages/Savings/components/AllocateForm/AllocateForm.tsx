@@ -5,23 +5,22 @@ import * as R from 'ramda';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation } from 'components/form';
-import { DepositToSavingsPool, SavingsPool } from 'model/types';
+import { SavingsPool } from 'model/types';
 import { TokenAmount } from 'model/entities';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 
+import { getDeposits } from './getDeposits';
+import { stringifyName } from './utils';
 import { AllocateFormTemplate } from './AllocateFormTemplate';
-import { SavingsPoolField } from './SavingsPoolField/SavingsPoolField';
+import { SavingsPoolField } from './SavingsPoolField';
+import { AllocateFormConfirmationContent } from './AllocateFormConfirmationContent';
 
 type AllocateFormProps = {
   pools: SavingsPool[];
 };
 
 export type FormData = Record<string, TokenAmount> & { _: () => void };
-
-// https://github.com/final-form/react-final-form/blob/master/docs/faq.md#why-cant-i-have-numeric-keys-in-an-object
-export const stringifyName = (value: string) => `key${value}`;
-export const destringifyName = (value: string) => value.substring(3);
 
 export function AllocateForm({ pools }: AllocateFormProps) {
   const { t } = useTranslate();
@@ -34,7 +33,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
 
   return (
     <FormWithConfirmation<FormData>
-      getConfirmationMessage={() => t(tKeys.modules.savings.allocateDialog.getKey())}
+      DialogContent={AllocateFormConfirmationContent}
       onSubmit={handleFormSubmit}
       submitButton={t(tKeys.modules.savings.allocate.getKey())}
       CustomFormTemplate={props => (
@@ -62,13 +61,4 @@ export function AllocateForm({ pools }: AllocateFormProps) {
       </FormSpy>
     );
   }
-}
-
-function getDeposits({ _, ...data }: FormData): DepositToSavingsPool[] {
-  return Object.keys(data).reduce((acc, key) => {
-    const poolAddress = destringifyName(key);
-    const amount = data[key];
-
-    return amount.isZero() ? acc : [...acc, { amount, poolAddress }];
-  }, [] as DepositToSavingsPool[]);
 }

@@ -42,6 +42,8 @@ const en = {
         'If you want to withdraw liquidity, simply choose the pool and amount you want to withdraw',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
+      allocateNoApprovesWarning:
+        'to view the fees on the commission, you need to select an infinite unlock',
       allocateToOnePoolDialog: 'Are you sure you want to allocate %{amount}?',
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction — just specify amounts & stablecoins and click Allocate!',

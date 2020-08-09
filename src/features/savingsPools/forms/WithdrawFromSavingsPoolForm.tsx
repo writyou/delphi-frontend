@@ -11,6 +11,11 @@ import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount } from 'utils/react';
 import { ALL_TOKEN } from 'utils/mock';
 import { denormolizeAmount } from 'utils/amounts';
+import { Typography } from 'components';
+
+import { WithdrawAdditionalFee } from '../data/WithdrawAdditionalFee';
+import { WithdrawSupposedAmountsTable } from '../data/WithdrawSupposedAmountsTable';
+import { AlertHint } from '../view/AlertHint';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -78,17 +83,15 @@ export function WithdrawFromSavingsPoolForm({
     [api, poolAddress],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.savings.withdrawDialog.getKey())} ${
-      amount ? amount.toFormattedString() : '⏳'
-    }`;
-  }, []);
+  const DialogContent = () => {
+    return <>{t(tKeys.modules.savings.withdrawDialog.getKey())}</>;
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Withdraw"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
     >
       <>
@@ -103,6 +106,25 @@ export function WithdrawFromSavingsPoolForm({
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
+      <FormSpy<FormData> subscription={{ values: true, valid: true }}>
+        {({ values: { amount }, valid }) =>
+          amount?.currency === ALL_TOKEN ? (
+            <>
+              {valid && amount && (
+                <WithdrawSupposedAmountsTable poolAddress={poolAddress} amount={amount} />
+              )}
+              <AlertHint />
+            </>
+          ) : (
+            valid &&
+            amount && (
+              <Typography>
+                Additional fee <WithdrawAdditionalFee poolAddress={poolAddress} amount={amount} />
+              </Typography>
+            )
+          )
+        }
+      </FormSpy>
     </FormWithConfirmation>
   );
 }

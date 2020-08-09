@@ -79,17 +79,19 @@ export function WithdrawFromDCAPoolForm({
     [api, poolAddress],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.dca.withdrawDialog.getKey())} ${
-      amount ? amount.toFormattedString() : '⏳'
-    }`;
-  }, []);
+  const DialogContent = ({ amount }: FormData) => {
+    return (
+      <>
+        {t(tKeys.modules.dca.withdrawDialog.getKey())} {amount?.toFormattedString() || '⏳'}
+      </>
+    );
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Withdraw"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
     >
       <>

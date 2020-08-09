@@ -56,17 +56,15 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
     [api],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.savings.withdrawDialog.getKey())} ${
-      amount ? amount.toFormattedString() : '⏳'
-    }`;
-  }, []);
+  const getDialogContent = () => {
+    return <>{t(tKeys.modules.savings.withdrawDialog.getKey())}</>;
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Mint test tokens"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={getDialogContent}
       onSubmit={handleFormSubmit}
     >
       <>
