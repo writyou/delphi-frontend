@@ -13,6 +13,7 @@ type Props<T, U> = {
   withStripes?: boolean;
   withOuterPadding?: boolean;
   summary?: M.Summary;
+  rowPadding?: M.RowPaddingSize;
 };
 
 type RowToExpandedState = Record<number, boolean>;
@@ -26,7 +27,12 @@ export function Table<T, U = null>(props: Props<T, U>) {
     right: classes.cellAlignRight,
   };
 
-  const { columns, entries, summary, withStripes, withOuterPadding } = props;
+  const rowPaddingToClass: Record<M.RowPaddingSize, string> = {
+    medium: classes.cellPaddingMedium,
+    small: classes.cellPaddingSmall,
+  };
+
+  const { columns, entries, summary, withStripes, withOuterPadding, rowPadding = 'medium' } = props;
 
   const [rowToExpanded, setRowToExpanded] = React.useState<RowToExpandedState>(() =>
     entries.reduce(
@@ -87,6 +93,10 @@ export function Table<T, U = null>(props: Props<T, U>) {
 
   function getAlignClass({ align }: M.Column<T, U>) {
     return align && alignPropertyToClass[align];
+  }
+
+  function getPaddingClass(paddingSize: M.RowPaddingSize) {
+    return paddingSize && rowPaddingToClass[paddingSize];
   }
 
   function renderTitle(column: M.Column<T, U>, columnIndex: number) {
@@ -253,7 +263,15 @@ export function Table<T, U = null>(props: Props<T, U>) {
     column: M.Column<T, U>,
   ) {
     return (
-      <td className={cn(classes.cell, classes.cellData, getAlignClass(column))} key={columnIndex}>
+      <td
+        className={cn(
+          classes.cell,
+          classes.cellData,
+          getAlignClass(column),
+          getPaddingClass(rowPadding),
+        )}
+        key={columnIndex}
+      >
         {content.render(entry)}
       </td>
     );
@@ -264,7 +282,15 @@ export function Table<T, U = null>(props: Props<T, U>) {
       setRowToExpanded({ ...rowToExpanded, [rowIndex]: newValue });
 
     return (
-      <td className={cn(classes.cell, classes.cellData, getAlignClass(column))} key="row-expander">
+      <td
+        className={cn(
+          classes.cell,
+          classes.cellData,
+          getAlignClass(column),
+          getPaddingClass(rowPadding),
+        )}
+        key="row-expander"
+      >
         <views.RowExpander expanded={rowToExpanded[rowIndex]} onToggle={handleToggle} />
       </td>
     );
