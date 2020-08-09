@@ -20,6 +20,11 @@ const links: Link.models.Link[] = [
     label: 'Investments',
     ref: routes.investments.getRoutePath(),
   },
+  {
+    kind: 'internal',
+    label: 'DCA',
+    ref: routes.dca.getRoutePath(),
+  },
 ];
 
 export const Links = () => {

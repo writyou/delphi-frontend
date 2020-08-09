@@ -79,8 +79,12 @@ export function WithdrawFromDCAPoolForm({
     [api, poolAddress],
   );
 
-  const DialogContent = () => {
-    return <>{t(tKeys.modules.investments.dcaWithdrawDialog.getKey())}</>;
+  const DialogContent = ({ amount }: FormData) => {
+    return (
+      <>
+        {t(tKeys.modules.dca.withdrawDialog.getKey())} {amount?.toFormattedString() || '⏳'}
+      </>
+    );
   };
 
   return (

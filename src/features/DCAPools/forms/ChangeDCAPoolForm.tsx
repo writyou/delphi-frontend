@@ -51,8 +51,12 @@ export function ChangeDCAPoolForm({
     [api, poolAddress],
   );
 
-  const DialogContent = () => {
-    return <>{t(tKeys.modules.investments.dcaChangeDialog.getKey())}</>;
+  const DialogContent = ({ amount }: FormData) => {
+    return (
+      <>
+        {t(tKeys.modules.dca.changeDialog.getKey())} {amount?.toFormattedString() || '⏳'}
+      </>
+    );
   };
 
   return (

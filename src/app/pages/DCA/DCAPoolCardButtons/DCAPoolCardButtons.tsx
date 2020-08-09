@@ -14,7 +14,7 @@ type Props = {
   pool: DCAPool;
 };
 
-export function DCAPollCardButtons({ pool }: Props) {
+export function DCAPoolCardButtons({ pool }: Props) {
   const api = useApi();
   const [balance] = useSubscribable(() => api.user.getDCAPoolBalance$(pool.address), [
     api,

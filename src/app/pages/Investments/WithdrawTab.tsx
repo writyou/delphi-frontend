@@ -4,12 +4,12 @@ import { makeStyles } from 'utils/styles';
 
 import image from './investing-all-in@2x.png';
 
-export function AllIn() {
+export function WithdrawTab() {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <img src={image} className={classes.contentMock} alt="all-in" />
+      <img src={image} className={classes.contentMock} alt="pool-cards" />
     </div>
   );
 }
@@ -28,5 +28,5 @@ const useStyles = makeStyles(
       maxWidth: 1340,
     },
   }),
-  { name: 'AllIn' },
+  { name: 'WithdrawTab' },
 );

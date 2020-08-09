@@ -16,9 +16,10 @@ const rawTree = {
     },
   },
   investments: {
-    all: null,
-    dca: null,
+    allocate: null,
+    withdraw: null,
   },
+  dca: null,
 };
 
 export const routes = build(rawTree);

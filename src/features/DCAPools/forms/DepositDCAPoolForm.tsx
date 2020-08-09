@@ -69,8 +69,13 @@ export function DepositDCAPoolForm({
     [api, poolAddress],
   );
 
-  const DialogContent = () => {
-    return <>{t(tKeys.modules.investments.dcaDepositDialog.getKey())}</>;
+  const DialogContent = ({ depositAmount }: FormData) => {
+    return (
+      <>
+        {t(tKeys.modules.dca.depositDialog.getKey())}{' '}
+        {depositAmount ? depositAmount.toFormattedString() : '⏳'}
+      </>
+    );
   };
 
   return (
