@@ -12,6 +12,7 @@ import { Erc20Api } from './Erc20Api';
 import { SubgraphApi } from './SubgraphApi/SubgraphApi';
 import { SavingsModuleApi } from './SavingsModuleApi';
 import { DCAModuleApi } from './DCAModuleApi';
+import { StakingModuleApi } from './StakingModuleApi';
 
 export class UserApi {
   constructor(
@@ -20,6 +21,7 @@ export class UserApi {
     private erc20: Erc20Api,
     private savings: SavingsModuleApi,
     private dca: DCAModuleApi,
+    private staking: StakingModuleApi,
   ) {}
 
   @memoize(R.identity)
@@ -114,6 +116,13 @@ export class UserApi {
       switchMap(account =>
         account ? this.dca.getTokenToSellBalance$(poolAddress, account) : empty(),
       ),
+    );
+  }
+
+  @memoize(R.identity)
+  public getStakingPoolBalance$(address: string): Observable<LiquidityAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.staking.getUserBalance$(address, account) : empty())),
     );
   }
 }

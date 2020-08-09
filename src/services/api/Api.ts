@@ -9,6 +9,7 @@ import { SavingsModuleApi } from './modules/SavingsModuleApi';
 import { UserApi } from './modules/UserApi';
 import { GlobalStatsApi } from './modules/GlobalStatsApi';
 import { DCAModuleApi } from './modules/DCAModuleApi';
+import { StakingModuleApi } from './modules/StakingModuleApi';
 
 export class Api {
   private subgraphApi = new SubgraphApi(this.apolloClient);
@@ -26,9 +27,18 @@ export class Api {
     this.subgraphApi,
   );
 
+  public staking = new StakingModuleApi();
+
   public dca = new DCAModuleApi();
 
-  public user = new UserApi(this.web3Manager, this.subgraphApi, this.erc20, this.savings, this.dca);
+  public user = new UserApi(
+    this.web3Manager,
+    this.subgraphApi,
+    this.erc20,
+    this.savings,
+    this.dca,
+    this.staking,
+  );
 
   public globalStats = new GlobalStatsApi(this.subgraphApi, this.savings);
 

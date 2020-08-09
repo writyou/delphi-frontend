@@ -8,6 +8,7 @@ interface INetworkConfig {
   name: 'mainnet' | 'rinkeby';
   contracts: {
     savingsModule: string;
+    akroStakingPool: string;
   };
   tokens: {
     DAI: string;
@@ -38,6 +39,7 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   name: 'rinkeby',
   contracts: {
     savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
+    akroStakingPool: zeroAddress,
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -48,6 +50,7 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   name: 'rinkeby',
   contracts: {
     savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
+    akroStakingPool: zeroAddress,
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -58,6 +61,7 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
   name: 'mainnet',
   contracts: {
     savingsModule: zeroAddress,
+    akroStakingPool: zeroAddress,
   },
   tokens: {
     DAI: zeroAddress,

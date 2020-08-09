@@ -33,7 +33,7 @@ export function DCAPage() {
                   content={<DCAPoolCardButtons pool={pool} />}
                   poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
                   poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
-                  getPoolBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
+                  getUserBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
                 />
               </Grid>
             ))}

@@ -16,12 +16,12 @@ type Props = {
   address: string;
   poolName: string;
   tokens: Token[];
-  link: string;
+  link?: string;
   content: JSX.Element;
   poolBalance: JSX.Element;
   poolLiquidity: JSX.Element;
   additionalElement?: JSX.Element;
-  getPoolBalance(address: string): Observable<LiquidityAmount>;
+  getUserBalance(address: string): Observable<LiquidityAmount>;
 };
 
 export function PoolCard(props: Props) {
@@ -34,12 +34,12 @@ export function PoolCard(props: Props) {
     tokens,
     poolBalance,
     poolLiquidity,
-    getPoolBalance,
+    getUserBalance,
   } = props;
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [balance] = useSubscribable(() => getPoolBalance(address), [getPoolBalance, address]);
+  const [balance] = useSubscribable(() => getUserBalance(address), [getUserBalance, address]);
 
   return (
     <Card
@@ -68,16 +68,18 @@ export function PoolCard(props: Props) {
         <div className={classes.row}>
           <Grid container justify="space-between">
             <Grid item>{content}</Grid>
-            <Grid item>
-              <Link
-                component={RouterLink}
-                to={link}
-                color="textPrimary"
-                title={t(tKeys.modules.savings.viewDetails.getKey())}
-              >
-                {t(tKeys.modules.savings.viewDetails.getKey())}
-              </Link>
-            </Grid>
+            {link && (
+              <Grid item>
+                <Link
+                  component={RouterLink}
+                  to={link}
+                  color="textPrimary"
+                  title={t(tKeys.modules.savings.viewDetails.getKey())}
+                >
+                  {t(tKeys.modules.savings.viewDetails.getKey())}
+                </Link>
+              </Grid>
+            )}
           </Grid>
         </div>
         {additionalElement}

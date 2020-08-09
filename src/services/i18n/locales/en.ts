@@ -48,6 +48,10 @@ const en = {
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction — just specify amounts & stablecoins and click Allocate!',
     },
+    staking: {
+      withdrawDialog: 'Are you sure you want to unstake?',
+      allocateToOnePoolDialog: 'Are you sure you want to stake %{amount}?',
+    },
     dca: {
       depositDialog: 'Are you sure you want to deposit?',
       changeDialog: 'investments.dcaChangeDialog',

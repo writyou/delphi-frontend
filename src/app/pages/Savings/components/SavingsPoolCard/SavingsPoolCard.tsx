@@ -25,7 +25,7 @@ export function SavingsPoolCard({ pool, content, additionalElement }: Props) {
       additionalElement={additionalElement}
       poolBalance={<UserSavingsPoolBalance poolAddress={address} />}
       poolLiquidity={<SavingsPoolLiquidity poolAddress={address} />}
-      getPoolBalance={(s: string) => api.user.getSavingsPoolBalance$(s)}
+      getUserBalance={(s: string) => api.user.getSavingsPoolBalance$(s)}
     />
   );
 }

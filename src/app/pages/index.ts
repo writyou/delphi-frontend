@@ -6,3 +6,4 @@ export { InvestmentsPage } from './Investments/InvestmentsPage';
 export { SavingsPoolPage } from './SavingsPool/SavingsPoolPage';
 export { SummaryEmptyPage } from './SummaryEmpty/SummaryEmptyPage';
 export { DCAPage } from './DCA/DCAPage';
+export { Staking } from './Staking/Staking';
