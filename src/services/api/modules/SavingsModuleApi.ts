@@ -115,6 +115,32 @@ export class SavingsModuleApi {
     ) as any;
   }
 
+  @memoize((from: string, poolAddress: string, amount: TokenAmount) =>
+    [from, poolAddress, amount.toString(), amount.currency.address].join(),
+  )
+  public getWithdrawFee$(
+    from: string,
+    poolAddress: string,
+    amount: TokenAmount,
+  ): Observable<TokenAmount> {
+    return this.readonlyContract.methods.withdraw
+      .read(
+        {
+          _protocol: poolAddress,
+          token: amount.currency.address,
+          dnAmount: amount.toBN(),
+          maxNAmount: new BN(0),
+        },
+        {
+          from,
+        },
+      )
+      .pipe(
+        map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
+        map(dnAmount => dnAmount.sub(amount)),
+      );
+  }
+
   @autobind
   public async deposit(deposits: DepositToSavingsPool[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
