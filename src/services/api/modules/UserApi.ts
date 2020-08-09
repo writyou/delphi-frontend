@@ -87,7 +87,7 @@ export class UserApi {
     );
   }
 
-  public getUserDepositFees$(deposits: DepositToSavingsPool[]) {
+  public getSavingsDepositFees$(deposits: DepositToSavingsPool[]) {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.savings.getDepositFees$(account, deposits) : empty())),
     );

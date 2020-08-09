@@ -5,7 +5,12 @@ import * as R from 'ramda';
 import BN from 'bn.js';
 
 import { getCurrentValueOrThrow } from 'utils/rxjs';
-import { DepositToSavingsPool, IToBN, WithdrawFromSavingsPool } from 'model/types';
+import {
+  DepositToSavingsPool,
+  IToBN,
+  WithdrawFromSavingsPool,
+  DepositToSavingsPoolWithFee,
+} from 'model/types';
 import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
@@ -224,7 +229,7 @@ export class SavingsModuleApi {
   public getDepositFees$(
     userAddress: string,
     deposits: DepositToSavingsPool[],
-  ): Observable<Array<DepositToSavingsPool & { fee: TokenAmount }>> {
+  ): Observable<DepositToSavingsPoolWithFee[]> {
     return this.readonlyContract.methods.deposit
       .read(
         {
