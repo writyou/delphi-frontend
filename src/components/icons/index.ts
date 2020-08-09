@@ -36,3 +36,4 @@ export { CatsPaw } from './CatsPaw';
 export { Fish } from './Fish';
 export { ChartWithCat } from './ChartWithCat';
 export { ArrowStartToSave } from './ArrowStartToSave';
+export { AlertIcon } from './AlertIcon';

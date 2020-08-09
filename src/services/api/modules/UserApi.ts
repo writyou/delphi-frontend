@@ -87,6 +87,15 @@ export class UserApi {
     );
   }
 
+  @memoize()
+  public getSavingsWithdrawFee$(poolAddress: string, amount: TokenAmount): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.savings.getWithdrawFee$(account, poolAddress, amount) : empty(),
+      ),
+    );
+  }
+
   @memoize(R.identity)
   public getDCAPoolBalance$(address: string): Observable<LiquidityAmount> {
     return this.web3Manager.account$.pipe(
