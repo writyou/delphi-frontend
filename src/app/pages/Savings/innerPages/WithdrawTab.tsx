@@ -9,7 +9,7 @@ import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { WithdrawFromSavingsPoolButton } from 'features/savingsPools';
 
-import { SavingsPoolCard } from './SavingsPoolCard/SavingsPoolCard';
+import { SavingsPoolCard } from '../components/SavingsPoolCard/SavingsPoolCard';
 
 export function WithdrawTab() {
   const api = useApi();

@@ -51,17 +51,15 @@ export function ChangeDCAPoolForm({
     [api, poolAddress],
   );
 
-  const getConfirmationMessage = useCallback(({ amount }: FormData) => {
-    return `${t(tKeys.modules.investments.dcaChangeDialog.getKey())} ${
-      amount ? amount.toFormattedString() : '⏳'
-    }`;
-  }, []);
+  const DialogContent = () => {
+    return <>{t(tKeys.modules.investments.dcaChangeDialog.getKey())}</>;
+  };
 
   return (
     <FormWithConfirmation<FormData>
       title="Change Current DCA Settings"
       initialValues={initialValues}
-      getConfirmationMessage={getConfirmationMessage}
+      DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
     >
       <>

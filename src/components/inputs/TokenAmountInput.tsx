@@ -6,9 +6,9 @@ import { Grid } from '@material-ui/core';
 import { TokenAmount, Token } from 'model/entities';
 import { ALL_TOKEN } from 'utils/mock';
 import { TokensIcons } from 'components/TokensIcons/TokensIcons';
+import { TokenName } from 'components/TokenName/TokenName';
 
 import { AmountInput, AmountInputProps } from './AmountInput/AmountInput';
-import { TokenIcon } from '../TokenIcon/TokenIcon';
 
 export type TokenAmountInputProps = Omit<
   AmountInputProps<TokenAmount>,
@@ -45,11 +45,7 @@ function getCurrencyLabel(currency: Token, currencies: Token[]) {
       {currency.symbol}
     </Grid>
   ) : (
-    <Grid container alignItems="center">
-      <TokenIcon tokenAddress={currency.address} />
-      &nbsp;
-      {currency.symbol}
-    </Grid>
+    <TokenName token={currency} />
   );
 }
 

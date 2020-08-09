@@ -10,12 +10,8 @@ export const useStyles = makeStyles(
       borderRadius: 6,
       color: theme.palette.text.primary,
     },
-    token: {
-      marginLeft: 10,
-      fontSize: 30,
-    },
     tokenIcon: {
-      fontSize: 'inherit',
+      fontSize: 30,
     },
     row: {
       marginBottom: 30,
