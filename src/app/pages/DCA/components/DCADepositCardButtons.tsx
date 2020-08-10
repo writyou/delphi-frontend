@@ -20,13 +20,27 @@ export function DCADepositCardButtons({ pool }: Props) {
     return (
       <Grid container spacing={1}>
         <Grid item>
-          <ChangeDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
+          <ChangeDCAPoolButton
+            disabled
+            size="small"
+            color="primary"
+            variant="outlined"
+            pool={pool}
+          />
         </Grid>
         <Grid item>
-          <DepositDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
+          <DepositDCAPoolButton
+            disabled
+            size="small"
+            color="primary"
+            variant="outlined"
+            pool={pool}
+          />
         </Grid>
       </Grid>
     );
   }
-  return <DepositDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />;
+  return (
+    <DepositDCAPoolButton disabled size="small" color="primary" variant="outlined" pool={pool} />
+  );
 }

@@ -21,13 +21,27 @@ export function DCAWithdrawCardButtons({ pool }: Props) {
     return (
       <Grid container spacing={1}>
         <Grid item>
-          <WithdrawFromDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
+          <WithdrawFromDCAPoolButton
+            disabled
+            size="small"
+            color="primary"
+            variant="outlined"
+            pool={pool}
+          />
         </Grid>
         <Grid item>
-          <DCAOutButton size="small" color="primary" variant="outlined" pool={pool} />
+          <DCAOutButton disabled size="small" color="primary" variant="outlined" pool={pool} />
         </Grid>
       </Grid>
     );
   }
-  return <WithdrawFromDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />;
+  return (
+    <WithdrawFromDCAPoolButton
+      disabled
+      size="small"
+      color="primary"
+      variant="outlined"
+      pool={pool}
+    />
+  );
 }

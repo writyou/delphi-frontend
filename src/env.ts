@@ -19,6 +19,8 @@ interface INetworkConfig {
     renBTC: string;
     WBTC: string;
     sBTC: string;
+    AKRO: string;
+    WETH: string;
   };
   etherskanDomain: string;
 }
@@ -32,6 +34,8 @@ const testnetTokens: INetworkConfig['tokens'] = {
   renBTC: `0xE09fac962aA9BCf5c21B1987396c8A7C16C82B11`,
   WBTC: `0xEBa449b9150F34396D529643263A90D495Ae563c`,
   sBTC: `0x4Bd89B14F55A6Ef852A938Ccc0181F39E87E80C5`,
+  AKRO: `0xad7541B1E795656851caD5c70aA8d495063D9a95`,
+  WETH: zeroAddress,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
@@ -72,6 +76,8 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     renBTC: zeroAddress,
     WBTC: zeroAddress,
     sBTC: zeroAddress,
+    AKRO: zeroAddress,
+    WETH: zeroAddress,
   },
   etherskanDomain: 'https://etherscan.io/',
 };
@@ -103,3 +109,6 @@ const subgraphWsUrlsByMode: Record<Mode, string> = {
 
 export const SUBGRAPH_HTTP_URL = subgraphHttpUrlsByMode[getEnv().mode];
 export const SUBGRAPH_WS_URL = subgraphWsUrlsByMode[getEnv().mode];
+
+export const DISCORD_URL = 'https://discord.gg/Y58CGUW';
+export const PREAUDIT_VERSION_ANNOUNCEMENT_URL = '#';

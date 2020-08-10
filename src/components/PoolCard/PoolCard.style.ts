@@ -25,6 +25,29 @@ export const useStyles = makeStyles(
     balance: {
       fontSize: 32,
     },
+    link: {
+      fontSize: 12,
+    },
+    linkDisabled: {
+      pointerEvents: 'none',
+      opacity: 0.5,
+    },
+    availableDepositRow: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+      marginTop: -20,
+      fontSize: 12,
+    },
+    circle: {
+      width: 10,
+      height: 10,
+      backgroundColor: '#494a73',
+      borderRadius: '50%',
+      marginRight: 6,
+    },
+    green: {
+      backgroundColor: '#6bfe97',
+    },
   }),
   { name: 'PoolCard' },
 );

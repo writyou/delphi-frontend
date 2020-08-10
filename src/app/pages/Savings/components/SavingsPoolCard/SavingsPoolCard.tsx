@@ -5,6 +5,7 @@ import { PoolCard } from 'components';
 import { SavingsPool } from 'model/types';
 import { SavingsPoolLiquidity, UserSavingsPoolBalance } from 'features/savingsPools';
 import { routes } from 'app/routes';
+import { tokenAmount } from 'utils/mock';
 
 type Props = {
   pool: SavingsPool;
@@ -22,6 +23,7 @@ export function SavingsPoolCard({ pool, content, additionalElement }: Props) {
       tokens={tokens}
       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
       content={content}
+      availableForDeposit={tokenAmount}
       additionalElement={additionalElement}
       poolBalance={<UserSavingsPoolBalance poolAddress={address} />}
       poolLiquidity={<SavingsPoolLiquidity poolAddress={address} />}

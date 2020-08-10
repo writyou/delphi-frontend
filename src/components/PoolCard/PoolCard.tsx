@@ -3,9 +3,10 @@ import { Observable } from 'rxjs';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
+import cn from 'classnames';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { Token, LiquidityAmount } from 'model/entities';
+import { Token, LiquidityAmount, Amount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 
 import { TokenIcon } from '../TokenIcon/TokenIcon';
@@ -17,10 +18,12 @@ type Props = {
   poolName: string;
   tokens: Token[];
   link?: string;
+  isDisabledLink?: boolean;
   content: JSX.Element;
   poolBalance: JSX.Element;
   poolLiquidity: JSX.Element;
   additionalElement?: JSX.Element;
+  availableForDeposit: Amount;
   getUserBalance(address: string): Observable<LiquidityAmount>;
 };
 
@@ -28,12 +31,14 @@ export function PoolCard(props: Props) {
   const {
     link,
     content,
+    isDisabledLink,
     additionalElement,
     address,
     poolName,
     tokens,
     poolBalance,
     poolLiquidity,
+    availableForDeposit,
     getUserBalance,
   } = props;
   const classes = useStyles();
@@ -65,12 +70,25 @@ export function PoolCard(props: Props) {
           <span>{t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>{poolLiquidity}</span>
         </div>
+        <div className={cn(classes.row, classes.availableDepositRow)}>
+          {availableForDeposit.isZero() ? (
+            <>
+              <span className={classes.circle} /> Not Available for deposit
+            </>
+          ) : (
+            <>
+              <span className={cn(classes.circle, classes.green)} />
+              Available for deposit : {availableForDeposit.toFormattedString()}
+            </>
+          )}
+        </div>
         <div className={classes.row}>
           <Grid container justify="space-between">
             <Grid item>{content}</Grid>
             {link && (
               <Grid item>
                 <Link
+                  className={cn(classes.link, { [classes.linkDisabled]: isDisabledLink })}
                   component={RouterLink}
                   to={link}
                   color="textPrimary"
