@@ -19,7 +19,10 @@ const rawTree = {
     allocate: null,
     withdraw: null,
   },
-  dca: null,
+  dca: {
+    deposit: null,
+    withdraw: null,
+  },
   staking: null,
 };
 
