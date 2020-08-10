@@ -5,38 +5,44 @@ import { autobind } from 'core-decorators';
 import BN from 'bn.js';
 
 import { DCAPool, WithdrawFromDCAPool, DepositToDCAPool, ChangeWeeklyDCAAmount } from 'model/types';
-import { LiquidityAmount, Currency, TokenAmount } from 'model/entities';
+import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { zeroAddress, mockedTokens, percentAmount } from 'utils/mock';
 import { decimalsToWei } from 'utils/bn';
+import { ETH_NETWORK_CONFIG } from 'env';
 
 const tokenToSell = mockedTokens[0];
+const WETH = new Token(ETH_NETWORK_CONFIG.tokens.WETH.toLowerCase(), 'WETH', 18);
+const AKRO = new Token(ETH_NETWORK_CONFIG.tokens.AKRO.toLowerCase(), 'AKRO', 18);
+const renBTC = new Token(ETH_NETWORK_CONFIG.tokens.renBTC.toLowerCase(), 'renBTC', 18);
+const WBTC = new Token(ETH_NETWORK_CONFIG.tokens.WBTC.toLowerCase(), 'WBTC', 18);
+const sBTC = new Token(ETH_NETWORK_CONFIG.tokens.sBTC.toLowerCase(), 'sBTC', 18);
 
 const DCAPoolsMock: DCAPool[] = [
   {
     address: zeroAddress,
-    poolName: 'poolName1',
+    poolName: 'sBTC Curve',
     tokenToSell,
     apy: percentAmount,
-    tokens: mockedTokens,
+    tokens: [WBTC, renBTC, sBTC],
   },
   {
-    address: zeroAddress,
-    poolName: 'poolName2',
+    address: zeroAddress.replace(/0$/, '1'),
+    poolName: 'WBTC/WETH Balancer',
     tokenToSell,
     apy: percentAmount,
-    tokens: mockedTokens,
+    tokens: [WBTC, WETH],
   },
   {
-    address: zeroAddress,
-    poolName: 'poolName3',
+    address: zeroAddress.replace(/0$/, '2'),
+    poolName: 'AKRO/WETH Balancer',
     tokenToSell,
     apy: percentAmount,
-    tokens: mockedTokens,
+    tokens: [AKRO, WETH],
   },
 ];
 
-const liquidityAmount = new LiquidityAmount('123000000000000000000', new Currency('$', 18));
+const liquidityAmount = new LiquidityAmount('10000000', new Currency('$', 18));
 
 export class DCAModuleApi {
   public getPools$() {
