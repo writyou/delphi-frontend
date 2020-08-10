@@ -1,6 +1,9 @@
 import * as NewTable from './NewTable';
 
 export { NewTable };
+
+export { Tabs } from '@akropolis-web/components';
+
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
@@ -71,5 +74,4 @@ export * from './form';
 export * from './CompositionChart';
 export * from './Card/Card';
 export * from './CompositionLegend';
-export * from './Tabs/Tabs';
 export * from './PoolCard/PoolCard';
