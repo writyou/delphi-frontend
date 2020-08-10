@@ -30,6 +30,7 @@ export const useStyles = makeStyles(
     },
     linkDisabled: {
       pointerEvents: 'none',
+      opacity: 0.5,
     },
     availableDepositRow: {
       display: 'flex',

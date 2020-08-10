@@ -41,7 +41,7 @@ export function PoolCard(props: Props) {
     availableForDeposit,
     getUserBalance,
   } = props;
-  const classes = useStyles(props);
+  const classes = useStyles();
   const { t } = useTranslate();
 
   const [balance] = useSubscribable(() => getUserBalance(address), [getUserBalance, address]);

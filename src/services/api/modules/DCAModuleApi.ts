@@ -42,7 +42,7 @@ const DCAPoolsMock: DCAPool[] = [
   },
 ];
 
-const liquidityAmount = new LiquidityAmount('10000000', new Currency('$', 18));
+const liquidityAmount = new LiquidityAmount('0', new Currency('$', 18));
 
 export class DCAModuleApi {
   public getPools$() {
