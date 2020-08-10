@@ -1,4 +1,3 @@
-import * as models from './models';
+import NewTable from '@akropolis-web/components';
 
-export { models };
-export { Table as Component } from './Table';
+export { NewTable };
