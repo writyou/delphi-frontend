@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -10,7 +10,7 @@ import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'co
 import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount, useSubscribable } from 'utils/react';
 import { SavingsPool } from 'model/types';
-import { Grid, Loading, FormattedAmount } from 'components';
+import { Grid, Loading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 
@@ -70,23 +70,27 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
     const [fees, feesMeta] = useSubscribable(
       () =>
-        api.web3Manager.account$.pipe(
-          switchMap(account => {
-            if (!account) {
-              return of(null);
-            }
-            return api.erc20.hasInfiniteApprove(pool.address, account, spender)
-              ? account
-              : of(null);
-          }),
-          switchMap(account => {
-            return account && amount
-              ? api.savings.getDepositFees$(account, [{ poolAddress: pool.address, amount }])
-              : of(null);
-          }),
-        ),
+        currentToken
+          ? api.web3Manager.account$.pipe(
+              switchMap(account => {
+                if (!account) {
+                  return of(null);
+                }
+                return api.erc20
+                  .hasInfiniteApprove(currentToken.address, account, spender)
+                  .pipe(map(hasApprove => (hasApprove ? account : null)));
+              }),
+              switchMap(account => {
+                return account && amount
+                  ? api.savings.getDepositFees$(account, [{ poolAddress: pool.address, amount }])
+                  : of(null);
+              }),
+            )
+          : empty(),
       [api, pool, spender],
     );
+
+    const fee = fees && fees[0]?.fee;
 
     return (
       <>
@@ -94,10 +98,14 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
           amount: amount ? amount.toFormattedString() : '⏳',
         })}`}
         <Loading meta={feesMeta}>
-          Additional fee{' '}
-          {fees?.map(fee =>
-            fee.fee?.isNeg() ? 'is zero' : <FormattedAmount sum={fee.fee} variant="plain" />,
-          )}
+          <Typography>
+            Additional fee is{' '}
+            {!fee || fee.isNeg() || fee.isZero() ? (
+              'is zero'
+            ) : (
+              <FormattedAmount sum={fee} variant="plain" />
+            )}
+          </Typography>
         </Loading>
       </>
     );
