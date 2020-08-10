@@ -1,11 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
-import { combineLatest } from 'rxjs';
+import { combineLatest, of } from 'rxjs';
 import BN from 'bn.js';
+import { catchError, map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
-import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
-import { TokenAmount } from 'model/entities';
+import { TokenAmount, Token } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { Loading } from 'components';
@@ -26,15 +26,14 @@ const fieldNames: FieldNames<FormData> = {
 
 export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps) {
   const api = useApi();
-  const { t } = useTranslate();
 
   const [tokens, tokensMeta] = useSubscribable(
     () =>
       combineLatest(
         Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress =>
-          api.erc20.getToken$(tokenAddress),
+          api.erc20.getToken$(tokenAddress).pipe(catchError(() => of(null))),
         ),
-      ),
+      ).pipe(map(values => values.filter((value): value is Token => !!value))),
     [api],
   );
 
@@ -57,7 +56,7 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
   );
 
   const getDialogContent = () => {
-    return <>{t(tKeys.modules.savings.withdrawDialog.getKey())}</>;
+    return <>Are you sure you want to mint test tokens?</>;
   };
 
   return (
@@ -71,7 +70,7 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
         <Loading meta={tokensMeta}>
           {tokens && (
             <TokenAmountField
-              inputProps={{ disabled: true }}
+              inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
               name={fieldNames.amount}
               currencies={tokens}
             />

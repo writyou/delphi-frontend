@@ -14,12 +14,21 @@ export const useStyles = makeStyles(
       fontSize: 30,
     },
     row: {
-      marginBottom: 30,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'baseline',
-      '&:last-child': {
-        marginBottom: 0,
+      '& + &': {
+        marginTop: 30,
+      },
+      '& + &$availableDepositRow': {
+        fontSize: 12,
+        marginTop: 12,
+      },
+      '& + &$additionalElementRow': {
+        display: 'block',
+      },
+      '&:empty': {
+        display: 'none',
       },
     },
     balance: {
@@ -32,22 +41,8 @@ export const useStyles = makeStyles(
       pointerEvents: 'none',
       opacity: 0.5,
     },
-    availableDepositRow: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-      marginTop: -20,
-      fontSize: 12,
-    },
-    circle: {
-      width: 10,
-      height: 10,
-      backgroundColor: '#494a73',
-      borderRadius: '50%',
-      marginRight: 6,
-    },
-    green: {
-      backgroundColor: '#6bfe97',
-    },
+    availableDepositRow: {},
+    additionalElementRow: {},
   }),
   { name: 'PoolCard' },
 );

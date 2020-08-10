@@ -7,7 +7,6 @@ import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { DCAPoolLiquidity, UserDCAPoolBalance } from 'features/DCAPools';
-import { tokenAmount } from 'utils/mock';
 
 import { DCADepositCardButtons } from '../components/DCADepositCardButtons';
 
@@ -31,12 +30,11 @@ export function DepositTab() {
                   poolName={pool.poolName}
                   tokens={pool.tokens}
                   isDisabledLink
-                  availableForDeposit={tokenAmount}
                   link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
                   content={<DCADepositCardButtons pool={pool} />}
                   poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
                   poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
-                  getUserBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
+                  getUserBalance$={(s: string) => api.user.getDCAPoolBalance$(s)}
                 />
               </Grid>
             ))}

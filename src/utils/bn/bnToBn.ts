@@ -5,7 +5,7 @@ import { IToBN, isToBN } from 'model/types';
 import { isHex } from '../hex/isHex';
 import { hexToBn } from '../hex/hexToBn';
 
-export function bnToBn<ExtToBn extends IToBN>(value?: ExtToBn | BN | string | number | null): BN {
+export function bnToBn(value?: IToBN | BN | string | number | null): BN {
   if (!value) {
     return new BN(0);
   }

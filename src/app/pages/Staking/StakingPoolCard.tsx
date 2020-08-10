@@ -9,7 +9,6 @@ import {
   WithdrawFromStakingPoolButton,
   DepositToStakingPoolButton,
 } from 'features/stakingPools';
-import { tokenAmount } from 'utils/mock';
 
 type Props = {
   pool: StakingPool;
@@ -43,10 +42,9 @@ export function StakingPoolCard({ pool }: Props) {
           </Grid>
         </Grid>
       }
-      availableForDeposit={tokenAmount}
       poolBalance={<UserStakingPoolBalance poolAddress={address} />}
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
-      getUserBalance={(s: string) => api.user.getStakingPoolBalance$(s)}
+      getUserBalance$={(s: string) => api.user.getStakingPoolBalance$(s)}
     />
   );
 }
