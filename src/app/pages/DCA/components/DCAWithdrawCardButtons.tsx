@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { DepositDCAPoolButton, DCAOutButton } from 'features/DCAPools';
+import { WithdrawFromDCAPoolButton, DCAOutButton } from 'features/DCAPools';
 import { DCAPool } from 'model/types';
 import { Grid } from 'components';
 
@@ -16,11 +16,12 @@ export function DCAWithdrawCardButtons({ pool }: Props) {
     api,
     pool.address,
   ]);
+
   if (balance && !balance.isZero()) {
     return (
       <Grid container spacing={1}>
         <Grid item>
-          <DepositDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
+          <WithdrawFromDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
         </Grid>
         <Grid item>
           <DCAOutButton size="small" color="primary" variant="outlined" pool={pool} />
@@ -28,5 +29,5 @@ export function DCAWithdrawCardButtons({ pool }: Props) {
       </Grid>
     );
   }
-  return <DepositDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />;
+  return <WithdrawFromDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />;
 }
