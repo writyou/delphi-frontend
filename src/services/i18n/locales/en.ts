@@ -122,6 +122,10 @@ const en = {
         4: 'testnet',
       },
     },
+    infiniteApprove: {
+      text:
+        'Preapprove the contract to be able to spend any amount of your coins. You will not need to approve again & sign additional transactions each time.',
+    },
   },
   utils: {
     validation: {

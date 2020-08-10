@@ -6,6 +6,7 @@ import * as R from 'ramda';
 import { useCommunication, useSubscribable } from 'utils/react';
 import { Token } from 'model/entities';
 import { useApi } from 'services/api';
+import { tKeys as tKeysAll, useTranslate } from 'services/i18n';
 import { SwitchInput } from 'components/inputs';
 import { Loading, Label, Box, Grid } from 'components';
 import { toArray } from 'utils/array';
@@ -36,8 +37,11 @@ function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], s
   );
 }
 
+const tKeys = tKeysAll.features.infiniteApprove;
+
 export function InfiniteApproveSwitch(props: Props) {
   const { spender } = props;
+  const { t } = useTranslate();
   // eslint-disable-next-line react/destructuring-assignment
   const tokens = toArray(props.tokens);
 
@@ -104,7 +108,7 @@ export function InfiniteApproveSwitch(props: Props) {
         disabled={isDisabled}
         checked={isChecked}
         onChange={handleOnChange}
-        label={<Label hint="Hint for infinite unlock">Infinite unlock</Label>}
+        label={<Label hint={t(tKeys.text.getKey())}>Infinite unlock</Label>}
       />
     </Grid>
   );
