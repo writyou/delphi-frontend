@@ -2,11 +2,7 @@ import * as React from 'react';
 
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import {
-  WithdrawFromDCAPoolButton,
-  DepositDCAPoolButton,
-  ChangeDCAPoolButton,
-} from 'features/DCAPools';
+import { DepositDCAPoolButton, ChangeDCAPoolButton } from 'features/DCAPools';
 import { DCAPool } from 'model/types';
 import { Grid } from 'components';
 
@@ -14,7 +10,7 @@ type Props = {
   pool: DCAPool;
 };
 
-export function DCAPoolCardButtons({ pool }: Props) {
+export function DCADepositCardButtons({ pool }: Props) {
   const api = useApi();
   const [balance] = useSubscribable(() => api.user.getDCAPoolBalance$(pool.address), [
     api,
@@ -28,9 +24,6 @@ export function DCAPoolCardButtons({ pool }: Props) {
         </Grid>
         <Grid item>
           <DepositDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
-        </Grid>
-        <Grid item>
-          <WithdrawFromDCAPoolButton size="small" color="primary" variant="outlined" pool={pool} />
         </Grid>
       </Grid>
     );
