@@ -42,7 +42,7 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
+    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
     akroStakingPool: zeroAddress,
   },
   tokens: testnetTokens,
@@ -53,7 +53,7 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xf4F0C0C49A953263bA29E619F760b3fd6dE60307',
+    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
     akroStakingPool: zeroAddress,
   },
   tokens: testnetTokens,
