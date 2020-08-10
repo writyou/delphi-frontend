@@ -92,7 +92,14 @@ export const useStyles = makeStyles(
 
       cellData: {
         fontWeight: 300,
+      },
+
+      cellPaddingMedium: {
         padding: '26px 10px',
+      },
+
+      cellPaddingSmall: {
+        padding: '13px 10px',
       },
 
       singleCellExpandedArea: {
