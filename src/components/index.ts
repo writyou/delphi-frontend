@@ -67,7 +67,7 @@ export * from './TokenIcon/TokenIcon';
 export * from './TokensIcons/TokensIcons';
 export * from './form';
 export * from './CompositionChart';
-export * from './Card/Card';
+export * from './Card';
 export * from './CompositionLegend';
 export * from './Tabs/Tabs';
 export * from './PoolCard/PoolCard';

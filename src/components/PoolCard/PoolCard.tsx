@@ -11,7 +11,7 @@ import { useSubscribable } from 'utils/react';
 import { Loading } from 'components/Loading';
 
 import { TokenIcon } from '../TokenIcon/TokenIcon';
-import { Card } from '../Card/Card';
+import { Card } from '../Card';
 import { useStyles } from './PoolCard.style';
 import { DepositLimit } from './DepositLimit';
 
