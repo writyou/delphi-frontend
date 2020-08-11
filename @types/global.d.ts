@@ -1,16 +1,17 @@
 declare module 'filemanager-webpack-plugin';
 declare module 'react-jazzicon' {
   export function jsNumberForAddress(address: string): number;
+}
 
-  interface Props {
-    diameter: number;
-    seed: number;
+declare module 'mersennetwister' {
+  class MersenneTwister {
+    constructor(seed: number);
+
+    random(): number;
   }
 
-  const JazzIcon: React.FC<Props>;
-
   // eslint-disable-next-line import/no-default-export
-  export default JazzIcon;
+  export default MersenneTwister;
 }
 
 interface Window {

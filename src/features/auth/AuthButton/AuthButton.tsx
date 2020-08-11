@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Avatar from '@material-ui/core/Avatar';
 import { useHistory } from 'react-router';
 
@@ -9,7 +8,7 @@ import { getShortAddress } from 'utils/format';
 import { useSubscribable, useCommunication, useOnChangeState } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Button, Loading, Typography, Grid } from 'components';
+import { Button, Loading, Typography, Grid, JazzIcon, jsNumberForAddress } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
@@ -83,7 +82,7 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
           {account ? (
             <>
               <Avatar className={classes.icon}>
-                <Jazzicon diameter={34} seed={jsNumberForAddress(account)} />
+                <JazzIcon seed={jsNumberForAddress(account)} />
               </Avatar>
               <Grid
                 container
