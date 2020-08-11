@@ -3,7 +3,7 @@ import cn from 'classnames';
 import MuiButton, { ButtonTypeMap as MuiButtonTypeMap } from '@material-ui/core/Button';
 import { OverridableComponent, OverrideProps } from '@material-ui/core/OverridableComponent';
 
-import { useInheritBackgroundHackStyles } from 'utils/styles';
+import { useAncestorBackgroundHack } from 'utils/styles';
 
 import { useStyles } from './Button.style';
 
@@ -24,7 +24,7 @@ const Button: OverridableComponent<ButtonTypeMap> = function ButtonFunc<
   P = {},
   D extends React.ElementType = 'button'
 >(props: ButtonProps<D, P>) {
-  const backgroundColor = useInheritBackgroundHackStyles();
+  const backgroundColor = useAncestorBackgroundHack();
   const classes = useStyles({ backgroundColor });
 
   const { classes: muiClasses = {}, ...rest } = props;

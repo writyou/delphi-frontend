@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import cn from 'classnames';
 import Typography from '@material-ui/core/Typography';
 
-import { makeStyles, useTheme, rgba, InheritBackgroundHackProvider, Theme } from 'utils/styles';
+import { makeStyles, useTheme, rgba, AncestorBackgroundHackProvider, Theme } from 'utils/styles';
 
 interface CardProps {
   className?: string;
@@ -28,7 +28,7 @@ export function Card(props: CardProps) {
   }, [variant, isActive, theme]);
 
   return (
-    <InheritBackgroundHackProvider backgroundColor={backgroundColor}>
+    <AncestorBackgroundHackProvider backgroundColor={backgroundColor}>
       <div
         className={cn(className, classes.root, {
           [classes.outlined]: variant === 'outlined',
@@ -52,7 +52,7 @@ export function Card(props: CardProps) {
           </div>
         )}
       </div>
-    </InheritBackgroundHackProvider>
+    </AncestorBackgroundHackProvider>
   );
 }
 
