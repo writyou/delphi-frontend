@@ -1,12 +1,11 @@
 import React from 'react';
 import cn from 'classnames';
-import { jsNumberForAddress } from 'react-jazzicon';
 
 import { USDCIcon, USDTIcon, TUSDIcon, DAIIcon } from 'components/icons';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
 
-import { JazzIcon } from '../JazzIcon/JazzIcon';
+import { JazzIcon, jsNumberForAddress } from '../JazzIcon/JazzIcon';
 
 type Props = {
   tokenAddress: string;

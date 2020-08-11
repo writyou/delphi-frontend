@@ -145,5 +145,6 @@ const useStyles = makeStyles({
   icon: {
     width: 34,
     height: 34,
+    fontSize: 34,
   },
 });

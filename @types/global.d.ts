@@ -1,18 +1,4 @@
 declare module 'filemanager-webpack-plugin';
-declare module 'react-jazzicon' {
-  export function jsNumberForAddress(address: string): number;
-}
-
-declare module 'mersennetwister' {
-  class MersenneTwister {
-    constructor(seed: number);
-
-    random(): number;
-  }
-
-  // eslint-disable-next-line import/no-default-export
-  export default MersenneTwister;
-}
 
 interface Window {
   __PRERENDER_INJECTED__?: {
