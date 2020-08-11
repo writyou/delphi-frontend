@@ -7,7 +7,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { useTheme } from 'utils/styles';
 import { getShortAddress } from 'utils/format';
 
-import { AddressIcon } from '../AddressIcon/AddressIcon';
+import { AddressIcon } from '../AddressIcon';
 import { useStyles } from './ShortAddress.style';
 
 type Props = {

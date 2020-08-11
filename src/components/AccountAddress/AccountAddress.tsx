@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import { makeStyles } from 'utils/styles';
 
-import { AddressIcon } from '../AddressIcon/AddressIcon';
+import { AddressIcon } from '../AddressIcon';
 import { ShortAddress } from '../ShortAddress/ShortAddress';
 
 type Props = { address: string; size: 'big' | 'small' };

@@ -15,7 +15,7 @@ import {
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
 
-import { AddressIcon } from '../AddressIcon/AddressIcon';
+import { AddressIcon } from '../AddressIcon';
 
 type Props = {
   tokenAddress: string;

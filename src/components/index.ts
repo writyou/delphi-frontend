@@ -71,4 +71,4 @@ export * from './Card/Card';
 export * from './CompositionLegend';
 export * from './Tabs/Tabs';
 export * from './PoolCard/PoolCard';
-export * from './AddressIcon/AddressIcon';
+export * from './AddressIcon';
