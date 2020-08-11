@@ -107,6 +107,16 @@ const en = {
         success: 'Withdraw %{amount} from savings pool. Successful',
         error: 'Withdraw %{amount} from savings pool. Failed',
       },
+      'staking.deposit': {
+        pending: 'Stake to staking pool. Pending',
+        success: 'Stake to staking pool. Successful',
+        error: 'Stake to staking pool. Failed',
+      },
+      'staking.withdraw': {
+        pending: 'Unstake from staking pool. Pending',
+        success: 'Unstake from staking pool. Successful',
+        error: 'Unstake from staking pool. Failed',
+      },
     },
     networkWarning: {
       title: 'You are connected to the wrong network',

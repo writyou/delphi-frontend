@@ -218,6 +218,7 @@ export class SavingsModuleApi {
     await promiEvent;
   }
 
+  @memoize((...args: string[]) => args.join())
   public getDepositLimit$(
     userAddress: string,
     poolAddress: string,
@@ -240,6 +241,7 @@ export class SavingsModuleApi {
     ]).pipe(map(([limit, enabled]) => (enabled ? limit : null)));
   }
 
+  @memoize()
   private getDepositLimitsEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.userCapEnabled(undefined, [
       this.readonlyContract.events.UserCapEnabledChange(),

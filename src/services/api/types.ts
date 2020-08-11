@@ -6,15 +6,22 @@ import {
   createErc20,
   createTestnetERC20,
   createSavingsModule,
+  createStakingPool,
   createDefiProtocol,
   createSavingsPoolToken,
 } from 'generated/contracts';
 import { TokenAmount } from 'model/entities';
-import { DepositToSavingsPool, WithdrawFromSavingsPool } from 'model/types';
+import {
+  DepositToSavingsPool,
+  WithdrawFromSavingsPool,
+  DepositToStakingPool,
+  WithdrawFromStakingPool,
+} from 'model/types';
 
 export type Contracts = {
   erc20: ReturnType<typeof createErc20>;
   testnetErc20: ReturnType<typeof createTestnetERC20>;
+  stakingPool: ReturnType<typeof createStakingPool>;
   savingsModule: ReturnType<typeof createSavingsModule>;
   savingsPoolToken: ReturnType<typeof createSavingsPoolToken>;
   defiProtocol: ReturnType<typeof createDefiProtocol>;
@@ -48,6 +55,14 @@ export type SubmittedTransaction =
   | IGenericSubmittedTransaction<
       'savings.withdrawAll',
       { withdraw: WithdrawFromSavingsPool; fromAddress: string }
+    >
+  | IGenericSubmittedTransaction<
+      'staking.deposit',
+      { deposit: DepositToStakingPool; fromAddress: string }
+    >
+  | IGenericSubmittedTransaction<
+      'staking.withdraw',
+      { withdraw: WithdrawFromStakingPool; fromAddress: string }
     >;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {

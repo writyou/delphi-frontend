@@ -129,9 +129,29 @@ export class UserApi {
   }
 
   @memoize(R.identity)
-  public getStakingPoolBalance$(address: string): Observable<LiquidityAmount> {
+  public getFullStakingPoolBalance$(address: string): Observable<TokenAmount> {
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.staking.getUserBalance$(address, account) : empty())),
+      switchMap(account =>
+        account ? this.staking.getFullUserBalance$(address, account) : empty(),
+      ),
+    );
+  }
+
+  @memoize(R.identity)
+  public getUnlockedStakingPoolBalance$(address: string): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.staking.getUnlockedUserBalance$(address, account) : empty(),
+      ),
+    );
+  }
+
+  @memoize(R.identity)
+  public getStakingDepositLimit$(poolAddress: string): Observable<TokenAmount | null> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.staking.getDepositLimit$(poolAddress, account) : empty(),
+      ),
     );
   }
 }

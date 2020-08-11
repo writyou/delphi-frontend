@@ -92,7 +92,7 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
                 onClick={communication.execute}
                 disabled={status === 'pending' || !contentLoaded}
               >
-                {status === 'pending' ? <CircularProgress size={16} /> : yesText}
+                {status === 'pending' ? <CircularProgress size={16} /> : yesText || 'Ok'}
               </Button>
             )}
           </Grid>
