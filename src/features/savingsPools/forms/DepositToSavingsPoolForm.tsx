@@ -13,6 +13,7 @@ import { SavingsPool } from 'model/types';
 import { Grid, Loading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { getSignificantValue } from 'utils/bn';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -100,10 +101,10 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
         <Loading meta={feesMeta}>
           <Typography>
             Additional fee is{' '}
-            {!fee || fee.isNeg() || fee.isZero() ? (
-              'is zero'
-            ) : (
+            {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
               <FormattedAmount sum={fee} variant="plain" />
+            ) : (
+              'zero'
             )}
           </Typography>
         </Loading>

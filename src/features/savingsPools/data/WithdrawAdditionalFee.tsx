@@ -4,6 +4,7 @@ import { FormattedAmount, Loading, Box } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { TokenAmount } from 'model/entities';
+import { getSignificantValue } from 'utils/bn';
 
 type Props = {
   amount: TokenAmount;
@@ -22,7 +23,11 @@ export function WithdrawAdditionalFee(props: Props) {
     <Box component="span" display="inline-block">
       <Loading meta={additionalFeeMeta} progressProps={{ width: 50 }}>
         {additionalFee &&
-          (additionalFee.gt(0) ? <FormattedAmount sum={additionalFee} variant="plain" /> : 'zero')}
+          (additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
+            <FormattedAmount sum={additionalFee} variant="plain" />
+          ) : (
+            'zero'
+          ))}
       </Loading>
     </Box>
   );

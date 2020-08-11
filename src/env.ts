@@ -1,7 +1,8 @@
 import { getEnv, Mode } from 'core/getEnv';
-import { zeroAddress } from 'utils/mock';
 
 export type NetworkID = 1 | 4;
+
+const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 interface INetworkConfig {
   id: NetworkID;
@@ -94,6 +95,7 @@ export const NETWORK_ID: NetworkID = ETH_NETWORK_CONFIG.id;
 export const SWARM_GATEWAY_URL = 'https://swarm-gateways.net';
 
 export const WEB3_LONG_POOLING_TIMEOUT = 30 * 1000;
+export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
