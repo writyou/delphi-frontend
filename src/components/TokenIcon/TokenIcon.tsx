@@ -1,6 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import JazzIcon, { jsNumberForAddress } from 'react-jazzicon';
 
 import {
   USDCIcon,
@@ -16,10 +15,11 @@ import {
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
 
+import { AddressIcon } from '../AddressIcon/AddressIcon';
+
 type Props = {
   tokenAddress: string;
   className?: string;
-  diameter?: number;
 };
 type CoinComponent = typeof DAIIcon;
 
@@ -36,22 +36,27 @@ export const tokenIcons: Record<string, CoinComponent> = {
   [ETH_NETWORK_CONFIG.tokens.WETH.toLowerCase()]: ETHIcon,
 };
 
-export function TokenIcon({ tokenAddress, className, diameter = 20 }: Props) {
+export function TokenIcon({ tokenAddress, className }: Props) {
   const classes = useStyles();
   const Icon = tokenIcons[tokenAddress.toLowerCase()];
   const hasIcon = Icon !== undefined;
 
   return hasIcon ? (
-    <Icon className={className} />
+    <>
+      <Icon className={className} />
+    </>
   ) : (
-    <div className={cn(classes.jazzIcon, className)}>
-      <JazzIcon diameter={diameter} seed={jsNumberForAddress(tokenAddress)} />
+    <div className={cn(classes.addressIcon, className)}>
+      <AddressIcon address={tokenAddress} />
     </div>
   );
 }
 
-const useStyles = makeStyles({
-  jazzIcon: {
-    display: 'inline-flex',
+const useStyles = makeStyles(
+  {
+    addressIcon: {
+      display: 'inline-flex',
+    },
   },
-});
+  { name: 'TokenIcon' },
+);
