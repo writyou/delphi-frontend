@@ -1,13 +1,23 @@
 import React, { useState, useCallback, useRef } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
 
 import { useTheme } from 'utils/styles';
 import { getShortAddress } from 'utils/format';
 
 import { useStyles } from './ShortAddress.style';
 
-function ShortAddress({ address, disableCopy }: { address: string; disableCopy?: boolean }) {
+type Props = {
+  address: string;
+  disableCopy?: boolean;
+  withIcon?: boolean;
+};
+
+function ShortAddress(props: Props) {
+  const { address, disableCopy, withIcon } = props;
   const classes = useStyles();
   const theme = useTheme();
 
@@ -33,8 +43,31 @@ function ShortAddress({ address, disableCopy }: { address: string; disableCopy?:
     clearTimeout(closeTimeout.current);
   }, [tooltipTitle]);
 
+  const renderGridWithIcon = () => (
+    <Grid container alignItems="center" spacing={1}>
+      {withIcon && (
+        <Grid item>
+          <Avatar>
+            <Jazzicon diameter={40} seed={jsNumberForAddress(address)} />
+          </Avatar>
+        </Grid>
+      )}
+      <Grid item>
+        {disableCopy ? (
+          renderAddress()
+        ) : (
+          <CopyToClipboard text={address} onCopy={handleCopy}>
+            {renderAddress()}
+          </CopyToClipboard>
+        )}
+      </Grid>
+    </Grid>
+  );
+
+  const renderAddress = () => <span className={classes.shortAddress}>{shortAddress}</span>;
+
   return disableCopy ? (
-    <span className={classes.shortAddress}>{shortAddress}</span>
+    renderGridWithIcon()
   ) : (
     <Tooltip
       className={classes.tooltip}
@@ -43,9 +76,7 @@ function ShortAddress({ address, disableCopy }: { address: string; disableCopy?:
       onOpen={handleTooltipOpen}
       placement="bottom"
     >
-      <CopyToClipboard text={address} onCopy={handleCopy}>
-        <span className={classes.shortAddress}>{shortAddress}</span>
-      </CopyToClipboard>
+      {renderGridWithIcon()}
     </Tooltip>
   );
 }

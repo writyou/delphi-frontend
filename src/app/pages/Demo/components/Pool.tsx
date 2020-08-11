@@ -10,7 +10,7 @@ export function Pool({ address, poolName, poolToken, tokens }: SavingsPool) {
   return (
     <Card label={poolName}>
       <Typography>
-        Pool address: <ShortAddress address={address} />
+        Pool address: <ShortAddress withIcon address={address} />
       </Typography>
       <Typography gutterBottom>
         Pool token: <ShortAddress address={poolToken.address} />, symbol: {poolToken.symbol}
