@@ -8,7 +8,7 @@ import { getShortAddress } from 'utils/format';
 import { useSubscribable, useCommunication, useOnChangeState } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Button, Loading, Typography, Grid, JazzIcon, jsNumberForAddress } from 'components';
+import { Button, Loading, Typography, Grid, AddressIcon } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
@@ -82,7 +82,7 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
           {account ? (
             <>
               <Avatar className={classes.icon}>
-                <JazzIcon seed={jsNumberForAddress(account)} />
+                <AddressIcon address={account} />
               </Avatar>
               <Grid
                 container

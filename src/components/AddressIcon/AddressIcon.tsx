@@ -8,14 +8,14 @@ import { makeStyles } from 'utils/styles';
 import { baseColors, shapeCount, diameter, wobble } from './constants';
 
 type Props = React.ComponentProps<typeof SvgIcon> & {
-  seed: number;
+  address: string;
 };
 
-function JazzIcon(props: Props) {
-  const { seed } = props;
+function AddressIcon(props: Props) {
+  const { address } = props;
   const classes = useStyles();
 
-  const generator = new MersenneTwister(seed);
+  const generator = new MersenneTwister(jsNumberForAddress(address));
   const shapesArr: number[] = Array(shapeCount).fill(0);
   const shiftedColors = makeHueShift(baseColors, generator);
 
@@ -88,10 +88,10 @@ const useStyles = makeStyles(
   {
     root: {
       fontSize: 'inherit',
-      borderRadius: 50,
+      borderRadius: '0.5em',
     },
   },
-  { name: 'JazzIcon' },
+  { name: 'AddressIcon' },
 );
 
-export { JazzIcon, jsNumberForAddress };
+export { AddressIcon };

@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar';
 
 import { makeStyles } from 'utils/styles';
 
-import { JazzIcon, jsNumberForAddress } from '../JazzIcon/JazzIcon';
+import { AddressIcon } from '../AddressIcon/AddressIcon';
 import { ShortAddress } from '../ShortAddress/ShortAddress';
 
 type Props = { address: string; size: 'big' | 'small' };
@@ -17,7 +17,7 @@ export function AccountAddress(props: Props) {
     <Grid container alignItems="center" spacing={1}>
       <Grid item>
         <Avatar classes={classes}>
-          <JazzIcon seed={jsNumberForAddress(address)} />
+          <AddressIcon address={address} />
         </Avatar>
       </Grid>
       <Grid item>

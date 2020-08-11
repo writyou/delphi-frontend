@@ -15,7 +15,7 @@ import {
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
 
-import { JazzIcon, jsNumberForAddress } from '../JazzIcon/JazzIcon';
+import { AddressIcon } from '../AddressIcon/AddressIcon';
 
 type Props = {
   tokenAddress: string;
@@ -46,15 +46,15 @@ export function TokenIcon({ tokenAddress, className }: Props) {
       <Icon className={className} />
     </>
   ) : (
-    <div className={cn(classes.jazzIcon, className)}>
-      <JazzIcon seed={jsNumberForAddress(tokenAddress)} />
+    <div className={cn(classes.addressIcon, className)}>
+      <AddressIcon address={tokenAddress} />
     </div>
   );
 }
 
 const useStyles = makeStyles(
   {
-    jazzIcon: {
+    addressIcon: {
       display: 'inline-flex',
     },
   },
