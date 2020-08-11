@@ -1,6 +1,3 @@
-import * as NewTable from './NewTable';
-
-export { NewTable };
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
@@ -40,6 +37,7 @@ export { ComingSoon } from './ComingSoon/ComingSoon';
 export { AccountAddress } from './AccountAddress/AccountAddress';
 export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
+export { NewTable } from './NewTable';
 
 export * from './ErrorBoundary';
 export * from './Hint/Hint';

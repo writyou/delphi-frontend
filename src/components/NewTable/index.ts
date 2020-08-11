@@ -1,3 +1,3 @@
-import NewTable from '@akropolis-web/components';
+import { Table } from '@akropolis-web/components';
 
-export { NewTable };
+export { Table as NewTable };
