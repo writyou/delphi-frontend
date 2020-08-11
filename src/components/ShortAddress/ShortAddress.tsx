@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useRef } from 'react';
 import Tooltip from '@material-ui/core/Tooltip';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 
 import { useTheme } from 'utils/styles';
 import { getShortAddress } from 'utils/format';
 
+import { AddressIcon } from '../AddressIcon/AddressIcon';
 import { useStyles } from './ShortAddress.style';
 
 type Props = {
@@ -44,11 +44,11 @@ function ShortAddress(props: Props) {
   }, [tooltipTitle]);
 
   const renderGridWithIcon = () => (
-    <Grid container alignItems="center" spacing={1}>
+    <Grid container alignItems="center" wrap="nowrap" className={classes.root}>
       {withIcon && (
         <Grid item>
-          <Avatar>
-            <Jazzicon diameter={40} seed={jsNumberForAddress(address)} />
+          <Avatar className={classes.icon}>
+            <AddressIcon address={address} />
           </Avatar>
         </Grid>
       )}
