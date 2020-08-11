@@ -44,7 +44,7 @@ export function StakingPoolCard({ pool }: Props) {
       }
       poolBalance={<UserStakingPoolBalance poolAddress={address} />}
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
-      getUserBalance={(s: string) => api.user.getStakingPoolBalance$(s)}
+      getUserBalance$={(s: string) => api.user.getStakingPoolBalance$(s)}
     />
   );
 }

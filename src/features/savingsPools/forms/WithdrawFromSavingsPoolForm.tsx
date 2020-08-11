@@ -119,7 +119,8 @@ export function WithdrawFromSavingsPoolForm({
             valid &&
             amount && (
               <Typography>
-                Additional fee <WithdrawAdditionalFee poolAddress={poolAddress} amount={amount} />
+                Additional fee is{' '}
+                <WithdrawAdditionalFee poolAddress={poolAddress} amount={amount} />
               </Typography>
             )
           )

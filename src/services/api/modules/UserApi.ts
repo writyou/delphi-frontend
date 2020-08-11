@@ -104,6 +104,15 @@ export class UserApi {
   }
 
   @memoize(R.identity)
+  public getSavingsDepositLimit$(poolAddress: string): Observable<LiquidityAmount | null> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.savings.getDepositLimit$(account, poolAddress) : empty(),
+      ),
+    );
+  }
+
+  @memoize(R.identity)
   public getDCAPoolBalance$(address: string): Observable<LiquidityAmount> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.dca.getUserBalance$(address, account) : empty())),

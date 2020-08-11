@@ -218,6 +218,34 @@ export class SavingsModuleApi {
     await promiEvent;
   }
 
+  public getDepositLimit$(
+    userAddress: string,
+    poolAddress: string,
+  ): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      toLiquidityAmount$(
+        this.readonlyContract.methods.userCap(
+          {
+            _protocol: poolAddress,
+            user: userAddress,
+          },
+          [
+            this.readonlyContract.events.UserCapChanged({
+              filter: { user: userAddress, protocol: poolAddress },
+            }),
+          ],
+        ),
+      ),
+      this.getDepositLimitsEnabled$(),
+    ]).pipe(map(([limit, enabled]) => (enabled ? limit : null)));
+  }
+
+  private getDepositLimitsEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.userCapEnabled(undefined, [
+      this.readonlyContract.events.UserCapEnabledChange(),
+    ]);
+  }
+
   private getProtocolReadonlyContract(address: string): Contracts['defiProtocol'] {
     return createDefiProtocol(this.web3Manager.web3, address);
   }

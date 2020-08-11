@@ -12,7 +12,7 @@ export default merge(common, {
     hot: true,
     contentBase: path.resolve('..', 'build'),
     host: '0.0.0.0',
-    port: 8082,
+    port: 8083,
     inline: true,
     lazy: false,
     historyApiFallback: true,

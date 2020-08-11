@@ -29,11 +29,12 @@ export function DepositTab() {
                   address={pool.address}
                   poolName={pool.poolName}
                   tokens={pool.tokens}
+                  isDisabledLink
                   link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
                   content={<DCADepositCardButtons pool={pool} />}
                   poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
                   poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
-                  getUserBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
+                  getUserBalance$={(s: string) => api.user.getDCAPoolBalance$(s)}
                 />
               </Grid>
             ))}
