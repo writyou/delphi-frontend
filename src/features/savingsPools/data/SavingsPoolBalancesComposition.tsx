@@ -12,6 +12,7 @@ import {
 import { TokenAmount } from 'model/entities';
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
+import { makeStyles } from 'utils/styles';
 
 type Props = {
   poolAddress: string;
@@ -19,6 +20,8 @@ type Props = {
 
 function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   const api = useApi();
+  const classes = useStyles();
+
   const [entries, entriesMeta] = useSubscribable(
     () =>
       api.savings.getPoolBalances$(poolAddress).pipe(
@@ -36,7 +39,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
           <Grid item>
             <CompositionChart withBackground chartData={entries} size="medium" />
           </Grid>
-          <Grid item>
+          <Grid item className={classes.legend}>
             <CompositionLegend chartData={entries} Template={TokensTableLegend} />
           </Grid>
         </Grid>
@@ -44,5 +47,14 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
     </Loading>
   );
 }
+
+const useStyles = makeStyles(
+  () => ({
+    legend: {
+      fontSize: 16,
+    },
+  }),
+  { name: 'SavingsPoolBalancesComposition' },
+);
 
 export { SavingsPoolBalancesComposition };

@@ -11,7 +11,7 @@ import { TokenTitle } from '../../CompositionChart/TokenTitle';
 export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
   const { sectors } = props;
 
-  return <NewTable columns={columnForLegend} entries={sectors} />;
+  return <NewTable rowPadding="small" columns={columnForLegend} entries={sectors} />;
 }
 
 const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount>>> = [

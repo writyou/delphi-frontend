@@ -25,6 +25,10 @@ export const useStyles = makeStyles(
       transition: theme.transitions.create('background-color'),
     },
 
+    preauditVersionWarning: {
+      marginTop: 47,
+    },
+
     content: {
       flex: '1 100%',
       marginTop: 48,
