@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import cn from 'classnames';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { Token, LiquidityAmount, Amount } from 'model/entities';
+import { Token, Amount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 import { Loading } from 'components/Loading';
 
@@ -26,7 +26,7 @@ type Props = {
   poolLiquidity: JSX.Element;
   additionalElement?: JSX.Element;
   getDepositLimit$?(poolAddress: string): Observable<Amount | null>;
-  getUserBalance$(poolAddress: string): Observable<LiquidityAmount>;
+  getUserBalance$(poolAddress: string): Observable<Amount>;
 };
 
 export function PoolCard(props: Props) {

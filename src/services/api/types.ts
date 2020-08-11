@@ -6,6 +6,7 @@ import {
   createErc20,
   createTestnetERC20,
   createSavingsModule,
+  createStakingPool,
   createDefiProtocol,
   createSavingsPoolToken,
 } from 'generated/contracts';
@@ -15,6 +16,7 @@ import { DepositToSavingsPool, WithdrawFromSavingsPool } from 'model/types';
 export type Contracts = {
   erc20: ReturnType<typeof createErc20>;
   testnetErc20: ReturnType<typeof createTestnetERC20>;
+  stakingPool: ReturnType<typeof createStakingPool>;
   savingsModule: ReturnType<typeof createSavingsModule>;
   savingsPoolToken: ReturnType<typeof createSavingsPoolToken>;
   defiProtocol: ReturnType<typeof createDefiProtocol>;

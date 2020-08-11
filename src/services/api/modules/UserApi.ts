@@ -129,9 +129,11 @@ export class UserApi {
   }
 
   @memoize(R.identity)
-  public getStakingPoolBalance$(address: string): Observable<LiquidityAmount> {
+  public getFullStakingPoolBalance$(address: string): Observable<TokenAmount> {
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.staking.getUserBalance$(address, account) : empty())),
+      switchMap(account =>
+        account ? this.staking.getFullUserBalance$(address, account) : empty(),
+      ),
     );
   }
 }

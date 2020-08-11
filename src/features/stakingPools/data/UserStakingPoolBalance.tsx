@@ -7,7 +7,7 @@ import { useApi } from 'services/api';
 export function UserStakingPoolBalance({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
   const [balance, balanceMeta] = useSubscribable(
-    () => api.user.getStakingPoolBalance$(poolAddress),
+    () => api.user.getFullStakingPoolBalance$(poolAddress),
     [api, poolAddress],
   );
 

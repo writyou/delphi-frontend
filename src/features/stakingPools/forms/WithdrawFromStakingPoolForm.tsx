@@ -43,7 +43,7 @@ export function WithdrawFromStakingPoolForm({
     () =>
       currentToken
         ? api.user
-            .getStakingPoolBalance$(poolAddress)
+            .getFullStakingPoolBalance$(poolAddress)
             .pipe(map(balance => denormolizeAmount(balance, currentToken)))
         : empty(),
     [api, currentToken],

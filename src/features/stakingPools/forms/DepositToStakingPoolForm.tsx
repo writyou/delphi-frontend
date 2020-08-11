@@ -84,7 +84,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
       <>
         <TokenAmountField
           name={fieldNames.amount}
-          currencies={pool.tokens}
+          currencies={[pool.token]}
           placeholder="Enter sum"
           validate={validateAmount}
           maxValue={maxValue$}

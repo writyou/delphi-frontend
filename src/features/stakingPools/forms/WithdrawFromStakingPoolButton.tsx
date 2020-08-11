@@ -14,7 +14,7 @@ export function WithdrawFromStakingPoolButton({
       {({ closeModal }) => (
         <WithdrawFromStakingPoolForm
           poolAddress={pool.address}
-          supportedTokens={pool.tokens}
+          supportedTokens={[pool.token]}
           onSuccessfulWithdraw={closeModal}
         />
       )}

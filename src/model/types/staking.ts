@@ -3,8 +3,7 @@ import { Token, TokenAmount } from 'model/entities';
 export type StakingPool = {
   address: string;
   poolName: string;
-  poolToken: Token;
-  tokens: Token[];
+  token: Token;
 };
 
 export type WithdrawFromStakingPool = {
