@@ -17,6 +17,7 @@ type Props = {
 export function StakingPoolCard({ pool }: Props) {
   const { address, poolName, token } = pool;
   const api = useApi();
+
   return (
     <PoolCard
       address={address}
@@ -44,6 +45,7 @@ export function StakingPoolCard({ pool }: Props) {
       }
       poolBalance={<UserStakingPoolBalance poolAddress={address} />}
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
+      getDepositLimit$={() => api.user.getStakingDepositLimit$(pool.address)}
       getUserBalance$={(s: string) => api.user.getFullStakingPoolBalance$(s)}
     />
   );
