@@ -3,8 +3,8 @@ import cn from 'classnames';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import { ComingSoon } from 'components/ComingSoon';
 import { InfoIconV2 } from 'components/icons';
-import { ComingSoon } from 'components/ComingSoon/ComingSoon';
 import { makeStyles } from 'utils/styles';
 
 type Props = {

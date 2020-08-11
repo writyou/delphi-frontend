@@ -34,12 +34,12 @@ export { Preview } from './Preview/Preview';
 export { NavInline } from './NavInline/NavInline';
 export { Section } from './Section/Section';
 export { SocialLink } from './SocialLink/SocialLink';
-export { ComingSoon } from './ComingSoon/ComingSoon';
 export { AccountAddress } from './AccountAddress/AccountAddress';
 export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
 export { NewTable } from './NewTable';
 
+export * from './ComingSoon';
 export * from './ErrorBoundary';
 export * from './Hint/Hint';
 export * from './Loading';
