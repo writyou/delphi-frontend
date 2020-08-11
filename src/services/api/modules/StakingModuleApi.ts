@@ -13,6 +13,7 @@ import { StakingPool } from 'model/types/staking';
 import { getCurrentValueOrThrow } from 'utils/rxjs';
 import { createStakingPool } from 'generated/contracts';
 import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
+import { decimalsToWei } from 'utils/bn';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -109,7 +110,12 @@ export class StakingModuleApi {
           poolContract.events.UserCapEnabledChange(),
         ],
       ),
-    ]).pipe(map(([pool, enabled, cap]) => (enabled ? new TokenAmount(cap, pool.token) : null)));
+    ]).pipe(
+      map(([pool, enabled, cap]) => {
+        const roundedCap = cap.lt(decimalsToWei(pool.token.decimals - 8)) ? new BN(0) : cap;
+        return enabled ? new TokenAmount(roundedCap, pool.token) : null;
+      }),
+    );
   }
 
   @memoize(R.identity)

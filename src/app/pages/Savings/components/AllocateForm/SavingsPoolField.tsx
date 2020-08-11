@@ -106,6 +106,9 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
+  const switchDisabled = depositLimitMeta.loaded && !!depositLimit && !depositLimit.gt(0);
+  const switchChecked = !switchDisabled && isAllocated;
+
   const error =
     typeof rest.error === 'boolean'
       ? rest.error && meta.error && t(meta.error)
@@ -117,14 +120,14 @@ function SavingsPoolFieldComponent(props: Props) {
       getDepositLimit$={getDepositLimit$}
       content={
         <SwitchInput
-          disabled={depositLimitMeta.loaded && !!depositLimit && !depositLimit.gt(0)}
-          checked={isAllocated}
+          disabled={switchDisabled}
+          checked={switchChecked}
           label={t(tKeys.modules.savings.allocate.getKey())}
           onChange={handleSwitch}
         />
       }
       additionalElement={
-        isAllocated ? (
+        switchChecked ? (
           <TokenAmountInput
             {...rest}
             {...input}

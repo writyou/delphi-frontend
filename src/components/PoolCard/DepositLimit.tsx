@@ -4,6 +4,7 @@ import cn from 'classnames';
 
 import { Amount } from 'model/entities';
 import { makeStyles } from 'utils/styles';
+import { FormattedAmount } from 'components/FormattedAmount/FormattedAmount';
 
 export function DepositLimit({ limit }: { limit: Amount }) {
   const classes = useStyles();
@@ -16,7 +17,8 @@ export function DepositLimit({ limit }: { limit: Amount }) {
       ) : (
         <>
           <span className={cn(classes.circle, classes.active)} />
-          Available for deposit: {limit.toFormattedString()}
+          Available for deposit:&nbsp;
+          <FormattedAmount sum={limit} variant="plain" />
         </>
       )}
     </Grid>

@@ -22,6 +22,7 @@ import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
 import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
 import { denormolizeAmount } from 'utils/amounts';
+import { decimalsToWei } from 'utils/bn';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -238,7 +239,14 @@ export class SavingsModuleApi {
         ),
       ),
       this.getDepositLimitsEnabled$(),
-    ]).pipe(map(([limit, enabled]) => (enabled ? limit : null)));
+    ]).pipe(
+      map(([limit, enabled]) => {
+        const roundedLimit = limit.toBN().lt(decimalsToWei(limit.currency.decimals - 8))
+          ? limit.withValue(0)
+          : limit;
+        return enabled ? roundedLimit : null;
+      }),
+    );
   }
 
   @memoize()
