@@ -47,7 +47,7 @@ export * from './Snackbar/Snackbar';
 export * from './RowsLayout/RowsLayout';
 export * from './MetricsList/MetricsList';
 export * from './ModalButton/ModalButton';
-export * from './ShortAddress/ShortAddress';
+export * from './ShortAddress';
 export * from './Pagination/Pagination';
 export * from './Chart/Chart';
 export * from './Table/Table';
