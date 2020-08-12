@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  NewTable,
+  Table,
   FormattedAmount,
   CompositionChart,
   SimpleLegend,
@@ -22,7 +22,7 @@ export type Order = {
   token: Token;
 };
 
-export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> = [
+export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
   {
     renderTitle: () => 'Asset',
     cellContent: {
@@ -56,7 +56,7 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
   },
 ];
 
-export const columnForChart: Array<NewTable.models.Column<
+export const columnForChart: Array<Table.models.Column<
   PieChartData<LiquidityAmount, TokenAmount>[]
 >> = [
   {

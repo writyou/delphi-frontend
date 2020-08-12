@@ -2,19 +2,23 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.3.1.tgz#f290ab099a048b538bedcef1f5c16437525a09fe"
-  integrity sha512-iGjsCBPowfC0ejShgEJm6JJ9VmmAV2FzL8QT+ZSO2Xvx8dKUbV3xhbIbeD+n1eh9Uo+1DLgcSO7qjXCzYs0Zkg==
-  dependencies:
-    "@akropolis-web/styles" "^0.4.0"
-    "@types/classnames" "^2.2.9"
-    classnames "^2.0.0"
-
-"@akropolis-web/styles@^0.4.0":
+"@akropolis-web/components@^0.4.0":
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/styles/-/styles-0.4.0.tgz#6a676cb114a1aaa407a06025ed9e0d5ee0c715ff"
-  integrity sha512-xqawtV89JmVRABNeoZTaOEQJwibKM/Y98huzJLXzMuI6tmq+qyOJ7Vv5NPrOvfid0GZ6uxBSBmtVYffSCJfwrQ==
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.4.0.tgz#3595feea818fe781c68db5ebcbc818b433eb21bd"
+  integrity sha512-S+7dYMvJ51wiHCP2mNPL/ObPiEq7MSIp9A3ghnEArDDWTZnd7Ifa1K9o75ZgbpKuX5RylHDZ3ghJ2+ciFmN9FQ==
+  dependencies:
+    "@akropolis-web/styles" "^0.5.0"
+    "@types/color" "^3.0.1"
+    "@types/mersenne-twister" "^1.1.2"
+    "@types/react-copy-to-clipboard" "^4.3.0"
+    color "^3.1.2"
+    mersenne-twister "^1.1.0"
+    react-copy-to-clipboard "^5.0.2"
+
+"@akropolis-web/styles@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/styles/-/styles-0.5.0.tgz#c581da38b316b0a28dbd5c4a57e0513622b6fc98"
+  integrity sha512-6peTJPkkr5sDtguUWC6VD/IdvhKlVJ8M1sSi2O8x2fIIVzaHBnjs9DS3Ubxn43DxBcNnWfHliDALPjUuUZe3sg==
   dependencies:
     "@types/ramda" "^0.26.43"
     ramda "^0.27.0"
@@ -4336,7 +4340,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.0.0, classnames@^2.2.5, classnames@^2.2.6:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
   integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==

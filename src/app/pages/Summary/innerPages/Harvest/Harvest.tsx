@@ -2,7 +2,7 @@ import * as React from 'react';
 import BN from 'bn.js';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Typography, Hint, Grid } from 'components';
 import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
 import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
 import { ETH_NETWORK_CONFIG } from 'env';
@@ -53,13 +53,10 @@ export function Harvest() {
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={8}>
-              <NewTable.Component
-                columns={tableData.columnsWithoutExpandableRows}
-                entries={entries}
-              />
+              <Table.Component columns={tableData.columnsWithoutExpandableRows} entries={entries} />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={entriesForChart} />
+              <Table.Component columns={tableData.columnForChart} entries={entriesForChart} />
             </Grid>
           </Grid>
         )}
