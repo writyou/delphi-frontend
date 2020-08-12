@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Typography, NewTable, TokenIcon, ShortAddress, Divider, Card } from 'components';
+import { Typography, Table, TokenIcon, ShortAddress, Divider, Card } from 'components';
 import { SavingsPool } from 'model/types';
 
 import { MyTokenBalance } from './MyTokenBalance';
@@ -18,7 +18,7 @@ export function Pool({ address, poolName, poolToken, tokens }: SavingsPool) {
       <Typography variant="h5" gutterBottom>
         Supported tokens
       </Typography>
-      <NewTable.Component
+      <Table.Component
         entries={tokens}
         columns={[
           {

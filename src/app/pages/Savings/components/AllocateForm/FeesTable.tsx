@@ -1,15 +1,15 @@
 import React from 'react';
 
 import { DepositToSavingsPoolWithFee } from 'model/types';
-import { NewTable, FormattedAmount, TokenName } from 'components';
+import { Table, FormattedAmount, TokenName } from 'components';
 import { SavingsPoolName } from 'features/savingsPools';
 import { getSignificantValue } from 'utils/bn';
 
 export function FeesTable({ fees }: { fees: DepositToSavingsPoolWithFee[] }) {
-  return <NewTable.Component entries={fees} columns={columns} />;
+  return <Table.Component entries={fees} columns={columns} />;
 }
 
-const columns: NewTable.models.Column<DepositToSavingsPoolWithFee>[] = [
+const columns: Table.models.Column<DepositToSavingsPoolWithFee>[] = [
   {
     renderTitle: () => 'Pool',
     cellContent: {

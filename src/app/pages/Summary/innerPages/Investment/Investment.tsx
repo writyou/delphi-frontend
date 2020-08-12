@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Typography, Hint, Grid } from 'components';
 import { percentAmount, tokenAmount, getMockCompositionChartEntriesLiquidity } from 'utils/mock';
 
 import * as tableData from './tableData';
@@ -30,10 +30,10 @@ export function Investment() {
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={8}>
-              <NewTable.Component columns={tableData.columnsWithSubtable} entries={entries} />
+              <Table.Component columns={tableData.columnsWithSubtable} entries={entries} />
             </Grid>
             <Grid item xs>
-              <NewTable.Component
+              <Table.Component
                 columns={tableData.columnForChart}
                 entries={[getMockCompositionChartEntriesLiquidity(5)]}
               />

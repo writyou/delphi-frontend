@@ -37,7 +37,7 @@ export { SocialLink } from './SocialLink/SocialLink';
 export { AccountAddress } from './AccountAddress/AccountAddress';
 export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
-export { NewTable } from './NewTable';
+export { Table } from './Table';
 
 export * from './ComingSoon';
 export * from './ErrorBoundary';
@@ -50,7 +50,6 @@ export * from './ModalButton/ModalButton';
 export * from './ShortAddress';
 export * from './Pagination/Pagination';
 export * from './Chart/Chart';
-export * from './Table/Table';
 export * from './BalanceChart/BalanceChart';
 export * from './ExpansionPanel/ExpansionPanel';
 export * from './FormattedAmount/FormattedAmount';

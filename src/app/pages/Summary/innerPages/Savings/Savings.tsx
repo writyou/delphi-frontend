@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { NewTable, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Typography, Hint, Grid } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
@@ -24,7 +24,7 @@ export function Savings() {
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={7}>
-              <NewTable.Component
+              <Table.Component
                 columns={tableData.columnsWithSubtable}
                 entries={pools}
                 summary={{
@@ -34,7 +34,7 @@ export function Savings() {
               />
             </Grid>
             <Grid item xs>
-              <NewTable.Component columns={tableData.columnForChart} entries={[{}]} />
+              <Table.Component columns={tableData.columnForChart} entries={[{}]} />
             </Grid>
           </Grid>
         )}

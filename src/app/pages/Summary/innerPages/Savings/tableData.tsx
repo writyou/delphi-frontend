@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { NewTable, FormattedAmount, Link, Box, TokensIcons } from 'components';
+import { Table, FormattedAmount, Link, Box, TokensIcons } from 'components';
 import { SavingsPool } from 'model/types';
 import { UserSavingsPoolBalance, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { routes } from 'app/routes';
 
-export const columnForChart: Array<NewTable.models.Column<{}>> = [
+export const columnForChart: Array<Table.models.Column<{}>> = [
   {
     renderTitle: () => (
       <Box ml={10} component="span">
@@ -28,7 +28,7 @@ export const columnForChart: Array<NewTable.models.Column<{}>> = [
   },
 ];
 
-export const columnsWithSubtable: Array<NewTable.models.Column<SavingsPool, number>> = [
+export const columnsWithSubtable: Array<Table.models.Column<SavingsPool, number>> = [
   {
     renderTitle: () => '',
     cellContent: {
