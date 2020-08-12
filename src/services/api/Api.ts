@@ -10,12 +10,14 @@ import { UserApi } from './modules/UserApi';
 import { GlobalStatsApi } from './modules/GlobalStatsApi';
 import { DCAModuleApi } from './modules/DCAModuleApi';
 import { StakingModuleApi } from './modules/StakingModuleApi';
+import { PricesApi } from './modules/PriceApi';
 
 export class Api {
   private subgraphApi = new SubgraphApi(this.apolloClient);
 
   public web3Manager = new Web3Manager();
   public swarmApi = new SwarmApi();
+  public prices = new PricesApi();
 
   public transactions = new TransactionsApi();
   public erc20 = new Erc20Api(this.web3Manager, this.transactions);
@@ -40,7 +42,12 @@ export class Api {
     this.staking,
   );
 
-  public globalStats = new GlobalStatsApi(this.subgraphApi, this.savings);
+  public globalStats = new GlobalStatsApi(
+    this.subgraphApi,
+    this.savings,
+    this.staking,
+    this.prices,
+  );
 
   constructor(private apolloClient: ApolloClient<any>) {}
 }
