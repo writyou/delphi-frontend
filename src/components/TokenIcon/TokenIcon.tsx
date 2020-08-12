@@ -13,6 +13,7 @@ import {
   ETHIcon,
   COMPIcon,
   ADELIcon,
+  SUSDIcon,
 } from 'components/icons';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
@@ -37,6 +38,7 @@ export const tokenIcons: Record<string, CoinComponent> = {
   [ETH_NETWORK_CONFIG.tokens.WETH.toLowerCase()]: ETHIcon,
   [ETH_NETWORK_CONFIG.tokens.COMP.toLowerCase()]: COMPIcon,
   [ETH_NETWORK_CONFIG.tokens.ADEL.toLowerCase()]: ADELIcon,
+  [ETH_NETWORK_CONFIG.tokens.sUSD.toLowerCase()]: SUSDIcon,
 };
 
 export function TokenIcon({ tokenAddress, className }: Props) {
