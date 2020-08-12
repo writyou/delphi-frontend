@@ -3,9 +3,9 @@ import * as React from 'react';
 import { liquidityAmount } from 'utils/mock';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { ProgressChart } from 'components/ProgressChart/ProgressChart';
-import { Label } from 'components/Label/Label';
 import { FormattedAmount } from 'components/FormattedAmount/FormattedAmount';
 
+import { Label } from '../Label';
 import { useStyles, CHART_WIDTH } from './AvailableLoansChart.style';
 
 const tKeys = tKeysAll.components.availableLoansChart;

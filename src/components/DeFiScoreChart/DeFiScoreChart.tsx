@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { ProgressChart } from 'components/ProgressChart/ProgressChart';
-import { Label } from 'components/Label/Label';
 
+import { Label } from '../Label';
 import { useStyles, CHART_WIDTH } from './DeFiScoreChart.style';
 
 const tKeys = tKeysAll.components.deFiScoreChart;

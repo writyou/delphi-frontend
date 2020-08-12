@@ -11,11 +11,14 @@ import {
   sBTCIcon,
   AKROIcon,
   ETHIcon,
+  COMPIcon,
+  ADELIcon,
+  SUSDIcon,
 } from 'components/icons';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
 
-import { AddressIcon } from '../AddressIcon/AddressIcon';
+import { AddressIcon } from '../AddressIcon';
 
 type Props = {
   tokenAddress: string;
@@ -28,12 +31,14 @@ export const tokenIcons: Record<string, CoinComponent> = {
   [ETH_NETWORK_CONFIG.tokens.USDC.toLowerCase()]: USDCIcon,
   [ETH_NETWORK_CONFIG.tokens.USDT.toLowerCase()]: USDTIcon,
   [ETH_NETWORK_CONFIG.tokens.TUSD.toLowerCase()]: TUSDIcon,
-
   [ETH_NETWORK_CONFIG.tokens.renBTC.toLowerCase()]: renBTCIcon,
   [ETH_NETWORK_CONFIG.tokens.WBTC.toLowerCase()]: WBTCIcon,
   [ETH_NETWORK_CONFIG.tokens.sBTC.toLowerCase()]: sBTCIcon,
   [ETH_NETWORK_CONFIG.tokens.AKRO.toLowerCase()]: AKROIcon,
   [ETH_NETWORK_CONFIG.tokens.WETH.toLowerCase()]: ETHIcon,
+  [ETH_NETWORK_CONFIG.tokens.COMP.toLowerCase()]: COMPIcon,
+  [ETH_NETWORK_CONFIG.tokens.ADEL.toLowerCase()]: ADELIcon,
+  [ETH_NETWORK_CONFIG.tokens.sUSD.toLowerCase()]: SUSDIcon,
 };
 
 export function TokenIcon({ tokenAddress, className }: Props) {

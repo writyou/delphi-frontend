@@ -2,7 +2,7 @@ import React from 'react';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { FormattedAmount, Loading, NewTable, Grid, TokenIcon } from 'components';
+import { FormattedAmount, Loading, Table, Grid, TokenIcon } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 import { TokenAmount, PercentAmount } from 'model/entities';
@@ -41,12 +41,12 @@ export function WithdrawSupposedAmountsTable(props: Props) {
 
   return (
     <Loading meta={supposedAmountsMeta}>
-      {supposedAmounts && <NewTable.Component columns={columns} entries={supposedAmounts} />}
+      {supposedAmounts && <Table.Component columns={columns} entries={supposedAmounts} />}
     </Loading>
   );
 }
 
-const columns: Array<NewTable.models.Column<TokenAmount>> = [
+const columns: Array<Table.models.Column<TokenAmount>> = [
   {
     renderTitle: () => 'Assets',
     cellContent: {

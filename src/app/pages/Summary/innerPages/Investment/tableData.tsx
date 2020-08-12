@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  NewTable,
+  Table,
   FormattedAmount,
   CompositionChart,
   SimpleLegend,
@@ -26,7 +26,7 @@ export type Order = {
   poolFullTitle?: string;
 };
 
-export const columnForChart: Array<NewTable.models.Column<
+export const columnForChart: Array<Table.models.Column<
   PieChartData<LiquidityAmount, SavingsPool>[]
 >> = [
   {
@@ -57,7 +57,7 @@ export const columnForChart: Array<NewTable.models.Column<
   },
 ];
 
-export const columnsWithSubtable: Array<NewTable.models.Column<Order, number>> = [
+export const columnsWithSubtable: Array<Table.models.Column<Order, number>> = [
   {
     renderTitle: () => '',
     cellContent: {

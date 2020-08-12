@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { TokenAmount } from 'model/entities';
 
-import { Component as NewTable, models as NewTableModels } from '../../NewTable';
+import { Table } from '../../Table';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
 import { PieSector, CompositionChartLegendProps } from '../../CompositionChart/model';
 import { SectorColorLabel } from '../../CompositionChart/SectorColorLabel';
@@ -11,10 +11,10 @@ import { TokenTitle } from '../../CompositionChart/TokenTitle';
 export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
   const { sectors } = props;
 
-  return <NewTable rowPadding="small" columns={columnForLegend} entries={sectors} />;
+  return <Table.Component rowPadding="small" columns={columnForLegend} entries={sectors} />;
 }
 
-const columnForLegend: Array<NewTableModels.Column<PieSector<TokenAmount>>> = [
+const columnForLegend: Array<Table.models.Column<PieSector<TokenAmount>>> = [
   {
     cellContent: {
       kind: 'simple',

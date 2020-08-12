@@ -22,6 +22,8 @@ interface INetworkConfig {
     sBTC: string;
     AKRO: string;
     WETH: string;
+    ADEL: string;
+    COMP: string;
   };
   etherskanDomain: string;
 }
@@ -36,7 +38,9 @@ const testnetTokens: INetworkConfig['tokens'] = {
   WBTC: `0xEBa449b9150F34396D529643263A90D495Ae563c`,
   sBTC: `0x4Bd89B14F55A6Ef852A938Ccc0181F39E87E80C5`,
   AKRO: `0xad7541B1E795656851caD5c70aA8d495063D9a95`,
-  WETH: zeroAddress,
+  WETH: `${zeroAddress.slice(-1)}1`,
+  COMP: '0x82395c65e12aacb49981ae21d6e2a00c2ad70591',
+  ADEL: `${zeroAddress.slice(-1)}2`,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
@@ -71,14 +75,16 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
   tokens: {
     DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
     USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-    USDT: zeroAddress,
-    TUSD: zeroAddress,
-    sUSD: zeroAddress,
-    renBTC: zeroAddress,
-    WBTC: zeroAddress,
-    sBTC: zeroAddress,
+    USDT: testnetTokens.USDT,
+    TUSD: testnetTokens.TUSD,
+    sUSD: testnetTokens.sUSD,
+    renBTC: testnetTokens.renBTC,
+    WBTC: testnetTokens.WBTC,
+    sBTC: testnetTokens.sBTC,
     AKRO: '0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7',
-    WETH: zeroAddress,
+    WETH: testnetTokens.WETH,
+    COMP: testnetTokens.COMP,
+    ADEL: testnetTokens.ADEL,
   },
   etherskanDomain: 'https://etherscan.io/',
 };
