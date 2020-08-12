@@ -35,7 +35,7 @@ export function usePieSectors<T extends Amount, P = void>(
 
     return normalizedData.map((amount, index) => {
       return {
-        percent: new PercentAmount(amount.value).div(totalValue).mul(100),
+        percent: new PercentAmount(amount.value).div(totalValue.isZero() ? 1 : totalValue).mul(100),
         color: colors[index],
         normalizedValue: amount.value,
         pieData: chartData[index],
