@@ -1,4 +1,4 @@
-import { makeStyles, InheritBackgroundHackStyles } from 'utils/styles';
+import { makeStyles, ProvidedAncestorBackground } from 'utils/styles';
 
 const shadowOffset = 3;
 const largeShadowOffset = 3;
@@ -88,7 +88,7 @@ export const useStyles = makeStyles(theme => ({
       right: 1,
       bottom: 1,
       left: 1,
-      backgroundColor: ({ backgroundColor }: InheritBackgroundHackStyles) => backgroundColor,
+      backgroundColor: ({ backgroundColor }: ProvidedAncestorBackground) => backgroundColor,
       transition: theme.transitions.create(['opacity', 'background-color']),
 
       borderRadius: theme.spacing(height / 2) - 1,
