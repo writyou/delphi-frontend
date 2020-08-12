@@ -5,6 +5,7 @@ import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid } from 'components';
 import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
 import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
+import { ETH_NETWORK_CONFIG } from 'env';
 
 import * as tableData from './tableData';
 
@@ -14,18 +15,21 @@ const entries: tableData.Order[] = [
     amount: 0,
     APY: percentAmount,
     NAV: liquidityAmount,
+    token: new Token(ETH_NETWORK_CONFIG.tokens.COMP, 'COMP', 18),
   },
   {
     asset: 'AKRO',
     amount: 0,
     APY: percentAmount,
     NAV: liquidityAmount,
+    token: new Token(ETH_NETWORK_CONFIG.tokens.AKRO, 'AKRO', 18),
   },
   {
     asset: 'ADEL',
     amount: 0,
     APY: percentAmount,
     NAV: liquidityAmount,
+    token: new Token(ETH_NETWORK_CONFIG.tokens.ADEL, 'ADEL', 18),
   },
 ];
 
