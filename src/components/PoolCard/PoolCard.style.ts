@@ -14,17 +14,35 @@ export const useStyles = makeStyles(
       fontSize: 30,
     },
     row: {
-      marginBottom: 30,
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'baseline',
-      '&:last-child': {
-        marginBottom: 0,
+      '& + &': {
+        marginTop: 30,
+      },
+      '& + &$availableDepositRow': {
+        fontSize: 12,
+        marginTop: 12,
+      },
+      '& + &$additionalElementRow': {
+        display: 'block',
+      },
+      '&:empty': {
+        display: 'none',
       },
     },
     balance: {
       fontSize: 32,
     },
+    link: {
+      fontSize: 12,
+    },
+    linkDisabled: {
+      pointerEvents: 'none',
+      opacity: 0.5,
+    },
+    availableDepositRow: {},
+    additionalElementRow: {},
   }),
   { name: 'PoolCard' },
 );

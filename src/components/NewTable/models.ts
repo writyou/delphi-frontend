@@ -2,6 +2,8 @@ import * as React from 'react';
 
 export type AlignProperty = 'left' | 'right' | 'center';
 
+export type RowPaddingSize = 'medium' | 'small';
+
 export type Column<T, U = null> = {
   cellContent: CellContent<T, U>;
   align?: AlignProperty;

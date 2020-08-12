@@ -27,7 +27,7 @@ export class Api {
     this.subgraphApi,
   );
 
-  public staking = new StakingModuleApi();
+  public staking = new StakingModuleApi(this.web3Manager, this.transactions, this.erc20);
 
   public dca = new DCAModuleApi();
 

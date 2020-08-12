@@ -34,7 +34,6 @@ export function SavingsPoolPage() {
   ]);
 
   const history = useHistory();
-
   const classes = useStyles();
 
   return (

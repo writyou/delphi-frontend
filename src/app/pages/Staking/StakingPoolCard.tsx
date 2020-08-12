@@ -15,13 +15,14 @@ type Props = {
 };
 
 export function StakingPoolCard({ pool }: Props) {
-  const { address, poolName, tokens } = pool;
+  const { address, poolName, token } = pool;
   const api = useApi();
+
   return (
     <PoolCard
       address={address}
       poolName={poolName}
-      tokens={tokens}
+      tokens={[token]}
       content={
         <Grid container spacing={1}>
           <Grid item>
@@ -44,7 +45,8 @@ export function StakingPoolCard({ pool }: Props) {
       }
       poolBalance={<UserStakingPoolBalance poolAddress={address} />}
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
-      getUserBalance={(s: string) => api.user.getStakingPoolBalance$(s)}
+      getDepositLimit$={() => api.user.getStakingDepositLimit$(pool.address)}
+      getUserBalance$={(s: string) => api.user.getFullStakingPoolBalance$(s)}
     />
   );
 }

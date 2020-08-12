@@ -1,12 +1,17 @@
 import BN from 'bn.js';
 
-type Value = BN | string;
+import { IToBN } from 'model/types';
 
-export function min(first: Value, ...rest: Array<Value>): BN {
-  return rest.reduce<BN>((acc, cur) => {
-    const accBn = new BN(acc);
-    const curBn = new BN(cur);
+import { bnToBn } from './bnToBn';
 
-    return accBn.lt(curBn) ? accBn : curBn;
-  }, new BN(first));
+export function min<Value extends IToBN | BN | string | number | null>(
+  first: Value,
+  ...rest: Array<Value>
+): Value {
+  return rest.reduce<Value>((acc, cur) => {
+    const accBn = bnToBn(acc);
+    const curBn = bnToBn(cur);
+
+    return accBn.lt(curBn) ? acc : cur;
+  }, first);
 }

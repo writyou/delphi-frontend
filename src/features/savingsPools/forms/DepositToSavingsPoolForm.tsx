@@ -1,17 +1,19 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
-import { empty } from 'rxjs';
+import { empty, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { TokenAmount, Token } from 'model/entities';
-import { useValidateAmount } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 import { SavingsPool } from 'model/types';
-import { Grid } from 'components';
+import { Grid, Loading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { getSignificantValue } from 'utils/bn';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -64,12 +66,48 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, pool.address],
   );
 
-  const DialogContent = ({ amount }: FormData) => {
+  const DepositToSavingsConfirmContent = ({ amount }: FormData) => {
+    const spender = ETH_NETWORK_CONFIG.contracts.savingsModule;
+
+    const [fees, feesMeta] = useSubscribable(
+      () =>
+        currentToken
+          ? api.web3Manager.account$.pipe(
+              switchMap(account => {
+                if (!account) {
+                  return of(null);
+                }
+                return api.erc20
+                  .hasInfiniteApprove(currentToken.address, account, spender)
+                  .pipe(map(hasApprove => (hasApprove ? account : null)));
+              }),
+              switchMap(account => {
+                return account && amount
+                  ? api.savings.getDepositFees$(account, [{ poolAddress: pool.address, amount }])
+                  : of(null);
+              }),
+            )
+          : empty(),
+      [api, pool, spender],
+    );
+
+    const fee = fees && fees[0]?.fee;
+
     return (
       <>
         {`${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
           amount: amount ? amount.toFormattedString() : '⏳',
         })}`}
+        <Loading meta={feesMeta}>
+          <Typography>
+            Additional fee is{' '}
+            {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
+              <FormattedAmount sum={fee} variant="plain" />
+            ) : (
+              'zero'
+            )}
+          </Typography>
+        </Loading>
       </>
     );
   };
@@ -77,7 +115,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
   return (
     <FormWithConfirmation<FormData>
       title="Allocate"
-      DialogContent={DialogContent}
+      DialogContent={DepositToSavingsConfirmContent}
       onSubmit={handleFormSubmit}
       submitButton="Allocate"
     >

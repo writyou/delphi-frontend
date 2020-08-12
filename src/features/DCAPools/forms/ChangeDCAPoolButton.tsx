@@ -10,7 +10,7 @@ export function ChangeDCAPoolButton({
   ...rest
 }: { pool: DCAPool } & ButtonProps): JSX.Element {
   return (
-    <ModalButton {...rest} content="Change">
+    <ModalButton {...rest} content="Settings">
       {({ closeModal }) => (
         <ChangeDCAPoolForm
           poolAddress={pool.address}

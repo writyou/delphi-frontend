@@ -42,8 +42,7 @@ const en = {
         'If you want to withdraw liquidity, simply choose the pool and amount you want to withdraw',
       allocate: 'Allocate',
       allocateDialog: 'Are you sure you want to allocate?',
-      allocateNoApprovesWarning:
-        'to view the fees on the commission, you need to select an infinite unlock',
+      allocateNoApprovesWarning: 'To view the possible fees, you need to select an infinite unlock',
       allocateToOnePoolDialog: 'Are you sure you want to allocate %{amount}?',
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction — just specify amounts & stablecoins and click Allocate!',
@@ -107,6 +106,16 @@ const en = {
         success: 'Withdraw %{amount} from savings pool. Successful',
         error: 'Withdraw %{amount} from savings pool. Failed',
       },
+      'staking.deposit': {
+        pending: 'Stake to staking pool. Pending',
+        success: 'Stake to staking pool. Successful',
+        error: 'Stake to staking pool. Failed',
+      },
+      'staking.withdraw': {
+        pending: 'Unstake from staking pool. Pending',
+        success: 'Unstake from staking pool. Successful',
+        error: 'Unstake from staking pool. Failed',
+      },
     },
     networkWarning: {
       title: 'You are connected to the wrong network',
@@ -122,6 +131,10 @@ const en = {
         4: 'testnet',
       },
     },
+    infiniteApprove: {
+      text:
+        'Preapprove the contract to be able to spend any amount of your coins. You will not need to approve again & sign additional transactions each time.',
+    },
   },
   utils: {
     validation: {
@@ -130,6 +143,7 @@ const en = {
       moreThenOrEqual: 'Should be more then or equal %{value}',
       lessThenOrEqual: 'Should be less then or equal %{value}',
       insufficientFunds: 'Insufficient funds, your balance is %{value}',
+      depositLimitExceeded: 'Deposit limit exceeded, your limit is %{value}',
       notDefault: 'Value must be different from initial',
       maxStringLength: 'Text should be less then %{max} letters',
       onEnglishPlease: 'Should contain only english letters, numbers and ",.!:\'""',

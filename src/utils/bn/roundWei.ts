@@ -5,16 +5,26 @@ import { decimalsToWei } from './decimalsToWei';
 export function roundWei(
   value: string | BN,
   decimals: number,
-  variant: 'ceil' | 'floor',
+  variant: 'ceil' | 'floor' | 'half-away-from-zero',
   significant: number,
 ): BN {
-  const weiDecimals = decimalsToWei(Math.max(0, decimals - significant));
-
   const bnValue = new BN(value);
 
-  const floorRounded = bnValue.div(weiDecimals).mul(weiDecimals);
+  const multiplierDecimals = Math.max(0, decimals - significant);
+  const multiplier = decimalsToWei(multiplierDecimals);
 
-  const isNeedUpToCeil = variant === 'ceil' && !bnValue.eq(floorRounded);
+  if (!multiplierDecimals) {
+    return bnValue;
+  }
 
-  return floorRounded.add(isNeedUpToCeil ? weiDecimals : new BN(0));
+  const absFloorRounded = bnValue.abs().div(multiplier).mul(multiplier);
+  const mod = bnValue.sub(absFloorRounded);
+
+  const isNeedUpToCeil =
+    (variant === 'ceil' && !bnValue.eq(absFloorRounded)) ||
+    (variant === 'half-away-from-zero' && mod.gte(multiplier.divn(2)));
+
+  return absFloorRounded
+    .add(isNeedUpToCeil ? multiplier : new BN(0))
+    .muln(bnValue.isNeg() ? -1 : 1);
 }

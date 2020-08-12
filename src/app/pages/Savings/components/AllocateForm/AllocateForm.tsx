@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormSpy } from 'react-final-form';
 import * as R from 'ramda';
+import { FormApi } from 'final-form';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -26,9 +27,14 @@ export function AllocateForm({ pools }: AllocateFormProps) {
   const { t } = useTranslate();
   const api = useApi();
 
-  const handleFormSubmit = (data: FormData) => {
+  const handleFormSubmit = async (data: FormData, form: FormApi<FormData>) => {
     const filteredData = getDeposits(data);
-    return filteredData.length ? api.savings.deposit(filteredData) : undefined;
+
+    if (filteredData.length) {
+      await api.savings.deposit(filteredData);
+    }
+
+    form.reset();
   };
 
   return (

@@ -1,52 +1,60 @@
-import * as React from 'react';
+import React from 'react';
+import { useRouteMatch } from 'react-router-dom';
 
-import { useApi } from 'services/api';
-import { tKeys, useTranslate } from 'services/i18n';
-import { Grid, Loading, PoolCard } from 'components';
-import { useSubscribable } from 'utils/react';
-import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
-import { DCAPoolLiquidity, UserDCAPoolBalance } from 'features/DCAPools';
+import { Tabs, ComingSoon } from 'components';
+import { makeStyles } from 'utils/styles';
 
-import { DCAPoolCardButtons } from './DCAPoolCardButtons/DCAPoolCardButtons';
+import { DepositTab } from './innerPages/DepositTab';
+import { WithdrawTab } from './innerPages/WithdrawTab';
+
+const tabs = [
+  {
+    label: 'Deposit',
+    value: routes.dca.deposit.getElementKey(),
+    to: routes.dca.deposit.getRedirectPath(),
+    renderContent: () => <DepositTab />,
+  },
+  {
+    label: 'Withdraw',
+    value: routes.dca.withdraw.getElementKey(),
+    to: routes.dca.withdraw.getRedirectPath(),
+    renderContent: () => <WithdrawTab />,
+  },
+];
 
 export function DCAPage() {
-  const api = useApi();
+  const defaultPage = routes.dca.deposit.getElementKey();
+  const match = useRouteMatch<{ page: string }>('/dca/:page');
+  const page = match ? match.params.page : defaultPage;
   const classes = useStyles();
-  const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.dca.getPools$(), [api]);
+
+  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
+
+  React.useEffect(() => {
+    setSelectedPage(page);
+  }, [page]);
+
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
+    setSelectedPage(tab);
+  };
 
   return (
-    <>
-      <div className={classes.description}>{t(tKeys.modules.dca.description.getKey())}</div>
-      <Loading meta={poolsMeta}>
-        <Grid container alignItems="flex-start" spacing={3}>
-          {pools &&
-            pools.length &&
-            pools.map(pool => (
-              <Grid key={pool.address} item xs={4}>
-                <PoolCard
-                  address={pool.address}
-                  poolName={pool.poolName}
-                  tokens={pool.tokens}
-                  link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-                  content={<DCAPoolCardButtons pool={pool} />}
-                  poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
-                  poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
-                  getUserBalance={(s: string) => api.user.getDCAPoolBalance$(s)}
-                />
-              </Grid>
-            ))}
-        </Grid>
-      </Loading>
-    </>
+    <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+      <div className={classes.comingSoon}>
+        <ComingSoon variant="label" />
+      </div>
+    </Tabs>
   );
 }
 
 const useStyles = makeStyles(
   () => ({
-    description: {
-      marginBottom: 40,
+    comingSoon: {
+      flexGrow: 1,
+      alignSelf: 'center',
+      display: 'flex',
+      marginLeft: 10,
     },
   }),
   { name: 'DCAPage' },

@@ -22,6 +22,7 @@ import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
 import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
 import { denormolizeAmount } from 'utils/amounts';
+import { getSignificantValue } from 'utils/bn';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -216,6 +217,43 @@ export class SavingsModuleApi {
     });
 
     await promiEvent;
+  }
+
+  @memoize((...args: string[]) => args.join())
+  public getDepositLimit$(
+    userAddress: string,
+    poolAddress: string,
+  ): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      toLiquidityAmount$(
+        this.readonlyContract.methods.userCap(
+          {
+            _protocol: poolAddress,
+            user: userAddress,
+          },
+          [
+            this.readonlyContract.events.UserCapChanged({
+              filter: { user: userAddress, protocol: poolAddress },
+            }),
+          ],
+        ),
+      ),
+      this.getDepositLimitsEnabled$(),
+    ]).pipe(
+      map(([limit, enabled]) => {
+        const roundedLimit = limit.toBN().gt(getSignificantValue(limit.currency.decimals))
+          ? limit
+          : limit.withValue(0);
+        return enabled ? roundedLimit : null;
+      }),
+    );
+  }
+
+  @memoize()
+  private getDepositLimitsEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.userCapEnabled(undefined, [
+      this.readonlyContract.events.UserCapEnabledChange(),
+    ]);
   }
 
   private getProtocolReadonlyContract(address: string): Contracts['defiProtocol'] {

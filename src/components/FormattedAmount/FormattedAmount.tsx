@@ -6,6 +6,8 @@ import cn from 'classnames';
 import { Amount, LiquidityAmount, TokenAmount, PercentAmount } from 'model/entities';
 import { getDecimal } from 'utils/format';
 import { makeStyles } from 'utils/styles';
+import { roundWei } from 'utils/bn';
+import { SIGNIFICANT_FRACTIONAL_DIGITS } from 'env';
 
 import { Decimal } from './Decimal';
 
@@ -50,11 +52,13 @@ function renderLiquidityAmount(
   needToRenderPlus: boolean,
   variant: 'plain' | 'default',
 ) {
-  const decimal = getDecimal(
-    (sum.isNeg() ? sum.mul(new BN(-1)) : sum).toString(),
+  const roundedSum = roundWei(
+    sum.toBN(),
     sum.currency.decimals,
-    precision,
+    'half-away-from-zero',
+    SIGNIFICANT_FRACTIONAL_DIGITS,
   );
+  const decimal = getDecimal(roundedSum.abs().toString(), sum.currency.decimals, precision);
 
   return (
     <>
@@ -71,11 +75,13 @@ function renderTokenAmount(
   hideSymbol: boolean | undefined,
   needToRenderPlus: boolean,
 ) {
-  const decimal = getDecimal(
-    (sum.isNeg() ? sum.mul(new BN(-1)) : sum).toString(),
+  const roundedSum = roundWei(
+    sum.toBN(),
     sum.currency.decimals,
-    precision,
+    'half-away-from-zero',
+    SIGNIFICANT_FRACTIONAL_DIGITS,
   );
+  const decimal = getDecimal(roundedSum.abs().toString(), sum.currency.decimals, precision);
 
   return (
     <>

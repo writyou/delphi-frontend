@@ -3,6 +3,7 @@ import React from 'react';
 import { DepositToSavingsPoolWithFee } from 'model/types';
 import { NewTable, FormattedAmount, TokenName } from 'components';
 import { SavingsPoolName } from 'features/savingsPools';
+import { getSignificantValue } from 'utils/bn';
 
 export function FeesTable({ fees }: { fees: DepositToSavingsPoolWithFee[] }) {
   return <NewTable.Component entries={fees} columns={columns} />;
@@ -36,7 +37,13 @@ const columns: NewTable.models.Column<DepositToSavingsPoolWithFee>[] = [
     align: 'right',
     cellContent: {
       kind: 'simple',
-      render: fee => (fee.fee.isZero() ? '—' : <FormattedAmount sum={fee.fee} hideSymbol />),
+      render: ({ fee }) => {
+        return fee.gt(getSignificantValue(fee.currency.decimals)) ? (
+          <FormattedAmount sum={fee} hideSymbol variant="plain" />
+        ) : (
+          '—'
+        );
+      },
     },
   },
 ];
