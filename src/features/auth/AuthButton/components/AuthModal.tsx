@@ -42,11 +42,12 @@ export function AuthModal(props: AuthModalProps) {
       </DialogTitle>
       <CloseIcon className={classes.closeButton} onClick={onClose} />
       <DialogContent className={classes.content}>
-        <Grid container spacing={1} justify="center">
+        <Grid container spacing={3} justify="center">
           {wallets.map((type, index) => (
             <Grid item xs={4} key={index}>
               <ProviderButton
                 fullWidth
+                fullHeight
                 connect={connect}
                 disconnect={disconnect}
                 type={type}
@@ -59,18 +60,18 @@ export function AuthModal(props: AuthModalProps) {
       </DialogContent>
       <DialogContent>
         <Hint>
-          <Typography>
-            By connecting your wallet, you agree with{' '}
+          <Typography className={classes.aboutTerms}>
+            By connecting your wallet, you agree to our{' '}
             <Link
               href={T_AND_C_URL}
               target="_blank"
               rel="noopener noreferrer"
-              title="Terms & Conditions"
+              title="Terms of Service"
               color="textPrimary"
             >
-              Terms&nbsp;&&nbsp;Conditions
+              Terms&nbsp;of&nbsp;Service
             </Link>{' '}
-            and{' '}
+            and confirm that you have read and understood the{' '}
             <Link
               href={PRIVACY_POLICY_URL}
               target="_blank"
@@ -78,7 +79,7 @@ export function AuthModal(props: AuthModalProps) {
               title="Privacy Policy"
               color="textPrimary"
             >
-              Privacy Policy
+              Privacy&nbsp;Policy
             </Link>
             .
           </Typography>
@@ -106,5 +107,8 @@ const useStyles = makeStyles({
   },
   content: {
     marginTop: 30,
+  },
+  aboutTerms: {
+    fontSize: 12,
   },
 });
