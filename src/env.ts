@@ -1,7 +1,8 @@
 import { getEnv, Mode } from 'core/getEnv';
-import { zeroAddress } from 'utils/mock';
 
 export type NetworkID = 1 | 4;
+
+const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 interface INetworkConfig {
   id: NetworkID;
@@ -42,8 +43,8 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: zeroAddress,
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -53,8 +54,8 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: zeroAddress,
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -94,6 +95,7 @@ export const NETWORK_ID: NetworkID = ETH_NETWORK_CONFIG.id;
 export const SWARM_GATEWAY_URL = 'https://swarm-gateways.net';
 
 export const WEB3_LONG_POOLING_TIMEOUT = 30 * 1000;
+export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',

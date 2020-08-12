@@ -1,25 +1,9 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { makeGradient, generateGridSpacingOverrides } from '@akropolis-web/styles';
+import '@akropolis-web/styles/assets/fonts/HelveticaNeue/stylesheet.css';
 
-import { colors } from 'utils/styles/colors';
-
-import {
-  helveticaNeueBold,
-  helveticaNeueBoldItalic,
-  helveticaNeueCondensedBlack,
-  helveticaNeueCondensedBold,
-  helveticaNeueItalic,
-  helveticaNeueLight,
-  helveticaNeueLightItalic,
-  helveticaNeueMedium,
-  helveticaNeueMediumItalic,
-  helveticaNeueThin,
-  helveticaNeueThinItalic,
-  helveticaNeueUltraLight,
-  helveticaNeueUltraLightItalic,
-  helveticaNeue,
-} from './fonts';
-import { makeGradient } from './makeGradient';
-import { generateGridSpacingOverrides } from './generateGridSpacingOverrides';
+import { colors } from './colors';
+import './fonts';
 
 export { Theme };
 
@@ -205,22 +189,6 @@ function getTheme(type: 'light' | 'dark'): Theme {
       },
       MuiCssBaseline: {
         '@global': {
-          '@font-face': [
-            helveticaNeueBold,
-            helveticaNeueBoldItalic,
-            helveticaNeueCondensedBlack,
-            helveticaNeueCondensedBold,
-            helveticaNeueItalic,
-            helveticaNeueLight,
-            helveticaNeueLightItalic,
-            helveticaNeueMedium,
-            helveticaNeueMediumItalic,
-            helveticaNeueThin,
-            helveticaNeueThinItalic,
-            helveticaNeueUltraLight,
-            helveticaNeueUltraLightItalic,
-            helveticaNeue,
-          ],
           html: {
             boxSizing: 'border-box',
             WebkitFontSmoothing: 'antialiased',
@@ -410,13 +378,13 @@ function getTheme(type: 'light' | 'dark'): Theme {
   });
 }
 
-declare module '@material-ui/core/styles/createMuiTheme' {
-  interface Theme {
+declare module '@akropolis-web/styles/dist/theme' {
+  interface ThemeOverrides {
     colors: typeof colors;
     gradients: ReturnType<typeof getGradients>;
   }
 
-  interface ThemeOptions {
+  interface ThemeOptionsOverrides {
     colors: typeof colors;
     gradients: ReturnType<typeof getGradients>;
   }

@@ -1,3 +1,4 @@
+export { Tabs } from '@akropolis-web/components';
 export { Metric } from '@akropolis-web/components';
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
@@ -69,6 +70,5 @@ export * from './form';
 export * from './CompositionChart';
 export * from './Card';
 export * from './CompositionLegend';
-export * from './Tabs/Tabs';
 export * from './PoolCard/PoolCard';
 export * from './AddressIcon';

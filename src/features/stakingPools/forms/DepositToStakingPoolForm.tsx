@@ -1,17 +1,19 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
-import { empty } from 'rxjs';
+import { empty, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { TokenAmount, Token } from 'model/entities';
-import { useValidateAmount } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 import { StakingPool } from 'model/types';
 import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { min } from 'utils/bn';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -32,16 +34,35 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()),
-    [api, currentToken],
+  const [validationParams] = useSubscribable(
+    () =>
+      currentToken
+        ? combineLatest([
+            api.user.getTokenBalance$(currentToken.address),
+            api.user.getStakingDepositLimit$(pool.address),
+          ]).pipe(
+            map(([balance, limit]) => {
+              const maxValue = limit ? min(balance, limit) : balance;
+              return {
+                maxValue,
+                maxErrorTKey: maxValue.eq(balance)
+                  ? tKeys.utils.validation.insufficientFunds.getKey()
+                  : tKeys.utils.validation.depositLimitExceeded.getKey(),
+              };
+            }),
+          )
+        : empty(),
+    [api, currentToken, pool.address],
   );
+
+  const maxValue = validationParams?.maxValue;
+  const maxErrorTKey = validationParams?.maxErrorTKey;
 
   const validateAmount = useValidateAmount({
     required: true,
     moreThenZero: true,
-    maxValue: maxValue$,
-    maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
+    maxValue,
+    maxErrorTKey,
   });
 
   const handleFormChange = useCallback(
@@ -76,18 +97,18 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   return (
     <FormWithConfirmation<FormData>
-      title="Allocate"
+      title="Stake"
       DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
-      submitButton="Allocate"
+      submitButton="Stake"
     >
       <>
         <TokenAmountField
           name={fieldNames.amount}
-          currencies={pool.tokens}
+          currencies={[pool.token]}
           placeholder="Enter sum"
           validate={validateAmount}
-          maxValue={maxValue$}
+          maxValue={maxValue}
         />
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />

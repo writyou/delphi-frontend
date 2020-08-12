@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty, of } from 'rxjs';
@@ -13,6 +13,9 @@ import { SavingsPool } from 'model/types';
 import { Grid, Loading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { getSignificantValue } from 'utils/bn';
+
+import { useDepositAmountValidationParams } from '../hooks/useDepositAmountValidationParams';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -33,16 +36,13 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const maxValue$ = useMemo(
-    () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()),
-    [api, currentToken],
-  );
+  const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(pool.address, currentToken);
 
   const validateAmount = useValidateAmount({
     required: true,
     moreThenZero: true,
-    maxValue: maxValue$,
-    maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
+    maxValue,
+    maxErrorTKey,
   });
 
   const handleFormChange = useCallback(
@@ -100,10 +100,10 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
         <Loading meta={feesMeta}>
           <Typography>
             Additional fee is{' '}
-            {!fee || fee.isNeg() || fee.isZero() ? (
-              'is zero'
-            ) : (
+            {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
               <FormattedAmount sum={fee} variant="plain" />
+            ) : (
+              'zero'
             )}
           </Typography>
         </Loading>
@@ -126,7 +126,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
               currencies={pool.tokens}
               placeholder="Enter sum"
               validate={validateAmount}
-              maxValue={maxValue$}
+              maxValue={maxValue}
             />
           </Grid>
           {currentToken && (

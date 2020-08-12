@@ -1,15 +1,17 @@
-import { hexToRgb } from '@material-ui/core/styles';
+export {
+  CSSProperties,
+  StyleRules,
+  makeStyles,
+  useTheme,
+  lighten,
+  darken,
+  WithDarkTheme,
+  generateGridSpacingOverrides,
+  rgba,
+  useAncestorBackgroundHack,
+  AncestorBackgroundHackProvider,
+  ProvidedAncestorBackground,
+} from '@akropolis-web/styles';
 
-export { CSSProperties, StyleRules } from '@material-ui/styles';
-export { makeStyles, useTheme, lighten, darken } from '@material-ui/core/styles';
-
-export * from './theme';
+export * from './theme'; // TODO: move theme and colors into styles package and import from there
 export * from './colors';
-export * from './WithDarkTheme';
-export * from './InheritBackgroundHackProvider';
-
-export function rgba(hex: string, alfa: number) {
-  const rgb = hexToRgb(hex).replace(/^rgb\((.+?)\)$/, '$1');
-
-  return `rgba(${rgb}, ${alfa})`;
-}
