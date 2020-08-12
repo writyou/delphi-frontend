@@ -40,13 +40,8 @@
   "author": "Akropolis",
   "license": "MIT",
   "dependencies": {
-<<<<<<< HEAD
-    "@akropolis-web/components": "^0.2.0",
-    "@akropolis-web/styles": "^0.2.0",
-=======
     "@akropolis-web/components": "^0.3.1",
     "@akropolis-web/styles": "^0.4.0",
->>>>>>> a1fbbe9d71c92473adeeb8ca0a4297cfa265f678
     "@apollo/react-common": "^3.1.3",
     "@apollo/react-hooks": "^3.1.3",
     "@erebos/bzz": "^0.13.0",
