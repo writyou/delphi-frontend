@@ -7,8 +7,8 @@ export const useStyles = makeStyles(
       justifyContent: 'flex-start',
       alignItems: 'center',
       borderRadius: 6,
-      border: 'solid 1px #2d2d40',
       padding: '10px 10px 10px 50px',
+      background: theme.colors.blackRussian,
     },
     catImage: {
       fontSize: 80,
@@ -17,6 +17,7 @@ export const useStyles = makeStyles(
     text: {
       flexGrow: 1,
       color: 'white',
+      fontWeight: 300,
     },
     colored: {
       color: theme.colors.heliotrope,
