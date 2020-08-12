@@ -1,9 +1,4 @@
-import * as NewTable from './NewTable';
-
-export { NewTable };
-
-export { Tabs } from '@akropolis-web/components';
-
+export { Metric, Tabs } from '@akropolis-web/components';
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
@@ -39,11 +34,12 @@ export { Preview } from './Preview/Preview';
 export { NavInline } from './NavInline/NavInline';
 export { Section } from './Section/Section';
 export { SocialLink } from './SocialLink/SocialLink';
-export { ComingSoon } from './ComingSoon/ComingSoon';
 export { AccountAddress } from './AccountAddress/AccountAddress';
 export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
+export { Table } from './Table';
 
+export * from './ComingSoon';
 export * from './ErrorBoundary';
 export * from './Hint/Hint';
 export * from './Loading';
@@ -51,18 +47,16 @@ export * from './Snackbar/Snackbar';
 export * from './RowsLayout/RowsLayout';
 export * from './MetricsList/MetricsList';
 export * from './ModalButton/ModalButton';
-export * from './ShortAddress/ShortAddress';
+export * from './ShortAddress';
 export * from './Pagination/Pagination';
 export * from './Chart/Chart';
-export * from './Table/Table';
 export * from './BalanceChart/BalanceChart';
-export * from './Metric/Metric';
 export * from './ExpansionPanel/ExpansionPanel';
 export * from './FormattedAmount/FormattedAmount';
 export * from './Growth/Growth';
 export * from './ConfirmationDialog/ConfirmationDialog';
 export * from './Highlighted/Highlighted';
-export * from './Label/Label';
+export * from './Label';
 export * from './ChartMock/ChartMock';
 export * from './Profit/Profit';
 export * from './ChartProfit/ChartProfit';
@@ -72,8 +66,8 @@ export * from './TokenIcon/TokenIcon';
 export * from './TokensIcons/TokensIcons';
 export * from './form';
 export * from './CompositionChart';
-export * from './Card/Card';
+export * from './Card';
 export * from './CompositionLegend';
 export * from './PoolCard/PoolCard';
-export * from './AddressIcon/AddressIcon';
+export * from './AddressIcon';
 export * from './DepositLimit/DepositLimit';
