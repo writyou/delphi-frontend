@@ -1,52 +1,23 @@
 import React, { useCallback, useState } from 'react';
 import { FieldRenderProps, FormSpy } from 'react-final-form';
-import { empty, Observable, combineLatest } from 'rxjs';
+import { Observable } from 'rxjs';
 import { FormState } from 'final-form';
-import { map } from 'rxjs/operators';
 
-import { useApi } from 'services/api';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { TokenAmount, Token, Amount } from 'model/entities';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
-import { min } from 'utils/bn';
-import { denormolizeAmount } from 'utils/amounts';
+import { useGetDepositLimit$, useDepositAmountValidationParams } from 'features/savingsPools';
 
 import { SavingsPoolCard } from '../SavingsPoolCard/SavingsPoolCard';
 
 export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
-  const api = useApi();
-
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const getDepositLimit$ = useCallback(() => api.user.getSavingsDepositLimit$(pool.address), [
-    api,
-    pool.address,
-  ]);
-
-  const [validationParams] = useSubscribable(
-    () =>
-      currentToken
-        ? combineLatest([api.user.getTokenBalance$(currentToken.address), getDepositLimit$()]).pipe(
-            map(([balance, limit]) => {
-              const denormalizedLimit = limit && denormolizeAmount(limit, balance.currency);
-              const maxValue = denormalizedLimit ? min(balance, denormalizedLimit) : balance;
-              return {
-                maxValue,
-                maxErrorTKey: maxValue.eq(balance)
-                  ? tKeys.utils.validation.insufficientFunds.getKey()
-                  : tKeys.utils.validation.depositLimitExceeded.getKey(),
-              };
-            }),
-          )
-        : empty(),
-    [api, currentToken, getDepositLimit$],
-  );
-
-  const maxValue = validationParams?.maxValue;
-  const maxErrorTKey = validationParams?.maxErrorTKey;
+  const getDepositLimit$ = useGetDepositLimit$(pool.address);
+  const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(pool.address, currentToken);
 
   const handleFormChange = useCallback(
     (data: FormState<FormData>) => {

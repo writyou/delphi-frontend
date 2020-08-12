@@ -13,7 +13,7 @@ import { Loading } from 'components/Loading';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 import { Card } from '../Card/Card';
 import { useStyles } from './PoolCard.style';
-import { DepositLimit } from './DepositLimit';
+import { DepositLimit } from '../DepositLimit/DepositLimit';
 
 type Props = {
   address: string;
