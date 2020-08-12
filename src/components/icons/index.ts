@@ -19,6 +19,8 @@ export { renBTCIcon } from './renBTCIcon';
 export { WBTCIcon } from './WBTCIcon';
 export { sBTCIcon } from './sBTCIcon';
 export { ETHIcon } from './ETHIcon';
+export { COMPIcon } from './COMPIcon';
+export { ADELIcon } from './ADELIcon';
 
 export { DeFiPulseIcon } from './DeFiPulseIcon';
 export { getSocialIconByLink } from './getSocialIconByLink';
