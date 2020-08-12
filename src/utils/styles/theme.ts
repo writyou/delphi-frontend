@@ -2,22 +2,7 @@ import { createMuiTheme, Theme } from '@material-ui/core/styles';
 
 import { colors } from 'utils/styles/colors';
 
-import {
-  helveticaNeueBold,
-  helveticaNeueBoldItalic,
-  helveticaNeueCondensedBlack,
-  helveticaNeueCondensedBold,
-  helveticaNeueItalic,
-  helveticaNeueLight,
-  helveticaNeueLightItalic,
-  helveticaNeueMedium,
-  helveticaNeueMediumItalic,
-  helveticaNeueThin,
-  helveticaNeueThinItalic,
-  helveticaNeueUltraLight,
-  helveticaNeueUltraLightItalic,
-  helveticaNeue,
-} from './fonts';
+import './fonts';
 import { makeGradient } from './makeGradient';
 import { generateGridSpacingOverrides } from './generateGridSpacingOverrides';
 
@@ -205,22 +190,6 @@ function getTheme(type: 'light' | 'dark'): Theme {
       },
       MuiCssBaseline: {
         '@global': {
-          '@font-face': [
-            helveticaNeueBold,
-            helveticaNeueBoldItalic,
-            helveticaNeueCondensedBlack,
-            helveticaNeueCondensedBold,
-            helveticaNeueItalic,
-            helveticaNeueLight,
-            helveticaNeueLightItalic,
-            helveticaNeueMedium,
-            helveticaNeueMediumItalic,
-            helveticaNeueThin,
-            helveticaNeueThinItalic,
-            helveticaNeueUltraLight,
-            helveticaNeueUltraLightItalic,
-            helveticaNeue,
-          ],
           html: {
             boxSizing: 'border-box',
             WebkitFontSmoothing: 'antialiased',
