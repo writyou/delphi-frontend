@@ -36,7 +36,7 @@ function LandingIntro() {
       <div className={classes.buttons}>
         Try it on{' '}
         <div className={classes.button}>
-          <RedirectOrAuthButton to="http://localhost:8083" variant="contained">
+          <RedirectOrAuthButton to="https://delphi.akropolis.io/" variant="contained">
             Mainnet
           </RedirectOrAuthButton>
         </div>
