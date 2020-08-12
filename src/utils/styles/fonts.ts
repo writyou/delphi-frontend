@@ -1,1 +1,1 @@
-import './fonts/HelveticaNeue/stylesheet.css';
+import '@akropolis-web/styles';
