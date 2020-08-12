@@ -21,7 +21,7 @@ import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { isEqualHex } from 'utils/hex';
 import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
-import { denormolizeAmount } from 'utils/amounts';
+import { denormolizeAmount, sumTokenAmountsByToken } from 'utils/amounts';
 import { getSignificantValue } from 'utils/bn';
 
 import { Erc20Api } from './Erc20Api';
@@ -155,7 +155,7 @@ export class SavingsModuleApi {
     await this.erc20.approveMultiple(
       from,
       ETH_NETWORK_CONFIG.contracts.savingsModule,
-      sumAmountsByToken(R.pluck('amount', deposits)),
+      sumTokenAmountsByToken(R.pluck('amount', deposits)),
     );
 
     const promiEvent = txContract.methods.deposit(
@@ -291,16 +291,6 @@ export class SavingsModuleApi {
         ),
       );
   }
-}
-
-function sumAmountsByToken(amounts: TokenAmount[]): TokenAmount[] {
-  const reducedAmounts = amounts.reduce((acc, cur) => {
-    const prev = acc.get(cur.currency.address)?.toFraction() || 0;
-    acc.set(cur.currency.address, cur.add(prev));
-    return acc;
-  }, new Map<string, TokenAmount>());
-
-  return Array.from(reducedAmounts.values());
 }
 
 function toLiquidityAmount$(amount$: Observable<BN | IToBN>): Observable<LiquidityAmount>;

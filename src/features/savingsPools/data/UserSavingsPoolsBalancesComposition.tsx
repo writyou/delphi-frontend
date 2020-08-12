@@ -1,5 +1,6 @@
 import React from 'react';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 
 import {
   CompositionChart,
@@ -8,11 +9,12 @@ import {
   Grid,
   Metric,
   Loading,
+  PieChartData,
 } from 'components';
 import { useSubscribable } from 'utils/react';
-import { useApi } from 'services/api';
-import { LiquidityAmount } from 'model/entities';
-import { SavingsPool } from 'model/types';
+import { useApi, Api } from 'services/api';
+import { TokenAmount } from 'model/entities';
+import { sumTokenAmountsByToken } from 'utils/amounts';
 
 import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
 
@@ -22,18 +24,24 @@ type Props = {
   withCompositionLegend?: boolean;
 };
 
+function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
+  return api.user.getMySavingsPools$().pipe(
+    switchMap(pools =>
+      combineLatest(pools.map(pool => api.user.getSavingsPoolBalances$(pool.address))),
+    ),
+    map(balances =>
+      sumTokenAmountsByToken(balances.flat()).map(balance => ({
+        value: balance,
+        payload: undefined,
+      })),
+    ),
+  );
+}
+
 export function UserSavingsPoolsBalancesComposition(props: Props) {
   const { withInnerLegend, withCompositionLegend, size } = props;
   const api = useApi();
-  const [chartData, chartDataMeta] = useSubscribable(
-    () =>
-      api.user
-        .getAllSavingsPoolsBalances$()
-        .pipe(
-          map(balances => balances.map(({ balance, pool }) => ({ value: balance, payload: pool }))),
-        ),
-    [api],
-  );
+  const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
 
   return (
     <Loading meta={chartDataMeta}>
@@ -49,12 +57,12 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
           </Grid>
           {withCompositionLegend && (
             <Grid item>
-              <CompositionLegend<LiquidityAmount, SavingsPool>
+              <CompositionLegend<TokenAmount>
                 chartData={chartData}
                 Template={legendProps => (
                   <SimpleLegend
                     {...legendProps}
-                    renderLabel={({ pieData }) => pieData.payload.poolName}
+                    renderLabel={({ pieData }) => pieData.value.currency.symbol}
                   />
                 )}
               />
