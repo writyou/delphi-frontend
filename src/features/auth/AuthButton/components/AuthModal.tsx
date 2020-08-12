@@ -2,10 +2,11 @@ import * as React from 'react';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { CommunicationState } from 'utils/react';
-import { Dialog, DialogTitle, DialogContent, Hint, Grid } from 'components';
+import { Dialog, DialogTitle, DialogContent, Hint, Grid, Link, Typography } from 'components';
 import { WalletType, wallets } from 'services/api';
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
+import { T_AND_C_URL, PRIVACY_POLICY_URL } from 'docs';
 
 import { ProviderButton } from './ProviderButton';
 
@@ -55,6 +56,33 @@ export function AuthModal(props: AuthModalProps) {
             </Grid>
           ))}
         </Grid>
+      </DialogContent>
+      <DialogContent>
+        <Hint>
+          <Typography>
+            By connecting your wallet, you agree with{' '}
+            <Link
+              href={T_AND_C_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Terms & Conditions"
+              color="textPrimary"
+            >
+              Terms&nbsp;&&nbsp;Conditions
+            </Link>{' '}
+            and{' '}
+            <Link
+              href={PRIVACY_POLICY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Privacy Policy"
+              color="textPrimary"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </Typography>
+        </Hint>
       </DialogContent>
       {connecting.error && (
         <DialogContent>
