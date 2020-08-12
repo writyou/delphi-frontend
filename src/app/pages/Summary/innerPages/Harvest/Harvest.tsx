@@ -3,24 +3,36 @@ import BN from 'bn.js';
 
 import { makeStyles } from 'utils/styles';
 import { NewTable, Loading, Typography, Hint, Grid } from 'components';
-import { percentAmount, liquidityAmount, tokenAmount } from 'utils/mock';
-import { LiquidityAmount, Currency } from 'model/entities';
+import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
+import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
 
 import * as tableData from './tableData';
 
 const entries: tableData.Order[] = [
   {
-    asset: 'MOCK',
-    amount: 0.4,
+    asset: 'COMP',
+    amount: 0,
+    APY: percentAmount,
+    NAV: liquidityAmount,
+  },
+  {
+    asset: 'AKRO',
+    amount: 0,
+    APY: percentAmount,
+    NAV: liquidityAmount,
+  },
+  {
+    asset: 'ADEL',
+    amount: 0,
     APY: percentAmount,
     NAV: liquidityAmount,
   },
 ];
 
 export const entriesForChart = [
-  new Array<number>(5).fill(0).map((_, index) => ({
-    value: new LiquidityAmount(new BN(20 * (index + 1)), new Currency('$', 18)),
-    payload: tokenAmount,
+  entries.map(order => ({
+    value: new LiquidityAmount(new BN(20), new Currency('$', 18)),
+    payload: new TokenAmount('0', new Token(zeroAddress, order.asset, 18)),
   })),
 ];
 

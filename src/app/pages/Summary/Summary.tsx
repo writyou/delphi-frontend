@@ -6,7 +6,6 @@ import { Loading, Card } from 'components';
 import { makeStyles } from 'utils/styles';
 
 import { SummaryPage } from './SummaryPage';
-import { SummaryEmptyPage } from '../SummaryEmpty/SummaryEmptyPage';
 
 export function Summary() {
   const classes = useStyles();
@@ -16,7 +15,7 @@ export function Summary() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>{user ? <SummaryPage /> : <SummaryEmptyPage />}</Loading>
+      <Loading meta={userMeta}>{user ? <SummaryPage /> : <SummaryPage />}</Loading>
     </Card>
   );
 }
