@@ -1,4 +1,5 @@
 import * as React from 'react';
+import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 import { useHistory } from 'react-router';
 
@@ -8,17 +9,18 @@ import { getShortAddress } from 'utils/format';
 import { useSubscribable, useCommunication, useOnChangeState } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Button, Loading, Typography, Grid, AddressIcon } from 'components';
+import { Button, Loading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
 
 import { AuthModal } from './components/AuthModal';
 
 interface Props {
-  text?: string;
+  children?: React.ReactNode;
+  size?: ButtonProps['size'];
   connectRedirectPath?: string;
   disconnectRedirectPath?: string;
 }
 
-export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }: Props) {
+export function AuthButton({ children, size, connectRedirectPath, disconnectRedirectPath }: Props) {
   const [isOpened, setIsOpened] = React.useState(false);
   const [needToRedirect, setNeedToRedirect] = React.useState(false);
   const api = useApi();
@@ -58,14 +60,17 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
     },
   );
 
+  const isConnected: boolean = accountMeta.loaded && !!account;
+
   return (
     <>
       <Button
+        size={size}
         color={connectedWallet ? 'default' : 'primary'}
         variant={connectedWallet ? 'outlined' : 'contained'}
         onClick={toggleIsOpened}
         disabled={!accountMeta.loaded}
-        className={classes.root}
+        className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
           <Loading
             ignoreError
@@ -73,7 +78,7 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
             communication={connectCommunication}
             progressVariant="circle"
             progressProps={{
-              size: 24,
+              size: 16,
             }}
           />
         }
@@ -95,7 +100,7 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
                   <Typography className={classes.address}>{getShortAddress(account)}</Typography>
                 </Grid>
                 <Grid item>
-                  <Typography className={classes.connected}>
+                  <Typography className={classes.connectedTo}>
                     {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
                     ${t(tKeys.features.networkWarning.networkType[NETWORK_ID].getKey())}`}
                   </Typography>
@@ -103,9 +108,7 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
               </Grid>
             </>
           ) : (
-            <Typography className={classes.connect}>
-              {text || t(tKeys.features.auth.connect.getKey())}
-            </Typography>
+            children || t(tKeys.features.auth.connect.getKey())
           )}
         </Loading>
       </Button>
@@ -124,27 +127,28 @@ export function AuthButton({ text, connectRedirectPath, disconnectRedirectPath }
 
 const useStyles = makeStyles({
   root: {
-    padding: '0 15px 0 0',
+    '&$connected': {
+      padding: 0,
+    },
   },
   address: {
     fontSize: 12,
     lineHeight: 1,
   },
-  connected: {
+  connectedTo: {
     fontSize: 12,
     lineHeight: 1,
     opacity: 0.5,
     marginTop: 3,
   },
-  connect: {
-    paddingLeft: 10,
-  },
   container: {
     marginLeft: 11,
+    paddingRight: 16,
   },
   icon: {
     width: 34,
     height: 34,
     fontSize: 34,
   },
+  connected: {},
 });
