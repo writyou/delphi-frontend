@@ -24,7 +24,7 @@ export const useStyles = makeStyles(
     },
     closeIcon: {
       alignSelf: 'flex-start',
-      marginLeft: 20,
+      marginLeft: 10,
     },
   }),
   { name: 'PreauditVersionWarning' },
