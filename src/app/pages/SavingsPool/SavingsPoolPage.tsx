@@ -15,6 +15,7 @@ import {
   WithdrawFromSavingsPoolButton,
   DepositToSavingsPoolForm,
   SavingsPoolBalancesComposition,
+  SavingsPoolDepositLimit,
 } from 'features/savingsPools';
 
 import { RewardCompositionChartMock } from './RewardCompositionChartMock';
@@ -89,6 +90,9 @@ export function SavingsPoolPage() {
                 title="My Supply Balance"
                 value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
               />
+              <div className={classes.depositLimit}>
+                <SavingsPoolDepositLimit poolAddress={poolAddress} />
+              </div>
             </Grid>
             <Grid item xs={6}>
               <DepositToSavingsPoolForm pool={pool} />
@@ -132,6 +136,9 @@ const useStyles = makeStyles(
     },
     row: {
       paddingTop: 50,
+    },
+    depositLimit: {
+      fontSize: 12,
     },
   }),
   { name: 'SavingsPoolPage' },

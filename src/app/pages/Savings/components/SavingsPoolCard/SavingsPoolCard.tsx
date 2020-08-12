@@ -7,6 +7,7 @@ import { SavingsPool } from 'model/types';
 import { SavingsPoolLiquidity, UserSavingsPoolBalance } from 'features/savingsPools';
 import { routes } from 'app/routes';
 import { Amount } from 'model/entities';
+import { useSubscribable } from 'utils/react';
 
 type Props = {
   pool: SavingsPool;
@@ -18,12 +19,17 @@ type Props = {
 export function SavingsPoolCard({ pool, content, additionalElement, getDepositLimit$ }: Props) {
   const { address, poolName, tokens } = pool;
   const api = useApi();
+  const [poolBalance, poolBalanceMeta] = useSubscribable(
+    () => api.savings.getPoolBalance$(address),
+    [api, address],
+  );
   return (
     <PoolCard
       address={address}
       poolName={poolName}
       tokens={tokens}
       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
+      isDisabledLink={!poolBalanceMeta.loaded || (!!poolBalance && poolBalance.isZero())}
       content={content}
       getDepositLimit$={getDepositLimit$}
       additionalElement={additionalElement}

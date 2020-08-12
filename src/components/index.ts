@@ -1,5 +1,4 @@
-export { Tabs } from '@akropolis-web/components';
-export { Metric } from '@akropolis-web/components';
+export { Metric, Tabs } from '@akropolis-web/components';
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
@@ -72,3 +71,4 @@ export * from './Card';
 export * from './CompositionLegend';
 export * from './PoolCard/PoolCard';
 export * from './AddressIcon';
+export * from './DepositLimit/DepositLimit';

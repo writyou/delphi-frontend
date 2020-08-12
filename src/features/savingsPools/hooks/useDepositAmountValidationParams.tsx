@@ -8,17 +8,16 @@ import { useSubscribable } from 'utils/react';
 import { min } from 'utils/bn';
 import { denormolizeAmount } from 'utils/amounts';
 
-import { useGetDepositLimit$ } from './useGetDepositLimit$';
-
 export function useDepositAmountValidationParams(poolAddress: string, token: Token | null) {
   const api = useApi();
-
-  const getDepositLimit$ = useGetDepositLimit$(poolAddress);
 
   const [validationParams] = useSubscribable(
     () =>
       token
-        ? combineLatest([api.user.getTokenBalance$(token.address), getDepositLimit$()]).pipe(
+        ? combineLatest([
+            api.user.getTokenBalance$(token.address),
+            api.user.getSavingsDepositLimit$(poolAddress),
+          ]).pipe(
             map(([balance, limit]) => {
               const denormalizedLimit = limit && denormolizeAmount(limit, balance.currency);
               const maxValue = denormalizedLimit ? min(balance, denormalizedLimit) : balance;
@@ -31,7 +30,7 @@ export function useDepositAmountValidationParams(poolAddress: string, token: Tok
             }),
           )
         : empty(),
-    [api, token, getDepositLimit$],
+    [api, token, poolAddress],
   );
 
   const maxValue = validationParams?.maxValue;
