@@ -13,6 +13,7 @@ import { Bitski, Fortmatic, Metamask, Portis, WalletConnect } from 'components/i
 
 interface ProviderButtonProps {
   fullWidth?: boolean;
+  fullHeight?: boolean;
   connect(wallet: WalletType): Promise<void>;
   disconnect(): void;
   type: WalletType;
@@ -33,6 +34,7 @@ export function ProviderButton({
   connectedAddress,
   disconnect,
   fullWidth,
+  fullHeight,
 }: ProviderButtonProps) {
   const classes = useStyles();
   const connecting = useCommunication(connect, [connect]);
@@ -48,7 +50,10 @@ export function ProviderButton({
   return (
     <ButtonBase
       focusRipple
-      className={cn(classes.root, { [classes.fullWidth]: fullWidth })}
+      className={cn(classes.root, {
+        [classes.fullWidth]: fullWidth,
+        [classes.fullHeight]: fullHeight,
+      })}
       color="primary"
       onClick={handleClick}
       focusVisibleClassName={classes.focusVisible}
@@ -100,13 +105,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(1),
     transition: theme.transitions.create(['background-color']),
     borderRadius: 12,
-    minHeight: 171,
+    minHeight: 140,
 
     '&:hover, &$focusVisible': {
-      backgroundColor:
-        theme.palette.type === 'dark'
-          ? lighten(theme.palette.background.paper, 0.2)
-          : darken(theme.palette.background.paper, 0.2),
+      backgroundColor: '#191924',
     },
   },
 
@@ -114,6 +116,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   fullWidth: {
     width: '100%',
+  },
+
+  fullHeight: {
+    height: '100%',
   },
 
   actionName: {

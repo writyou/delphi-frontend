@@ -8,12 +8,12 @@ const useStyles = makeStyles(theme => ({
 
   buttons: {
     display: 'flex',
+    alignItems: 'center',
+    fontSize: 20,
   },
 
   button: {
-    '& + &': {
-      marginLeft: 30,
-    },
+    margin: '0 16px',
   },
 
   disclaimer: {

@@ -8,8 +8,9 @@ import {
   PieChartData,
   CompositionLegend,
   Grid,
+  TokenName,
 } from 'components';
-import { LiquidityAmount, PercentAmount, TokenAmount } from 'model/entities';
+import { LiquidityAmount, PercentAmount, TokenAmount, Token } from 'model/entities';
 
 import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 
@@ -18,6 +19,7 @@ export type Order = {
   amount: number;
   APY: PercentAmount;
   NAV: LiquidityAmount;
+  token: Token;
 };
 
 export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> = [
@@ -25,7 +27,7 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
     renderTitle: () => 'Asset',
     cellContent: {
       kind: 'simple',
-      render: x => x.asset,
+      render: x => <TokenName token={x.token} />,
     },
   },
 
@@ -41,7 +43,7 @@ export const columnsWithoutExpandableRows: Array<NewTable.models.Column<Order>> 
     renderTitle: () => 'APY',
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.APY} />,
+      render: x => <FormattedAmount sum={x.APY} variant="plain" />,
     },
   },
 
