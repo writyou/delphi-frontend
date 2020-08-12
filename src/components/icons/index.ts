@@ -43,3 +43,4 @@ export { ChartWithCat } from './ChartWithCat';
 export { ArrowStartToSave } from './ArrowStartToSave';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
+export { CloseIcon } from './CloseIcon';

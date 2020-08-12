@@ -16,8 +16,8 @@ function AlphaCat(props: React.ComponentProps<typeof SvgIcon>) {
         <mask id="AlphaCat-c" fill="#fff">
           <use xlinkHref="#AlphaCat-a" />
         </mask>
-        <use fill="url(#AlphaCat-b)" xlinkHref="#AlphaCat-a" />
         <g mask="url(#AlphaCat-c)">
+          <use fill="url(#AlphaCat-b)" xlinkHref="#AlphaCat-a" />
           <g transform="translate(-2 15)">
             <path
               fill="#292950"

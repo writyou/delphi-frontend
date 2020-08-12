@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { makeStyles } from 'utils/styles';
-import { AlphaCat } from 'components/icons';
-import { Link } from 'components';
+import { AlphaCat, CloseIcon } from 'components/icons';
+import { Link, IconButton } from 'components';
 import { DISCORD_URL, PREAUDIT_VERSION_ANNOUNCEMENT_URL } from 'env';
+
+import { useStyles } from './PreauditVersionWarning.style';
+import { preauditVersionWarningStorage as warningStorage } from './preauditVersionWarningStorage';
 
 export function PreauditVersionWarning() {
   const classes = useStyles();
 
-  return (
+  const [isHidden, setIsHidden] = useState(() => warningStorage.getItem('isHidden'));
+
+  const handleCloseIconClick = React.useCallback(() => {
+    warningStorage.setItem('isHidden', true);
+    setIsHidden(true);
+  }, []);
+
+  return isHidden ? null : (
     <div className={classes.root}>
       <AlphaCat className={classes.catImage} />
       <div className={classes.text}>
@@ -29,26 +38,11 @@ export function PreauditVersionWarning() {
         </Link>{' '}
         for any questions or issues!
       </div>
+      <div className={classes.closeIcon}>
+        <IconButton onClick={handleCloseIconClick}>
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </div>
     </div>
   );
 }
-
-export const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderRadius: 6,
-    border: 'solid 1px #2d2d40',
-  },
-  catImage: {
-    margin: '10px 20px 10px 50px',
-    fontSize: '80px',
-  },
-  text: {
-    color: 'white',
-  },
-  colored: {
-    color: theme.colors.heliotrope,
-  },
-}));
