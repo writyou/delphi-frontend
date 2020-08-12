@@ -43,8 +43,8 @@ const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: '0x14d5e052965A243C3B4B140E72FB5F69268D4828',
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -54,8 +54,8 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: '0x14d5e052965A243C3B4B140E72FB5F69268D4828',
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
