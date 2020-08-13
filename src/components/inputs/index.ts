@@ -1,11 +1,13 @@
-export { TextInput } from '@akropolis-web/components';
-export { NumberInput } from '@akropolis-web/components';
-export { DecimalsInput } from '@akropolis-web/components';
-export { CheckboxInput } from '@akropolis-web/components';
-export { RadioGroupInput } from '@akropolis-web/components';
+export {
+  TextInput,
+  NumberInput,
+  DecimalsInput,
+  CheckboxInput,
+  RadioGroupInput,
+  RadioButton,
+  SwitchInput,
+  SelectInput,
+} from '@akropolis-web/components';
 export { TokenAmountInput, TokenAmountInputProps } from './TokenAmountInput';
 export { LiquidityAmountInput, LiquidityAmountInputProps } from './LiquidityAmountInput';
-export { RadioButton } from '@akropolis-web/components';
-export { SwitchInput } from '@akropolis-web/components';
 export { AmountInput } from './AmountInput/AmountInput';
-export { SelectInput } from '@akropolis-web/components';
