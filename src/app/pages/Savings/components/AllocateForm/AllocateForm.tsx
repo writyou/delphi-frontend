@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormSpy } from 'react-final-form';
 import * as R from 'ramda';
-import { FormApi } from 'final-form';
+import { FormApi, FORM_ERROR } from 'final-form';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -26,7 +26,7 @@ export type FormData = Record<string, TokenAmount> & { _: () => void };
 const validate = (values: FormData) => {
   const errors: any = {};
   if (getDeposits(values).length === 0) {
-    errors.fields = 'fields is empty';
+    errors[FORM_ERROR] = 'fields is empty';
   }
 
   return errors;
