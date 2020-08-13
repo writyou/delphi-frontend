@@ -30,9 +30,13 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
   const [tokens, tokensMeta] = useSubscribable(
     () =>
       combineLatest(
-        Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress =>
-          api.erc20.getToken$(tokenAddress).pipe(catchError(() => of(null))),
-        ),
+        Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress => {
+          try {
+            return api.erc20.getToken$(tokenAddress).pipe(catchError(() => of(null)));
+          } catch {
+            return of(null);
+          }
+        }),
       ).pipe(map(values => values.filter((value): value is Token => !!value))),
     [api],
   );
