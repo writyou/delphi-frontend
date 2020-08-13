@@ -18,8 +18,8 @@ export class GlobalStatsApi {
     private prices: PricesApi,
   ) {}
 
-  public getUsersCount$(): Observable<number> {
-    return this.subgraph.loadUsersLength$();
+  public getStats$() {
+    return this.subgraph.loadGlobalStats$();
   }
 
   @memoize()
