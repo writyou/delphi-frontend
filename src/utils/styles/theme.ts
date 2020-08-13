@@ -3,7 +3,6 @@ import { makeGradient, generateGridSpacingOverrides } from '@akropolis-web/style
 import '@akropolis-web/styles/assets/fonts/HelveticaNeue/stylesheet.css';
 
 import { colors } from './colors';
-import './fonts';
 
 export { Theme };
 
