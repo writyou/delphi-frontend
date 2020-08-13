@@ -1,8 +1,6 @@
 import React, { useState, useCallback } from 'react';
 
-// import { useSubscribable } from 'utils/react';
 import { ConfirmationDialog } from 'components/ConfirmationDialog/ConfirmationDialog';
-// import { toObservable } from 'utils/rxjs';
 
 import { FormTemplate, FormTemplateProps } from './FormTemplate';
 
@@ -41,12 +39,6 @@ export function FormWithConfirmation<FormData extends AnyObject>(
   const handlePTokenExchangingConfirmationCancel = useCallback(() => {
     setArgs(null);
   }, []);
-
-  /* const dialogContent = useSubscribable(
-    () => toObservable(values ? getDialogContent(values) : '⏳'),
-    [values, getDialogContent],
-    '⏳',
-  ); */
 
   const Template = CustomFormTemplate || FormTemplate;
 
