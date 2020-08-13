@@ -8,6 +8,7 @@ import { useSubscribable } from 'utils/react';
 import { min, max } from 'utils/bn';
 import { denormolizeAmount } from 'utils/amounts';
 import { DepositToSavingsPool } from 'model/types';
+import { isEqualHex } from 'utils/hex';
 
 export function useDepositAmountValidationParams(
   poolAddress: string,
@@ -16,11 +17,6 @@ export function useDepositAmountValidationParams(
 ) {
   const { t } = useTranslate();
   const api = useApi();
-  const otherAmounts = formValues
-    ? formValues.reduce((acc, v) => {
-        return v.poolAddress === poolAddress ? acc : [...acc, v.amount];
-      }, [] as TokenAmount[])
-    : [];
 
   const [validationParams] = useSubscribable(
     () =>
@@ -30,6 +26,14 @@ export function useDepositAmountValidationParams(
             api.user.getSavingsDepositLimit$(poolAddress),
           ]).pipe(
             map(([balance, limit]) => {
+              const otherAmounts = formValues
+                ? formValues.reduce((acc, v) => {
+                    return isEqualHex(v.poolAddress, poolAddress) ||
+                      !isEqualHex(v.amount.currency.address, token.address)
+                      ? acc
+                      : [...acc, v.amount];
+                  }, [] as TokenAmount[])
+                : [];
               const sum = otherAmounts.reduce((acc, v) => {
                 return acc.add(v);
               }, new TokenAmount(0, token));

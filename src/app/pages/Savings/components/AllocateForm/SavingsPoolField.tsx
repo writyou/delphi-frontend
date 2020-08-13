@@ -34,7 +34,7 @@ export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPo
         setCurrentToken(amount?.currency || null);
       }
     },
-    [currentToken, values],
+    [currentToken],
   );
 
   const validateAmount = useValidateAmount({
