@@ -19,8 +19,8 @@ function Cat1(props: React.ComponentProps<typeof SvgIcon>) {
         <mask id="Cat1-mask-c" fill="#fff">
           <use xlinkHref="#Cat1-circle-a" />
         </mask>
-        <use fill="url(#Cat1-gradient-b)" xlinkHref="#Cat1-circle-a" />
         <g mask="url(#Cat1-mask-c)">
+          <use fill="url(#Cat1-gradient-b)" xlinkHref="#Cat1-circle-a" />
           <g transform="translate(2.7 9.46)">
             <path
               fill="#191924"
