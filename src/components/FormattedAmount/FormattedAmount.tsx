@@ -36,7 +36,7 @@ function FormattedAmount(props: IProps) {
         {(sum instanceof LiquidityAmount &&
           renderLiquidityAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
           (sum instanceof TokenAmount &&
-            renderTokenAmount(sum, precision, hideSymbol, needToRenderPlus)) ||
+            renderTokenAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
           (sum instanceof PercentAmount &&
             renderPercentAmount(sum, precision, needToRenderPlus, variant)) ||
           formattedBalance}
@@ -74,7 +74,10 @@ function renderTokenAmount(
   precision: number,
   hideSymbol: boolean | undefined,
   needToRenderPlus: boolean,
+  variant: 'plain' | 'default',
 ) {
+  const classes = useStyles();
+
   const roundedSum = roundWei(
     sum.toBN(),
     sum.currency.decimals,
@@ -87,7 +90,11 @@ function renderTokenAmount(
     <>
       {(sum.isNeg() && '-') || (needToRenderPlus && '+')}
       <Decimal decimal={decimal} />
-      {!hideSymbol && <>&nbsp;{sum.currency.symbol}</>}
+      {!hideSymbol && (
+        <span className={cn({ [classes.tokenSymbol]: variant === 'default' })}>
+          &nbsp;{sum.currency.symbol}
+        </span>
+      )}
     </>
   );
 }
@@ -121,6 +128,10 @@ const useStyles = makeStyles(
         paddingLeft: 2,
         lineHeight: '1.8em',
       },
+    },
+
+    tokenSymbol: {
+      fontSize: '0.8em',
     },
 
     percentSymbol: {},
