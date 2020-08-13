@@ -19,6 +19,9 @@ export { renBTCIcon } from './renBTCIcon';
 export { WBTCIcon } from './WBTCIcon';
 export { sBTCIcon } from './sBTCIcon';
 export { ETHIcon } from './ETHIcon';
+export { COMPIcon } from './COMPIcon';
+export { ADELIcon } from './ADELIcon';
+export { SUSDIcon } from './SUSDIcon';
 
 export { DeFiPulseIcon } from './DeFiPulseIcon';
 export { getSocialIconByLink } from './getSocialIconByLink';
@@ -43,3 +46,4 @@ export { ChartWithCat } from './ChartWithCat';
 export { ArrowStartToSave } from './ArrowStartToSave';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
+export { CloseIcon } from './CloseIcon';

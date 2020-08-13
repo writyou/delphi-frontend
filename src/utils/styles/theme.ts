@@ -1,10 +1,9 @@
 import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import { makeGradient, generateGridSpacingOverrides } from '@akropolis-web/styles';
+import '@akropolis-web/styles/assets/fonts/HelveticaNeue/stylesheet.css';
 
-import { colors } from 'utils/styles/colors';
-
+import { colors } from './colors';
 import './fonts';
-import { makeGradient } from './makeGradient';
-import { generateGridSpacingOverrides } from './generateGridSpacingOverrides';
 
 export { Theme };
 
@@ -379,13 +378,13 @@ function getTheme(type: 'light' | 'dark'): Theme {
   });
 }
 
-declare module '@material-ui/core/styles/createMuiTheme' {
-  interface Theme {
+declare module '@akropolis-web/styles/dist/theme' {
+  interface ThemeOverrides {
     colors: typeof colors;
     gradients: ReturnType<typeof getGradients>;
   }
 
-  interface ThemeOptions {
+  interface ThemeOptionsOverrides {
     colors: typeof colors;
     gradients: ReturnType<typeof getGradients>;
   }

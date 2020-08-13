@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, Intro } from 'components';
+import { Button, Link, Intro, Loading, LinkProps } from 'components';
 import { routes } from 'app/routes';
+import { useApi } from 'services/api';
+import { useSubscribable } from 'utils/react';
+import { AuthButton } from 'features/auth';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -31,49 +34,75 @@ function LandingIntro() {
       }
     >
       <div className={classes.buttons}>
-        {/* <div className={classes.button}>
-          <Button
-            disabled
-            size="large"
-            color="gradient"
-            variant="contained"
-            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
-            underline="none"
-            href="#"
+        Try it on{' '}
+        <div className={classes.button}>
+          <RedirectOrAuthButton to="https://delphi.akropolis.io" variant="contained">
+            Mainnet
+          </RedirectOrAuthButton>
+        </div>
+        or{' '}
+        <div className={classes.button}>
+          <RedirectOrAuthButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
+            Rinkeby
+          </RedirectOrAuthButton>
+        </div>
+        <div className={classes.button}>
+          <Link
+            href="https://invis.io/Z3YEH8QNYSK#/425936541_Delphi"
+            color="inherit"
             target="_blank"
             rel="noopener noreferrer"
           >
             View Prototype
-          </Button>
-        </div> */}
-        <div className={classes.button}>
-          <Button
-            component={RouterLink}
-            to={routes.savings.getRedirectPath()}
-            size="large"
-            color="primary"
-            variant="outlined"
-          >
-            Rinkeby
-          </Button>
+          </Link>
         </div>
-        {/* <div className={classes.button}>
-          <Button
-            disabled
-            size="large"
-            color="gradient"
-            variant="outlined"
-            component={Link as React.FunctionComponent<Omit<LinkProps, 'color' | 'variant'>>}
-            underline="none"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Feature Request
-          </Button>
-        </div> */}
       </div>
     </Intro>
+  );
+}
+
+function RedirectOrAuthButton({
+  to,
+  variant,
+  children,
+}: {
+  to: string;
+  variant: 'outlined' | 'contained';
+  children: React.ReactNode;
+}) {
+  const api = useApi();
+  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [api]);
+
+  const needToAuth = window.location.origin.includes(to);
+
+  const commonProps = {
+    size: 'large',
+    color: 'primary',
+    variant,
+    children,
+  } as const;
+
+  if (!needToAuth) {
+    return (
+      <Button
+        {...commonProps}
+        component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
+        underline="none"
+        href={to}
+        target="_blank"
+        rel="noopener noreferrer"
+      />
+    );
+  }
+
+  return (
+    <Loading meta={accountMeta} loader={<Button {...commonProps} disabled />}>
+      {account ? (
+        <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />
+      ) : (
+        <AuthButton {...commonProps} connectRedirectPath={routes.summary.getRedirectPath()} />
+      )}
+    </Loading>
   );
 }
 

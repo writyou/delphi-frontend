@@ -22,6 +22,8 @@ interface INetworkConfig {
     sBTC: string;
     AKRO: string;
     WETH: string;
+    ADEL: string;
+    COMP: string;
   };
   etherskanDomain: string;
 }
@@ -36,15 +38,17 @@ const testnetTokens: INetworkConfig['tokens'] = {
   WBTC: `0xEBa449b9150F34396D529643263A90D495Ae563c`,
   sBTC: `0x4Bd89B14F55A6Ef852A938Ccc0181F39E87E80C5`,
   AKRO: `0xad7541B1E795656851caD5c70aA8d495063D9a95`,
-  WETH: zeroAddress,
+  WETH: `${zeroAddress.slice(-1)}1`,
+  COMP: '0x82395c65e12aacb49981ae21d6e2a00c2ad70591',
+  ADEL: `${zeroAddress.slice(-1)}2`,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: '0x14d5e052965A243C3B4B140E72FB5F69268D4828',
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -54,8 +58,8 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
-    savingsModule: '0xF5402dDA4C904AbfF40Bc2A7A133980785F59780',
-    akroStakingPool: '0x14d5e052965A243C3B4B140E72FB5F69268D4828',
+    savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
+    akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
   tokens: testnetTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
@@ -65,20 +69,22 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
   id: 1,
   name: 'mainnet',
   contracts: {
-    savingsModule: zeroAddress,
-    akroStakingPool: zeroAddress,
+    savingsModule: '0x73fC3038B4cD8FfD07482b92a52Ea806505e5748',
+    akroStakingPool: '0x3501Ec11d205fa249f2C42f5470e137b529b35D0',
   },
   tokens: {
-    DAI: zeroAddress,
-    USDC: zeroAddress,
-    USDT: zeroAddress,
-    TUSD: zeroAddress,
-    sUSD: zeroAddress,
-    renBTC: zeroAddress,
-    WBTC: zeroAddress,
-    sBTC: zeroAddress,
-    AKRO: zeroAddress,
-    WETH: zeroAddress,
+    DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
+    USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+    USDT: testnetTokens.USDT,
+    TUSD: testnetTokens.TUSD,
+    sUSD: testnetTokens.sUSD,
+    renBTC: testnetTokens.renBTC,
+    WBTC: testnetTokens.WBTC,
+    sBTC: testnetTokens.sBTC,
+    AKRO: '0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7',
+    WETH: testnetTokens.WETH,
+    COMP: testnetTokens.COMP,
+    ADEL: testnetTokens.ADEL,
   },
   etherskanDomain: 'https://etherscan.io/',
 };
@@ -94,6 +100,7 @@ export const ETH_NETWORK_CONFIG = configsByMode[getEnv().mode];
 export const NETWORK_ID: NetworkID = ETH_NETWORK_CONFIG.id;
 export const SWARM_GATEWAY_URL = 'https://swarm-gateways.net';
 
+export const PRICE_LONG_POOLING_TIMEOUT = 15 * 60 * 1000;
 export const WEB3_LONG_POOLING_TIMEOUT = 30 * 1000;
 export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
 

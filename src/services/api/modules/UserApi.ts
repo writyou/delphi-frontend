@@ -3,7 +3,7 @@ import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
 
 import { memoize } from 'utils/decorators';
-import { TokenAmount, LiquidityAmount, PercentAmount } from 'model/entities';
+import { TokenAmount, LiquidityAmount, PercentAmount, Fraction } from 'model/entities';
 import { SavingsPool, DepositToSavingsPool } from 'model/types';
 import { calcAvg } from 'utils/amounts';
 
@@ -73,6 +73,20 @@ export class UserApi {
         ),
       ),
     );
+  }
+
+  @memoize(R.identity)
+  public getSavingsPoolBalances$(poolAddress: string): Observable<TokenAmount[]> {
+    return combineLatest([
+      this.getSavingsPoolBalance$(poolAddress),
+      this.savings.getPoolBalance$(poolAddress),
+      this.savings.getPoolBalances$(poolAddress),
+    ]).pipe(
+      map(([userBalance, poolBalance, poolBalances]) => {
+        const userShare = poolBalance.isZero() ? 0 : new Fraction(userBalance).div(poolBalance);
+        return poolBalances.map(balance => balance.mul(userShare));
+      }),
+    ) as any;
   }
 
   @memoize(R.identity)

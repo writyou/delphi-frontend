@@ -48,11 +48,9 @@ export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
         items={customNavItems || menuItems}
         className={classes.navInline}
         extraRight={[
-          <AuthButton
-            key="0"
-            text={authButtonText}
-            connectRedirectPath={routes.summary.getRedirectPath()}
-          />,
+          <AuthButton key="0" connectRedirectPath={routes.summary.getRedirectPath()}>
+            {authButtonText}
+          </AuthButton>,
           ...(connectedWallet ? [<AppButton key="2" />] : []),
         ]}
       />

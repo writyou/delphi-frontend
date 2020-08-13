@@ -51,39 +51,45 @@ export class DCAModuleApi {
 
   @memoize((...args: string[]) => args.join())
   public getUserBalance$(poolAddress: string, account: string): Observable<LiquidityAmount> {
-    console.log('mocked method', poolAddress, account);
+    onlyDev(() => console.log('mocked method', poolAddress, account));
     return of(liquidityAmount);
   }
 
   @memoize((...args: string[]) => args.join())
   public getTokenToSellBalance$(poolAddress: string, account: string): Observable<TokenAmount> {
-    console.log('mocked method', poolAddress, account);
+    onlyDev(() => console.log('mocked method', poolAddress, account));
     return of(new TokenAmount(new BN(100).mul(decimalsToWei(tokenToSell.decimals)), tokenToSell));
   }
 
   @memoize((...args: string[]) => args.join())
   public getPoolBalance$(poolAddress: string): Observable<LiquidityAmount> {
-    console.log('mocked method', poolAddress);
+    onlyDev(() => console.log('mocked method', poolAddress));
     return of(liquidityAmount);
   }
 
   @autobind
   public async withdraw(withdraw: WithdrawFromDCAPool): Promise<void> {
-    console.log('mocked method', withdraw);
+    onlyDev(() => console.log('mocked method', withdraw));
   }
 
   @autobind
   public async withdrawAll(withdraw: WithdrawFromDCAPool): Promise<void> {
-    console.log('mocked method', withdraw);
+    onlyDev(() => console.log('mocked method', withdraw));
   }
 
   @autobind
   public async deposit(deposit: DepositToDCAPool): Promise<void> {
-    console.log('mocked method', deposit);
+    onlyDev(() => console.log('mocked method', deposit));
   }
 
   @autobind
   public async change(deposit: ChangeWeeklyDCAAmount): Promise<void> {
-    console.log('mocked method', deposit);
+    onlyDev(() => console.log('mocked method', deposit));
+  }
+}
+
+function onlyDev(callback: () => void) {
+  if (process.env.NODE_ENV === 'development') {
+    callback();
   }
 }
