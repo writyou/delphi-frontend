@@ -4,7 +4,7 @@ import * as R from 'ramda';
 
 import { memoize } from 'utils/decorators';
 import { TokenAmount, LiquidityAmount, PercentAmount, Fraction } from 'model/entities';
-import { SavingsPool, DepositToSavingsPool } from 'model/types';
+import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
 import { calcAvg } from 'utils/amounts';
 
 import { Web3ManagerModule } from '../types';
@@ -165,6 +165,18 @@ export class UserApi {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
         account ? this.staking.getDepositLimit$(poolAddress, account) : empty(),
+      ),
+    );
+  }
+
+  @memoize()
+  public getMyStakingPools$(): Observable<StakingPool[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.staking.getPools$() : empty())),
+      map(pools =>
+        pools.filter(pool =>
+          this.getFullStakingPoolBalance$(pool.address).pipe(map(balance => !balance.isZero())),
+        ),
       ),
     );
   }

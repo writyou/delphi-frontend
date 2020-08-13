@@ -6,6 +6,7 @@ const rawTree = {
     savings: null,
     investment: null,
     dca: null,
+    'my-savings-pools': null,
     harvest: null,
   },
   savings: {

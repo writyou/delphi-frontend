@@ -23,9 +23,9 @@ import { LiveStats } from './Components/LiveStats';
 const tabs = [
   {
     label: 'My Savings Pools',
-    value: routes.summary.savings.getElementKey(),
-    to: routes.summary.savings.getRedirectPath(),
-    renderContent: () => <innerPages.Savings />,
+    value: routes.summary['my-savings-pools'].getElementKey(),
+    to: routes.summary['my-savings-pools'].getRedirectPath(),
+    renderContent: () => <innerPages.MySavingsPools />,
   },
   {
     label: 'My Investment Pools',
@@ -38,6 +38,12 @@ const tabs = [
     value: routes.summary.dca.getElementKey(),
     to: routes.summary.dca.getRedirectPath(),
     renderContent: () => <innerPages.DCA />,
+  },
+  {
+    label: 'Savings',
+    value: routes.summary.savings.getElementKey(),
+    to: routes.summary.savings.getRedirectPath(),
+    renderContent: () => <innerPages.Savings />,
   },
   {
     label: 'My Harvest',
