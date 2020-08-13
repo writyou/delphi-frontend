@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useMemo } from 'react';
 import { FieldRenderProps, FormSpy } from 'react-final-form';
 import { Observable } from 'rxjs';
 import { FormState } from 'final-form';
@@ -12,16 +12,24 @@ import { SpyField } from 'components';
 import { useGetDepositLimit$, useDepositAmountValidationParams } from 'features/savingsPools';
 
 import { SavingsPoolCard } from '../SavingsPoolCard/SavingsPoolCard';
+import { getDeposits } from './getDeposits';
 
 export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
+  const [values, setValues] = useState<FormData | null>(null);
+  const deposits = useMemo(() => (values ? getDeposits(values) : undefined), [values]);
 
   const getDepositLimit$ = useGetDepositLimit$(pool.address);
-  const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(pool.address, currentToken);
+  const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(
+    pool.address,
+    currentToken,
+    deposits,
+  );
 
   const handleFormChange = useCallback(
     (data: FormState<FormData>) => {
       const amount = data.values[name];
+      setValues(data.values);
       if (!currentToken || !amount || !currentToken.equals(amount.currency)) {
         setCurrentToken(amount?.currency || null);
       }
@@ -60,7 +68,7 @@ type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | '
     currentToken: Token | null;
   };
 
-type FormData = Record<string, TokenAmount>;
+type FormData = Record<string, TokenAmount> & { _: () => void };
 
 function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;

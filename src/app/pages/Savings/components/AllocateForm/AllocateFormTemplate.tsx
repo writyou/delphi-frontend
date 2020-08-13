@@ -26,9 +26,14 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
   return (
     <Form
       {...restProps}
-      subscription={{ submitError: true, submitting: true, dirtySinceLastSubmit: true }}
+      subscription={{
+        submitError: true,
+        submitting: true,
+        dirtySinceLastSubmit: true,
+        hasValidationErrors: true,
+      }}
     >
-      {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit }) => (
+      {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit, hasValidationErrors }) => (
         <form onSubmit={handleSubmit}>
           <Grid container alignItems="flex-start" spacing={3}>
             {children.map((child, index) => (
@@ -37,7 +42,6 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
               </Grid>
             ))}
           </Grid>
-          {}
           {!dirtySinceLastSubmit && !!submitError && (
             <Grid item xs={12}>
               <Hint>
@@ -56,7 +60,7 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
                     color="primary"
                     type="submit"
                     fullWidth
-                    disabled={submitting}
+                    disabled={submitting || hasValidationErrors}
                   >
                     {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
                   </Button>

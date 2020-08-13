@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormSpy } from 'react-final-form';
 import * as R from 'ramda';
-import { FormApi } from 'final-form';
+import { FormApi, FORM_ERROR } from 'final-form';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -23,6 +23,15 @@ type AllocateFormProps = {
 
 export type FormData = Record<string, TokenAmount> & { _: () => void };
 
+const validate = (values: FormData) => {
+  const errors: any = {};
+  if (getDeposits(values).length === 0) {
+    errors[FORM_ERROR] = 'fields is empty';
+  }
+
+  return errors;
+};
+
 export function AllocateForm({ pools }: AllocateFormProps) {
   const { t } = useTranslate();
   const api = useApi();
@@ -39,6 +48,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
 
   return (
     <FormWithConfirmation<FormData>
+      validate={validate}
       DialogContent={AllocateFormConfirmationContent}
       onSubmit={handleFormSubmit}
       submitButton={t(tKeys.modules.savings.allocate.getKey())}

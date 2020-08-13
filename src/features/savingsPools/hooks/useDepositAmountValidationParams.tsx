@@ -2,13 +2,20 @@ import { empty, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
-import { tKeys } from 'services/i18n';
-import { Token } from 'model/entities';
+import { tKeys, useTranslate } from 'services/i18n';
+import { Token, TokenAmount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
-import { min } from 'utils/bn';
+import { min, max } from 'utils/bn';
 import { denormolizeAmount } from 'utils/amounts';
+import { DepositToSavingsPool } from 'model/types';
+import { isEqualHex } from 'utils/hex';
 
-export function useDepositAmountValidationParams(poolAddress: string, token: Token | null) {
+export function useDepositAmountValidationParams(
+  poolAddress: string,
+  token: Token | null,
+  formValues?: DepositToSavingsPool[],
+) {
+  const { t } = useTranslate();
   const api = useApi();
 
   const [validationParams] = useSubscribable(
@@ -19,18 +26,35 @@ export function useDepositAmountValidationParams(poolAddress: string, token: Tok
             api.user.getSavingsDepositLimit$(poolAddress),
           ]).pipe(
             map(([balance, limit]) => {
+              const otherAmounts = formValues
+                ? formValues.reduce((acc, v) => {
+                    return isEqualHex(v.poolAddress, poolAddress) ||
+                      !isEqualHex(v.amount.currency.address, token.address)
+                      ? acc
+                      : [...acc, v.amount];
+                  }, [] as TokenAmount[])
+                : [];
+              const sum = otherAmounts.reduce((acc, v) => {
+                return acc.add(v);
+              }, new TokenAmount(0, token));
+              const calculatedBalance = max(new TokenAmount(0, token), balance.sub(sum));
               const denormalizedLimit = limit && denormolizeAmount(limit, balance.currency);
-              const maxValue = denormalizedLimit ? min(balance, denormalizedLimit) : balance;
+              const maxValue = denormalizedLimit
+                ? min(calculatedBalance, denormalizedLimit)
+                : calculatedBalance;
+
               return {
                 maxValue,
-                maxErrorTKey: maxValue.eq(balance)
-                  ? tKeys.utils.validation.insufficientFunds.getKey()
+                maxErrorTKey: maxValue.eq(calculatedBalance)
+                  ? t(tKeys.utils.validation.insufficientFunds.getKey(), {
+                      value: balance.toFormattedString(),
+                    })
                   : tKeys.utils.validation.depositLimitExceeded.getKey(),
               };
             }),
           )
         : empty(),
-    [api, token, poolAddress],
+    [api, token, poolAddress, formValues],
   );
 
   const maxValue = validationParams?.maxValue;
