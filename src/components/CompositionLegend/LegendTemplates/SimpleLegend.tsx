@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Amount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Amount } from 'model/entities';
 
 import { CompositionChartLegendProps, PieSector } from '../../CompositionChart/model';
 

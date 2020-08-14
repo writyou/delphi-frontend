@@ -2,9 +2,8 @@ import { useMemo } from 'react';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import BN from 'bn.js';
+import { Amount, IToBN } from '@akropolis-web/primitives';
 
-import { Amount } from 'model/entities';
-import { IToBN } from 'model/types';
 import {
   isRequired,
   validatePositiveNumber,

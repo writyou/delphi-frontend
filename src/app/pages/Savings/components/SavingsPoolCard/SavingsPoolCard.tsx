@@ -1,12 +1,12 @@
 import React from 'react';
 import { Observable } from 'rxjs';
+import { Amount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { PoolCard } from 'components';
 import { SavingsPool } from 'model/types';
 import { SavingsPoolLiquidity, UserSavingsPoolBalance } from 'features/savingsPools';
 import { routes } from 'app/routes';
-import { Amount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 
 type Props = {

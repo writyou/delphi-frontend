@@ -1,10 +1,10 @@
 import * as React from 'react';
 import BN from 'bn.js';
+import { LiquidityAmount, Currency, TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Typography, Hint, Grid } from 'components';
 import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
-import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import * as tableData from './tableData';

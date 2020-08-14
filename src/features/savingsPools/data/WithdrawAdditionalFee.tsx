@@ -1,10 +1,10 @@
 import React from 'react';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading, Box } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { TokenAmount } from 'model/entities';
-import { getSignificantValue } from 'utils/bn';
+import { getSignificantValue } from 'utils';
 
 type Props = {
   amount: TokenAmount;

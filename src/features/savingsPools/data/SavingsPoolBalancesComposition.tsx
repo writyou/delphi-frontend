@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { map } from 'rxjs/operators';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
@@ -9,7 +10,6 @@ import {
   Grid,
   Loading,
 } from 'components';
-import { TokenAmount } from 'model/entities';
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';

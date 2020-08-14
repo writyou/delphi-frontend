@@ -1,8 +1,8 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import cn from 'classnames';
+import { Amount } from '@akropolis-web/primitives';
 
-import { Amount } from 'model/entities';
 import { makeStyles } from 'utils/styles';
 import { FormattedAmount } from 'components/FormattedAmount/FormattedAmount';
 

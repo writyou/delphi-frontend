@@ -3,17 +3,16 @@ import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TokenAmount, Token, min } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount, useSubscribable } from 'utils/react';
 import { StakingPool } from 'model/types';
 import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { min } from 'utils/bn';
 
 interface FormData {
   amount: TokenAmount | null;

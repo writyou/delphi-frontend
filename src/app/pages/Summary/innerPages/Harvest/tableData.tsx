@@ -1,4 +1,5 @@
 import React from 'react';
+import { LiquidityAmount, PercentAmount, TokenAmount, Token } from '@akropolis-web/primitives';
 
 import {
   Table,
@@ -10,7 +11,6 @@ import {
   Grid,
   TokenName,
 } from 'components';
-import { LiquidityAmount, PercentAmount, TokenAmount, Token } from 'model/entities';
 
 import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 

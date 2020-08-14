@@ -2,11 +2,10 @@
 import { Observable, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
+import { Fraction, decimalsToWei } from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
-import { Fraction } from 'model/entities';
 import { PRICE_LONG_POOLING_TIMEOUT } from 'env';
-import { decimalsToWei } from 'utils/bn';
 
 export class PricesApi {
   @memoize(R.identity)

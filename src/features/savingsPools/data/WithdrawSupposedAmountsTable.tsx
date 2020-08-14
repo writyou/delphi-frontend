@@ -1,11 +1,11 @@
 import React from 'react';
 import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TokenAmount, PercentAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading, Table, Grid, TokenIcon } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
-import { TokenAmount, PercentAmount } from 'model/entities';
 
 type Props = {
   amount: TokenAmount;

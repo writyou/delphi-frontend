@@ -1,7 +1,6 @@
 import React from 'react';
 import BN from 'bn.js';
-
-import { LiquidityAmount, Currency } from 'model/entities';
+import { LiquidityAmount, Currency } from '@akropolis-web/primitives';
 
 import { AmountInput, AmountInputProps } from './AmountInput/AmountInput';
 

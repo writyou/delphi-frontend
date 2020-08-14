@@ -1,4 +1,4 @@
-import { Token, TokenAmount, PercentAmount } from 'model/entities';
+import { Token, TokenAmount, PercentAmount } from '@akropolis-web/primitives';
 
 export type SavingsPool = {
   address: string;
