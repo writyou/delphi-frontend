@@ -12,9 +12,27 @@ import { SubgraphConfig } from './model';
 
 export class SubgraphApi {
   private sdk = makeSubgraphApi(this.apolloClient);
-  private getDepositToSavingsPoolEvents: (a: string) => Observable<any> = () => of(true);
+  private getEventsForReloadUserSavingsPools$: (a: string) => Observable<any> = () => of(true);
+  private getEventsForReloadUser$: (a: string) => Observable<any> = () => of(true);
+  private getEventsForReloadSavingsPools$: () => Observable<any> = () => of(true);
 
   constructor(private apolloClient: ApolloClient<any>) {}
+
+  public setEventsForReloadUserSavingsPoolsGetter(
+    getEventsForReloadUserSavingsPools$: (a: string) => Observable<any>,
+  ) {
+    this.getEventsForReloadUserSavingsPools$ = getEventsForReloadUserSavingsPools$;
+  }
+
+  public setEventsForReloadUserGetter(getEventsForReloadUser$: (a: string) => Observable<any>) {
+    this.getEventsForReloadUser$ = getEventsForReloadUser$;
+  }
+
+  public setEventsForReloadSavingsPoolsGetter(
+    getEventsForReloadSavingsPools$: () => Observable<any>,
+  ) {
+    this.getEventsForReloadSavingsPools$ = getEventsForReloadSavingsPools$;
+  }
 
   @memoize()
   public loadUsersLength$(): Observable<number> {
@@ -28,30 +46,28 @@ export class SubgraphApi {
 
   @memoize(R.identity)
   public loadUser$(address: string): Observable<User | null> {
-    return this.sdk
-      .User({
-        id: address.toLowerCase(),
-      })
-      .pipe(
-        map(({ user }) => {
-          return user ? convertUser(user) : null;
-        }),
-      );
-  }
-
-  public setGetDepositToSavingsPoolEvents(
-    getDepositToSavingsPoolEvents: (a: string) => Observable<any>,
-  ) {
-    this.getDepositToSavingsPoolEvents = getDepositToSavingsPoolEvents;
+    return merge([of(true), this.getEventsForReloadUser$(address)]).pipe(
+      switchMap(() =>
+        this.sdk
+          .User({
+            id: address.toLowerCase(),
+          })
+          .pipe(
+            map(({ user }) => {
+              return user ? convertUser(user) : null;
+            }),
+          ),
+      ),
+    );
   }
 
   @memoize(R.identity)
-  public loadUserSavingsPools$(address: string): Observable<SavingsPool[]> {
-    return merge([of(true), this.getDepositToSavingsPoolEvents(address)]).pipe(
+  public loadUserSavingsPools$(userAddress: string): Observable<SavingsPool[]> {
+    return merge([of(true), this.getEventsForReloadUserSavingsPools$(userAddress)]).pipe(
       switchMap(() =>
         combineLatest([
           this.loadSubgraphConfig$(),
-          this.sdk.User({ id: address.toLowerCase() }),
+          this.sdk.User({ id: userAddress.toLowerCase() }),
         ]).pipe(
           map(([{ aprDecimals }, { user }]) => {
             return user ? user.savingsPools.map(pool => convertSavingsPool(pool, aprDecimals)) : [];
@@ -75,10 +91,14 @@ export class SubgraphApi {
 
   @memoize()
   public loadSavingsPools$(): Observable<SavingsPool[]> {
-    return combineLatest([this.loadSubgraphConfig$(), this.sdk.SavingsPools()]).pipe(
-      map(([{ aprDecimals }, { savingsPools }]) => {
-        return savingsPools.map(pool => convertSavingsPool(pool, aprDecimals));
-      }),
+    return merge([of(true), this.getEventsForReloadSavingsPools$()]).pipe(
+      switchMap(() =>
+        combineLatest([this.loadSubgraphConfig$(), this.sdk.SavingsPools()]).pipe(
+          map(([{ aprDecimals }, { savingsPools }]) => {
+            return savingsPools.map(pool => convertSavingsPool(pool, aprDecimals));
+          }),
+        ),
+      ),
     );
   }
 

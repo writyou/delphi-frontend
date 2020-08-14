@@ -293,18 +293,18 @@ export class SavingsModuleApi {
       );
   }
 
-  public makeGetDepositEvent() {
-    const value = this.txContract.getValue();
+  @autobind
+  public getDepositEvent$(userAddress: string) {
+    return fromWeb3DataEvent(
+      this.readonlyContract.events.Deposit({
+        filter: { user: userAddress },
+      }),
+    );
+  }
 
-    if (value === null || value === undefined) {
-      return () => of(true);
-    }
-    return (userAddress: string) =>
-      fromWeb3DataEvent(
-        value.events.Deposit({
-          filter: { user: userAddress },
-        }),
-      );
+  @autobind
+  public getProtocolRegisteredEvent$() {
+    return fromWeb3DataEvent(this.readonlyContract.events.ProtocolRegistered());
   }
 }
 
