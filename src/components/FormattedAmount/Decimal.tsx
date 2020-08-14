@@ -1,9 +1,8 @@
 import * as React from 'react';
 import cn from 'classnames';
+import { Decimal as DecimalType, formatInteger } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Decimal as DecimalType } from 'model/types';
-import { formatInteger } from 'utils/format';
 
 type Props = {
   decimal: DecimalType;

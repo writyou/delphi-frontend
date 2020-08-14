@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Grid, PieChartData } from 'components';
@@ -9,7 +10,6 @@ import {
   zeroAddress,
   getMockCompositionChartEntriesLiquidity,
 } from 'utils/mock';
-import { LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
 
 import * as tableData from './tableData';

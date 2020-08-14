@@ -1,7 +1,13 @@
 import BN from 'bn.js';
+import {
+  Token,
+  TokenAmount,
+  LiquidityAmount,
+  Currency,
+  PercentAmount,
+  Fraction,
+} from '@akropolis-web/primitives';
 
-import { Token, TokenAmount, LiquidityAmount, Currency, PercentAmount } from 'model/entities';
-import { Fraction } from 'model/entities/Fraction';
 import { PieChartData } from 'components';
 import { SavingsPool } from 'model/types';
 

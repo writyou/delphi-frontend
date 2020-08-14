@@ -1,7 +1,7 @@
 import { Observable, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { LiquidityAmount } from '@akropolis-web/primitives';
 
-import { LiquidityAmount } from 'model/entities';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { memoize } from 'utils/decorators';
 

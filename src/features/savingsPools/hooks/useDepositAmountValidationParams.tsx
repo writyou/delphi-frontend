@@ -1,14 +1,18 @@
 import { empty, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import {
+  min,
+  max,
+  Token,
+  TokenAmount,
+  denormolizeAmount,
+  isEqualHex,
+} from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Token, TokenAmount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
-import { min, max } from 'utils/bn';
-import { denormolizeAmount } from 'utils/amounts';
 import { DepositToSavingsPool } from 'model/types';
-import { isEqualHex } from 'utils/hex';
 
 export function useDepositAmountValidationParams(
   poolAddress: string,

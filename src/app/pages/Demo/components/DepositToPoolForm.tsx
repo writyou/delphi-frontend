@@ -2,9 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
+import { TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useApi } from 'services/api';
 import { useValidateAmount } from 'utils/react';
 

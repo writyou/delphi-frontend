@@ -2,10 +2,10 @@ import React, { useCallback, useState, useMemo } from 'react';
 import { FieldRenderProps, FormSpy } from 'react-final-form';
 import { Observable } from 'rxjs';
 import { FormState } from 'final-form';
+import { TokenAmount, Token, Amount } from '@akropolis-web/primitives';
 
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
-import { TokenAmount, Token, Amount } from 'model/entities';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';

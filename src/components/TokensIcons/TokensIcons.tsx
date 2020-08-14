@@ -1,7 +1,7 @@
 import * as React from 'react';
+import { Token } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Token } from 'model/entities';
 import { TokenIcon } from 'components/TokenIcon/TokenIcon';
 
 type Props = {

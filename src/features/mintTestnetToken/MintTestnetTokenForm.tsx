@@ -2,14 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import { combineLatest, of } from 'rxjs';
 import BN from 'bn.js';
 import { catchError, map } from 'rxjs/operators';
+import { TokenAmount, Token, decimalsToWei } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { Loading } from 'components';
-import { decimalsToWei } from 'utils/bn';
 import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {

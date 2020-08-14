@@ -4,9 +4,9 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import cn from 'classnames';
+import { Token, Amount } from '@akropolis-web/primitives';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { Token, Amount } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 import { Loading } from 'components/Loading';
 

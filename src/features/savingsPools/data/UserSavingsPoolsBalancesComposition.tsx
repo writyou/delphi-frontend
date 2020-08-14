@@ -1,6 +1,7 @@
 import React from 'react';
 import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
+import { TokenAmount, sumTokenAmountsByToken } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
@@ -13,8 +14,6 @@ import {
 } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
-import { TokenAmount } from 'model/entities';
-import { sumTokenAmountsByToken } from 'utils/amounts';
 
 import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import BN from 'bn.js';
+import { formatBalance } from '@akropolis-web/primitives';
 
 import { Profit } from 'components/Profit/Profit';
-import { formatBalance } from 'utils/format';
 
 interface IProps {
   previous: BN;

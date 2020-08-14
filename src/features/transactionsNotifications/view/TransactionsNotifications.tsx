@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSnackbar } from 'notistack';
+import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { useSubscribable } from 'utils/react';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useApi, SubmittedTransaction } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
-import { LiquidityAmount } from 'model/entities';
 
 const tKeys = tKeysAll.features.notifications;
 

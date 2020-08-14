@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { TokenAmount } from 'model/entities';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import { Table } from '../../Table';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
