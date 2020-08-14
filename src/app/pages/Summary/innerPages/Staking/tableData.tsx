@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { Table, FormattedAmount, Link, Box, TokenIcon } from 'components';
 import { StakingPool } from 'model/types';
-import { UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
+import { UserStakingPoolsBalancesComposition } from 'features/stakingPools';
 import { routes } from 'app/routes';
 import { TokenAmount } from 'model/entities';
 
@@ -23,7 +23,7 @@ export const columnForChart: Array<Table.models.Column<{}>> = [
       kind: 'simple',
       render: () => (
         <Box ml={10}>
-          <UserSavingsPoolsBalancesComposition
+          <UserStakingPoolsBalancesComposition
             withCompositionLegend
             withInnerLegend
             size="extra-large"

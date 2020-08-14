@@ -6,7 +6,7 @@ import { makeStyles } from 'utils/styles';
 import { Table, Loading, Typography, Hint, Grid } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
+import { UserStakingPoolsTotalBalance } from 'features/stakingPools';
 
 import * as tableData from './tableData';
 
@@ -52,7 +52,7 @@ export function Staking() {
                 entries={stakingPools}
                 summary={{
                   renderLabel: () => 'Total Allocated:',
-                  renderValue: () => <UserSavingsPoolsTotalBalance />,
+                  renderValue: () => <UserStakingPoolsTotalBalance />,
                 }}
               />
             </Grid>

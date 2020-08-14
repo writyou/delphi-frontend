@@ -41,7 +41,7 @@ const tabs = [
     renderContent: () => <innerPages.DCA />,
   },
   {
-    label: 'Staking',
+    label: 'My Staking',
     value: routes.summary.staking.getElementKey(),
     to: routes.summary.staking.getRedirectPath(),
     renderContent: () => <innerPages.Staking />,
