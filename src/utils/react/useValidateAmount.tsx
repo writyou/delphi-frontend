@@ -8,9 +8,9 @@ import { IToBN } from 'model/types';
 import {
   isRequired,
   validatePositiveNumber,
-  moreThen,
-  lessThenOrEqual,
-  moreThenOrEqual,
+  moreThan,
+  lessThanOrEqual,
+  moreThanOrEqual,
 } from 'utils/validators';
 import { toObservable } from 'utils/rxjs';
 
@@ -19,7 +19,7 @@ import { useSubscribable } from './useSubscribable';
 interface ValidateAmountOptions {
   required?: boolean;
   positive?: boolean;
-  moreThenZero?: boolean;
+  moreThanZero?: boolean;
   maxValue?: BN | IToBN | Observable<BN | IToBN>;
   maxErrorTKey?: string;
   minValue?: BN | IToBN | Observable<BN | IToBN>;
@@ -27,7 +27,7 @@ interface ValidateAmountOptions {
 
 // TODO return validation error if not all Observables is loaded
 export function useValidateAmount(options: ValidateAmountOptions) {
-  const { positive, required, moreThenZero, maxErrorTKey } = options;
+  const { positive, required, moreThanZero, maxErrorTKey } = options;
 
   const [{ maxValue, minValue }] = useSubscribable<{
     maxValue?: BN;
@@ -51,13 +51,13 @@ export function useValidateAmount(options: ValidateAmountOptions) {
       }
       return (
         (positive && validatePositiveNumber(amount.toBN())) ||
-        (moreThenZero && moreThen(new BN(0), amount.toBN())) ||
+        (moreThanZero && moreThan(new BN(0), amount.toBN())) ||
         (minValue &&
-          moreThenOrEqual(minValue, amount.toBN(), () =>
+          moreThanOrEqual(minValue, amount.toBN(), () =>
             amount.withValue(minValue).toFormattedString(amount.currency.decimals),
           )) ||
         (maxValue &&
-          lessThenOrEqual(
+          lessThanOrEqual(
             maxValue,
             amount.toBN(),
             () => amount.withValue(maxValue).toFormattedString(amount.currency.decimals),
