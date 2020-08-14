@@ -6,7 +6,7 @@ import { useApi } from 'services/api';
 
 export function UsersCount() {
   const api = useApi();
-  const [count, countMeta] = useSubscribable(() => api.globalStats.getUsersCount$(), [api]);
+  const [stats, statsMeta] = useSubscribable(() => api.globalStats.getStats$(), [api]);
 
-  return <Loading meta={countMeta}>{count}</Loading>;
+  return <Loading meta={statsMeta}>{stats?.activeMembersCount}</Loading>;
 }

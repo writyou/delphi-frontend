@@ -1,5 +1,0 @@
-subscription AllUsers {
-  users(first: 1000) {
-    id
-  }
-}
