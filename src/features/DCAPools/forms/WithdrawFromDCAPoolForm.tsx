@@ -52,7 +52,7 @@ export function WithdrawFromDCAPoolForm({
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue: maxValue$,
   });
 

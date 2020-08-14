@@ -32,9 +32,14 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
   return (
     <Form
       {...restProps}
-      subscription={{ submitError: true, submitting: true, dirtySinceLastSubmit: true }}
+      subscription={{
+        submitError: true,
+        submitting: true,
+        dirtySinceLastSubmit: true,
+        hasValidationErrors: true,
+      }}
     >
-      {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit }) => (
+      {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit, hasValidationErrors }) => (
         <form onSubmit={handleSubmit}>
           <Grid container justify="center" spacing={4}>
             <Grid item xs={12}>
@@ -78,7 +83,7 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
                 color="primary"
                 type="submit"
                 fullWidth
-                disabled={submitting}
+                disabled={submitting || hasValidationErrors}
               >
                 {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
               </Button>

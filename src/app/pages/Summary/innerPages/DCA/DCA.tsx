@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Typography, Hint, Grid, PieChartData } from 'components';
+import { Table, Loading, Grid, PieChartData } from 'components';
 import {
   percentAmount,
   tokenAmount,
@@ -13,6 +13,7 @@ import {
 import { SavingsPool } from 'model/types';
 
 import * as tableData from './tableData';
+import { EmptyListHint } from '../../Components/EmptyListHint';
 
 const entries: tableData.Order[] = [
   {
@@ -45,9 +46,7 @@ export function DCA() {
     <div className={classes.root}>
       <Loading>
         {!entries.length ? (
-          <Hint>
-            <Typography>Not found</Typography>
-          </Hint>
+          <EmptyListHint redirectPage="dca" />
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={8}>

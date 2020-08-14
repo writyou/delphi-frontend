@@ -3,11 +3,12 @@ import BN from 'bn.js';
 import { LiquidityAmount, Currency, TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Grid } from 'components';
 import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import * as tableData from './tableData';
+import { EmptyListHint } from '../../Components/EmptyListHint';
 
 const entries: tableData.Order[] = [
   {
@@ -47,9 +48,7 @@ export function Harvest() {
     <div className={classes.root}>
       <Loading>
         {!entries.length ? (
-          <Hint>
-            <Typography>Not found</Typography>
-          </Hint>
+          <EmptyListHint redirectPage="harvest" />
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={8}>

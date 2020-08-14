@@ -1,4 +1,5 @@
 import ApolloClient from 'apollo-client';
+import { merge } from 'rxjs';
 
 import { Web3Manager } from './modules/Web3Manager';
 import { Erc20Api } from './modules/Erc20Api';
@@ -49,5 +50,15 @@ export class Api {
     this.prices,
   );
 
-  constructor(private apolloClient: ApolloClient<any>) {}
+  constructor(private apolloClient: ApolloClient<any>) {
+    this.subgraphApi.setEventsForReloadUserSavingsPoolsGetter((a: string) =>
+      this.savings.getDepositEvent$(a),
+    );
+
+    this.subgraphApi.setEventsForReloadUserGetter((a: string) =>
+      merge(this.savings.getDepositEvent$(a), this.staking.getStakedEvent$(a)),
+    );
+
+    this.subgraphApi.setEventsForReloadSavingsPoolsGetter(this.savings.getProtocolRegisteredEvent$);
+  }
 }

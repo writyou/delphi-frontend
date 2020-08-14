@@ -59,7 +59,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue,
     maxErrorTKey,
   });

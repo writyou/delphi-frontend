@@ -1,7 +1,7 @@
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of, merge } from 'rxjs';
 import ApolloClient from 'apollo-client';
 import * as R from 'ramda';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { memoize } from 'utils/decorators';
 import { SavingsPool } from 'model/types';
@@ -12,8 +12,27 @@ import { SubgraphConfig } from './model';
 
 export class SubgraphApi {
   private sdk = makeSubgraphApi(this.apolloClient);
+  private getEventsForReloadUserSavingsPools$: (a: string) => Observable<any> = () => of(true);
+  private getEventsForReloadUser$: (a: string) => Observable<any> = () => of(true);
+  private getEventsForReloadSavingsPools$: () => Observable<any> = () => of(true);
 
   constructor(private apolloClient: ApolloClient<any>) {}
+
+  public setEventsForReloadUserSavingsPoolsGetter(
+    getEventsForReloadUserSavingsPools$: (a: string) => Observable<any>,
+  ) {
+    this.getEventsForReloadUserSavingsPools$ = getEventsForReloadUserSavingsPools$;
+  }
+
+  public setEventsForReloadUserGetter(getEventsForReloadUser$: (a: string) => Observable<any>) {
+    this.getEventsForReloadUser$ = getEventsForReloadUser$;
+  }
+
+  public setEventsForReloadSavingsPoolsGetter(
+    getEventsForReloadSavingsPools$: () => Observable<any>,
+  ) {
+    this.getEventsForReloadSavingsPools$ = getEventsForReloadSavingsPools$;
+  }
 
   @memoize()
   public loadGlobalStats$() {
@@ -26,26 +45,34 @@ export class SubgraphApi {
 
   @memoize(R.identity)
   public loadUser$(address: string): Observable<User | null> {
-    return this.sdk
-      .User({
-        id: address.toLowerCase(),
-      })
-      .pipe(
-        map(({ user }) => {
-          return user ? convertUser(user) : null;
-        }),
-      );
+    return merge([of(true), this.getEventsForReloadUser$(address)]).pipe(
+      switchMap(() =>
+        this.sdk
+          .User({
+            id: address.toLowerCase(),
+          })
+          .pipe(
+            map(({ user }) => {
+              return user ? convertUser(user) : null;
+            }),
+          ),
+      ),
+    );
   }
 
   @memoize(R.identity)
-  public loadUserSavingsPools$(address: string): Observable<SavingsPool[]> {
-    return combineLatest([
-      this.loadSubgraphConfig$(),
-      this.sdk.User({ id: address.toLowerCase() }),
-    ]).pipe(
-      map(([{ aprDecimals }, { user }]) => {
-        return user ? user.savingsPools.map(pool => convertSavingsPool(pool, aprDecimals)) : [];
-      }),
+  public loadUserSavingsPools$(userAddress: string): Observable<SavingsPool[]> {
+    return merge([of(true), this.getEventsForReloadUserSavingsPools$(userAddress)]).pipe(
+      switchMap(() =>
+        combineLatest([
+          this.loadSubgraphConfig$(),
+          this.sdk.User({ id: userAddress.toLowerCase() }),
+        ]).pipe(
+          map(([{ aprDecimals }, { user }]) => {
+            return user ? user.savingsPools.map(pool => convertSavingsPool(pool, aprDecimals)) : [];
+          }),
+        ),
+      ),
     );
   }
 
@@ -63,10 +90,14 @@ export class SubgraphApi {
 
   @memoize()
   public loadSavingsPools$(): Observable<SavingsPool[]> {
-    return combineLatest([this.loadSubgraphConfig$(), this.sdk.SavingsPools()]).pipe(
-      map(([{ aprDecimals }, { savingsPools }]) => {
-        return savingsPools.map(pool => convertSavingsPool(pool, aprDecimals));
-      }),
+    return merge([of(true), this.getEventsForReloadSavingsPools$()]).pipe(
+      switchMap(() =>
+        combineLatest([this.loadSubgraphConfig$(), this.sdk.SavingsPools()]).pipe(
+          map(([{ aprDecimals }, { savingsPools }]) => {
+            return savingsPools.map(pool => convertSavingsPool(pool, aprDecimals));
+          }),
+        ),
+      ),
     );
   }
 

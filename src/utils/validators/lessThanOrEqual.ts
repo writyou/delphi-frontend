@@ -2,19 +2,18 @@ import BN from 'bn.js';
 
 import { tKeys, ITranslateKey } from 'services/i18n';
 
-type FormatValue = (value: number | BN) => string;
-
-export function moreThen(
+export function lessThanOrEqual(
   value: BN,
   currentValue: BN,
-  formatValue?: FormatValue | undefined,
+  formatValue?: (value: BN) => string,
+  errorKey?: string,
 ): ITranslateKey | undefined {
-  const isValid = value.lt(new BN(currentValue));
+  const isValid = value.gte(new BN(currentValue));
 
   return isValid
     ? undefined
     : {
-        key: tKeys.utils.validation.moreThen.getKey(),
+        key: errorKey || tKeys.utils.validation.lessThanOrEqual.getKey(),
         params: { value: formatValue ? formatValue(value) : String(value) },
       };
 }

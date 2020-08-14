@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.5.0.tgz#8584d4648bf76c3f0c034ed4aef1196246e2f344"
-  integrity sha512-G49EumVN1TP2sYKL5HjyBqDiQ64cDt73nhw4QRcJ5knsvymiQqzL+zJD5FYu8SgJ8zscvIDm2jAW7SATMxAfVQ==
+"@akropolis-web/components@^0.5.1":
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.5.1.tgz#440ab49a9cd4890c962b117ed23b7b55b177814a"
+  integrity sha512-4TRtC6FZlrIivS+bRB7AzykQLR3T7J0BVzdXH2BRqd/rtVoZ3TCDtmwA3CPmys6kLxa4wS60hI9A3nKAmHwLrA==
   dependencies:
     "@akropolis-web/styles" "^0.7.0"
     "@types/color" "^3.0.1"
@@ -15,13 +15,10 @@
     mersenne-twister "^1.1.0"
     react-copy-to-clipboard "^5.0.2"
 
-"@akropolis-web/styles@^0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/styles/-/styles-0.7.0.tgz#f45c2d2040c3050a86e5728dbd374b666acd9ce9"
-  integrity sha512-EucBJSTx7QZYLA82pg7elFcBveQhL5d/SAEL/X88c3oThSmBDu4qsERU0Zv66E2iGS/bIRI0m1Q19pUS+7FYRA==
-  dependencies:
-    "@types/ramda" "^0.26.43"
-    ramda "^0.27.0"
+"@akropolis-web/primitives@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.0.tgz#5bab023359a74e61025f119d30a60511457e47d4"
+  integrity sha512-hkB7v8srV8Dr/h1canWdMPVRJEB1BFfr6SoD6y05UpwYlTE3pOT/Tc1NeBwt97AxBXZs3keRC+vRnm08yDAJWQ==
 
 "@akropolis-web/styles@^0.7.0":
   version "0.7.0"

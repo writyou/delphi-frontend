@@ -2,7 +2,7 @@ import BN from 'bn.js';
 
 import { tKeys, ITranslateKey } from 'services/i18n';
 
-export function moreThenOrEqual(
+export function moreThanOrEqual(
   value: BN,
   currentValue: BN,
   formatValue?: (value: BN) => string,
@@ -12,7 +12,7 @@ export function moreThenOrEqual(
   return isValid
     ? undefined
     : {
-        key: tKeys.utils.validation.moreThenOrEqual.getKey(),
+        key: tKeys.utils.validation.moreThanOrEqual.getKey(),
         params: { value: formatValue ? formatValue(value) : String(value) },
       };
 }

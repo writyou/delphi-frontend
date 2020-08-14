@@ -8,7 +8,7 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { Grid } from 'components';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { useValidateAmount, useSubscribable } from 'utils/react';
-import { lessThenOrEqual } from 'utils/validators';
+import { lessThanOrEqual } from 'utils/validators';
 
 interface FormData {
   depositAmount: TokenAmount | null | '';
@@ -43,7 +43,7 @@ export function DepositDCAPoolForm({
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue,
     maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
@@ -51,8 +51,8 @@ export function DepositDCAPoolForm({
   const validateWeeklyAmount = (value: FormData['weeklyAmount'], allValues: FormData) => {
     const { depositAmount } = allValues;
     if (depositAmount && value) {
-      return lessThenOrEqual(depositAmount.toBN(), value.toBN(), () =>
-        depositAmount.toFormattedString(),
+      return lessThanOrEqual(depositAmount.toBN(), value.toBN(), () =>
+        depositAmount.toFormattedString(depositAmount.currency.decimals),
       );
     }
     return undefined;
