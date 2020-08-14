@@ -57,7 +57,7 @@ export function WithdrawFromSavingsPoolForm({
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue: maxValue$,
   });
 
