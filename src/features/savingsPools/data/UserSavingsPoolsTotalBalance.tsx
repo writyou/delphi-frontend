@@ -1,7 +1,6 @@
 import React from 'react';
 import * as R from 'ramda';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { FormattedAmount, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
@@ -13,11 +12,7 @@ export function UserSavingsPoolsTotalBalance() {
     () =>
       api.user
         .getAllSavingsPoolsBalances$()
-        .pipe(
-          switchMap(balances =>
-            of(R.pluck('balance', balances).reduce((acc, cur) => acc.add(cur))),
-          ),
-        ),
+        .pipe(map(balances => R.pluck('balance', balances).reduce((acc, cur) => acc.add(cur)))),
     [api],
   );
 

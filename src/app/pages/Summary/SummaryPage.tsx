@@ -88,6 +88,11 @@ export function SummaryPage() {
   );
 
   function renderTabs() {
+    const isComingSoonTab = ![
+      routes.summary.staking.getElementKey(),
+      routes.summary.savings.getElementKey(),
+    ].includes(selectedPage);
+
     return (
       <Tabs
         currentValue={selectedPage}
@@ -95,7 +100,7 @@ export function SummaryPage() {
         tabComponent={RouterLink}
         onChange={handleTabChange}
       >
-        {selectedPage !== routes.summary.savings.getElementKey() && (
+        {isComingSoonTab && (
           <div className={classes.comingSoon}>
             <ComingSoon variant="label" />
           </div>

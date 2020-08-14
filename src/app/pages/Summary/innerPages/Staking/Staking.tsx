@@ -51,7 +51,7 @@ export function Staking() {
                 columns={tableData.columnsWithSubtable}
                 entries={stakingPools}
                 summary={{
-                  renderLabel: () => 'Total Allocated:',
+                  renderLabel: () => 'Total Staked:',
                   renderValue: () => <UserStakingPoolsTotalBalance />,
                 }}
               />

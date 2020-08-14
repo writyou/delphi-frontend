@@ -1,11 +1,11 @@
 import React from 'react';
 import { switchMap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { LiquidityAmount } from 'model/entities';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 const reduceLiquidityAmounts = map<LiquidityAmount[], LiquidityAmount>(balances =>

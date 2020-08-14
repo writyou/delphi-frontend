@@ -1,6 +1,7 @@
 import React from 'react';
 import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
+import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
@@ -13,7 +14,6 @@ import {
 } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
-import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 import { UserStakingPoolsAvgAPY } from './UserStakingPoolsAvgAPY';

@@ -178,11 +178,16 @@ export class UserApi {
   public getMyStakingPools$(): Observable<StakingPool[]> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.staking.getPools$() : empty())),
-      map(pools =>
-        pools.filter(pool =>
-          this.getFullStakingPoolBalance$(pool.address).pipe(map(balance => !balance.isZero())),
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getFullStakingPoolBalance$(pool.address).pipe(
+              map(balance => (balance.isZero() ? null : pool)),
+            ),
+          ),
         ),
       ),
+      map(pools => pools.filter((pool): pool is StakingPool => !!pool)),
     );
   }
 }

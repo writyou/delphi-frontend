@@ -1,11 +1,9 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { TokenAmount } from '@akropolis-web/primitives';
 
-import { Table, FormattedAmount, Link, Box, TokenIcon } from 'components';
+import { Table, FormattedAmount, Box, TokenIcon } from 'components';
 import { StakingPool } from 'model/types';
 import { UserStakingPoolsBalancesComposition } from 'features/stakingPools';
-import { routes } from 'app/routes';
-import { TokenAmount } from 'model/entities';
 
 export type StakingPoolEntry = StakingPool & {
   balance: TokenAmount;
@@ -47,21 +45,12 @@ export const columnsWithSubtable: Array<Table.models.Column<StakingPoolEntry, nu
     renderTitle: () => 'Pool',
     cellContent: {
       kind: 'simple',
-      render: x => (
-        <Link
-          component={RouterLink}
-          to={routes.savings.pool.id.getRedirectPath({ id: x.address })}
-          color="textPrimary"
-          title={x.poolName}
-        >
-          {x.poolName}
-        </Link>
-      ),
+      render: x => x.poolName,
     },
   },
 
   {
-    renderTitle: () => 'Full Balance',
+    renderTitle: () => 'Full Stake',
     cellContent: {
       kind: 'simple',
       render: x => <FormattedAmount sum={x.balance} variant="plain" />,
