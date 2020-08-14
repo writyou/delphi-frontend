@@ -1,17 +1,21 @@
-import { Theme } from '@material-ui/core/styles';
-import { getTheme as createTheme, makeGradient, colors } from '@akropolis-web/styles';
-import '@akropolis-web/styles/assets/fonts/HelveticaNeue/stylesheet.css';
+import { createMuiTheme, Theme } from '@material-ui/core/styles';
+import {
+  getTheme as createTheme,
+  makeGradient,
+  colors,
+  generateGridSpacingOverrides,
+} from '@akropolis-web/styles';
 
-import { colors as localColors } from './colors';
+const defaultTheme = createMuiTheme();
 
 function getGradients(type: 'dark' | 'light') {
   return {
     landingIcon: makeGradient(
       type === 'dark'
         ? [colors.northWesternPurple, colors.darkPurple]
-        : [localColors.blushPink2, localColors.lavender],
+        : [colors.blushPink2, colors.lavender],
     ),
-    landingText: makeGradient([colors.lilac, localColors.grape]),
+    landingText: makeGradient([colors.lilac, colors.grape]),
     poolBalanceChart: [
       makeGradient(['#fc87e2', '#f24cb6']),
       makeGradient(['#63afdd', '#574cf2']),
@@ -25,7 +29,6 @@ export const darkTheme = getTheme('dark');
 function getTheme(type: 'light' | 'dark'): Theme {
   return createTheme(type, {
     // TODO: Package theme options are not merged with ThemeOptionsOverrides properly. Fix this TS issue in @akropolis-web/styles
-    colors: localColors as any,
     gradients: getGradients(type) as any,
     breakpoints: {
       keys: [
@@ -62,6 +65,18 @@ function getTheme(type: 'light' | 'dark'): Theme {
       },
     },
     overrides: {
+      MuiDrawer: {
+        paper: {
+          display: 'block',
+          width: defaultTheme.spacing(60),
+          padding: defaultTheme.spacing(4, 5),
+        },
+      },
+
+      MuiGrid: {
+        ...generateGridSpacingOverrides(defaultTheme.spacing),
+      },
+
       // TODO: Check if MuiBackdrop options can be moved to @akropolis-web/styles
       MuiBackdrop: {
         root: {
@@ -74,12 +89,10 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
 declare module '@akropolis-web/styles/dist/theme' {
   interface ThemeOverrides {
-    colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }
 
   interface ThemeOptionsOverrides {
-    colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }
 }
