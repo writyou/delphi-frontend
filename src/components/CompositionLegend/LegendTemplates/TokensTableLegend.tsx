@@ -6,6 +6,7 @@ import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
 import { PieSector, CompositionChartLegendProps } from '../../CompositionChart/model';
 import { SectorColorLabel } from '../../CompositionChart/SectorColorLabel';
 import { TokenTitle } from '../../CompositionChart/TokenTitle';
+import { roundPercentAmount } from './roundPercentAmount';
 
 export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
   const { sectors } = props;
@@ -30,7 +31,7 @@ const columnForLegend: Array<Table.models.Column<PieSector<TokenAmount>>> = [
       kind: 'simple',
       render: x => (
         <SectorColorLabel
-          title={<FormattedAmount sum={x.percent} variant="plain" />}
+          title={<FormattedAmount sum={roundPercentAmount(x.percent)} variant="plain" />}
           color={x.color.rgb}
         />
       ),
