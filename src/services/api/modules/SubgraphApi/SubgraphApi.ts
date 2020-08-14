@@ -1,7 +1,7 @@
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of, merge } from 'rxjs';
 import ApolloClient from 'apollo-client';
 import * as R from 'ramda';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 import { memoize } from 'utils/decorators';
 import { SavingsPool } from 'model/types';
@@ -12,6 +12,7 @@ import { SubgraphConfig } from './model';
 
 export class SubgraphApi {
   private sdk = makeSubgraphApi(this.apolloClient);
+  private getDepositToSavingsPoolEvents: (a: string) => Observable<any> = () => of(true);
 
   constructor(private apolloClient: ApolloClient<any>) {}
 
@@ -38,15 +39,25 @@ export class SubgraphApi {
       );
   }
 
+  public setGetDepositToSavingsPoolEvents(
+    getDepositToSavingsPoolEvents: (a: string) => Observable<any>,
+  ) {
+    this.getDepositToSavingsPoolEvents = getDepositToSavingsPoolEvents;
+  }
+
   @memoize(R.identity)
   public loadUserSavingsPools$(address: string): Observable<SavingsPool[]> {
-    return combineLatest([
-      this.loadSubgraphConfig$(),
-      this.sdk.User({ id: address.toLowerCase() }),
-    ]).pipe(
-      map(([{ aprDecimals }, { user }]) => {
-        return user ? user.savingsPools.map(pool => convertSavingsPool(pool, aprDecimals)) : [];
-      }),
+    return merge([of(true), this.getDepositToSavingsPoolEvents(address)]).pipe(
+      switchMap(() =>
+        combineLatest([
+          this.loadSubgraphConfig$(),
+          this.sdk.User({ id: address.toLowerCase() }),
+        ]).pipe(
+          map(([{ aprDecimals }, { user }]) => {
+            return user ? user.savingsPools.map(pool => convertSavingsPool(pool, aprDecimals)) : [];
+          }),
+        ),
+      ),
     );
   }
 

@@ -23,6 +23,7 @@ import { isEqualHex } from 'utils/hex';
 import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
 import { denormolizeAmount, sumTokenAmountsByToken } from 'utils/amounts';
 import { getSignificantValue } from 'utils/bn';
+import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -289,6 +290,20 @@ export class SavingsModuleApi {
             ),
           })),
         ),
+      );
+  }
+
+  public makeGetDepositEvent() {
+    const value = this.txContract.getValue();
+
+    if (value === null || value === undefined) {
+      return () => of(true);
+    }
+    return (userAddress: string) =>
+      fromWeb3DataEvent(
+        value.events.Deposit({
+          filter: { user: userAddress },
+        }),
       );
   }
 }

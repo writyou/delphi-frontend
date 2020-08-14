@@ -49,5 +49,7 @@ export class Api {
     this.prices,
   );
 
-  constructor(private apolloClient: ApolloClient<any>) {}
+  constructor(private apolloClient: ApolloClient<any>) {
+    this.subgraphApi.setGetDepositToSavingsPoolEvents(this.savings.makeGetDepositEvent());
+  }
 }
