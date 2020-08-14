@@ -11,9 +11,5 @@ export function UserStakingPoolBalance({ poolAddress }: { poolAddress: string })
     [api, poolAddress],
   );
 
-  return (
-    <Loading meta={balanceMeta}>
-      {balance && <FormattedAmount sum={balance} variant="plain" />}
-    </Loading>
-  );
+  return <Loading meta={balanceMeta}>{balance && <FormattedAmount sum={balance} />}</Loading>;
 }

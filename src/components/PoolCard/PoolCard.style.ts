@@ -33,6 +33,7 @@ export const useStyles = makeStyles(
     },
     balance: {
       fontSize: 32,
+      fontWeight: 300,
     },
     link: {
       fontSize: 12,
