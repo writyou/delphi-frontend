@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useRouteMatch } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Grid,
@@ -38,6 +39,12 @@ const tabs = [
     value: routes.summary.dca.getElementKey(),
     to: routes.summary.dca.getRedirectPath(),
     renderContent: () => <innerPages.DCA />,
+  },
+  {
+    label: 'My Staking',
+    value: routes.summary.staking.getElementKey(),
+    to: routes.summary.staking.getRedirectPath(),
+    renderContent: () => <innerPages.Staking />,
   },
   {
     label: 'My Harvest',
@@ -81,9 +88,19 @@ export function SummaryPage() {
   );
 
   function renderTabs() {
+    const isComingSoonTab = ![
+      routes.summary.staking.getElementKey(),
+      routes.summary.savings.getElementKey(),
+    ].includes(selectedPage);
+
     return (
-      <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
-        {selectedPage !== routes.summary.savings.getElementKey() && (
+      <Tabs
+        currentValue={selectedPage}
+        tabs={tabs}
+        tabComponent={RouterLink}
+        onChange={handleTabChange}
+      >
+        {isComingSoonTab && (
           <div className={classes.comingSoon}>
             <ComingSoon variant="label" />
           </div>

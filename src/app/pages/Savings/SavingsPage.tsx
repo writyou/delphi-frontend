@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { Tabs } from 'components';
@@ -37,5 +37,12 @@ export function SavingsPage() {
     setSelectedPage(tab);
   };
 
-  return <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange} />;
+  return (
+    <Tabs
+      currentValue={selectedPage}
+      tabs={tabs}
+      tabComponent={RouterLink}
+      onChange={handleTabChange}
+    />
+  );
 }

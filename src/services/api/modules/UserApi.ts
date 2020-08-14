@@ -10,7 +10,7 @@ import {
 } from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
-import { SavingsPool, DepositToSavingsPool } from 'model/types';
+import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
@@ -171,6 +171,23 @@ export class UserApi {
       switchMap(account =>
         account ? this.staking.getDepositLimit$(poolAddress, account) : empty(),
       ),
+    );
+  }
+
+  @memoize()
+  public getMyStakingPools$(): Observable<StakingPool[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.staking.getPools$() : empty())),
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getFullStakingPoolBalance$(pool.address).pipe(
+              map(balance => (balance.isZero() ? null : pool)),
+            ),
+          ),
+        ),
+      ),
+      map(pools => pools.filter((pool): pool is StakingPool => !!pool)),
     );
   }
 }

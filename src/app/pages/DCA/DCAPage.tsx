@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
+import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
 import { Tabs, ComingSoon } from 'components';
@@ -40,7 +40,12 @@ export function DCAPage() {
   };
 
   return (
-    <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+    <Tabs
+      currentValue={selectedPage}
+      tabs={tabs}
+      tabComponent={RouterLink}
+      onChange={handleTabChange}
+    >
       <div className={classes.comingSoon}>
         <ComingSoon variant="label" />
       </div>
