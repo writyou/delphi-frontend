@@ -1,16 +1,10 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Table, FormattedAmount, Link, Box, TokenIcon } from 'components';
-import { StakingPool } from 'model/types';
-import { UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
+import { Table, FormattedAmount, Link, Box, TokensIcons } from 'components';
+import { SavingsPool } from 'model/types';
+import { UserSavingsPoolBalance, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { routes } from 'app/routes';
-import { TokenAmount } from 'model/entities';
-
-export type StakingPoolEntry = StakingPool & {
-  balance: TokenAmount;
-  availableForUnstake: TokenAmount;
-};
 
 export const columnForChart: Array<Table.models.Column<{}>> = [
   {
@@ -34,17 +28,17 @@ export const columnForChart: Array<Table.models.Column<{}>> = [
   },
 ];
 
-export const columnsWithSubtable: Array<Table.models.Column<StakingPoolEntry, number>> = [
+export const columnsWithSubtable: Array<Table.models.Column<SavingsPool, number>> = [
   {
     renderTitle: () => '',
     cellContent: {
       kind: 'simple',
-      render: x => <TokenIcon tokenAddress={x.token.address} />,
+      render: x => <TokensIcons tokens={x.tokens} />,
     },
   },
 
   {
-    renderTitle: () => 'Pool',
+    renderTitle: () => 'Pools',
     cellContent: {
       kind: 'simple',
       render: x => (
@@ -61,19 +55,36 @@ export const columnsWithSubtable: Array<Table.models.Column<StakingPoolEntry, nu
   },
 
   {
-    renderTitle: () => 'Full Balance',
+    renderTitle: () => 'APY',
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.balance} variant="plain" />,
+      render: x => <FormattedAmount sum={x.apy} variant="plain" />,
     },
   },
 
   {
-    renderTitle: () => 'Available for Unstake',
+    renderTitle: () => 'Balance',
     align: 'right',
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.availableForUnstake} variant="plain" />,
+      render: x => <UserSavingsPoolBalance poolAddress={x.address} />,
     },
   },
+
+  // {
+  //   renderTitle: () => null,
+  //   cellContent: {
+  //     kind: 'for-row-expander',
+  //     expandedArea: {
+  //       kind: 'subtable',
+  //       getSubtableEntries: x => x.additionalTable,
+  //       subtableColumns: [
+  //         {
+  //           renderTitle: () => 'Test',
+  //           renderCell: x => x,
+  //         },
+  //       ],
+  //     },
+  //   },
+  // },
 ];

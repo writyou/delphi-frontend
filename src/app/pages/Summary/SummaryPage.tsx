@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useRouteMatch } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Grid,
@@ -23,9 +24,9 @@ import { LiveStats } from './Components/LiveStats';
 const tabs = [
   {
     label: 'My Savings Pools',
-    value: routes.summary['my-savings-pools'].getElementKey(),
-    to: routes.summary['my-savings-pools'].getRedirectPath(),
-    renderContent: () => <innerPages.MySavingsPools />,
+    value: routes.summary.savings.getElementKey(),
+    to: routes.summary.savings.getRedirectPath(),
+    renderContent: () => <innerPages.Savings />,
   },
   {
     label: 'My Investment Pools',
@@ -40,10 +41,10 @@ const tabs = [
     renderContent: () => <innerPages.DCA />,
   },
   {
-    label: 'Savings',
-    value: routes.summary.savings.getElementKey(),
-    to: routes.summary.savings.getRedirectPath(),
-    renderContent: () => <innerPages.Savings />,
+    label: 'Staking',
+    value: routes.summary.staking.getElementKey(),
+    to: routes.summary.staking.getRedirectPath(),
+    renderContent: () => <innerPages.Staking />,
   },
   {
     label: 'My Harvest',
@@ -88,7 +89,12 @@ export function SummaryPage() {
 
   function renderTabs() {
     return (
-      <Tabs currentValue={selectedPage} tabs={tabs} onChange={handleTabChange}>
+      <Tabs
+        currentValue={selectedPage}
+        tabs={tabs}
+        tabComponent={RouterLink}
+        onChange={handleTabChange}
+      >
         {selectedPage !== routes.summary.savings.getElementKey() && (
           <div className={classes.comingSoon}>
             <ComingSoon variant="label" />

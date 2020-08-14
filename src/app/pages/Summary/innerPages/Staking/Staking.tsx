@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { map, switchMap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Typography, Hint, Grid } from 'components';
@@ -8,16 +10,37 @@ import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
 
 import * as tableData from './tableData';
 
-export function MySavingsPools() {
+export function Staking() {
   const classes = useStyles();
 
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const [stakingPools, stakingPoolsMeta] = useSubscribable(
+    () =>
+      api.user.getMyStakingPools$().pipe(
+        switchMap(pools =>
+          combineLatest(
+            pools.map(pool =>
+              combineLatest([
+                api.user.getFullStakingPoolBalance$(pool.address),
+                api.user.getUnlockedStakingPoolBalance$(pool.address),
+              ]).pipe(
+                map(([fullBalance, unlockedBalance]) => ({
+                  ...pool,
+                  balance: fullBalance,
+                  availableForUnstake: unlockedBalance,
+                })),
+              ),
+            ),
+          ),
+        ),
+      ),
+    [api],
+  );
 
   return (
     <div className={classes.root}>
-      <Loading meta={[poolsMeta]}>
-        {!pools?.length ? (
+      <Loading meta={stakingPoolsMeta}>
+        {!stakingPools?.length ? (
           <Hint>
             <Typography>Not found</Typography>
           </Hint>
@@ -26,7 +49,7 @@ export function MySavingsPools() {
             <Grid item xs={7}>
               <Table.Component
                 columns={tableData.columnsWithSubtable}
-                entries={pools}
+                entries={stakingPools}
                 summary={{
                   renderLabel: () => 'Total Allocated:',
                   renderValue: () => <UserSavingsPoolsTotalBalance />,
@@ -50,5 +73,5 @@ const useStyles = makeStyles(
       position: 'relative',
     },
   }),
-  { name: 'MySavingsPools' },
+  { name: 'Staking' },
 );

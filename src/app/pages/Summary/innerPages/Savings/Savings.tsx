@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { map } from 'rxjs/operators';
-import { empty, combineLatest } from 'rxjs';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Typography, Hint, Grid } from 'components';
@@ -14,33 +12,12 @@ export function Savings() {
   const classes = useStyles();
 
   const api = useApi();
-  const [stakingPools] = useSubscribable(() => api.user.getMyStakingPools$(), [api]);
-
-  const [tablePools, tablePoolsMeta] = useSubscribable(
-    () =>
-      stakingPools
-        ? combineLatest(
-            stakingPools.map(pool =>
-              combineLatest([
-                api.user.getFullStakingPoolBalance$(pool.address),
-                api.user.getUnlockedStakingPoolBalance$(pool.address),
-              ]).pipe(
-                map(([fullBalance, unlockedBalance]) => ({
-                  ...pool,
-                  balance: fullBalance,
-                  availableForUnstake: unlockedBalance,
-                })),
-              ),
-            ),
-          )
-        : empty(),
-    [api, stakingPools],
-  );
+  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
 
   return (
     <div className={classes.root}>
-      <Loading meta={[tablePoolsMeta]}>
-        {!tablePools?.length ? (
+      <Loading meta={[poolsMeta]}>
+        {!pools?.length ? (
           <Hint>
             <Typography>Not found</Typography>
           </Hint>
@@ -49,7 +26,7 @@ export function Savings() {
             <Grid item xs={7}>
               <Table.Component
                 columns={tableData.columnsWithSubtable}
-                entries={tablePools}
+                entries={pools}
                 summary={{
                   renderLabel: () => 'Total Allocated:',
                   renderValue: () => <UserSavingsPoolsTotalBalance />,
