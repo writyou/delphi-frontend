@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as R from 'ramda';
+import { Amount, PercentAmount, normalizeAmounts } from '@akropolis-web/primitives';
 
-import { normalizeAmounts } from 'utils/amounts';
-import { Amount, PercentAmount } from 'model/entities';
 import { useTheme } from 'utils/styles';
 
 import { PieChartData, ChartColor, PieSector } from './model';

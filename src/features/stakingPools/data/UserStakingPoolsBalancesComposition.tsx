@@ -1,7 +1,7 @@
 import React from 'react';
 import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, Observable } from 'rxjs';
-import { TokenAmount, sumTokenAmountsByToken } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
@@ -14,8 +14,9 @@ import {
 } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
-import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
+import { UserStakingPoolsAvgAPY } from './UserStakingPoolsAvgAPY';
 
 type Props = {
   size: 'extra-small' | 'extra-large';
@@ -23,21 +24,28 @@ type Props = {
   withCompositionLegend?: boolean;
 };
 
-function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
-  return api.user.getMySavingsPools$().pipe(
+function getChartData$(api: Api): Observable<PieChartData<LiquidityAmount, TokenAmount>[]> {
+  return api.user.getMyStakingPools$().pipe(
     switchMap(pools =>
-      combineLatest(pools.map(pool => api.user.getSavingsPoolBalances$(pool.address))),
-    ),
-    map(balances =>
-      sumTokenAmountsByToken(balances.flat()).map(balance => ({
-        value: balance,
-        payload: undefined,
-      })),
+      combineLatest(
+        pools.map(pool =>
+          api.user.getFullStakingPoolBalance$(pool.address).pipe(
+            switchMap(balance =>
+              api.prices.getTokenPrice$(balance.currency.address).pipe(
+                map(price => ({
+                  value: new LiquidityAmount(balance.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
+                  payload: balance,
+                })),
+              ),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }
 
-export function UserSavingsPoolsBalancesComposition(props: Props) {
+export function UserStakingPoolsBalancesComposition(props: Props) {
   const { withInnerLegend, withCompositionLegend, size } = props;
   const api = useApi();
   const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
@@ -56,12 +64,12 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
           </Grid>
           {withCompositionLegend && (
             <Grid item>
-              <CompositionLegend<TokenAmount>
+              <CompositionLegend<LiquidityAmount, TokenAmount>
                 chartData={chartData}
                 Template={legendProps => (
                   <SimpleLegend
                     {...legendProps}
-                    renderLabel={({ pieData }) => pieData.value.currency.symbol}
+                    renderLabel={({ pieData }) => pieData.payload.currency.symbol}
                   />
                 )}
               />
@@ -74,5 +82,5 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
 }
 
 function ChartInnerLegend() {
-  return <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />;
+  return <Metric title="APY" value={<UserStakingPoolsAvgAPY />} />;
 }

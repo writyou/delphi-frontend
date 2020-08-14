@@ -1,5 +1,4 @@
-import { Amount, PercentAmount } from 'model/entities';
-import { Fraction } from 'model/entities/Fraction';
+import { Amount, PercentAmount, Fraction } from '@akropolis-web/primitives';
 
 export type PieChartData<T extends Amount, P = void> = {
   value: T;

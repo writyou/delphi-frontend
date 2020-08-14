@@ -1,8 +1,7 @@
-import { Token, PercentAmount } from 'model/entities';
+import { Token, PercentAmount, decimalsToWei, calcAvg } from '@akropolis-web/primitives';
+
 import * as SR from 'generated/gql/subgraphRequests';
 import { SavingsPool } from 'model/types';
-import { decimalsToWei } from 'utils/bn';
-import { calcAvg } from 'utils/amounts';
 
 export function convertSavingsPool(
   d: Pick<SR.SavingsPool, 'id'> & {

@@ -2,9 +2,9 @@ import React, { useCallback } from 'react';
 import { switchMap, map } from 'rxjs/operators';
 import { empty, combineLatest, of } from 'rxjs';
 import * as R from 'ramda';
+import { Token } from '@akropolis-web/primitives';
 
 import { useCommunication, useSubscribable } from 'utils/react';
-import { Token } from 'model/entities';
 import { useApi } from 'services/api';
 import { tKeys as tKeysAll, useTranslate } from 'services/i18n';
 import { SwitchInput } from 'components/inputs';

@@ -1,14 +1,14 @@
 import React from 'react';
 import { FormSpy } from 'react-final-form';
 import * as R from 'ramda';
-import { FormApi } from 'final-form';
+import { FormApi, FORM_ERROR } from 'final-form';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation } from 'components/form';
-import { SavingsPool } from 'model/types';
-import { TokenAmount } from 'model/entities';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
+import { SavingsPool } from 'model/types';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import { getDeposits } from './getDeposits';
@@ -22,6 +22,15 @@ type AllocateFormProps = {
 };
 
 export type FormData = Record<string, TokenAmount> & { _: () => void };
+
+const validate = (values: FormData) => {
+  const errors: any = {};
+  if (getDeposits(values).length === 0) {
+    errors[FORM_ERROR] = 'fields is empty';
+  }
+
+  return errors;
+};
 
 export function AllocateForm({ pools }: AllocateFormProps) {
   const { t } = useTranslate();
@@ -39,6 +48,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
 
   return (
     <FormWithConfirmation<FormData>
+      validate={validate}
       DialogContent={AllocateFormConfirmationContent}
       onSubmit={handleFormSubmit}
       submitButton={t(tKeys.modules.savings.allocate.getKey())}

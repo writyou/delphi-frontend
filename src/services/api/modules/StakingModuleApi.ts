@@ -1,19 +1,20 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-import { Observable, combineLatest, timer } from 'rxjs';
+import { Observable, combineLatest, timer, merge } from 'rxjs';
 import { autobind } from 'core-decorators';
 import BN from 'bn.js';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
+import { TokenAmount, Token } from '@akropolis-web/primitives';
 
+import { getSignificantValue } from 'utils';
 import { WithdrawFromStakingPool, DepositToStakingPool } from 'model/types';
-import { TokenAmount, Token } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { StakingPool } from 'model/types/staking';
 import { getCurrentValueOrThrow } from 'utils/rxjs';
 import { createStakingPool } from 'generated/contracts';
 import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
-import { getSignificantValue } from 'utils/bn';
+import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -186,5 +187,22 @@ export class StakingModuleApi {
 
   private getPoolReadonlyContract(address: string): Contracts['stakingPool'] {
     return createStakingPool(this.web3Manager.web3, address);
+  }
+
+  @autobind
+  public getStakedEvent$(userAddress: string) {
+    return this.getPools$().pipe(
+      switchMap(pools =>
+        merge(
+          ...pools.map(p =>
+            fromWeb3DataEvent(
+              this.getPoolReadonlyContract(p.address).events.Staked({
+                filter: { user: userAddress },
+              }),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

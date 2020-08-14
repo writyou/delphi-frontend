@@ -10,10 +10,9 @@ import BN from 'bn.js';
 import cn from 'classnames';
 import { Observable } from 'rxjs';
 import { SelectInput, TextInput, DecimalsInput } from '@akropolis-web/components';
+import { Amount, IToBN } from '@akropolis-web/primitives';
 
 import { toObservable } from 'utils/rxjs';
-import { Amount } from 'model/entities';
-import { IToBN } from 'model/types';
 import { useSubscribable } from 'utils/react';
 
 import { useStyles } from './AmountInput.style';

@@ -3,17 +3,17 @@ import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
+import { TokenAmount, Token } from '@akropolis-web/primitives';
 
+import { getSignificantValue } from 'utils';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount, useSubscribable } from 'utils/react';
 import { SavingsPool } from 'model/types';
 import { Grid, Loading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { getSignificantValue } from 'utils/bn';
 
 import { useDepositAmountValidationParams } from '../hooks/useDepositAmountValidationParams';
 
@@ -40,7 +40,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue,
     maxErrorTKey,
   });

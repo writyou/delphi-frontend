@@ -10,7 +10,7 @@ export const validateFloat = (decimals: number) => (value: string) => {
   return (
     (!floatRegExp.test(value) && tKeys.utils.validation.isNumber.getKey()) ||
     (!makeFloatDecimalsRegExp(decimals).test(value) && {
-      key: tKeys.utils.validation.decimalsMoreThen.getKey(),
+      key: tKeys.utils.validation.decimalsMoreThan.getKey(),
       params: { decimals },
     }) ||
     undefined

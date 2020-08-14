@@ -1,9 +1,7 @@
 import BN from 'bn.js';
-
-import { bnToBn } from 'utils/bn/bnToBn';
+import { bnToBn, formatInteger } from '@akropolis-web/primitives';
 
 import { SI, calcSi, getSiMidIndex } from './si';
-import { formatInteger } from './formatInteger';
 
 interface IFormatBalanceSIOptions {
   amountInBaseUnits: string | BN;

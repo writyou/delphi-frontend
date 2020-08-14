@@ -2,14 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import { combineLatest, of } from 'rxjs';
 import BN from 'bn.js';
 import { catchError, map } from 'rxjs/operators';
+import { TokenAmount, Token, decimalsToWei } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { Loading } from 'components';
-import { decimalsToWei } from 'utils/bn';
 import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {
@@ -30,9 +29,13 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
   const [tokens, tokensMeta] = useSubscribable(
     () =>
       combineLatest(
-        Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress =>
-          api.erc20.getToken$(tokenAddress).pipe(catchError(() => of(null))),
-        ),
+        Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress => {
+          try {
+            return api.erc20.getToken$(tokenAddress).pipe(catchError(() => of(null)));
+          } catch {
+            return of(null);
+          }
+        }),
       ).pipe(map(values => values.filter((value): value is Token => !!value))),
     [api],
   );

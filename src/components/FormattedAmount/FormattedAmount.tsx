@@ -2,11 +2,16 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import BN from 'bn.js';
 import cn from 'classnames';
+import {
+  Amount,
+  LiquidityAmount,
+  TokenAmount,
+  PercentAmount,
+  getDecimal,
+  roundWei,
+} from '@akropolis-web/primitives';
 
-import { Amount, LiquidityAmount, TokenAmount, PercentAmount } from 'model/entities';
-import { getDecimal } from 'utils/format';
 import { makeStyles } from 'utils/styles';
-import { roundWei } from 'utils/bn';
 import { SIGNIFICANT_FRACTIONAL_DIGITS } from 'env';
 
 import { Decimal } from './Decimal';
@@ -36,7 +41,7 @@ function FormattedAmount(props: IProps) {
         {(sum instanceof LiquidityAmount &&
           renderLiquidityAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
           (sum instanceof TokenAmount &&
-            renderTokenAmount(sum, precision, hideSymbol, needToRenderPlus)) ||
+            renderTokenAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
           (sum instanceof PercentAmount &&
             renderPercentAmount(sum, precision, needToRenderPlus, variant)) ||
           formattedBalance}
@@ -74,7 +79,10 @@ function renderTokenAmount(
   precision: number,
   hideSymbol: boolean | undefined,
   needToRenderPlus: boolean,
+  variant: 'plain' | 'default',
 ) {
+  const classes = useStyles();
+
   const roundedSum = roundWei(
     sum.toBN(),
     sum.currency.decimals,
@@ -87,7 +95,11 @@ function renderTokenAmount(
     <>
       {(sum.isNeg() && '-') || (needToRenderPlus && '+')}
       <Decimal decimal={decimal} />
-      {!hideSymbol && <>&nbsp;{sum.currency.symbol}</>}
+      {!hideSymbol && (
+        <span className={cn({ [classes.tokenSymbol]: variant === 'default' })}>
+          &nbsp;{sum.currency.symbol}
+        </span>
+      )}
     </>
   );
 }
@@ -121,6 +133,10 @@ const useStyles = makeStyles(
         paddingLeft: 2,
         lineHeight: '1.8em',
       },
+    },
+
+    tokenSymbol: {
+      fontSize: '0.7em',
     },
 
     percentSymbol: {},
