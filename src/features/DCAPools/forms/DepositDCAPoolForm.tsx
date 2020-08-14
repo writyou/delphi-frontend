@@ -52,7 +52,7 @@ export function DepositDCAPoolForm({
     const { depositAmount } = allValues;
     if (depositAmount && value) {
       return lessThenOrEqual(depositAmount.toBN(), value.toBN(), () =>
-        depositAmount.toFormattedString(),
+        depositAmount.toFormattedString(depositAmount.currency.decimals),
       );
     }
     return undefined;

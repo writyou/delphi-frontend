@@ -54,13 +54,13 @@ export function useValidateAmount(options: ValidateAmountOptions) {
         (moreThenZero && moreThen(new BN(0), amount.toBN())) ||
         (minValue &&
           moreThenOrEqual(minValue, amount.toBN(), () =>
-            amount.withValue(minValue).toFormattedString(),
+            amount.withValue(minValue).toFormattedString(amount.currency.decimals),
           )) ||
         (maxValue &&
           lessThenOrEqual(
             maxValue,
             amount.toBN(),
-            () => amount.withValue(maxValue).toFormattedString(),
+            () => amount.withValue(maxValue).toFormattedString(amount.currency.decimals),
             maxErrorTKey,
           ))
       );
