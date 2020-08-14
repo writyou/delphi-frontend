@@ -30,8 +30,8 @@ const tabs = [
   },
   {
     label: 'My Investment Pools',
-    value: routes.summary.investment.getElementKey(),
-    to: routes.summary.investment.getRedirectPath(),
+    value: routes.summary.investments.getElementKey(),
+    to: routes.summary.investments.getRedirectPath(),
     renderContent: () => <innerPages.Investment />,
   },
   {

@@ -1,4 +1,4 @@
-import { Token, PercentAmount, TokenAmount } from 'model/entities';
+import { Token, PercentAmount, TokenAmount } from '@akropolis-web/primitives';
 
 export type DCAPool = {
   address: string;

@@ -1,6 +1,5 @@
 import * as React from 'react';
-
-import { Amount } from 'model/entities';
+import { Amount } from '@akropolis-web/primitives';
 
 import { PieChartData, PieSector } from '../CompositionChart/model';
 import { usePieSectors } from '../CompositionChart/usePieSectors';

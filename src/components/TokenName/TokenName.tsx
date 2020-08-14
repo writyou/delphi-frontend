@@ -1,7 +1,7 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import { Token } from '@akropolis-web/primitives';
 
-import { Token } from 'model/entities';
 import { TokenIcon } from 'components/TokenIcon/TokenIcon';
 import { makeStyles } from 'utils/styles';
 

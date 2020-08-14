@@ -3,11 +3,19 @@ import { BehaviorSubject, Observable, of, timer, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
 import BN from 'bn.js';
+import {
+  IToBN,
+  TokenAmount,
+  LiquidityAmount,
+  denormolizeAmount,
+  sumTokenAmountsByToken,
+  isEqualHex,
+} from '@akropolis-web/primitives';
 
+import { getSignificantValue } from 'utils';
 import { getCurrentValueOrThrow } from 'utils/rxjs';
 import {
   DepositToSavingsPool,
-  IToBN,
   WithdrawFromSavingsPool,
   DepositToSavingsPoolWithFee,
 } from 'model/types';
@@ -17,12 +25,9 @@ import {
   createDefiProtocol,
   createSavingsPoolToken,
 } from 'generated/contracts';
-import { TokenAmount, LiquidityAmount } from 'model/entities';
 import { memoize } from 'utils/decorators';
-import { isEqualHex } from 'utils/hex';
 import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
-import { denormolizeAmount, sumTokenAmountsByToken } from 'utils/amounts';
-import { getSignificantValue } from 'utils/bn';
+import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -290,6 +295,20 @@ export class SavingsModuleApi {
           })),
         ),
       );
+  }
+
+  @autobind
+  public getDepositEvent$(userAddress: string) {
+    return fromWeb3DataEvent(
+      this.readonlyContract.events.Deposit({
+        filter: { user: userAddress },
+      }),
+    );
+  }
+
+  @autobind
+  public getProtocolRegisteredEvent$() {
+    return fromWeb3DataEvent(this.readonlyContract.events.ProtocolRegistered());
   }
 }
 

@@ -1,10 +1,11 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Grid } from 'components';
 import { percentAmount, tokenAmount, getMockCompositionChartEntriesLiquidity } from 'utils/mock';
 
 import * as tableData from './tableData';
+import { EmptyListHint } from '../../Components/EmptyListHint';
 
 const entries: tableData.Order[] = [
   {
@@ -24,9 +25,7 @@ export function Investment() {
     <div className={classes.root}>
       <Loading>
         {!entries.length ? (
-          <Hint>
-            <Typography>Not found</Typography>
-          </Hint>
+          <EmptyListHint redirectPage="investments" />
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={8}>

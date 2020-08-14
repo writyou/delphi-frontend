@@ -1,12 +1,13 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Typography, Hint, Grid } from 'components';
+import { Table, Loading, Grid } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
 
 import * as tableData from './tableData';
+import { EmptyListHint } from '../../Components/EmptyListHint';
 
 export function Savings() {
   const classes = useStyles();
@@ -18,9 +19,7 @@ export function Savings() {
     <div className={classes.root}>
       <Loading meta={[poolsMeta]}>
         {!pools?.length ? (
-          <Hint>
-            <Typography>Not found</Typography>
-          </Hint>
+          <EmptyListHint redirectPage="savings" />
         ) : (
           <Grid container className={classes.table}>
             <Grid item xs={7}>

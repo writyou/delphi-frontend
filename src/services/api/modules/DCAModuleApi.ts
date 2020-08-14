@@ -3,12 +3,17 @@
 import { Observable, of } from 'rxjs';
 import { autobind } from 'core-decorators';
 import BN from 'bn.js';
+import {
+  LiquidityAmount,
+  Currency,
+  TokenAmount,
+  Token,
+  decimalsToWei,
+} from '@akropolis-web/primitives';
 
 import { DCAPool, WithdrawFromDCAPool, DepositToDCAPool, ChangeWeeklyDCAAmount } from 'model/types';
-import { LiquidityAmount, Currency, TokenAmount, Token } from 'model/entities';
 import { memoize } from 'utils/decorators';
 import { zeroAddress, mockedTokens, percentAmount } from 'utils/mock';
-import { decimalsToWei } from 'utils/bn';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 const tokenToSell = mockedTokens[0];

@@ -2,8 +2,8 @@ import React, { useMemo } from 'react';
 import BN from 'bn.js';
 // eslint-disable-next-line no-restricted-imports
 import { Grid } from '@material-ui/core';
+import { TokenAmount, Token } from '@akropolis-web/primitives';
 
-import { TokenAmount, Token } from 'model/entities';
 import { ALL_TOKEN } from 'utils/mock';
 import { TokensIcons } from 'components/TokensIcons/TokensIcons';
 import { TokenName } from 'components/TokenName/TokenName';

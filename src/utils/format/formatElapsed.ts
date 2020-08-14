@@ -1,6 +1,5 @@
 import BN from 'bn.js';
-
-import { IToBN, isToBN } from 'model/types';
+import { IToBN, isToBN } from '@akropolis-web/primitives';
 
 function getValue<ExtToBn extends IToBN>(value?: BN | ExtToBn | Date | number | null): number {
   if (value) {

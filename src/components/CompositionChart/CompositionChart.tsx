@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as R from 'ramda';
 import cn from 'classnames';
-
-import { Amount } from 'model/entities';
+import { Amount } from '@akropolis-web/primitives';
 
 import { PieChart } from '../PieChart/PieChart';
 import { PieChartData, PieSector } from './model';

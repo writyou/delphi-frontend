@@ -1,10 +1,17 @@
 import React from 'react';
 
+import { getSignificantValue } from 'utils';
 import { ModalButton, ButtonProps, Loading, Button } from 'components';
 import { SavingsPool } from 'model/types';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { getSignificantValue } from 'utils/bn';
+
+/*
+ TODO:
+ * replace current interfaces with ones from package
+ * remove old code
+
+*/
 
 import { WithdrawFromSavingsPoolForm } from './WithdrawFromSavingsPoolForm';
 

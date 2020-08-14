@@ -3,14 +3,13 @@ import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TokenAmount, Token, denormolizeAmount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { TokenAmount, Token } from 'model/entities';
 import { useValidateAmount } from 'utils/react';
 import { ALL_TOKEN } from 'utils/mock';
-import { denormolizeAmount } from 'utils/amounts';
 import { Typography } from 'components';
 
 import { WithdrawAdditionalFee } from '../data/WithdrawAdditionalFee';
@@ -57,7 +56,7 @@ export function WithdrawFromSavingsPoolForm({
 
   const validateAmount = useValidateAmount({
     required: true,
-    moreThenZero: true,
+    moreThanZero: true,
     maxValue: maxValue$,
   });
 

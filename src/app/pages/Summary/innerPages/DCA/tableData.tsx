@@ -1,4 +1,5 @@
 import React from 'react';
+import { TokenAmount, PercentAmount, LiquidityAmount } from '@akropolis-web/primitives';
 
 import {
   Table,
@@ -10,7 +11,6 @@ import {
   Grid,
   TokensIcons,
 } from 'components';
-import { TokenAmount, PercentAmount, LiquidityAmount } from 'model/entities';
 import { SavingsPool } from 'model/types';
 import { mockedTokens } from 'utils/mock';
 

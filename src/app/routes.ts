@@ -4,10 +4,11 @@ const rawTree = {
   demo: null,
   summary: {
     savings: null,
-    investment: null,
+    investments: null,
     dca: null,
     staking: null,
     harvest: null,
+    staking: null,
   },
   savings: {
     allocate: null,

@@ -1,4 +1,4 @@
-import { Token, TokenAmount } from 'model/entities';
+import { Token, TokenAmount } from '@akropolis-web/primitives';
 
 export type StakingPool = {
   address: string;

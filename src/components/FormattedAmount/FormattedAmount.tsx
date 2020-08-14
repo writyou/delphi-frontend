@@ -2,11 +2,16 @@ import React from 'react';
 import Tooltip from '@material-ui/core/Tooltip/Tooltip';
 import BN from 'bn.js';
 import cn from 'classnames';
+import {
+  Amount,
+  LiquidityAmount,
+  TokenAmount,
+  PercentAmount,
+  getDecimal,
+  roundWei,
+} from '@akropolis-web/primitives';
 
-import { Amount, LiquidityAmount, TokenAmount, PercentAmount } from 'model/entities';
-import { getDecimal } from 'utils/format';
 import { makeStyles } from 'utils/styles';
-import { roundWei } from 'utils/bn';
 import { SIGNIFICANT_FRACTIONAL_DIGITS } from 'env';
 
 import { Decimal } from './Decimal';

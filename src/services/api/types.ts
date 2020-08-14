@@ -1,6 +1,7 @@
 import PromiEvent from 'web3/promiEvent';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import {
   createErc20,
@@ -10,7 +11,6 @@ import {
   createDefiProtocol,
   createSavingsPoolToken,
 } from 'generated/contracts';
-import { TokenAmount } from 'model/entities';
 import {
   DepositToSavingsPool,
   WithdrawFromSavingsPool,

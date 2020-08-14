@@ -1,9 +1,9 @@
 import React from 'react';
 
+import { getSignificantValue } from 'utils';
 import { DepositToSavingsPoolWithFee } from 'model/types';
 import { Table, FormattedAmount, TokenName } from 'components';
 import { SavingsPoolName } from 'features/savingsPools';
-import { getSignificantValue } from 'utils/bn';
 
 export function FeesTable({ fees }: { fees: DepositToSavingsPoolWithFee[] }) {
   return <Table.Component entries={fees} columns={columns} />;

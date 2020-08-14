@@ -3,10 +3,10 @@ import { map } from 'rxjs/operators';
 import BN from 'bn.js';
 import * as R from 'ramda';
 import { autobind } from 'core-decorators';
+import { Token, TokenAmount } from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
 import { createErc20, createTestnetERC20 } from 'generated/contracts';
-import { Token, TokenAmount } from 'model/entities';
 import { getCurrentValueOrThrow, awaitFirst } from 'utils/rxjs';
 
 import { Contracts, Web3ManagerModule } from '../types';

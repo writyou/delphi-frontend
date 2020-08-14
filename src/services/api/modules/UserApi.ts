@@ -1,11 +1,16 @@
 import { Observable, empty, combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
+import {
+  TokenAmount,
+  LiquidityAmount,
+  PercentAmount,
+  Fraction,
+  calcAvg,
+} from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
-import { TokenAmount, LiquidityAmount, PercentAmount, Fraction } from 'model/entities';
 import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
-import { calcAvg } from 'utils/amounts';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
