@@ -1,0 +1,5 @@
+subscription GlobalStats {
+  globalStat(id: "ID") {
+    activeMembersCount
+  }
+}
