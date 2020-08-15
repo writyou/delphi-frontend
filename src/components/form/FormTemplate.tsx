@@ -8,7 +8,7 @@ import cn from 'classnames';
 import { Hint } from 'components/Hint/Hint';
 import { makeStyles } from 'utils/styles';
 
-import { Button } from '../Button/Button';
+import { Button } from '../Button';
 
 type AnyObject = Record<string, any>;
 

@@ -26,7 +26,7 @@ export { default as TabContext } from '@material-ui/lab/TabContext';
 
 export { NavMenuItem } from './NavMenuItem/NavMenuItem';
 export { AkropolisSocialLinks } from './AkropolisSocialLinks/AkropolisSocialLinks';
-export { Button, ButtonProps } from './Button/Button';
+export { Button, ButtonProps } from './Button';
 export { Layout } from './Layout/Layout';
 export { Intro } from './Intro/Intro';
 export { Benefit, Benefits } from './Benefits/Benefits';
