@@ -136,7 +136,7 @@ const useStyles = makeStyles(
     },
 
     tokenSymbol: {
-      fontSize: '0.7em',
+      fontSize: '0.5em',
     },
 
     percentSymbol: {},
