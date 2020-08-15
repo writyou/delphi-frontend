@@ -61,7 +61,7 @@ export function SavingsPoolPage() {
           </Grid>
           <Grid container className={classes.row}>
             <Grid item xs={6} className={classes.paddingRight}>
-              <Grid container justify="space-between">
+              <Grid container justify="space-between" className={classes.poolMetrics}>
                 <Metric
                   title="Pool Liquidity"
                   value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
@@ -74,13 +74,21 @@ export function SavingsPoolPage() {
             <Grid container item xs={6} className={classes.paddingRight}>
               <Metric
                 title={<Label withComingSoon>Approximate Reward Weekly</Label>}
-                value={<RewardCompositionChartMock poolsNumber={3} />}
+                value={
+                  <div className={classes.metricChart}>
+                    <RewardCompositionChartMock poolsNumber={3} />
+                  </div>
+                }
               />
             </Grid>
             <Grid container item xs={4}>
               <Metric
                 title="Currency Reserves"
-                value={<SavingsPoolBalancesComposition poolAddress={poolAddress} />}
+                value={
+                  <div className={classes.metricChart}>
+                    <SavingsPoolBalancesComposition poolAddress={poolAddress} />
+                  </div>
+                }
               />
             </Grid>
           </Grid>
@@ -136,6 +144,12 @@ const useStyles = makeStyles(
     },
     row: {
       paddingTop: 50,
+    },
+    poolMetrics: {
+      width: 428, // align metrics by reward table
+    },
+    metricChart: {
+      marginTop: 5,
     },
     depositLimit: {
       fontSize: 12,

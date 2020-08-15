@@ -11,9 +11,5 @@ export function SavingsPoolLiquidity({ poolAddress }: { poolAddress: string }) {
     [api, poolAddress],
   );
 
-  return (
-    <Loading meta={liquidityMeta}>
-      {liquidity && <FormattedAmount sum={liquidity} variant="plain" />}
-    </Loading>
-  );
+  return <Loading meta={liquidityMeta}>{liquidity && <FormattedAmount sum={liquidity} />}</Loading>;
 }
