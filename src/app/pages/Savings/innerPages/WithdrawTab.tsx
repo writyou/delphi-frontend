@@ -19,28 +19,32 @@ export function WithdrawTab() {
 
   return (
     <>
-      <div className={classes.withdrawTabDescription}>
-        {t(tKeys.modules.savings.withdrawTabText.getKey())}
-      </div>
       <Loading meta={poolsMeta}>
-        <Grid container alignItems="flex-start" spacing={3}>
-          {pools && pools.length ? (
-            pools.map(pool => (
-              <Grid key={pool.address} item xs={4}>
-                <SavingsPoolCard
-                  pool={pool}
-                  content={
-                    <WithdrawFromSavingsPoolButton
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      pool={pool}
-                    />
-                  }
-                />
+        {pools && pools.length ? (
+          <>
+            <div className={classes.withdrawTabDescription}>
+              {t(tKeys.modules.savings.withdrawTabText.getKey())}
+            </div>
+            {pools.map(pool => (
+              <Grid container alignItems="flex-start" spacing={3}>
+                <Grid key={pool.address} item xs={4}>
+                  <SavingsPoolCard
+                    pool={pool}
+                    content={
+                      <WithdrawFromSavingsPoolButton
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        pool={pool}
+                      />
+                    }
+                  />
+                </Grid>
               </Grid>
-            ))
-          ) : (
+            ))}
+          </>
+        ) : (
+          <Grid container alignItems="flex-start" spacing={3}>
             <Grid item xs={12}>
               <Hint
                 button={
@@ -58,8 +62,8 @@ export function WithdrawTab() {
                 You don’t have any active savings pools yet.
               </Hint>
             </Grid>
-          )}
-        </Grid>
+          </Grid>
+        )}
       </Loading>
     </>
   );
