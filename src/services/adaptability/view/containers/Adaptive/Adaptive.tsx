@@ -2,9 +2,10 @@
 import * as React from 'react';
 import cn from 'classnames';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { Theme } from '@material-ui/core/styles';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
 
-import { useTheme, makeStyles, Theme } from 'utils/styles';
+import { useTheme, makeStyles } from 'utils/styles';
 import { useAdaptabilityContext } from 'services/adaptability/AdaptabilityContext';
 
 interface IProps {
