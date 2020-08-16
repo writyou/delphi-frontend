@@ -1,21 +1,15 @@
-import { createMuiTheme, Theme } from '@material-ui/core/styles';
-import {
-  getTheme as createTheme,
-  makeGradient,
-  colors,
-  generateGridSpacingOverrides,
-} from '@akropolis-web/styles';
+import { getTheme as createTheme, makeGradient, Theme } from '@akropolis-web/styles';
 
-const defaultTheme = createMuiTheme();
+import { colors as localColors } from './colors';
 
 function getGradients(type: 'dark' | 'light') {
   return {
     landingIcon: makeGradient(
       type === 'dark'
-        ? [colors.northWesternPurple, colors.darkPurple]
-        : [colors.blushPink2, colors.lavender],
+        ? [localColors.northWesternPurple, localColors.darkPurple]
+        : [localColors.blushPink2, localColors.lavender],
     ),
-    landingText: makeGradient([colors.lilac, colors.grape]),
+    landingText: makeGradient([localColors.lilac, localColors.grape]),
     poolBalanceChart: [
       makeGradient(['#fc87e2', '#f24cb6']),
       makeGradient(['#63afdd', '#574cf2']),
@@ -28,8 +22,8 @@ export const darkTheme = getTheme('dark');
 
 function getTheme(type: 'light' | 'dark'): Theme {
   return createTheme(type, {
-    // TODO: Package theme options are not merged with ThemeOptionsOverrides properly. Fix this TS issue in @akropolis-web/styles
-    gradients: getGradients(type) as any,
+    colors: localColors,
+    gradients: getGradients(type),
     breakpoints: {
       keys: [
         'xs',
@@ -64,35 +58,17 @@ function getTheme(type: 'light' | 'dark'): Theme {
         mobileXS: 0,
       },
     },
-    overrides: {
-      MuiDrawer: {
-        paper: {
-          display: 'block',
-          width: defaultTheme.spacing(60),
-          padding: defaultTheme.spacing(4, 5),
-        },
-      },
-
-      MuiGrid: {
-        ...generateGridSpacingOverrides(defaultTheme.spacing),
-      },
-
-      // TODO: Check if MuiBackdrop options can be moved to @akropolis-web/styles
-      MuiBackdrop: {
-        root: {
-          backgroundColor: 'rgba(0, 0, 0, 0.15)',
-        },
-      },
-    },
   });
 }
 
 declare module '@akropolis-web/styles/dist/theme' {
   interface ThemeOverrides {
+    colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }
 
   interface ThemeOptionsOverrides {
+    colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }
 }
