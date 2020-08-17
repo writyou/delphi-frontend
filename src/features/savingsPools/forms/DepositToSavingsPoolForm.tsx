@@ -16,6 +16,7 @@ import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import { useDepositAmountValidationParams } from '../hooks/useDepositAmountValidationParams';
+import { AllocateFormTemplate } from './AllocateFormTemplate';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -117,27 +118,28 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
       DialogContent={DepositToSavingsConfirmContent}
       onSubmit={handleFormSubmit}
       submitButton="Allocate"
+      CustomFormTemplate={AllocateFormTemplate}
     >
       <>
-        <Grid container spacing={10} alignItems="center">
-          <Grid item xs>
-            <TokenAmountField
-              name={fieldNames.amount}
-              currencies={pool.tokens}
-              placeholder="Enter sum"
-              validate={validateAmount}
-              maxValue={maxValue}
+        <Grid item xs>
+          <TokenAmountField
+            name={fieldNames.amount}
+            currencies={pool.tokens}
+            placeholder="Enter sum"
+            validate={validateAmount}
+            maxValue={maxValue}
+          />
+        </Grid>
+        {currentToken && (
+          // TODO: can't set center align cause row height changing
+          <Grid item style={{ paddingTop: 7 }}>
+            <InfiniteApproveSwitch
+              tokens={currentToken}
+              spender={ETH_NETWORK_CONFIG.contracts.savingsModule}
             />
           </Grid>
-          {currentToken && (
-            <Grid item>
-              <InfiniteApproveSwitch
-                tokens={currentToken}
-                spender={ETH_NETWORK_CONFIG.contracts.savingsModule}
-              />
-            </Grid>
-          )}
-        </Grid>
+        )}
+
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
