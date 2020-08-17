@@ -94,7 +94,7 @@ function renderTokenAmount(
   return (
     <>
       {(sum.isNeg() && '-') || (needToRenderPlus && '+')}
-      <Decimal decimal={decimal} />
+      <Decimal decimal={decimal} variant={variant} />
       {!hideSymbol && (
         <span className={cn({ [classes.tokenSymbol]: variant === 'default' })}>
           &nbsp;{sum.currency.symbol}

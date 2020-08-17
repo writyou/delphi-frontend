@@ -51,8 +51,9 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
               <Grid item container xs>
                 {children}
               </Grid>
-              <Grid item className={classes.withPadding}>
+              <Grid item className={classes.submit}>
                 <Button
+                  size="small"
                   variant="contained"
                   color="primary"
                   type="submit"
@@ -78,7 +79,8 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
 }
 
 const useStyles = makeStyles(() => ({
-  withPadding: {
+  submit: {
+    paddingTop: 3,
     paddingLeft: 32,
   },
 }));
