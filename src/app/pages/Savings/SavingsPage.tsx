@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { Tabs } from 'components';
+import { TabsSection } from 'components';
 
 import { AllocateTab } from './innerPages/AllocateTab';
 import { WithdrawTab } from './innerPages/WithdrawTab';
@@ -33,12 +33,12 @@ export function SavingsPage() {
     setSelectedPage(page);
   }, [page]);
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
   };
 
   return (
-    <Tabs
+    <TabsSection
       currentValue={selectedPage}
       tabs={tabs}
       tabComponent={RouterLink}

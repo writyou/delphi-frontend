@@ -9,7 +9,7 @@ import {
   Metric,
   FormattedAmount,
   CompositionChart,
-  Tabs,
+  TabsSection,
   ComingSoon,
 } from 'components';
 import { makeStyles } from 'utils/styles';
@@ -63,8 +63,8 @@ export function SummaryPage() {
 
   const page = match ? match.params.page : defaultPage;
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
   };
 
   React.useEffect(() => {
@@ -94,7 +94,7 @@ export function SummaryPage() {
     ].includes(selectedPage);
 
     return (
-      <Tabs
+      <TabsSection
         currentValue={selectedPage}
         tabs={tabs}
         tabComponent={RouterLink}
@@ -105,7 +105,7 @@ export function SummaryPage() {
             <ComingSoon variant="label" />
           </div>
         )}
-      </Tabs>
+      </TabsSection>
     );
   }
 

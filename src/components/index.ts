@@ -1,4 +1,4 @@
-export { Metric, Tabs } from '@akropolis-web/components';
+export { Metric, TabList, TabsSection } from '@akropolis-web/components';
 export { default as Box } from '@material-ui/core/Box';
 export { default as ButtonBase } from '@material-ui/core/ButtonBase';
 export { default as CircularProgress } from '@material-ui/core/CircularProgress';
@@ -20,7 +20,6 @@ export { default as Tab } from '@material-ui/core/Tab';
 export { default as Divider } from '@material-ui/core/Divider';
 
 export { default as Skeleton } from '@material-ui/lab/Skeleton';
-export { default as TabsList } from '@material-ui/lab/TabList';
 export { default as TabPanel } from '@material-ui/lab/TabPanel';
 export { default as TabContext } from '@material-ui/lab/TabContext';
 
