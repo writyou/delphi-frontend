@@ -8,7 +8,6 @@ import { ETH_NETWORK_CONFIG } from 'env';
 import * as CustomLink from '../Link';
 import { useStyles } from './NewHeader.style';
 import { Logo } from './icons';
-import { Links } from './Links';
 
 const wikiLink: CustomLink.models.Link = {
   kind: 'external',
@@ -25,9 +24,6 @@ export const NewHeader: React.FC = () => {
         <Link to="/">
           <Logo />
         </Link>
-        <nav className={classes.links}>
-          <Links />
-        </nav>
       </div>
       <div className={classes.rightPart}>
         <CustomLink.Link link={wikiLink} shouldRenderLabel />
