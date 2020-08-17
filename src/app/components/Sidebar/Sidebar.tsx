@@ -12,7 +12,6 @@ import * as icons from 'components/icons/navigation';
 import { routes } from '../../routes';
 import * as Link from '../Link';
 import { useStyles } from './Sidebar.style';
-import * as components from './components';
 import { sidebarStorage } from './sidebarStorage';
 
 type PriorityLinks = {
@@ -110,8 +109,8 @@ export const Sidebar: React.FC = () => {
       })}
     >
       <div className={classes.upperPart}>
-        <nav className={classes.upperLinks}>{links?.upperLinks.map(makeLinkRenderer())}</nav>
-        <nav className={classes.lowerLinks}>{links?.lowerLinks.map(makeLinkRenderer())}</nav>
+        <nav className={classes.upperLinks}>{links?.upperLinks.map(renderLink)}</nav>
+        <nav className={classes.lowerLinks}>{links?.lowerLinks.map(renderLink)}</nav>
       </div>
       <div className={classes.lowerPart}>
         <div className={classes.lowerPart}>{renderSwitch()}</div>
@@ -131,13 +130,15 @@ export const Sidebar: React.FC = () => {
       </IconButton>
     );
   }
-};
 
-function makeLinkRenderer() {
-  return (link: Link.models.Link) => {
-    return <components.Link key={link.label} link={link} />;
-  };
-}
+  function renderLink(link: Link.models.Link) {
+    return (
+      <div className={classes.link}>
+        <Link.Link key={link.label} link={link} />
+      </div>
+    );
+  }
+};
 
 function makeIconRenderer(Icon: typeof SvgIcon) {
   return (isActive: boolean) => (

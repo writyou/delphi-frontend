@@ -6,12 +6,11 @@ import { useStyles } from './style';
 import * as models from './models';
 
 type Props = {
-  shouldRenderLabel: boolean;
   link: models.Link;
 };
 
 export const Link: React.FC<Props> = props => {
-  const { link, shouldRenderLabel } = props;
+  const { link } = props;
 
   switch (link.kind) {
     case 'internal':
@@ -49,7 +48,7 @@ export const Link: React.FC<Props> = props => {
     return (
       <NavLink key={label} to={ref} className={classes.root} activeClassName={classes.active}>
         {renderIcon && <div className={classes.icon}>{renderIcon(isActive)}</div>}
-        {shouldRenderLabel && <div className={classes.label}>{label}</div>}
+        <div className={classes.label}>{label}</div>
       </NavLink>
     );
   }

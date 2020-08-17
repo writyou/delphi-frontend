@@ -14,6 +14,10 @@ export const useStyles = makeStyles(
       transition: theme.transitions.create('width'),
     },
 
+    link: {
+      marginTop: 25,
+    },
+
     upperPart: {
       width: '100%',
       paddingLeft: 5,
