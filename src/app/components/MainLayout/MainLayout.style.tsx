@@ -38,8 +38,6 @@ export const useStyles = makeStyles(
       marginTop: 48,
     },
 
-    sidebar: {},
-
     footer: {
       marginTop: 48,
       marginBottom: 56,
