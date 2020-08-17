@@ -7,7 +7,7 @@ import { useCommunication } from 'utils/react';
 import { ButtonBase, Loading, Typography, Box, ShortAddress, Grid, Button } from 'components';
 import { WalletType } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { makeStyles, darken, lighten } from 'utils/styles';
+import { makeStyles } from 'utils/styles';
 import { zeroAddress } from 'utils/mock';
 import { Bitski, Fortmatic, Metamask, Portis, WalletConnect } from 'components/icons/wallets';
 
@@ -26,6 +26,14 @@ const iconByWallet: Record<WalletType, typeof SvgIcon> = {
   metamask: Metamask,
   portis: Portis,
   connectWallet: WalletConnect,
+};
+
+const walletTitle: Record<WalletType, string> = {
+  bitski: 'Bitski',
+  fortmatic: 'Fortmatic',
+  metamask: 'Metamask',
+  portis: 'Portis',
+  connectWallet: 'WalletConnect',
 };
 
 export function ProviderButton({
@@ -64,7 +72,7 @@ export function ProviderButton({
         </Grid>
         <Grid item>
           <Typography className={classes.title}>
-            {connectedAddress ? <Address address={connectedAddress} /> : type}
+            {connectedAddress ? <Address address={connectedAddress} /> : walletTitle[type]}
           </Typography>
         </Grid>
         {connectedAddress ? (
@@ -76,7 +84,7 @@ export function ProviderButton({
             </Grid>
             <Box clone alignSelf="stretch">
               <Grid item>
-                <Button className={classes.actionName} variant="outlined">
+                <Button variant="outlined" color="primary" size="small" fullWidth>
                   {t(tKeys.features.auth.modalTitle.disconnect.getKey())}
                 </Button>
               </Grid>
@@ -104,8 +112,9 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'flex-start',
     padding: theme.spacing(1),
     transition: theme.transitions.create(['background-color']),
-    borderRadius: 12,
-    minHeight: 140,
+    borderRadius: 6,
+    minHeight: 115,
+    minWidth: 135,
 
     '&:hover, &$focusVisible': {
       backgroundColor: '#191924',
@@ -120,14 +129,6 @@ const useStyles = makeStyles(theme => ({
 
   fullHeight: {
     height: '100%',
-  },
-
-  actionName: {
-    border: `1px solid ${
-      theme.palette.type === 'dark'
-        ? lighten(theme.palette.background.paper, 0.2)
-        : darken(theme.palette.background.paper, 0.2)
-    }`,
   },
 
   loading: {
@@ -149,14 +150,12 @@ const useStyles = makeStyles(theme => ({
 
   title: {
     lineHeight: 1,
-    marginTop: 20,
+    marginTop: 12,
   },
 
   icon: {
-    fontSize: 56,
+    fontSize: 53,
   },
 
-  container: {
-    width: 'auto',
-  },
+  container: {},
 }));

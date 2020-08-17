@@ -36,18 +36,17 @@ export function AuthModal(props: AuthModalProps) {
       open={isOpened}
       onClose={onClose}
       TransitionProps={{ tabIndex: 'unset' } as any}
+      scroll="body"
     >
-      <DialogTitle>
+      <DialogTitle disableTypography>
         {isLogged ? t(modalTitle.connected.getKey()) : t(modalTitle.disconnected.getKey())}
       </DialogTitle>
       <CloseIcon className={classes.closeButton} onClick={onClose} />
       <DialogContent className={classes.content}>
         <Grid container spacing={3} justify="center">
           {wallets.map((type, index) => (
-            <Grid item xs={4} key={index}>
+            <Grid item xs={4} key={index} className={classes.providerButton}>
               <ProviderButton
-                fullWidth
-                fullHeight
                 connect={connect}
                 disconnect={disconnect}
                 type={type}
@@ -58,7 +57,7 @@ export function AuthModal(props: AuthModalProps) {
           ))}
         </Grid>
       </DialogContent>
-      <DialogContent>
+      <DialogContent className={classes.content}>
         <Hint>
           <Typography className={classes.aboutTerms}>
             By connecting your wallet, you agree to our{' '}
@@ -96,7 +95,7 @@ export function AuthModal(props: AuthModalProps) {
 
 const useStyles = makeStyles({
   root: {
-    padding: 32,
+    padding: '50px 60px',
   },
   closeButton: {
     position: 'absolute',
@@ -106,7 +105,13 @@ const useStyles = makeStyles({
     cursor: 'pointer',
   },
   content: {
+    overflow: 'visible',
+    padding: 0,
     marginTop: 30,
+  },
+  providerButton: {
+    marginTop: 20,
+    textAlign: 'center',
   },
   aboutTerms: {
     fontSize: 12,
