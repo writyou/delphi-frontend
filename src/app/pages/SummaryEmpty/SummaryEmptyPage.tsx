@@ -45,7 +45,7 @@ export function SummaryEmptyPage() {
         </Grid>
         {[
           {
-            title: <Label>My Savings</Label>,
+            title: <Label>Savings</Label>,
             chart: <CatsPaw className={classes.icon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: (
@@ -61,7 +61,7 @@ export function SummaryEmptyPage() {
             ),
           },
           {
-            title: <Label withComingSoon>My Investment</Label>,
+            title: <Label withComingSoon>Investment</Label>,
             chart: <CatsPaw variant="turquoise" className={classes.icon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: renderMockedButton('Invest'),
@@ -73,7 +73,7 @@ export function SummaryEmptyPage() {
             button: renderMockedButton('DCA'),
           },
           {
-            title: <Label withComingSoon>My Harvest</Label>,
+            title: <Label withComingSoon>Harvest</Label>,
             chart: <Fish className={classes.fishIcon} />,
             apy: <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />,
             button: renderMockedButton('Hidden', true),
