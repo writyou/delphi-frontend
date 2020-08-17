@@ -80,7 +80,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
       // TODO: Check if MuiBackdrop options can be moved to @akropolis-web/styles
       MuiBackdrop: {
         root: {
-          backgroundColor: 'rgba(0, 0, 0, 0.15)',
+          backgroundColor: 'rgba(0, 0, 0, 0.3)',
         },
       },
     },
