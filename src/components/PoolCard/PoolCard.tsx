@@ -23,7 +23,9 @@ type Props = {
   isDisabledLink?: boolean;
   content: JSX.Element;
   poolBalance: JSX.Element;
+  poolBalanceTitle?: string;
   poolLiquidity: JSX.Element;
+  poolLiquidityTitle?: string;
   additionalElement?: JSX.Element;
   getDepositLimit$?(poolAddress: string): Observable<Amount | null>;
   getUserBalance$(poolAddress: string): Observable<Amount>;
@@ -39,7 +41,9 @@ export function PoolCard(props: Props) {
     poolName,
     tokens,
     poolBalance,
+    poolBalanceTitle,
     poolLiquidity,
+    poolLiquidityTitle,
     getDepositLimit$,
     getUserBalance$,
   } = props;
@@ -64,11 +68,11 @@ export function PoolCard(props: Props) {
     >
       <div className={classes.content}>
         <div className={classes.row}>
-          <span>{t(tKeys.modules.savings.mySupplyBalance.getKey())}</span>
+          <span>{poolBalanceTitle || t(tKeys.modules.savings.mySupplyBalance.getKey())}</span>
           <span className={classes.balance}>{poolBalance}</span>
         </div>
         <div className={classes.row}>
-          <span>{t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
+          <span>{poolLiquidityTitle || t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>{poolLiquidity}</span>
         </div>
         {getDepositLimit$ && (

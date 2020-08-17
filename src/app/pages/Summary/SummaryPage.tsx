@@ -23,13 +23,13 @@ import { LiveStats } from './Components/LiveStats';
 
 const tabs = [
   {
-    label: 'My Savings Pools',
+    label: 'Savings Pools',
     value: routes.summary.savings.getElementKey(),
     to: routes.summary.savings.getRedirectPath(),
     renderContent: () => <innerPages.Savings />,
   },
   {
-    label: 'My Investment Pools',
+    label: 'Investment Pools',
     value: routes.summary.investments.getElementKey(),
     to: routes.summary.investments.getRedirectPath(),
     renderContent: () => <innerPages.Investment />,
@@ -41,13 +41,13 @@ const tabs = [
     renderContent: () => <innerPages.DCA />,
   },
   {
-    label: 'My Staking',
+    label: 'Staking',
     value: routes.summary.staking.getElementKey(),
     to: routes.summary.staking.getRedirectPath(),
     renderContent: () => <innerPages.Staking />,
   },
   {
-    label: 'My Harvest',
+    label: 'Harvest',
     value: routes.summary.harvest.getElementKey(),
     to: routes.summary.harvest.getRedirectPath(),
     renderContent: () => <innerPages.Harvest />,
@@ -120,7 +120,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label>My Savings</Label>
+            <Label>Savings</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <UserSavingsPoolsBalancesComposition size="extra-small" />
@@ -131,7 +131,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label withComingSoon>My Investment</Label>
+            <Label withComingSoon>Investment</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <CompositionChart
@@ -159,7 +159,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label withComingSoon>My Harvest</Label>
+            <Label withComingSoon>Harvest</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <CompositionChart
