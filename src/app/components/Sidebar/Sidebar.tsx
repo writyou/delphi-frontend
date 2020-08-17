@@ -32,13 +32,13 @@ const upperLinksList: PriorityLinks = {
     {
       kind: 'internal',
       label: 'My Pools',
-      ref: routes.savings.getRoutePath(),
+      ref: routes.pools.getRoutePath(),
       renderIcon: makeIconRenderer(icons.Borrow),
     },
     {
       kind: 'internal',
       label: 'My Harvest',
-      ref: routes.investments.getRoutePath(),
+      ref: routes.rewards.getRoutePath(),
       renderIcon: makeIconRenderer(icons.Borrow),
     },
   ],

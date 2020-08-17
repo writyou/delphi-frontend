@@ -3,12 +3,15 @@ import build, { getParam } from 'build-route-tree';
 const rawTree = {
   demo: null,
   summary: {
+    harvest: null,
+  },
+  pools: {
     savings: null,
     investments: null,
     dca: null,
-    harvest: null,
     staking: null,
   },
+  rewards: null,
   savings: {
     allocate: null,
     withdraw: null,
