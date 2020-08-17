@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiquidityAmount, PercentAmount, TokenAmount, Token } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount, Token } from '@akropolis-web/primitives';
 
 import {
   Table,
@@ -17,7 +17,6 @@ import { InnerLegendAPY } from '../../Components/InnerLegendAPY';
 export type Order = {
   asset: string;
   amount: number;
-  APY: PercentAmount;
   NAV: LiquidityAmount;
   token: Token;
 };
@@ -36,14 +35,6 @@ export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
     cellContent: {
       kind: 'simple',
       render: x => x.amount,
-    },
-  },
-
-  {
-    renderTitle: () => 'APY',
-    cellContent: {
-      kind: 'simple',
-      render: x => <FormattedAmount sum={x.APY} variant="plain" />,
     },
   },
 

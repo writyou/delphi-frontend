@@ -1,61 +1,72 @@
 import * as React from 'react';
-import BN from 'bn.js';
-import { LiquidityAmount, Currency, TokenAmount, Token } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount, Token, Fraction } from '@akropolis-web/primitives';
+import { combineLatest } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
+import { useApi, Api } from 'services/api';
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Grid } from 'components';
-import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
-import { ETH_NETWORK_CONFIG } from 'env';
+import { useSubscribable } from 'utils/react';
+import { zeroAddress, DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 import * as tableData from './tableData';
-import { EmptyListHint } from '../../Components/EmptyListHint';
 
-const entries: tableData.Order[] = [
-  {
-    asset: 'COMP',
-    amount: 0,
-    APY: percentAmount,
-    NAV: liquidityAmount,
-    token: new Token(ETH_NETWORK_CONFIG.tokens.COMP, 'COMP', 18),
-  },
-  {
-    asset: 'AKRO',
-    amount: 0,
-    APY: percentAmount,
-    NAV: liquidityAmount,
-    token: new Token(ETH_NETWORK_CONFIG.tokens.AKRO, 'AKRO', 18),
-  },
-  {
-    asset: 'ADEL',
-    amount: 0,
-    APY: percentAmount,
-    NAV: liquidityAmount,
-    token: new Token(ETH_NETWORK_CONFIG.tokens.ADEL, 'ADEL', 18),
-  },
-];
+function makeEntriesForChart(entries: tableData.Order[]) {
+  return [
+    entries.map(order => ({
+      value: order.NAV,
+      payload: new TokenAmount(order.NAV, new Token(zeroAddress, order.asset, 18)),
+    })),
+  ];
+}
 
-export const entriesForChart = [
-  entries.map(order => ({
-    value: new LiquidityAmount(new BN(20), new Currency('$', 18)),
-    payload: new TokenAmount('0', new Token(zeroAddress, order.asset, 18)),
-  })),
-];
+function makeTableEntrie(amount: TokenAmount, price: Fraction): tableData.Order {
+  return {
+    asset: amount.currency.symbol,
+    amount: amount.toNumber(),
+    NAV: new LiquidityAmount(amount.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
+    token: amount.currency,
+  };
+}
+
+function getChartData$(api: Api) {
+  return api.user.getMySavingsRewards$().pipe(
+    switchMap(rewards =>
+      combineLatest(rewards.map(a => api.prices.getTokenPrice$(a.currency.address))).pipe(
+        map(prices => {
+          return rewards.map((r, i) => makeTableEntrie(r, prices[i]));
+        }),
+      ),
+    ),
+    map(data =>
+      data.sort((a, b) => {
+        return b.NAV.sub(a.NAV).toNumber();
+      }),
+    ),
+  );
+}
 
 export function Harvest() {
   const classes = useStyles();
+  const api = useApi();
+  const [tableEntries, rewardsMeta] = useSubscribable(() => getChartData$(api), [api]);
 
   return (
     <div className={classes.root}>
-      <Loading>
-        {!entries.length ? (
-          <EmptyListHint redirectPage="harvest" />
-        ) : (
+      <Loading meta={rewardsMeta}>
+        {tableEntries && (
           <Grid container className={classes.table}>
             <Grid item xs={8}>
-              <Table.Component columns={tableData.columnsWithoutExpandableRows} entries={entries} />
+              <Table.Component
+                columns={tableData.columnsWithoutExpandableRows}
+                entries={tableEntries}
+              />
             </Grid>
             <Grid item xs>
-              <Table.Component columns={tableData.columnForChart} entries={entriesForChart} />
+              <Table.Component
+                columns={tableData.columnForChart}
+                entries={makeEntriesForChart(tableEntries)}
+              />
             </Grid>
           </Grid>
         )}
