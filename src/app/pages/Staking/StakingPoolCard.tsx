@@ -44,8 +44,9 @@ export function StakingPoolCard({ pool }: Props) {
         </Grid>
       }
       poolBalance={<UserStakingPoolBalance poolAddress={address} />}
-      poolBalanceTitle="Staked"
+      poolBalanceTitle="My Stake"
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
+      poolLiquidityTitle="Staked overall"
       getDepositLimit$={() => api.user.getStakingDepositLimit$(pool.address)}
       getUserBalance$={(s: string) => api.user.getFullStakingPoolBalance$(s)}
     />
