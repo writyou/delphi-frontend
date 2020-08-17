@@ -1,7 +1,7 @@
-import { Theme, makeStyles, lighten, rgba } from 'utils/styles';
+import { makeStyles, lighten, rgba } from 'utils/styles';
 
 export const useStyles = makeStyles(
-  (theme: Theme) => {
+  theme => {
     return {
       root: {
         display: 'flex',

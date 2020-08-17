@@ -7,7 +7,7 @@ import { useCommunication } from 'utils/react';
 import { ButtonBase, Loading, Typography, Box, ShortAddress, Grid, Button } from 'components';
 import { WalletType } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { makeStyles, Theme, darken, lighten } from 'utils/styles';
+import { makeStyles, darken, lighten } from 'utils/styles';
 import { zeroAddress } from 'utils/mock';
 import { Bitski, Fortmatic, Metamask, Portis, WalletConnect } from 'components/icons/wallets';
 
@@ -99,7 +99,7 @@ function Address({ address }: { address: string }) {
   return <ShortAddress disableCopy address={address} />;
 }
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     alignItems: 'flex-start',
     padding: theme.spacing(1),
