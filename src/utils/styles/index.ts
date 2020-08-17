@@ -15,5 +15,4 @@ export {
   ProvidedAncestorBackground,
 } from '@akropolis-web/styles';
 
-export * from './theme'; // TODO: move theme and colors into styles package and import from there
-export * from './colors';
+export * from './theme';

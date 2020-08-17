@@ -1,6 +1,6 @@
-import { makeStyles, Theme } from 'utils/styles';
+import { makeStyles } from 'utils/styles';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none',
     background: 'none',

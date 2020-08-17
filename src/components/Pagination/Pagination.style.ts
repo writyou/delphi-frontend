@@ -1,6 +1,6 @@
-import { Theme, makeStyles } from 'utils/styles';
+import { makeStyles } from 'utils/styles';
 
-export const useStyles = makeStyles((theme: Theme) => ({
+export const useStyles = makeStyles(theme => ({
   root: {
     padding: theme.spacing(1.25, 2.5),
     borderRadius: '0.25rem',
