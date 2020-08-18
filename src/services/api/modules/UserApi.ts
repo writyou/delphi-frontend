@@ -18,6 +18,7 @@ import { SubgraphApi } from './SubgraphApi/SubgraphApi';
 import { SavingsModuleApi } from './SavingsModuleApi';
 import { DCAModuleApi } from './DCAModuleApi';
 import { StakingModuleApi } from './StakingModuleApi';
+import { RewardsApi } from './RewardsApi';
 
 export class UserApi {
   constructor(
@@ -27,10 +28,12 @@ export class UserApi {
     private savings: SavingsModuleApi,
     private dca: DCAModuleApi,
     private staking: StakingModuleApi,
+    private rewards: RewardsApi,
   ) {}
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
+    // TODO create isUserExist$ method to check if the user is a liquidity provider
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
     );
@@ -188,6 +191,13 @@ export class UserApi {
         ),
       ),
       map(pools => pools.filter((pool): pool is StakingPool => !!pool)),
+    );
+  }
+
+  @memoize()
+  public getRewards$(): Observable<TokenAmount[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
     );
   }
 }
