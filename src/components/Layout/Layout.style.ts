@@ -43,7 +43,7 @@ export const useStyles = makeStyles(
 
     header: {
       paddingTop: theme.spacing(2.5),
-      paddingBottom: theme.spacing(3.5),
+      paddingBottom: 20,
       [theme.breakpoints.up('tabletXS')]: {
         paddingBottom: theme.spacing(6),
       },
@@ -66,14 +66,14 @@ export const useStyles = makeStyles(
     },
 
     socials: {
-      position: 'fixed',
-      display: 'none',
-      marginRight: theme.spacing(2),
-      top: '29%',
-      right: 0,
+      display: 'flex',
+      justifyContent: 'center',
+      paddingBottom: 35,
 
-      [theme.breakpoints.up('lg')]: {
-        display: 'block',
+      [theme.breakpoints.up('tabletXS')]: {
+        position: 'fixed',
+        top: '29%',
+        right: -3,
       },
     },
   }),

@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, Intro, Loading, LinkProps } from 'components';
+import { Button, Link, Intro, Loading, LinkProps, Grid, ButtonProps } from 'components';
 import { routes } from 'app/routes';
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
 import { AuthButton } from 'features/auth';
+import { Adaptive } from 'services/adaptability';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -33,20 +34,18 @@ function LandingIntro() {
         </div>
       }
     >
-      <div className={classes.buttons}>
-        Try it on{' '}
-        <div className={classes.button}>
+      <Grid container alignItems="center" justify="space-between" className={classes.buttons}>
+        <Grid item className={classes.button}>
           <RedirectOrAuthButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
           </RedirectOrAuthButton>
-        </div>
-        or{' '}
-        <div className={classes.button}>
+        </Grid>
+        <Grid item className={classes.button}>
           <RedirectOrAuthButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
           </RedirectOrAuthButton>
-        </div>
-        <div className={classes.button}>
+        </Grid>
+        <Grid item className={classes.button}>
           <Link
             href="https://invis.io/Z3YEH8QNYSK#/425936541_Delphi"
             color="inherit"
@@ -55,8 +54,8 @@ function LandingIntro() {
           >
             View Prototype
           </Link>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </Intro>
   );
 }
@@ -71,6 +70,8 @@ function RedirectOrAuthButton({
   children: React.ReactNode;
 }) {
   const api = useApi();
+  const classes = useStyles();
+
   const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [api]);
 
   const needToAuth = window.location.origin.includes(to);
@@ -84,14 +85,12 @@ function RedirectOrAuthButton({
 
   if (!needToAuth) {
     return (
-      <Button
-        {...commonProps}
-        component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
-        underline="none"
-        href={to}
-        target="_blank"
-        rel="noopener noreferrer"
-      />
+      <>
+        <Adaptive from="mobileXS" to="tabletXS">
+          {renderButton('small')}
+        </Adaptive>
+        <Adaptive from="tabletXS">{renderButton('large')}</Adaptive>
+      </>
     );
   }
 
@@ -104,6 +103,22 @@ function RedirectOrAuthButton({
       )}
     </Loading>
   );
+
+  function renderButton(size?: ButtonProps['size']) {
+    return (
+      <Button
+        {...commonProps}
+        component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
+        underline="none"
+        href={to}
+        fullWidth
+        className={classes.buttonComponent}
+        size={size}
+        target="_blank"
+        rel="noopener noreferrer"
+      />
+    );
+  }
 }
 
 export { LandingIntro };

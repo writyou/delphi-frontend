@@ -5,14 +5,14 @@ const useStyles = makeStyles(theme => ({
   icon: {
     display: 'flex',
     alignItems: 'center',
-    fontSize: theme.spacing(8.25),
+    fontSize: 56,
     marginBottom: theme.spacing(5),
   },
   title: {
-    maxWidth: 1050,
+    maxWidth: 550,
     fontWeight: 200,
 
-    fontSize: theme.spacing(2.75),
+    fontSize: 18,
     marginBottom: theme.spacing(1),
     [theme.breakpoints.up('tabletXS')]: {
       fontSize: theme.spacing(5),

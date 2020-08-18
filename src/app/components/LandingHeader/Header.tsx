@@ -51,7 +51,13 @@ export function Header({ authButtonText, customNavItems, CustomLogo }: Props) {
           <AuthButton key="0" connectRedirectPath={routes.summary.getRedirectPath()}>
             {authButtonText}
           </AuthButton>,
-          ...(connectedWallet ? [<AppButton key="2" />] : []),
+          ...(connectedWallet
+            ? [
+                <div className={classes.appButton}>
+                  <AppButton key="2" />
+                </div>,
+              ]
+            : []),
         ]}
       />
     </header>

@@ -18,6 +18,7 @@ function Landing() {
       <Layout.Header>
         <Header authButtonText={t(tKeys.modules.navigation.app.getKey())} customNavItems={[]} />
       </Layout.Header>
+      <Layout.Socials />
       <Layout.Container className={classes.main}>
         <LandingIntro />
         <Benefits className={classes.benefits} benefits={benefits} />
