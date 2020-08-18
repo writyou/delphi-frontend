@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Tabs, ComingSoon } from 'components';
+import { Tabs, ComingSoon, Card } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 
@@ -52,15 +52,13 @@ export function MyPools() {
     setSelectedPage(page);
   }, [page]);
 
-  return <div className={classes.root}>{renderTabs()}</div>;
+  const isComingSoonTab = [
+    routes.pools.investments.getElementKey(),
+    routes.pools.dca.getElementKey(),
+  ].includes(selectedPage);
 
-  function renderTabs() {
-    const isComingSoonTab = [
-      routes.pools.investments.getElementKey(),
-      routes.pools.dca.getElementKey(),
-    ].includes(selectedPage);
-
-    return (
+  return (
+    <Card variant="contained" className={classes.root}>
       <Tabs
         currentValue={selectedPage}
         tabs={tabs}
@@ -73,13 +71,16 @@ export function MyPools() {
           </div>
         )}
       </Tabs>
-    );
-  }
+    </Card>
+  );
 }
 
 const useStyles = makeStyles(
   () => ({
-    root: {},
+    root: {
+      padding: 50,
+      minHeight: '100%',
+    },
     comingSoon: {
       flexGrow: 1,
       alignSelf: 'center',
