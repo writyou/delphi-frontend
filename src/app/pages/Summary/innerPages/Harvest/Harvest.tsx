@@ -8,7 +8,7 @@ import { percentAmount, liquidityAmount, zeroAddress } from 'utils/mock';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import * as tableData from './tableData';
-import { EmptyListHint } from '../../Components/EmptyListHint';
+import { EmptyListHint } from '../../../MyPools/Components/EmptyListHint';
 
 const entries: tableData.Order[] = [
   {

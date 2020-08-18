@@ -6,12 +6,14 @@ import { NewHeader } from '../NewHeader';
 import { PreauditVersionWarning } from '../PreauditVersionWarning/PreauditVersionWarning';
 import { useStyles } from './MainLayout.style';
 import { AppFooter } from '../AppFooter/AppFooter';
+import { Sidebar } from '../Sidebar';
 
 export const MainLayout: React.FC = ({ children }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
+      <Sidebar />
       <div className={classes.headerAndContent}>
         <Card variant="contained" className={classes.header}>
           <NewHeader />

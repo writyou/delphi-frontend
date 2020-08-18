@@ -18,6 +18,8 @@ export function App() {
               <Route exact path={routes.demo.getRoutePath()} component={pages.DemoPage} />
             )}
             <Route path={routes.summary.getRoutePath()} component={pages.Summary} />
+            <Route path={routes.pools.getRoutePath()} component={pages.MyPools} />
+            <Route path={routes.rewards.getRoutePath()} component={pages.MyRewards} />
             <Route
               exact
               path={routes.savings.pool.id.getRoutePath()}
