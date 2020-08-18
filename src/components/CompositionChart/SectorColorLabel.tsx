@@ -22,7 +22,7 @@ export function SectorColorLabel(props: Props) {
 const useStyles = makeStyles(
   () => ({
     root: {
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
     },
     title: {

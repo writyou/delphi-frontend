@@ -39,7 +39,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
           <Grid item>
             <CompositionChart withBackground chartData={entries} size="medium" />
           </Grid>
-          <Grid item className={classes.legend}>
+          <Grid item className={classes.legend} xs>
             <CompositionLegend chartData={entries} Template={TokensTableLegend} />
           </Grid>
         </Grid>

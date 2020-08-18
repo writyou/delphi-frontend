@@ -3,7 +3,7 @@ import { useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { Tabs, ComingSoon } from 'components';
+import { TabsSection, ComingSoon } from 'components';
 import { makeStyles } from 'utils/styles';
 
 import { AllocateTab } from './AllocateTab';
@@ -34,8 +34,8 @@ export function InvestmentsPage() {
 
   const page = match ? match.params.page : defaultPage;
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
   };
 
   React.useEffect(() => {
@@ -43,7 +43,7 @@ export function InvestmentsPage() {
   }, [page]);
 
   return (
-    <Tabs
+    <TabsSection
       currentValue={selectedPage}
       tabs={tabs}
       tabComponent={RouterLink}
@@ -52,7 +52,7 @@ export function InvestmentsPage() {
       <div className={classes.comingSoon}>
         <ComingSoon variant="label" />
       </div>
-    </Tabs>
+    </TabsSection>
   );
 }
 

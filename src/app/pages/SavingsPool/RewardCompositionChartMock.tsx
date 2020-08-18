@@ -21,7 +21,7 @@ function RewardCompositionChartMock({ poolsNumber }: Props) {
             size="medium"
           />
         </Grid>
-        <Grid item className={classes.legend}>
+        <Grid item className={classes.legend} xs>
           <CompositionLegend
             chartData={getMockCompositionChartEntriesToken(poolsNumber)}
             Template={TokensTableLegend}

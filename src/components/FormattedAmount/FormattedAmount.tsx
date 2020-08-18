@@ -16,7 +16,7 @@ import { SIGNIFICANT_FRACTIONAL_DIGITS } from 'env';
 
 import { Decimal } from './Decimal';
 
-interface IProps {
+export interface FormattedAmountProps {
   sum: Amount;
   precision?: number;
   hideSymbol?: boolean;
@@ -27,7 +27,7 @@ interface IProps {
 
 const percentPrecision = 5;
 
-function FormattedAmount(props: IProps) {
+export function FormattedAmount(props: FormattedAmountProps) {
   const { sum, hideSymbol, precision = 2, className, hasSign = false, variant = 'default' } = props;
   const formattedBalance = sum.toFormattedString(precision);
   const notRoundedBalance = sum.toFormattedString(
@@ -143,5 +143,3 @@ const useStyles = makeStyles(
   },
   { name: 'FormattedAmount' },
 );
-
-export { FormattedAmount };
