@@ -63,13 +63,12 @@ export function MyPools() {
   ].includes(selectedPage);
 
   const [filteredTabs, meta] = useSubscribable(
-    // TODO добавить запросы для замоканных табов
     () =>
       combineLatest(
         api.user.getMySavingsPools$(),
-        of([1]),
+        of([1]), // TODO load Investment pools
         api.user.getMyStakingPools$(),
-        of([1]),
+        of([1]), // TODO load DCA pools
       ).pipe(
         map(tabData =>
           tabData ? tabs.filter((_, i) => Boolean(tabData[i]) && tabData[i].length > 0) : undefined,
