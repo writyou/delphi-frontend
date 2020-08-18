@@ -4,6 +4,7 @@ import { Amount } from '@akropolis-web/primitives';
 import { makeStyles } from 'utils/styles';
 
 import { CompositionChartLegendProps, PieSector } from '../../CompositionChart/model';
+import { roundPercentAmount } from './roundPercentAmount';
 
 type Props<T extends Amount, P = void> = CompositionChartLegendProps<T, P> & {
   renderLabel?(sector: PieSector<T, P>): React.ReactNode;
@@ -18,7 +19,8 @@ export function SimpleLegend<T extends Amount, P = void>(props: Props<T, P>) {
       {sectors.map((sector, index) => (
         <li className={classes.legendItem} key={index} style={{ color: sector.color.rgb }}>
           <span className={classes.label}>
-            {sector.percent.toFormattedString()}&nbsp;{renderLabel && renderLabel(sector)}
+            {roundPercentAmount(sector.percent).toFormattedString()}&nbsp;
+            {renderLabel && renderLabel(sector)}
           </span>
         </li>
       ))}

@@ -1,75 +1,15 @@
 import * as React from 'react';
-import { useRouteMatch } from 'react-router';
-import { Link as RouterLink } from 'react-router-dom';
 
-import {
-  Grid,
-  Label,
-  Divider,
-  Metric,
-  FormattedAmount,
-  CompositionChart,
-  Tabs,
-  ComingSoon,
-} from 'components';
+import { Grid, Label, Divider, Metric, FormattedAmount, CompositionChart } from 'components';
 import { makeStyles } from 'utils/styles';
-import { routes } from 'app/routes';
 import { UserSavingsPoolsAvgAPY, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { percentAmount, getMockCompositionChartEntriesToken } from 'utils/mock';
 
-import * as innerPages from './innerPages';
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 import { LiveStats } from './Components/LiveStats';
 
-const tabs = [
-  {
-    label: 'My Savings Pools',
-    value: routes.summary.savings.getElementKey(),
-    to: routes.summary.savings.getRedirectPath(),
-    renderContent: () => <innerPages.Savings />,
-  },
-  {
-    label: 'My Investment Pools',
-    value: routes.summary.investments.getElementKey(),
-    to: routes.summary.investments.getRedirectPath(),
-    renderContent: () => <innerPages.Investment />,
-  },
-  {
-    label: 'DCA',
-    value: routes.summary.dca.getElementKey(),
-    to: routes.summary.dca.getRedirectPath(),
-    renderContent: () => <innerPages.DCA />,
-  },
-  {
-    label: 'My Staking',
-    value: routes.summary.staking.getElementKey(),
-    to: routes.summary.staking.getRedirectPath(),
-    renderContent: () => <innerPages.Staking />,
-  },
-  {
-    label: 'My Harvest',
-    value: routes.summary.harvest.getElementKey(),
-    to: routes.summary.harvest.getRedirectPath(),
-    renderContent: () => <innerPages.Harvest />,
-  },
-];
-
 export function SummaryPage() {
   const classes = useStyles();
-
-  const defaultPage = routes.summary.savings.getElementKey();
-  const match = useRouteMatch<{ page: string }>('/summary/:page');
-  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
-
-  const page = match ? match.params.page : defaultPage;
-
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
-  };
-
-  React.useEffect(() => {
-    setSelectedPage(page);
-  }, [page]);
 
   return (
     <div className={classes.root}>
@@ -80,34 +20,9 @@ export function SummaryPage() {
         <Grid item xs={7}>
           {renderMetrics()}
         </Grid>
-        <Grid item xs={12}>
-          {renderTabs()}
-        </Grid>
       </Grid>
     </div>
   );
-
-  function renderTabs() {
-    const isComingSoonTab = ![
-      routes.summary.staking.getElementKey(),
-      routes.summary.savings.getElementKey(),
-    ].includes(selectedPage);
-
-    return (
-      <Tabs
-        currentValue={selectedPage}
-        tabs={tabs}
-        tabComponent={RouterLink}
-        onChange={handleTabChange}
-      >
-        {isComingSoonTab && (
-          <div className={classes.comingSoon}>
-            <ComingSoon variant="label" />
-          </div>
-        )}
-      </Tabs>
-    );
-  }
 
   function renderMetrics() {
     return (
@@ -120,7 +35,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label>My Savings</Label>
+            <Label>Savings</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <UserSavingsPoolsBalancesComposition size="extra-small" />
@@ -131,7 +46,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label withComingSoon>My Investment</Label>
+            <Label withComingSoon>Investment</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <CompositionChart
@@ -159,7 +74,7 @@ export function SummaryPage() {
         </Grid>
         <Grid item xs container direction="column" spacing={3} justify="space-between">
           <Grid item>
-            <Label withComingSoon>My Harvest</Label>
+            <Label withComingSoon>Harvest</Label>
           </Grid>
           <Grid item className={classes.chart}>
             <CompositionChart
