@@ -33,6 +33,7 @@ export class UserApi {
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
+    // TODO create isUserExist$ method to check if the user is a liquidity provider
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
     );

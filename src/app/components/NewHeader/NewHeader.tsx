@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { AuthButton } from 'features/auth';
 import { MintTestnetTokenButton } from 'features/mintTestnetToken';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { routes } from 'app/routes';
 
 import { useStyles } from './NewHeader.style';
 import { Logo } from './icons';
@@ -29,7 +30,7 @@ export const NewHeader: React.FC = () => {
           </div>
         )}
         <div className={classes.button}>
-          <AuthButton disconnectRedirectPath="/" />
+          <AuthButton disconnectRedirectPath={routes.summary.getRedirectPath()} />
         </div>
       </div>
     </header>
