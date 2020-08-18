@@ -31,6 +31,7 @@ export class UserApi {
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
+    // TODO добавить более семантичный метод для проерки наличия юзера в системе
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
     );
