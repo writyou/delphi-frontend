@@ -36,11 +36,13 @@ const columnForLegend: Array<Table.models.Column<PieSector<TokenAmount>>> = [
         />
       ),
     },
+    align: 'right',
   },
   {
     cellContent: {
       kind: 'simple',
       render: x => <FormattedAmount sum={x.pieData.value} variant="plain" hideSymbol />,
     },
+    align: 'right',
   },
 ];

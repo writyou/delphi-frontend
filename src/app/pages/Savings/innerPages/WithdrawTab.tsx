@@ -19,47 +19,47 @@ export function WithdrawTab() {
 
   return (
     <>
-      <div className={classes.withdrawTabDescription}>
-        {t(tKeys.modules.savings.withdrawTabText.getKey())}
-      </div>
       <Loading meta={poolsMeta}>
-        <Grid container alignItems="flex-start" spacing={3}>
-          {pools && pools.length ? (
-            pools.map(pool => (
-              <Grid key={pool.address} item xs={4}>
-                <SavingsPoolCard
-                  pool={pool}
-                  content={
-                    <WithdrawFromSavingsPoolButton
-                      size="small"
-                      color="primary"
-                      variant="outlined"
-                      pool={pool}
-                    />
-                  }
-                />
-              </Grid>
-            ))
-          ) : (
-            <Grid item xs={12}>
-              <Hint
-                button={
-                  <Button
-                    component={RouterLink}
-                    to={routes.savings.getRedirectPath()}
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                  >
-                    Save
-                  </Button>
-                }
-              >
-                You don’t have any active savings pools yet.
-              </Hint>
+        {pools && pools.length ? (
+          <>
+            <div className={classes.withdrawTabDescription}>
+              {t(tKeys.modules.savings.withdrawTabText.getKey())}
+            </div>
+            <Grid container alignItems="flex-start" spacing={3}>
+              {pools.map(pool => (
+                <Grid key={pool.address} item xs={4}>
+                  <SavingsPoolCard
+                    pool={pool}
+                    content={
+                      <WithdrawFromSavingsPoolButton
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        pool={pool}
+                      />
+                    }
+                  />
+                </Grid>
+              ))}
             </Grid>
-          )}
-        </Grid>
+          </>
+        ) : (
+          <Hint
+            button={
+              <Button
+                component={RouterLink}
+                to={routes.savings.getRedirectPath()}
+                size="small"
+                color="primary"
+                variant="contained"
+              >
+                Save
+              </Button>
+            }
+          >
+            You don’t have any active savings pools yet.
+          </Hint>
+        )}
       </Loading>
     </>
   );

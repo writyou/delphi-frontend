@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Label } from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Label, Card } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -39,69 +39,79 @@ export function SavingsPoolPage() {
 
   return (
     <Loading meta={poolMeta}>
-      {pool ? (
-        <Grid container direction="column" className={classes.root}>
-          <Grid container justify="space-between" alignItems="center">
-            <Grid item>
-              <Grid container alignItems="center">
-                <IconButton size="small" onClick={handleBackOnClick}>
-                  <Back />
-                </IconButton>
-                <div className={classes.poolTitle}>{pool.poolName}</div>
+      <Card variant="contained" className={classes.root}>
+        {pool ? (
+          <Grid container direction="column">
+            <Grid container justify="space-between" alignItems="center">
+              <Grid item>
+                <Grid container alignItems="center">
+                  <IconButton size="small" onClick={handleBackOnClick}>
+                    <Back />
+                  </IconButton>
+                  <div className={classes.poolTitle}>{pool.poolName}</div>
+                </Grid>
               </Grid>
-            </Grid>
-            <Grid item>
-              <WithdrawFromSavingsPoolButton
-                size="small"
-                color="primary"
-                variant="outlined"
-                pool={pool}
-              />
-            </Grid>
-          </Grid>
-          <Grid container className={classes.row}>
-            <Grid item xs={6} className={classes.paddingRight}>
-              <Grid container justify="space-between">
-                <Metric
-                  title="Pool Liquidity"
-                  value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
+              <Grid item>
+                <WithdrawFromSavingsPoolButton
+                  size="small"
+                  color="primary"
+                  variant="outlined"
+                  pool={pool}
                 />
-                <Metric title="APY" value={<FormattedAmount sum={pool.apy} />} />
+              </Grid>
+            </Grid>
+            <Grid container className={classes.row}>
+              <Grid item xs={6} className={classes.paddingRight}>
+                <Grid container justify="space-between">
+                  <Metric
+                    title="Pool Liquidity"
+                    value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
+                  />
+                  <Metric title="APY" value={<FormattedAmount sum={pool.apy} />} />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container className={cn(classes.withBorder, classes.row)}>
+              <Grid container item xs={6} className={classes.paddingRight} direction="column">
+                <Metric
+                  title={<Label withComingSoon>Approximate Reward Weekly</Label>}
+                  value={
+                    <div className={classes.metricChart}>
+                      <RewardCompositionChartMock poolsNumber={3} />
+                    </div>
+                  }
+                />
+              </Grid>
+              <Grid container item xs={4} direction="column">
+                <Metric
+                  title="Currency Reserves"
+                  value={
+                    <div className={classes.metricChart}>
+                      <SavingsPoolBalancesComposition poolAddress={poolAddress} />
+                    </div>
+                  }
+                />
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item xs={6}>
+                <Metric
+                  title="My Supply Balance"
+                  value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
+                />
+                <div className={classes.depositLimit}>
+                  <SavingsPoolDepositLimit poolAddress={poolAddress} />
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <DepositToSavingsPoolForm pool={pool} />
               </Grid>
             </Grid>
           </Grid>
-          <Grid container className={cn(classes.withBorder, classes.row)}>
-            <Grid container item xs={6} className={classes.paddingRight}>
-              <Metric
-                title={<Label withComingSoon>Approximate Reward Weekly</Label>}
-                value={<RewardCompositionChartMock poolsNumber={3} />}
-              />
-            </Grid>
-            <Grid container item xs={4}>
-              <Metric
-                title="Currency Reserves"
-                value={<SavingsPoolBalancesComposition poolAddress={poolAddress} />}
-              />
-            </Grid>
-          </Grid>
-          <Grid container>
-            <Grid item xs={6}>
-              <Metric
-                title="My Supply Balance"
-                value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
-              />
-              <div className={classes.depositLimit}>
-                <SavingsPoolDepositLimit poolAddress={poolAddress} />
-              </div>
-            </Grid>
-            <Grid item xs={6}>
-              <DepositToSavingsPoolForm pool={pool} />
-            </Grid>
-          </Grid>
-        </Grid>
-      ) : (
-        <Hint>Savings pool with address &quot;{poolAddress}&quot; not found</Hint>
-      )}
+        ) : (
+          <Hint>Savings pool with address &quot;{poolAddress}&quot; not found</Hint>
+        )}
+      </Card>
     </Loading>
   );
 
@@ -118,6 +128,7 @@ const useStyles = makeStyles(
   () => ({
     root: {
       padding: '30px 50px',
+      minHeight: '100%',
     },
     poolTitle: {
       color: 'white',
@@ -136,6 +147,10 @@ const useStyles = makeStyles(
     },
     row: {
       paddingTop: 50,
+    },
+    metricChart: {
+      marginTop: 5,
+      width: '100%',
     },
     depositLimit: {
       fontSize: 12,

@@ -5,7 +5,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import { makeStyles } from 'utils/styles';
 
-import { Button } from '../Button/Button';
+import { Button } from '../Button';
 
 interface IChildrenProps {
   closeModal(): void;

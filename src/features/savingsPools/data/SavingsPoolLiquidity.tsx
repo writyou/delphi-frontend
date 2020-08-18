@@ -1,10 +1,15 @@
 import React from 'react';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, FormattedAmountProps, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
-export function SavingsPoolLiquidity({ poolAddress }: { poolAddress: string }) {
+type Props = {
+  poolAddress: string;
+  variant?: FormattedAmountProps['variant'];
+};
+
+export function SavingsPoolLiquidity({ poolAddress, variant }: Props) {
   const api = useApi();
   const [liquidity, liquidityMeta] = useSubscribable(
     () => api.savings.getPoolBalance$(poolAddress),
@@ -13,7 +18,7 @@ export function SavingsPoolLiquidity({ poolAddress }: { poolAddress: string }) {
 
   return (
     <Loading meta={liquidityMeta}>
-      {liquidity && <FormattedAmount sum={liquidity} variant="plain" />}
+      {liquidity && <FormattedAmount sum={liquidity} variant={variant} />}
     </Loading>
   );
 }

@@ -35,7 +35,7 @@ export function SavingsPoolCard({ pool, content, additionalElement, getDepositLi
       additionalElement={additionalElement}
       poolBalance={<UserSavingsPoolBalance poolAddress={address} />}
       poolBalanceTitle="Supplied"
-      poolLiquidity={<SavingsPoolLiquidity poolAddress={address} />}
+      poolLiquidity={<SavingsPoolLiquidity poolAddress={address} variant="plain" />}
       getUserBalance$={(s: string) => api.user.getSavingsPoolBalance$(s)}
     />
   );

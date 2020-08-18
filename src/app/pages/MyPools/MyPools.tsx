@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Tabs, ComingSoon, Card } from 'components';
+import { TabsSection, ComingSoon, Card } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 
@@ -44,8 +44,8 @@ export function MyPools() {
 
   const page = match ? match.params.page : defaultPage;
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
   };
 
   React.useEffect(() => {
@@ -59,7 +59,7 @@ export function MyPools() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Tabs
+      <TabsSection
         currentValue={selectedPage}
         tabs={tabs}
         tabComponent={RouterLink}
@@ -70,7 +70,7 @@ export function MyPools() {
             <ComingSoon variant="label" />
           </div>
         )}
-      </Tabs>
+      </TabsSection>
     </Card>
   );
 }
