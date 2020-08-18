@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LiquidityAmount, TokenAmount, Token, Fraction } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount, Fraction } from '@akropolis-web/primitives';
 import { combineLatest } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 
@@ -7,7 +7,7 @@ import { useApi, Api } from 'services/api';
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Grid, Card } from 'components';
 import { useSubscribable } from 'utils/react';
-import { zeroAddress, DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 import * as tableData from './tableData';
 
@@ -15,26 +15,24 @@ function makeEntriesForChart(entries: tableData.Order[]) {
   return [
     entries.map(order => ({
       value: order.NAV,
-      payload: new TokenAmount(order.NAV, new Token(zeroAddress, order.asset, 18)),
+      payload: order.amount,
     })),
   ];
 }
 
-function makeTableEntrie(amount: TokenAmount, price: Fraction): tableData.Order {
+function makeTableEntry(amount: TokenAmount, price: Fraction): tableData.Order {
   return {
-    asset: amount.currency.symbol,
-    amount: amount.toNumber(),
+    amount,
     NAV: new LiquidityAmount(amount.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
-    token: amount.currency,
   };
 }
 
 function getChartData$(api: Api) {
-  return api.user.getMySavingsRewards$().pipe(
+  return api.user.getRewards$().pipe(
     switchMap(rewards =>
       combineLatest(rewards.map(a => api.prices.getTokenPrice$(a.currency.address))).pipe(
         map(prices => {
-          return rewards.map((r, i) => makeTableEntrie(r, prices[i]));
+          return rewards.map((r, i) => makeTableEntry(r, prices[i]));
         }),
       ),
     ),
@@ -58,6 +56,7 @@ export function MyRewards() {
           <Grid container className={classes.table}>
             <Grid item xs={8}>
               <Table.Component
+                rowPadding="small"
                 columns={tableData.columnsWithoutExpandableRows}
                 entries={tableEntries}
               />

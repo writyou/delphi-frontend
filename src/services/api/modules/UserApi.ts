@@ -194,7 +194,7 @@ export class UserApi {
   }
 
   @memoize()
-  public getMySavingsRewards$(): Observable<TokenAmount[]> {
+  public getRewards$(): Observable<TokenAmount[]> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
     );

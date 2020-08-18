@@ -1,5 +1,5 @@
 import React from 'react';
-import { LiquidityAmount, TokenAmount, Token } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import {
   Table,
@@ -15,10 +15,8 @@ import {
 import { InnerLegendAPY } from '../MyPools/Components/InnerLegendAPY';
 
 export type Order = {
-  asset: string;
-  amount: number;
+  amount: TokenAmount;
   NAV: LiquidityAmount;
-  token: Token;
 };
 
 export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
@@ -26,7 +24,7 @@ export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
     renderTitle: () => 'Asset',
     cellContent: {
       kind: 'simple',
-      render: x => <TokenName token={x.token} />,
+      render: x => <TokenName token={x.amount.currency} />,
     },
   },
 
@@ -34,7 +32,7 @@ export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
     renderTitle: () => 'Amount',
     cellContent: {
       kind: 'simple',
-      render: x => x.amount,
+      render: x => <FormattedAmount sum={x.amount} variant="plain" hideSymbol />,
     },
   },
 
@@ -42,7 +40,7 @@ export const columnsWithoutExpandableRows: Array<Table.models.Column<Order>> = [
     renderTitle: () => 'NAV',
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.NAV} />,
+      render: x => <FormattedAmount sum={x.NAV} variant="plain" />,
     },
   },
 ];
