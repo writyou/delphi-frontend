@@ -33,15 +33,15 @@ function LandingIntro() {
       <div className={classes.buttons}>
         Try it on{' '}
         <div className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi.akropolis.io" variant="contained">
+          <RedirectButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
-          </RedirectOrAuthButton>
+          </RedirectButton>
         </div>
         or{' '}
         <div className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
+          <RedirectButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
-          </RedirectOrAuthButton>
+          </RedirectButton>
         </div>
         <div className={classes.button}>
           <Link
@@ -58,7 +58,7 @@ function LandingIntro() {
   );
 }
 
-function RedirectOrAuthButton({
+function RedirectButton({
   to,
   variant,
   children,
