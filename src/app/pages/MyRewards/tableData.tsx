@@ -12,7 +12,7 @@ import {
   TokenName,
 } from 'components';
 
-import { InnerLegendAPY } from '../../../MyPools/Components/InnerLegendAPY';
+import { InnerLegendAPY } from '../MyPools/Components/InnerLegendAPY';
 
 export type Order = {
   asset: string;
