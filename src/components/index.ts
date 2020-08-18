@@ -11,13 +11,15 @@ export {
   LinkProps,
   Divider,
   Skeleton,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   Metric,
   TabList,
   TabsSection,
 } from '@akropolis-web/components';
+
+// TODO: remove after AuthModal refactoring
+export { default as Dialog } from '@material-ui/core/Dialog';
+export { default as DialogContent } from '@material-ui/core/DialogContent';
+export { default as DialogTitle } from '@material-ui/core/DialogTitle';
 
 export { NavMenuItem } from './NavMenuItem/NavMenuItem';
 export { AkropolisSocialLinks } from './AkropolisSocialLinks/AkropolisSocialLinks';

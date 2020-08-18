@@ -25,8 +25,8 @@ export function WithdrawTab() {
             <div className={classes.withdrawTabDescription}>
               {t(tKeys.modules.savings.withdrawTabText.getKey())}
             </div>
-            {pools.map(pool => (
-              <Grid container alignItems="flex-start" spacing={3}>
+            <Grid container alignItems="flex-start" spacing={3}>
+              {pools.map(pool => (
                 <Grid key={pool.address} item xs={4}>
                   <SavingsPoolCard
                     pool={pool}
@@ -40,29 +40,25 @@ export function WithdrawTab() {
                     }
                   />
                 </Grid>
-              </Grid>
-            ))}
+              ))}
+            </Grid>
           </>
         ) : (
-          <Grid container alignItems="flex-start" spacing={3}>
-            <Grid item xs={12}>
-              <Hint
-                button={
-                  <Button
-                    component={RouterLink}
-                    to={routes.savings.getRedirectPath()}
-                    size="small"
-                    color="primary"
-                    variant="contained"
-                  >
-                    Save
-                  </Button>
-                }
+          <Hint
+            button={
+              <Button
+                component={RouterLink}
+                to={routes.savings.getRedirectPath()}
+                size="small"
+                color="primary"
+                variant="contained"
               >
-                You don’t have any active savings pools yet.
-              </Hint>
-            </Grid>
-          </Grid>
+                Save
+              </Button>
+            }
+          >
+            You don’t have any active savings pools yet.
+          </Hint>
         )}
       </Loading>
     </>
