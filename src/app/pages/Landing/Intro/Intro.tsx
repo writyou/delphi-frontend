@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, Intro, Loading, LinkProps, Grid, ButtonProps } from 'components';
+import { Button, Link, Intro, LinkProps, Grid, ButtonProps } from 'components';
 import { routes } from 'app/routes';
-import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
-import { AuthButton } from 'features/auth';
 import { Adaptive } from 'services/adaptability';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
@@ -36,14 +33,14 @@ function LandingIntro() {
     >
       <Grid container alignItems="center" justify="space-between" className={classes.buttons}>
         <Grid item className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi.akropolis.io" variant="contained">
+          <RedirectButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
-          </RedirectOrAuthButton>
+          </RedirectButton>
         </Grid>
         <Grid item className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
+          <RedirectButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
-          </RedirectOrAuthButton>
+          </RedirectButton>
         </Grid>
         <Grid item className={classes.button}>
           <Link
@@ -60,7 +57,7 @@ function LandingIntro() {
   );
 }
 
-function RedirectOrAuthButton({
+function RedirectButton({
   to,
   variant,
   children,
@@ -69,12 +66,7 @@ function RedirectOrAuthButton({
   variant: 'outlined' | 'contained';
   children: React.ReactNode;
 }) {
-  const api = useApi();
-  const classes = useStyles();
-
-  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [api]);
-
-  const needToAuth = window.location.origin.includes(to);
+  const isEqualDomain = window.location.origin.includes(to);
 
   const commonProps = {
     size: 'large',
@@ -83,7 +75,7 @@ function RedirectOrAuthButton({
     children,
   } as const;
 
-  if (!needToAuth) {
+  if (!isEqualDomain) {
     return (
       <>
         <Adaptive from="mobileXS" to="tabletXS">
@@ -94,17 +86,11 @@ function RedirectOrAuthButton({
     );
   }
 
-  return (
-    <Loading meta={accountMeta} loader={<Button {...commonProps} disabled />}>
-      {account ? (
-        <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />
-      ) : (
-        <AuthButton {...commonProps} connectRedirectPath={routes.summary.getRedirectPath()} />
-      )}
-    </Loading>
-  );
+  return <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />;
 
   function renderButton(size?: ButtonProps['size']) {
+    const classes = useStyles();
+
     return (
       <Button
         {...commonProps}

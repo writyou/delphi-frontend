@@ -86,6 +86,8 @@ export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
+  const [account] = useSubscribable(() => api.web3Manager.account$, [], null);
+
   const [links] = useSubscribable(
     () =>
       combineLatest(getLinks$(api, upperLinksList), getLinks$(api, lowerLinksList)).pipe(
@@ -100,6 +102,10 @@ export const Sidebar: React.FC = () => {
     sidebarStorage.setItem('isExpanded', !isExpanded);
     setCloseSidebar(!isExpanded);
   };
+
+  if (!account) {
+    return null;
+  }
 
   return (
     <div

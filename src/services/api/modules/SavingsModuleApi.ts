@@ -68,6 +68,22 @@ export class SavingsModuleApi {
   }
 
   @memoize((...args: string[]) => args.join())
+  public getUserRewards$(userAddress: string) {
+    return combineLatest([
+      this.readonlyContract.methods.supportedRewardTokens(),
+      this.readonlyContract.methods.withdrawReward.read(undefined, {
+        from: userAddress,
+      }),
+    ]).pipe(
+      switchMap(([tokensAddresses, rewards]) =>
+        combineLatest(tokensAddresses.map(tokenAddress => this.erc20.getToken$(tokenAddress))).pipe(
+          map(tokens => tokens.map((token, index) => new TokenAmount(rewards[index], token))),
+        ),
+      ),
+    );
+  }
+
+  @memoize((...args: string[]) => args.join())
   public getUserBalance$(poolAddress: string, account: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
       this.subgraph.loadSavingsPool$(poolAddress).pipe(
