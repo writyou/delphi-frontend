@@ -5,9 +5,9 @@ export const useStyles = makeStyles(
     root: {
       padding: 0,
       fontSize: 'inherit',
+
       minWidth: 42,
       minHeight: 20,
-
       [theme.breakpoints.up('tabletXS')]: {
         minWidth: 68,
         minHeight: 36,

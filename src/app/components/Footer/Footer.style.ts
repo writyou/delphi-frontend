@@ -67,9 +67,11 @@ const useStyles = makeStyles(
     partnerLink: {
       '& + $partnerLink': {
         marginLeft: 43,
-
         [theme.breakpoints.up('tabletXS')]: {
           marginLeft: 20,
+        },
+        [theme.breakpoints.up('tabletSM')]: {
+          marginLeft: 50,
         },
       },
     },

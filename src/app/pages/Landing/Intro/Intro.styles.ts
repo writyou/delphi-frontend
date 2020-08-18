@@ -32,8 +32,8 @@ const useStyles = makeStyles(
     disclaimer: {
       minWidth: 240,
       fontWeight: 300,
-      fontSize: 12,
 
+      fontSize: 12,
       marginLeft: theme.spacing(1.5),
       [theme.breakpoints.up('tabletXS')]: {
         fontSize: 15,

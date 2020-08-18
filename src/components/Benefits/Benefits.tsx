@@ -40,12 +40,11 @@ const useStyles = makeStyles(
   theme => ({
     card: {
       height: '100%',
-      padding: '30px 20px',
 
+      padding: '30px 20px',
       [theme.breakpoints.up('tabletSM')]: {
         padding: theme.spacing(3.75, 5),
       },
-
       [theme.breakpoints.up('desktopMD')]: {
         padding: theme.spacing(3.75, 2.5),
       },
@@ -64,8 +63,8 @@ const useStyles = makeStyles(
     container: {
       display: 'flex',
       justifyContent: 'center',
-      flexDirection: 'column',
 
+      flexDirection: 'column',
       [theme.breakpoints.up('tabletXS')]: {
         flexDirection: 'row',
       },
@@ -91,7 +90,10 @@ const useStyles = makeStyles(
         margin: [[0, 15]],
       },
       [theme.breakpoints.up('desktopXS')]: {
-        margin: [[0, theme.spacing(4.5)]],
+        margin: [[0, 20]],
+      },
+      [theme.breakpoints.up('desktopXL')]: {
+        margin: [[0, 50]],
       },
     },
   }),

@@ -8,7 +8,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   title: {
-    lineHeight: 1.25,
+    lineHeight: 1.8,
 
     '&$medium': {
       fontWeight: 400,
