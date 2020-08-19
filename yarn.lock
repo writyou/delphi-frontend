@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.6.0.tgz#c7acec85643714fbcd58f8627106c0fd6f4cfe09"
-  integrity sha512-BTTVbcyc7ZlaaKl0fxH/yYTtaPW9t1SIlH82RSzRHX4hzRIfakDeULTHty6vpyO2IcOR3iXqJVa9b3IAGrXf0w==
+"@akropolis-web/components@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.7.0.tgz#0b393720f3d8d8b88b3587fca39ba48805ed5f85"
+  integrity sha512-+DqzWDnZp/vSs9HStTeeMRRj83cDYWpdmfQI1uIP6HKf4pN0id5njQQZcyb7q16rb/vr6LloChK4ypnN6XP4Yg==
   dependencies:
     "@akropolis-web/primitives" "^0.2.0"
     "@akropolis-web/styles" "^0.8.1"

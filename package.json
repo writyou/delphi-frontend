@@ -40,7 +40,7 @@
   "author": "Akropolis",
   "license": "MIT",
   "dependencies": {
-    "@akropolis-web/components": "^0.6.0",
+    "@akropolis-web/components": "^0.7.0",
     "@akropolis-web/primitives": "^0.2.0",
     "@akropolis-web/styles": "^0.8.1",
     "@apollo/react-common": "^3.1.3",
