@@ -26,7 +26,7 @@ export const NewHeader: React.FC = () => {
         </nav>
       </div>
       <div className={classes.rightPart}>
-        {ETH_NETWORK_CONFIG.id !== 1 && (
+        {!match && ETH_NETWORK_CONFIG.id !== 1 && (
           <div className={classes.button}>
             <MintTestnetTokenButton color="primary" variant="outlined" />
           </div>

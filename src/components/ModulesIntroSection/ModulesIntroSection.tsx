@@ -9,10 +9,10 @@ import { makeStyles } from 'utils/styles';
 import * as images from './images';
 import { PoolIntroCard } from './PoolIntroCard';
 
-const pools = ['savings', 'investments', 'dca', 'staking'] as const;
-type Pool = typeof pools[number];
+const modules = ['savings', 'investments', 'dca', 'staking'] as const;
+type Module = typeof modules[number];
 
-const cardsDataByPoolType: Record<Pool, { redirectPath: string; backgroundPath: string }> = {
+const cardsDataByPoolType: Record<Module, { redirectPath: string; backgroundPath: string }> = {
   savings: {
     redirectPath: routes.savings.getRedirectPath(),
     backgroundPath: images.Savings,
@@ -39,7 +39,7 @@ export function PoolsIntroSection() {
 
   const cardsData = useMemo(
     () =>
-      pools.map(pool => ({
+      modules.map(pool => ({
         title: t(tKeys[pool].title.getKey()),
         subtitle: t(tKeys[pool].subtitle.getKey()),
         backgroundPath: cardsDataByPoolType[pool].backgroundPath,

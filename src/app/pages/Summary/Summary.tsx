@@ -16,7 +16,7 @@ export function Summary() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={[userMeta]}>
+      <Loading meta={userMeta}>
         <Grid container spacing={10}>
           <Grid item xs={6}>
             <PortfolioBalanceChart isUserLoggedIn={!!user} />

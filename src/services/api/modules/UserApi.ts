@@ -1,4 +1,4 @@
-import { Observable, empty, combineLatest } from 'rxjs';
+import { Observable, empty, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import {
@@ -35,7 +35,7 @@ export class UserApi {
   public getUser$(): Observable<User | null> {
     // TODO create isUserExist$ method to check if the user is a liquidity provider
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
+      switchMap(account => (account ? this.subgraph.loadUser$(account) : of(null))),
     );
   }
 
@@ -50,11 +50,13 @@ export class UserApi {
   public getSavingsPoolsAvgAPY$(): Observable<PercentAmount> {
     return this.getMySavingsPools$().pipe(
       switchMap(pools =>
-        combineLatest(
-          pools.map(pool =>
-            this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
-          ),
-        ),
+        pools.length
+          ? combineLatest(
+              pools.map(pool =>
+                this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+              ),
+            )
+          : of([]),
       ),
       map(
         balances =>
