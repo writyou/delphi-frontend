@@ -5,7 +5,6 @@ import { routes } from 'app/routes';
 import { AuthButton } from 'features/auth';
 import { MintTestnetTokenButton } from 'features/mintTestnetToken';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { routes } from 'app/routes';
 
 import { LiveStats } from './LiveStats/LiveStats';
 import { useStyles } from './NewHeader.style';
@@ -27,7 +26,7 @@ export const NewHeader: React.FC = () => {
         </nav>
       </div>
       <div className={classes.rightPart}>
-        {ETH_NETWORK_CONFIG.id !== 1 && (
+        {!match && ETH_NETWORK_CONFIG.id !== 1 && (
           <div className={classes.button}>
             <MintTestnetTokenButton color="primary" variant="outlined" />
           </div>
