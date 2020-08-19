@@ -29,7 +29,7 @@ function Stake(props: React.ComponentProps<typeof SvgIcon>) {
             />
           </g>
         ) : (
-          <g stroke="currentColor" strokeWidth=".7" opacity=".5" transform="translate(2.5 4)">
+          <g stroke="currentColor" strokeWidth=".7" transform="translate(2.5 4)">
             <rect width="17.967" height="14.874" x=".35" y=".35" rx="2" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.73 4.085L3.73 11.715" />
             <ellipse
