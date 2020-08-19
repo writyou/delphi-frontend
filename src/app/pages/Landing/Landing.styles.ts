@@ -9,11 +9,13 @@ const useStyles = makeStyles(theme => ({
   },
 
   main: {
-    marginBottom: 90,
+    marginBottom: 60,
   },
 
   benefits: {
-    marginTop: 60,
+    [theme.breakpoints.up('tabletXS')]: {
+      marginTop: 60,
+    },
   },
 }));
 

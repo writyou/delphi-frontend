@@ -5,18 +5,25 @@ const useStyles = makeStyles(theme => ({
   icon: {
     display: 'flex',
     alignItems: 'center',
-    fontSize: theme.spacing(8.25),
+    fontSize: 56,
     marginBottom: theme.spacing(5),
   },
   title: {
-    maxWidth: 1050,
     fontWeight: 200,
 
-    fontSize: theme.spacing(2.75),
+    maxWidth: 550,
+    fontSize: 18,
     marginBottom: theme.spacing(1),
     [theme.breakpoints.up('tabletXS')]: {
       fontSize: theme.spacing(5),
       marginBottom: theme.spacing(1.75),
+    },
+    [theme.breakpoints.up('tabletSM')]: {
+      maxWidth: 'initial',
+      paddingRight: '15%',
+    },
+    [theme.breakpoints.up('desktopLG')]: {
+      fontSize: 70,
     },
   },
   description: {

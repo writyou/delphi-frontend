@@ -39,7 +39,11 @@ export function Header({ customNavItems, CustomLogo }: Props) {
       <NavInline
         items={customNavItems || menuItems}
         className={classes.navInline}
-        extraRight={[<AppButton key="2" />]}
+        extraRight={[
+          <div className={classes.appButton}>
+            <AppButton key="2" />
+          </div>,
+        ]}
       />
     </header>
   );

@@ -2,6 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 
 import { attachStaticFields } from 'utils/object';
+import { Adaptive } from 'services/adaptability';
 
 import { AkropolisSocialLinks } from '../AkropolisSocialLinks/AkropolisSocialLinks';
 import { useStyles } from './Layout.style';
@@ -15,19 +16,26 @@ type IProps = IOwnProps;
 function LayoutComponent({ children }: IProps) {
   const classes = useStyles();
 
-  return (
-    <div className={classes.root}>
-      {children}
-      <div className={classes.socials}>
-        <AkropolisSocialLinks direction="column" />
-      </div>
-    </div>
-  );
+  return <div className={classes.root}>{children}</div>;
 }
 
 interface ContainerProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
+}
+
+function Socials({ className }: ContainerProps) {
+  const classes = useStyles();
+  return (
+    <div className={cn(className, classes.socials)}>
+      <Adaptive to="tabletXS">
+        <AkropolisSocialLinks direction="row" />
+      </Adaptive>
+      <Adaptive from="tabletXS">
+        <AkropolisSocialLinks direction="column" />
+      </Adaptive>
+    </div>
+  );
 }
 
 function Header({ children, className }: ContainerProps) {
@@ -49,4 +57,5 @@ export const Layout = attachStaticFields(LayoutComponent, {
   Header,
   Container,
   Footer,
+  Socials,
 });

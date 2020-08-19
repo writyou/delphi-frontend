@@ -36,61 +36,66 @@ export function Benefits(props: IProps) {
   );
 }
 
-const useStyles = makeStyles(theme => ({
-  card: {
-    height: '100%',
-    padding: theme.spacing(2, 2.5),
+const useStyles = makeStyles(
+  theme => ({
+    card: {
+      height: '100%',
 
-    [theme.breakpoints.up('tabletSM')]: {
-      padding: theme.spacing(3.75, 5),
-    },
-
-    [theme.breakpoints.up('desktopMD')]: {
-      padding: theme.spacing(3.75, 2.5),
-    },
-
-    '$item:nth-child(1) &': {
-      background: theme.gradients.products[0].linear(),
-    },
-    '$item:nth-child(2) &': {
-      background: theme.gradients.products[1].linear(),
-    },
-    '$item:nth-child(3) &': {
-      background: theme.gradients.products[2].linear(),
-    },
-  },
-
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'column',
-
-    [theme.breakpoints.up('tabletSM')]: {
-      flexDirection: 'row',
-    },
-  },
-
-  item: {
-    flexBasis: '100%',
-    marginTop: theme.spacing(2.5),
-
-    '&:first-of-type': {
+      padding: '30px 20px',
       [theme.breakpoints.up('tabletSM')]: {
-        marginLeft: 0,
+        padding: theme.spacing(3.75, 5),
+      },
+      [theme.breakpoints.up('desktopMD')]: {
+        padding: theme.spacing(3.75, 2.5),
+      },
+
+      '$item:nth-child(1) &': {
+        background: theme.gradients.products[0].linear(),
+      },
+      '$item:nth-child(2) &': {
+        background: theme.gradients.products[1].linear(),
+      },
+      '$item:nth-child(3) &': {
+        background: theme.gradients.products[2].linear(),
       },
     },
 
-    '&:last-of-type': {
-      [theme.breakpoints.up('tabletSM')]: {
-        marginRight: 0,
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+
+      flexDirection: 'column',
+      [theme.breakpoints.up('tabletXS')]: {
+        flexDirection: 'row',
       },
     },
 
-    [theme.breakpoints.up('tabletSM')]: {
-      margin: [[0, theme.spacing(2.5)]],
+    item: {
+      flexBasis: '100%',
+      marginTop: theme.spacing(2.5),
+
+      '&:first-of-type': {
+        [theme.breakpoints.up('tabletXS')]: {
+          marginLeft: 0,
+        },
+      },
+
+      '&:last-of-type': {
+        [theme.breakpoints.up('tabletXS')]: {
+          marginRight: 0,
+        },
+      },
+
+      [theme.breakpoints.up('tabletXS')]: {
+        margin: [[0, 15]],
+      },
+      [theme.breakpoints.up('desktopXS')]: {
+        margin: [[0, 20]],
+      },
+      [theme.breakpoints.up('desktopXL')]: {
+        margin: [[0, 50]],
+      },
     },
-    [theme.breakpoints.up('desktopSM')]: {
-      margin: [[0, theme.spacing(4.5)]],
-    },
-  },
-}));
+  }),
+  { name: 'Benefits' },
+);
