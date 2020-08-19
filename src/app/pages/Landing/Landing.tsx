@@ -16,6 +16,7 @@ function Landing() {
       <Layout.Header>
         <Header customNavItems={[]} />
       </Layout.Header>
+      <Layout.Socials />
       <Layout.Container className={classes.main}>
         <LandingIntro />
         <Benefits className={classes.benefits} benefits={benefits} />

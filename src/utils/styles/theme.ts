@@ -54,7 +54,8 @@ function getTheme(type: 'light' | 'dark'): Theme {
         desktopXS: 1280,
         tabletSM: 1024,
         tabletXS: 768,
-        mobileSM: 414,
+        mobileMD: 414,
+        mobileSM: 320,
         mobileXS: 0,
       },
     },
@@ -82,6 +83,7 @@ declare module '@material-ui/core/styles/createBreakpoints' {
     desktopXS: true;
     tabletSM: true;
     tabletXS: true;
+    mobileMD: true;
     mobileSM: true;
     mobileXS: true;
   }

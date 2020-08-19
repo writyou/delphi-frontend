@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, Intro, LinkProps } from 'components';
+import { Button, Link, Intro, LinkProps, Grid, ButtonProps } from 'components';
 import { routes } from 'app/routes';
+import { Adaptive, useBreakpointsMatch } from 'services/adaptability';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -10,6 +11,8 @@ import { DCA_LINK } from '../constants';
 
 function LandingIntro() {
   const classes = useStyles();
+
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
 
   return (
     <Intro
@@ -30,20 +33,18 @@ function LandingIntro() {
         </div>
       }
     >
-      <div className={classes.buttons}>
-        Try it on{' '}
-        <div className={classes.button}>
+      <Grid container spacing={isMobile ? 3 : 5} alignItems="center" className={classes.buttons}>
+        <Grid item xs className={classes.button}>
           <RedirectButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
           </RedirectButton>
-        </div>
-        or{' '}
-        <div className={classes.button}>
+        </Grid>
+        <Grid item xs className={classes.button}>
           <RedirectButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
           </RedirectButton>
-        </div>
-        <div className={classes.button}>
+        </Grid>
+        <Grid item className={classes.button}>
           <Link
             href="https://invis.io/Z3YEH8QNYSK#/425936541_Delphi"
             color="inherit"
@@ -52,8 +53,8 @@ function LandingIntro() {
           >
             View Prototype
           </Link>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </Intro>
   );
 }
@@ -78,18 +79,34 @@ function RedirectButton({
 
   if (!isEqualDomain) {
     return (
+      <>
+        <Adaptive from="mobileXS" to="tabletXS">
+          {renderButton('small')}
+        </Adaptive>
+        <Adaptive from="tabletXS">{renderButton('large')}</Adaptive>
+      </>
+    );
+  }
+
+  return <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />;
+
+  function renderButton(size?: ButtonProps['size']) {
+    const classes = useStyles();
+
+    return (
       <Button
         {...commonProps}
         component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
         underline="none"
         href={to}
+        fullWidth
+        className={classes.buttonComponent}
+        size={size}
         target="_blank"
         rel="noopener noreferrer"
       />
     );
   }
-
-  return <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />;
 }
 
 export { LandingIntro };
