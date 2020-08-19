@@ -75,5 +75,5 @@ const useStyles = makeStyles(
       fontSize: 50,
     },
   }),
-  { name: 'PoolsIntroSection' },
+  { name: 'APYMetricsSection' },
 );
