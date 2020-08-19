@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
-import { Loading, Card, Grid, PoolsIntroSection } from 'components';
+import { Loading, Card, Grid, ModulesIntroSection } from 'components';
 import { makeStyles } from 'utils/styles';
 
 import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
@@ -22,7 +22,7 @@ export function Summary() {
             <PortfolioBalanceChart isUserLoggedIn={!!user} />
           </Grid>
           <Grid item xs={6}>
-            {user ? <APYMetricsSection /> : <PoolsIntroSection />}
+            {user ? <APYMetricsSection /> : <ModulesIntroSection />}
           </Grid>
         </Grid>
       </Loading>

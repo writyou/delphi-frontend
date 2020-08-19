@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { Loading, Label, PoolSummaryCard, GradientArrowButton } from 'components';
 import { CatsPaw } from 'components/icons';
@@ -30,7 +31,9 @@ export function UserSavingsPoolsSummary() {
         }
         apyValue={<UserSavingsPoolsAvgAPY />}
         button={
-          <GradientArrowButton to={routes.savings.getRedirectPath()}>Save</GradientArrowButton>
+          <GradientArrowButton component={RouterLink} to={routes.savings.getRedirectPath()}>
+            Save
+          </GradientArrowButton>
         }
       />
     </Loading>

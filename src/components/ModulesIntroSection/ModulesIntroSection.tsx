@@ -1,18 +1,17 @@
-import React, { useMemo } from 'react';
-import { Grid, Box } from '@akropolis-web/components';
+import React from 'react';
+import { Grid, Typography, Box } from '@akropolis-web/components';
 
 import { routes } from 'app/routes';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
-import { GradientArrowButton } from 'components/GradientArrowButton/GradientArrowButton';
 import { makeStyles } from 'utils/styles';
 
 import * as images from './images';
-import { PoolIntroCard } from './PoolIntroCard';
+import { ModuleIntroButton } from './ModuleIntroButton';
 
 const modules = ['savings', 'investments', 'dca', 'staking'] as const;
 type Module = typeof modules[number];
 
-const cardsDataByPoolType: Record<Module, { redirectPath: string; backgroundPath: string }> = {
+const modulesData: Record<Module, { redirectPath: string; backgroundPath: string }> = {
   savings: {
     redirectPath: routes.savings.getRedirectPath(),
     backgroundPath: images.Savings,
@@ -31,40 +30,31 @@ const cardsDataByPoolType: Record<Module, { redirectPath: string; backgroundPath
   },
 };
 
-const tKeys = tKeysAll.components.poolsIntroSection;
+const tKeys = tKeysAll.components.modulesIntroSection;
 
-export function PoolsIntroSection() {
+export function ModulesIntroSection() {
   const classes = useStyles();
   const { t } = useTranslate();
-
-  const cardsData = useMemo(
-    () =>
-      modules.map(pool => ({
-        title: t(tKeys[pool].title.getKey()),
-        subtitle: t(tKeys[pool].subtitle.getKey()),
-        backgroundPath: cardsDataByPoolType[pool].backgroundPath,
-        button: (
-          <GradientArrowButton to={cardsDataByPoolType[pool].redirectPath}>
-            {t(tKeys[pool].button.getKey())}
-          </GradientArrowButton>
-        ),
-      })),
-    [t],
-  );
 
   return (
     <Grid container direction="column" spacing={4}>
       <Grid item xs={12}>
-        <div className={classes.text}>
+        <Typography className={classes.text}>
           You don’t have any pools yet. Wanna become a proud yield farmer but don’t know where to
           start? Here are some tips:
-        </div>
+        </Typography>
       </Grid>
-      <Grid container item xs={12} spacing={4} wrap="wrap">
-        {cardsData.map((cardData, index) => (
-          <Box minWidth={215} flexGrow={1} clone>
-            <Grid item key={index} xs={12} md={6}>
-              <PoolIntroCard {...cardData} />
+      <Grid container item spacing={4} justify="center">
+        {modules.map((module, index) => (
+          <Box clone minWidth={215} key={index}>
+            <Grid container item xs={12} md={6}>
+              <ModuleIntroButton
+                title={t(tKeys[module].title.getKey())}
+                subtitle={t(tKeys[module].subtitle.getKey())}
+                buttonLabel={t(tKeys[module].button.getKey())}
+                backgroundPath={modulesData[module].backgroundPath}
+                to={modulesData[module].redirectPath}
+              />
             </Grid>
           </Box>
         ))}
@@ -79,5 +69,5 @@ const useStyles = makeStyles(
       fontWeight: 300,
     },
   }),
-  { name: 'PoolsIntroSection' },
+  { name: 'ModulesIntroSection' },
 );

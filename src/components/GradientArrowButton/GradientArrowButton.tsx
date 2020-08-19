@@ -1,12 +1,20 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { ButtonTypeMap } from '@material-ui/core/Button';
+import { OverrideProps } from '@material-ui/core/OverridableComponent';
 
-import { Button, ButtonProps } from 'components/Button';
+import { Button } from 'components/Button';
 import { GradientArrow } from 'components/icons';
 import { makeStyles } from 'utils/styles';
 
-export function GradientArrowButton(props: ButtonProps<typeof RouterLink>) {
-  const { children, to, ...rest } = props;
+export type ButtonProps<
+  D extends React.ElementType = ButtonTypeMap['defaultComponent'],
+  P = {}
+> = OverrideProps<ButtonTypeMap<P, D>, D>;
+
+export function GradientArrowButton<P = {}, D extends React.ElementType = 'button'>(
+  props: ButtonProps<D, P>,
+) {
+  const { children, ...rest } = props;
   const classes = useStyles();
 
   return (
@@ -14,8 +22,6 @@ export function GradientArrowButton(props: ButtonProps<typeof RouterLink>) {
       {...rest}
       variant="text"
       color="primary"
-      component={RouterLink}
-      to={to}
       endIcon={<GradientArrow className={classes.arrow} />}
     >
       {children}

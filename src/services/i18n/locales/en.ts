@@ -172,7 +172,7 @@ const en = {
     deFiScoreChart: {
       deFiScore: 'DeFi Score',
     },
-    poolsIntroSection: {
+    modulesIntroSection: {
       savings: {
         title: 'Stablecoins',
         subtitle: 'Stay simple & stable',

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { Loading, Label, PoolSummaryCard, GradientArrowButton } from 'components';
 import { CatsPaw } from 'components/icons';
@@ -30,7 +31,9 @@ export function UserStakingPoolsSummary() {
         }
         apyValue={<UserStakingPoolsAvgAPY />}
         button={
-          <GradientArrowButton to={routes.staking.getRedirectPath()}>Stake</GradientArrowButton>
+          <GradientArrowButton component={RouterLink} to={routes.staking.getRedirectPath()}>
+            Stake
+          </GradientArrowButton>
         }
       />
     </Loading>
