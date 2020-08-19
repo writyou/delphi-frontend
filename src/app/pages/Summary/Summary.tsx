@@ -2,11 +2,11 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
-import { Loading, Card } from 'components';
+import { Loading, Card, Grid, PoolsIntroSection } from 'components';
 import { makeStyles } from 'utils/styles';
 
-import { SummaryPage } from './SummaryPage';
-import { SummaryEmptyPage } from '../SummaryEmpty/SummaryEmptyPage';
+import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
+import { APYMetricsSection } from './Components/APYMetricsSection';
 
 export function Summary() {
   const classes = useStyles();
@@ -16,7 +16,16 @@ export function Summary() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>{user ? <SummaryPage /> : <SummaryEmptyPage />}</Loading>
+      <Loading meta={[userMeta]}>
+        <Grid container spacing={10}>
+          <Grid item xs={6}>
+            <PortfolioBalanceChart isUserLoggedIn={!!user} />
+          </Grid>
+          <Grid item xs={6}>
+            {user ? <APYMetricsSection /> : <PoolsIntroSection />}
+          </Grid>
+        </Grid>
+      </Loading>
     </Card>
   );
 }

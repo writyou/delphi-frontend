@@ -1,7 +1,7 @@
 import * as React from 'react';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-type PawColor = 'pink' | 'turquoise' | 'violet';
+type PawColor = 'pink' | 'turquoise' | 'violet' | 'lilac';
 
 type Props = React.ComponentProps<typeof SvgIcon> & {
   variant?: PawColor;
@@ -19,6 +19,10 @@ const gradientColors: Record<PawColor, { start: string; stop: string }> = {
   violet: {
     start: '#A095E4',
     stop: '#A095E4',
+  },
+  lilac: {
+    start: '#A5B1EB',
+    stop: '#D7CDF7',
   },
 };
 

@@ -10,6 +10,7 @@ export const useStyles = makeStyles(
 
     leftPart: {
       display: 'flex',
+      alignItems: 'center',
     },
 
     button: {
@@ -20,6 +21,10 @@ export const useStyles = makeStyles(
     rightPart: {
       display: 'flex',
       alignItems: 'center',
+    },
+
+    liveStats: {
+      marginLeft: 50,
     },
 
     links: {

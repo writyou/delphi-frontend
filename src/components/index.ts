@@ -35,6 +35,9 @@ export { AccountAddress } from './AccountAddress/AccountAddress';
 export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
 export { Table } from './Table';
+export { GradientArrowButton } from './GradientArrowButton/GradientArrowButton';
+export { PoolsIntroSection } from './PoolsIntroSection/PoolsIntroSection';
+export { PoolSummaryCard } from './PoolSummaryCard/PoolSummaryCard';
 
 export * from './ComingSoon';
 export * from './ErrorBoundary';

@@ -43,7 +43,7 @@ export { Cat1 } from './cats/Cat1';
 export { CatsPaw } from './CatsPaw';
 export { Fish } from './Fish';
 export { ChartWithCat } from './ChartWithCat';
-export { ArrowStartToSave } from './ArrowStartToSave';
+export { GradientArrow } from './GradientArrow';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
 export { CloseIcon } from './CloseIcon';
