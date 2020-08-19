@@ -1,6 +1,6 @@
 import React from 'react';
 import { map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { TokenAmount, sumTokenAmountsByToken } from '@akropolis-web/primitives';
 
 import {
@@ -11,6 +11,7 @@ import {
   Metric,
   Loading,
   PieChartData,
+  CatsPawPlaceholder,
 } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
@@ -26,13 +27,17 @@ type Props = {
 function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
   return api.user.getMySavingsPools$().pipe(
     switchMap(pools =>
-      combineLatest(pools.map(pool => api.user.getSavingsPoolBalances$(pool.address))),
+      pools.length
+        ? combineLatest(pools.map(pool => api.user.getSavingsPoolBalances$(pool.address)))
+        : of([]),
     ),
     map(balances =>
-      sumTokenAmountsByToken(balances.flat()).map(balance => ({
-        value: balance,
-        payload: undefined,
-      })),
+      sumTokenAmountsByToken(balances.flat())
+        .filter(balance => !balance.isZero())
+        .map(balance => ({
+          value: balance,
+          payload: undefined,
+        })),
     ),
   );
 }
@@ -44,7 +49,7 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
 
   return (
     <Loading meta={chartDataMeta}>
-      {chartData && (
+      {chartData?.length ? (
         <Grid container alignItems="center" spacing={3}>
           <Grid item>
             <CompositionChart
@@ -68,6 +73,8 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
             </Grid>
           )}
         </Grid>
+      ) : (
+        <CatsPawPlaceholder size={size} />
       )}
     </Loading>
   );

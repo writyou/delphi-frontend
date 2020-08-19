@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 type PawColor = 'pink' | 'turquoise' | 'violet' | 'lilac';
 
-type Props = React.ComponentProps<typeof SvgIcon> & {
+export type Props = React.ComponentProps<typeof SvgIcon> & {
   variant?: PawColor;
 };
 

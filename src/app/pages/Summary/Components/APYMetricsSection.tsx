@@ -1,20 +1,14 @@
 import React from 'react';
 
-import {
-  Grid,
-  GradientArrowButton,
-  FormattedAmount,
-  Divider,
-  PoolSummaryCard,
-  Label,
-  Button,
-} from 'components';
+import { Grid, FormattedAmount, Divider, PoolSummaryCard, Label, Button } from 'components';
 import { CatsPaw } from 'components/icons';
-import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { percentAmount } from 'utils/mock';
-import { UserSavingsPoolsSummary } from 'features/savingsPools';
-import { UserStakingPoolsSummary } from 'features/stakingPools';
+
+import { UserSavingsPoolsSummary } from './UserSavingsPoolsSummary';
+import { UserStakingPoolsSummary } from './UserStakingPoolsSummary';
+import { UserInvestmentPoolsSummary } from './UserInvestmentPoolsSummary';
+import { UserDCAPoolsSummary } from './UserDCAPoolsSummary';
 
 export function APYMetricsSection() {
   const classes = useStyles();
@@ -24,24 +18,10 @@ export function APYMetricsSection() {
         <UserSavingsPoolsSummary />
       </Grid>
       <Grid item xs={6}>
-        <PoolSummaryCard
-          title={<Label withComingSoon>Investments</Label>}
-          chart={<CatsPaw variant="violet" className={classes.icon} />}
-          apyValue={<FormattedAmount sum={percentAmount} />}
-          button={
-            <GradientArrowButton to={routes.investments.getRedirectPath()}>
-              Invest
-            </GradientArrowButton>
-          }
-        />
+        <UserInvestmentPoolsSummary />
       </Grid>
       <Grid item xs={6}>
-        <PoolSummaryCard
-          title={<Label withComingSoon>DCA</Label>}
-          chart={<CatsPaw variant="turquoise" className={classes.icon} />}
-          apyValue={<FormattedAmount sum={percentAmount} />}
-          button={<GradientArrowButton to={routes.dca.getRedirectPath()}>DCA</GradientArrowButton>}
-        />
+        <UserDCAPoolsSummary />
       </Grid>
       <Grid item xs={6}>
         <UserStakingPoolsSummary />

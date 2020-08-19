@@ -38,6 +38,7 @@ export { Table } from './Table';
 export { GradientArrowButton } from './GradientArrowButton/GradientArrowButton';
 export { ModulesIntroSection } from './ModulesIntroSection/ModulesIntroSection';
 export { PoolSummaryCard } from './PoolSummaryCard/PoolSummaryCard';
+export { CatsPawPlaceholder } from './CatsPawPlaceholder/CatsPawPlaceholder';
 
 export * from './ComingSoon';
 export * from './ErrorBoundary';

@@ -2,7 +2,6 @@ export * from './data/SavingsPoolBalancesComposition';
 export * from './data/SavingsPoolLiquidity';
 export * from './data/UserSavingsPoolBalance';
 export * from './data/UserSavingsPoolsAvgAPY';
-export * from './data/UserSavingsPoolsSummary';
 export * from './data/UserSavingsPoolsTotalBalance';
 export * from './data/UserSavingsPoolsBalancesComposition';
 export * from './data/SavingsPoolName';

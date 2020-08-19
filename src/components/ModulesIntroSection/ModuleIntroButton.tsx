@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@akropolis-web/styles';
-import { ButtonBase, ButtonBaseProps, Grid, Typography, Box } from '@akropolis-web/components';
+import { ButtonBase, ButtonBaseProps, Grid, Typography } from '@akropolis-web/components';
 
 import { GradientArrowButton } from 'components/GradientArrowButton/GradientArrowButton';
 
@@ -28,11 +28,9 @@ export function ModuleIntroButton(props: Props & ButtonBaseProps<typeof RouterLi
         <Grid item>
           <Typography>{title}</Typography>
         </Grid>
-        <Box clone flexGrow={1}>
-          <Grid item>
-            <Typography className={classes.subtitle}>{subtitle}</Typography>
-          </Grid>
-        </Box>
+        <Grid item xs>
+          <Typography className={classes.subtitle}>{subtitle}</Typography>
+        </Grid>
         <Grid item>
           <GradientArrowButton tabIndex={-1}>{buttonLabel}</GradientArrowButton>
         </Grid>

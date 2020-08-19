@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { makeStyles } from '@akropolis-web/styles';
-import { Grid } from '@akropolis-web/components';
+import { Grid, Box } from '@akropolis-web/components';
 
 export type Props = {
   title: React.ReactNode;
@@ -29,7 +29,9 @@ export function PoolSummaryCard(props: Props) {
       <Grid container item spacing={2}>
         <Grid item>{chart}</Grid>
         <Grid container item xs direction="column">
-          <Grid item>{renderMetric()}</Grid>
+          <Box clone alignSelf="flex-start">
+            <Grid item>{renderMetric()}</Grid>
+          </Box>
           {button && <Grid item>{button}</Grid>}
         </Grid>
       </Grid>
