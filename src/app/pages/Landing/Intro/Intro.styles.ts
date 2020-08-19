@@ -9,16 +9,14 @@ const useStyles = makeStyles(
 
     buttons: {
       fontSize: 16,
-      maxWidth: 480,
+      maxWidth: 520,
     },
 
     button: {
       minWidth: 130,
-      marginBottom: 20,
 
       [theme.breakpoints.up('tabletXS')]: {
         minWidth: 136,
-        marginBottom: 0,
         fontSize: 20,
       },
     },

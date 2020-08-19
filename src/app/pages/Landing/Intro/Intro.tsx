@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { Button, Link, Intro, LinkProps, Grid, ButtonProps } from 'components';
 import { routes } from 'app/routes';
-import { Adaptive } from 'services/adaptability';
+import { Adaptive, useBreakpointsMatch } from 'services/adaptability';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -11,6 +11,8 @@ import { DCA_LINK } from '../constants';
 
 function LandingIntro() {
   const classes = useStyles();
+
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
 
   return (
     <Intro
@@ -31,13 +33,13 @@ function LandingIntro() {
         </div>
       }
     >
-      <Grid container alignItems="center" justify="space-between" className={classes.buttons}>
-        <Grid item className={classes.button}>
+      <Grid container spacing={isMobile ? 3 : 5} alignItems="center" className={classes.buttons}>
+        <Grid item xs className={classes.button}>
           <RedirectButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
           </RedirectButton>
         </Grid>
-        <Grid item className={classes.button}>
+        <Grid item xs className={classes.button}>
           <RedirectButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
           </RedirectButton>
