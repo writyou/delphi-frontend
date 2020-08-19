@@ -22,6 +22,10 @@ export { ETHIcon } from './ETHIcon';
 export { COMPIcon } from './COMPIcon';
 export { ADELIcon } from './ADELIcon';
 export { SUSDIcon } from './SUSDIcon';
+export { BALIcon } from './BALIcon';
+export { CRVIcon } from './CRVIcon';
+export { MTAIcon } from './MTAIcon';
+export { YFIIcon } from './YFIIcon';
 
 export { DeFiPulseIcon } from './DeFiPulseIcon';
 export { getSocialIconByLink } from './getSocialIconByLink';
@@ -39,7 +43,6 @@ export { InfoIcon as InfoIconV2 } from './InfoIconV2';
 export { Sun } from './Sun';
 export { Moon } from './Moon';
 export { ProfitArrow } from './ProfitArrow';
-export { Cat1 } from './cats/Cat1';
 export { CatsPaw } from './CatsPaw';
 export { Fish } from './Fish';
 export { ChartWithCat } from './ChartWithCat';
@@ -47,3 +50,7 @@ export { ArrowStartToSave } from './ArrowStartToSave';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
 export { CloseIcon } from './CloseIcon';
+
+export { Cat1 } from './cats/Cat1';
+export { Cat2 } from './cats/Cat2';
+export { CatPaws } from './cats/CatPaws';

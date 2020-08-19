@@ -71,9 +71,13 @@ export class SavingsModuleApi {
   public getUserRewards$(userAddress: string) {
     return combineLatest([
       this.readonlyContract.methods.supportedRewardTokens(),
-      this.readonlyContract.methods.withdrawReward.read(undefined, {
-        from: userAddress,
-      }),
+      this.readonlyContract.methods.withdrawReward.read(
+        undefined,
+        {
+          from: userAddress,
+        },
+        [this.readonlyContract.events.RewardWithdraw({ filter: { user: userAddress } })],
+      ),
     ]).pipe(
       switchMap(([tokensAddresses, rewards]) =>
         combineLatest(tokensAddresses.map(tokenAddress => this.erc20.getToken$(tokenAddress))).pipe(
@@ -81,6 +85,20 @@ export class SavingsModuleApi {
         ),
       ),
     );
+  }
+
+  @autobind
+  public async withdrawUserRewards(): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdrawReward(undefined, { from });
+
+    this.transactionsApi.pushToSubmittedTransactions('rewards.withdraw', promiEvent, {
+      fromAddress: from,
+    });
+
+    await promiEvent;
   }
 
   @memoize((...args: string[]) => args.join())

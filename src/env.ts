@@ -24,6 +24,10 @@ interface INetworkConfig {
     WETH: string;
     ADEL: string;
     COMP: string;
+    BAL: string;
+    CRV: string;
+    MTA: string;
+    YFI: string;
   };
   etherskanDomain: string;
 }
@@ -41,6 +45,10 @@ const testnetTokens: INetworkConfig['tokens'] = {
   WETH: `${zeroAddress.slice(-1)}1`,
   COMP: '0x82395c65e12aacb49981ae21d6e2a00c2ad70591',
   ADEL: `${zeroAddress.slice(-1)}2`,
+  BAL: `${zeroAddress.slice(-1)}3`,
+  CRV: `${zeroAddress.slice(-1)}4`,
+  MTA: `${zeroAddress.slice(-1)}5`,
+  YFI: `${zeroAddress.slice(-1)}6`,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
@@ -85,6 +93,10 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     WETH: testnetTokens.WETH,
     COMP: testnetTokens.COMP,
     ADEL: testnetTokens.ADEL,
+    BAL: testnetTokens.BAL,
+    CRV: testnetTokens.CRV,
+    MTA: testnetTokens.MTA,
+    YFI: testnetTokens.YFI,
   },
   etherskanDomain: 'https://etherscan.io/',
 };

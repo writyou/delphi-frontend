@@ -8,6 +8,7 @@ import {
   Fraction,
   calcAvg,
 } from '@akropolis-web/primitives';
+import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
 import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
@@ -33,10 +34,14 @@ export class UserApi {
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
-    // TODO create isUserExist$ method to check if the user is a liquidity provider
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
     );
+  }
+
+  @memoize(R.identity)
+  public isUserExist$(): Observable<boolean> {
+    return this.getUser$().pipe(map(Boolean));
   }
 
   @memoize(R.identity)
@@ -199,5 +204,10 @@ export class UserApi {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
     );
+  }
+
+  @autobind
+  public withdrawRewards() {
+    return this.rewards.withdrawUserRewards();
   }
 }
