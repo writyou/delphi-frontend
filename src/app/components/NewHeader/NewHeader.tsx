@@ -5,7 +5,6 @@ import { routes } from 'app/routes';
 import { AuthButton } from 'features/auth';
 import { MintTestnetTokenButton } from 'features/mintTestnetToken';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { routes } from 'app/routes';
 
 import { LiveStats } from './LiveStats/LiveStats';
 import { useStyles } from './NewHeader.style';
