@@ -4,15 +4,18 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 import { makeStyles, useTheme } from 'utils/styles';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    width: 'unset',
+const useStyles = makeStyles(
+  theme => ({
+    root: {
+      width: 'unset',
 
-    '& path': {
-      mixBlendMode: theme.palette.type === 'dark' ? 'screen' : 'unset',
+      '& path': {
+        mixBlendMode: theme.palette.type === 'dark' ? 'screen' : 'unset',
+      },
     },
-  },
-}));
+  }),
+  { name: 'LandingIcon' },
+);
 
 let hackForGradientUpdating = 1;
 

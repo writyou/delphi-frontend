@@ -10,6 +10,7 @@ import { useSubscribable, useCommunication, useOnChangeState } from 'utils/react
 import { makeStyles } from 'utils/styles';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Button, Loading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
+import { Adaptive } from 'services/adaptability';
 
 import { AuthModal } from './components/AuthModal';
 
@@ -89,23 +90,25 @@ export function AuthButton({ children, size, connectRedirectPath, disconnectRedi
               <Avatar className={classes.icon}>
                 <AddressIcon address={account} />
               </Avatar>
-              <Grid
-                container
-                alignItems="flex-start"
-                direction="column"
-                spacing={0}
-                className={classes.container}
-              >
-                <Grid item>
-                  <Typography className={classes.address}>{getShortAddress(account)}</Typography>
-                </Grid>
-                <Grid item>
-                  <Typography className={classes.connectedTo}>
-                    {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
+              <Adaptive from="mobileMD">
+                <Grid
+                  container
+                  alignItems="flex-start"
+                  direction="column"
+                  spacing={0}
+                  className={classes.container}
+                >
+                  <Grid item>
+                    <Typography className={classes.address}>{getShortAddress(account)}</Typography>
+                  </Grid>
+                  <Grid item>
+                    <Typography className={classes.connectedTo} align="left">
+                      {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
                     ${t(tKeys.features.networkWarning.networkType[NETWORK_ID].getKey())}`}
-                  </Typography>
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
+              </Adaptive>
             </>
           ) : (
             children || t(tKeys.features.auth.connect.getKey())
@@ -125,30 +128,34 @@ export function AuthButton({ children, size, connectRedirectPath, disconnectRedi
   );
 }
 
-const useStyles = makeStyles({
-  root: {
-    '&$connected': {
-      padding: 0,
+const useStyles = makeStyles(
+  {
+    root: {
+      '&$connected': {
+        padding: 0,
+      },
+      minWidth: 'unset',
     },
+    address: {
+      fontSize: 12,
+      lineHeight: 1,
+    },
+    connectedTo: {
+      fontSize: 12,
+      lineHeight: 1,
+      opacity: 0.5,
+      marginTop: 3,
+    },
+    container: {
+      marginLeft: 11,
+      paddingRight: 16,
+    },
+    icon: {
+      width: 34,
+      height: 34,
+      fontSize: 34,
+    },
+    connected: {},
   },
-  address: {
-    fontSize: 12,
-    lineHeight: 1,
-  },
-  connectedTo: {
-    fontSize: 12,
-    lineHeight: 1,
-    opacity: 0.5,
-    marginTop: 3,
-  },
-  container: {
-    marginLeft: 11,
-    paddingRight: 16,
-  },
-  icon: {
-    width: 34,
-    height: 34,
-    fontSize: 34,
-  },
-  connected: {},
-});
+  { name: 'AuthButton' },
+);

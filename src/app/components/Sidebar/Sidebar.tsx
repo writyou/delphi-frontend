@@ -25,7 +25,7 @@ const upperLinksList: PriorityLinks = {
       kind: 'internal',
       label: 'My Summary',
       ref: routes.summary.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.Account),
     },
   ],
   additionalLinks: [
@@ -33,13 +33,13 @@ const upperLinksList: PriorityLinks = {
       kind: 'internal',
       label: 'My Pools',
       ref: routes.pools.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.MyPools),
     },
     {
       kind: 'internal',
       label: 'My Harvest',
       ref: routes.rewards.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.MyHarvest),
     },
   ],
 };
@@ -51,25 +51,25 @@ const lowerLinksList: PriorityLinks = {
       kind: 'internal',
       label: 'Save',
       ref: routes.savings.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.Save),
     },
     {
       kind: 'internal',
       label: 'Invest',
       ref: routes.investments.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.Invest),
     },
     {
       kind: 'internal',
       label: 'DCA',
       ref: routes.dca.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.DCA),
     },
     {
       kind: 'internal',
       label: 'Stake',
       ref: routes.staking.getRoutePath(),
-      renderIcon: makeIconRenderer(icons.Borrow),
+      renderIcon: makeIconRenderer(icons.Stake),
     },
   ],
 };
@@ -86,6 +86,8 @@ export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
+  const [account] = useSubscribable(() => api.web3Manager.account$, [], null);
+
   const [links] = useSubscribable(
     () =>
       combineLatest(getLinks$(api, upperLinksList), getLinks$(api, lowerLinksList)).pipe(
@@ -100,6 +102,10 @@ export const Sidebar: React.FC = () => {
     sidebarStorage.setItem('isExpanded', !isExpanded);
     setCloseSidebar(!isExpanded);
   };
+
+  if (!account) {
+    return null;
+  }
 
   return (
     <div

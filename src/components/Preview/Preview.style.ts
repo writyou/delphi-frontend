@@ -8,12 +8,12 @@ export const useStyles = makeStyles(theme => ({
   },
 
   title: {
-    lineHeight: 1.25,
+    lineHeight: 1.8,
 
     '&$medium': {
       fontWeight: 400,
 
-      fontSize: theme.spacing(1.5),
+      fontSize: 16,
       [theme.breakpoints.up('tabletXS')]: {
         fontSize: theme.spacing(1.75),
       },
