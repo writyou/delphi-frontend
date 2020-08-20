@@ -1,14 +1,14 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { TabsSection, ComingSoon, Card, Loading } from 'components';
+import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
-import { useApi } from 'services/api';
+import { useApi, Api } from 'services/api';
 
 import * as innerPages from './innerPages';
 
@@ -18,24 +18,28 @@ const tabs = [
     value: routes.pools.savings.getElementKey(),
     to: routes.pools.savings.getRedirectPath(),
     renderContent: () => <innerPages.Savings />,
+    getData: (api: Api) => api.user.getMySavingsPools$(),
   },
   {
     label: 'Investments',
     value: routes.pools.investments.getElementKey(),
     to: routes.pools.investments.getRedirectPath(),
     renderContent: () => <innerPages.Investment />,
+    getData: () => of([]), // TODO load Investment pools
   },
   {
     label: 'Staking',
     value: routes.pools.staking.getElementKey(),
     to: routes.pools.staking.getRedirectPath(),
     renderContent: () => <innerPages.Staking />,
+    getData: (api: Api) => api.user.getMyStakingPools$(),
   },
   {
     label: 'DCA',
     value: routes.pools.dca.getElementKey(),
     to: routes.pools.dca.getRedirectPath(),
     renderContent: () => <innerPages.DCA />,
+    getData: () => of([]), // TODO load DCA pools
   },
 ];
 
@@ -45,50 +49,36 @@ export function MyPools() {
 
   const [filteredTabs, meta] = useSubscribable(
     () =>
-      combineLatest(
-        api.user.getMySavingsPools$(),
-        of([1]), // TODO load Investment pools
-        api.user.getMyStakingPools$(),
-        of([1]), // TODO load DCA pools
-      ).pipe(
-        map(tabData =>
-          tabData ? tabs.filter((_, i) => Boolean(tabData[i]) && tabData[i].length > 0) : undefined,
-        ),
+      combineLatest(tabs.map(tab => tab.getData(api))).pipe(
+        map(tabData => (tabData ? tabs.filter((_, i) => Boolean(tabData[i]?.length)) : undefined)),
       ),
     [api],
   );
 
   const match = useRouteMatch<{ page: string }>('/pools/:page');
 
-  const defaultPage =
-    (filteredTabs && filteredTabs[0].value) || routes.pools.savings.getElementKey();
-  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
+  const defaultPage = filteredTabs?.[0]?.value;
 
   const page = match ? match.params.page : defaultPage;
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
-    tab && setSelectedPage(tab);
-  };
+  const isComingSoonTab =
+    page &&
+    [routes.pools.investments.getElementKey(), routes.pools.dca.getElementKey()].includes(page);
 
-  React.useEffect(() => {
-    setSelectedPage(page);
-  }, [page]);
-
-  const isComingSoonTab = [
-    routes.pools.investments.getElementKey(),
-    routes.pools.dca.getElementKey(),
-  ].includes(selectedPage);
+  const isWorthToWatchPage$ = useMemo(
+    () => of(filteredTabs ? filteredTabs.some(filteredPage => filteredPage.value === page) : false),
+    [filteredTabs, page],
+  );
 
   return (
     <Card variant="contained" className={classes.root}>
       <Loading meta={meta}>
-        {filteredTabs && filteredTabs.length ? (
-          <TabsSection
-            currentValue={selectedPage}
-            tabs={filteredTabs}
-            tabComponent={RouterLink}
-            onChange={handleTabChange}
-          >
+        <CheckAuthorization
+          isAuthorized$={isWorthToWatchPage$}
+          redirectTo={routes.pools.getRoutePath()}
+        />
+        {filteredTabs?.length && page ? (
+          <TabsSection currentValue={page} tabs={filteredTabs} tabComponent={RouterLink}>
             {isComingSoonTab && (
               <div className={classes.comingSoon}>
                 <ComingSoon variant="label" />
