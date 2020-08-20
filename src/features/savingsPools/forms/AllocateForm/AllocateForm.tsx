@@ -6,14 +6,13 @@ import { TokenAmount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { FormWithConfirmation } from 'components/form';
+import { FormWithConfirmation, AllocateFormTemplate } from 'components/form';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { SavingsPool } from 'model/types';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import { getDeposits } from './getDeposits';
 import { stringifyName } from './utils';
-import { AllocateFormTemplate } from './AllocateFormTemplate';
 import { SavingsPoolField } from './SavingsPoolField';
 import { AllocateFormConfirmationContent } from './AllocateFormConfirmationContent';
 
