@@ -1,10 +1,8 @@
-import React from 'react';
-import { of } from 'rxjs';
+import React, { useMemo } from 'react';
 import { map } from 'rxjs/operators';
 
 import { CheckAuthorization } from 'components';
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
 
 type IProps = {
   redirectTo: string;
@@ -15,10 +13,9 @@ type IProps = {
 export const IsUserConnected = (props: IProps) => {
   const api = useApi();
 
-  const [isUserConnected$] = useSubscribable(
-    () => api.web3Manager.account$.pipe(map(account => of(account !== null))),
-    [],
-    of(false),
+  const isUserConnected$ = useMemo(
+    () => api.web3Manager.account$.pipe(map(account => account !== null)),
+    [api],
   );
 
   return <CheckAuthorization isAuthorized$={isUserConnected$} {...props} />;

@@ -15,20 +15,14 @@ type IProps = {
 
 export const CheckAuthorization: React.FC<IProps> = (props: IProps) => {
   const { isAuthorized$, redirectTo, excludePath, children } = props;
-  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribable(
-    () => {
-      // eslint-disable-next-line no-console
-      isAuthorized$.subscribe(x => console.log(x));
-      return isAuthorized$;
-    },
-    [],
-    null,
-  );
+  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribable(() => isAuthorized$, [
+    isAuthorized$,
+  ]);
 
-  return children ? (
-    <Loading meta={isWorthyToWatchMeta}>{renderContent()}</Loading>
-  ) : (
-    <>{renderContent()}</>
+  return (
+    <Loading meta={isWorthyToWatchMeta} loader={!children ? <>{null}</> : undefined}>
+      {renderContent()}
+    </Loading>
   );
 
   function renderContent() {
