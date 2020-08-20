@@ -21,7 +21,7 @@ function PortfolioBalanceChart() {
       </Grid>
       <Grid item container spacing={4}>
         <Grid item xs={12}>
-          <ChartWithCat className={classes.cat} />
+          <ChartWithCat className={classes.cat} hideText />
         </Grid>
       </Grid>
     </Grid>

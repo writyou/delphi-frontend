@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Label, Card } from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -16,9 +16,8 @@ import {
   DepositToSavingsPoolForm,
   SavingsPoolBalancesComposition,
   SavingsPoolDepositLimit,
+  RewardWeeklyCompositionChart,
 } from 'features/savingsPools';
-
-import { RewardCompositionChartMock } from './RewardCompositionChartMock';
 
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>(routes.savings.pool.id.getRoutePath());
@@ -74,10 +73,10 @@ export function SavingsPoolPage() {
             <Grid container className={cn(classes.withBorder, classes.row)}>
               <Grid container item xs={6} className={classes.paddingRight} direction="column">
                 <Metric
-                  title={<Label withComingSoon>Approximate Reward Weekly</Label>}
+                  title="Approximate Reward Weekly"
                   value={
                     <div className={classes.metricChart}>
-                      <RewardCompositionChartMock poolsNumber={3} />
+                      <RewardWeeklyCompositionChart poolAddress={poolAddress} />
                     </div>
                   }
                 />

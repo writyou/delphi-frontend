@@ -4,10 +4,10 @@ import * as R from 'ramda';
 import { map, switchMap } from 'rxjs/operators';
 
 import { memoize } from 'utils/decorators';
-import { SavingsPool } from 'model/types';
+import { SavingsPool, Reward } from 'model/types';
 
 import { makeSubgraphApi } from './makeSubgraphApi';
-import { convertUser, convertSavingsPool } from './converters';
+import { convertUser, convertSavingsPool, convertReward } from './converters';
 import { SubgraphConfig } from './model';
 
 export class SubgraphApi {
@@ -99,6 +99,13 @@ export class SubgraphApi {
         ),
       ),
     );
+  }
+
+  @memoize((...args) => R.join(',', args))
+  public loadRewards$(poolAddress: string, dateGt: string): Observable<Reward[]> {
+    return this.sdk
+      .Rewards({ poolAddress, dateGt })
+      .pipe(map(({ srewards }) => srewards.map(convertReward)));
   }
 
   @memoize()
