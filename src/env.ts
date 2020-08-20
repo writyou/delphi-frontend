@@ -24,6 +24,11 @@ interface INetworkConfig {
     WETH: string;
     ADEL: string;
     COMP: string;
+    BAL: string;
+    CRV: string;
+    MTA: string;
+    YFI: string;
+    SNX: string;
   };
   etherskanDomain: string;
 }
@@ -41,6 +46,11 @@ const testnetTokens: INetworkConfig['tokens'] = {
   WETH: `${zeroAddress.slice(-1)}1`,
   COMP: '0x82395c65e12aacb49981ae21d6e2a00c2ad70591',
   ADEL: `${zeroAddress.slice(-1)}2`,
+  BAL: `${zeroAddress.slice(-1)}3`,
+  CRV: `${zeroAddress.slice(-1)}4`,
+  MTA: `${zeroAddress.slice(-1)}5`,
+  YFI: `${zeroAddress.slice(-1)}6`,
+  SNX: `${zeroAddress.slice(-1)}7`,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
@@ -85,6 +95,11 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     WETH: testnetTokens.WETH,
     COMP: testnetTokens.COMP,
     ADEL: testnetTokens.ADEL,
+    BAL: testnetTokens.BAL,
+    CRV: testnetTokens.CRV,
+    MTA: testnetTokens.MTA,
+    YFI: testnetTokens.YFI,
+    SNX: testnetTokens.SNX,
   },
   etherskanDomain: 'https://etherscan.io/',
 };
@@ -93,6 +108,7 @@ const configsByMode: Record<Mode, INetworkConfig> = {
   testnet: ethNetworkConfigTestnet,
   sandbox: ethNetworkConfigsForSandbox,
   mainnet: ethNetworkConfigsForMainnet,
+  'pre-mainnet': ethNetworkConfigsForMainnet,
 };
 
 // eslint-disable-next-line no-nested-ternary
@@ -108,12 +124,14 @@ const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
   sandbox: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
+  'pre-mainnet': 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 const subgraphWsUrlsByMode: Record<Mode, string> = {
   testnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
   sandbox: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
+  'pre-mainnet': 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 export const SUBGRAPH_HTTP_URL = subgraphHttpUrlsByMode[getEnv().mode];

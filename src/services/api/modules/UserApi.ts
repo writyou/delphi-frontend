@@ -1,4 +1,4 @@
-import { Observable, empty, combineLatest } from 'rxjs';
+import { Observable, empty, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import {
@@ -8,6 +8,7 @@ import {
   Fraction,
   calcAvg,
 } from '@akropolis-web/primitives';
+import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
 import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
@@ -33,10 +34,14 @@ export class UserApi {
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
-    // TODO create isUserExist$ method to check if the user is a liquidity provider
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
+      switchMap(account => (account ? this.subgraph.loadUser$(account) : of(null))),
     );
+  }
+
+  @memoize(R.identity)
+  public isUserExist$(): Observable<boolean> {
+    return this.getUser$().pipe(map(Boolean));
   }
 
   @memoize(R.identity)
@@ -50,11 +55,13 @@ export class UserApi {
   public getSavingsPoolsAvgAPY$(): Observable<PercentAmount> {
     return this.getMySavingsPools$().pipe(
       switchMap(pools =>
-        combineLatest(
-          pools.map(pool =>
-            this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
-          ),
-        ),
+        pools.length
+          ? combineLatest(
+              pools.map(pool =>
+                this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+              ),
+            )
+          : of([]),
       ),
       map(
         balances =>
@@ -199,5 +206,10 @@ export class UserApi {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
     );
+  }
+
+  @autobind
+  public withdrawRewards() {
+    return this.rewards.withdrawUserRewards();
   }
 }

@@ -12,14 +12,16 @@ export const useStyles = makeStyles(
       flex: 1,
       flexDirection: 'column',
       overflow: 'auto',
-      paddingLeft: 50,
-      paddingRight: 30,
+      padding: '25px 50px 50px 56px',
+
+      '&:first-child': {
+        paddingLeft: 50,
+      },
     },
 
     // TODO: remove duplication with extand plugin
 
     header: {
-      marginTop: 30,
       backgroundColor: theme.palette.background.paperSecondary,
       borderRadius: 6,
       transition: theme.transitions.create('background-color'),
@@ -40,7 +42,6 @@ export const useStyles = makeStyles(
 
     footer: {
       marginTop: 48,
-      marginBottom: 56,
       backgroundColor: theme.palette.background.paperSecondary,
       borderRadius: 6,
       transition: theme.transitions.create('background-color'),

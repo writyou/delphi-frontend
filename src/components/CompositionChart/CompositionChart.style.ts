@@ -1,13 +1,5 @@
 import { makeStyles } from 'utils/styles';
 
-const CHART_WIDTH_EXTRA_SMALL = 60;
-const CHART_WIDTH_SMALL = 85;
-const CHART_WIDTH_MEDIUM = 114;
-const CHART_WIDTH_LARGE = 140;
-const CHART_WIDTH_EXTRA_LARGE = 170;
-
-export const CHART_WIDTH = 135;
-
 export const useStyles = makeStyles(
   theme => ({
     root: {},
@@ -18,28 +10,28 @@ export const useStyles = makeStyles(
     },
     chart: {
       position: 'relative',
-      width: CHART_WIDTH,
-      height: CHART_WIDTH,
+      width: theme.sizes.chartWidth.default,
+      height: theme.sizes.chartWidth.default,
 
       '&$isExtraSmall': {
-        width: CHART_WIDTH_EXTRA_SMALL,
-        height: CHART_WIDTH_EXTRA_SMALL,
+        width: theme.sizes.chartWidth.xs,
+        height: theme.sizes.chartWidth.xs,
       },
       '&$isSmall': {
-        width: CHART_WIDTH_SMALL,
-        height: CHART_WIDTH_SMALL,
+        width: theme.sizes.chartWidth.sm,
+        height: theme.sizes.chartWidth.sm,
       },
       '&$isMedium': {
-        width: CHART_WIDTH_MEDIUM,
-        height: CHART_WIDTH_MEDIUM,
+        width: theme.sizes.chartWidth.md,
+        height: theme.sizes.chartWidth.md,
       },
       '&$isLarge': {
-        width: CHART_WIDTH_LARGE,
-        height: CHART_WIDTH_LARGE,
+        width: theme.sizes.chartWidth.lg,
+        height: theme.sizes.chartWidth.lg,
       },
       '&$isExtraLarge': {
-        width: CHART_WIDTH_EXTRA_LARGE,
-        height: CHART_WIDTH_EXTRA_LARGE,
+        width: theme.sizes.chartWidth.xl,
+        height: theme.sizes.chartWidth.xl,
       },
     },
     innerLegend: {
