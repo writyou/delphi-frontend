@@ -11,7 +11,7 @@ import { getSignificantValue } from 'utils';
 import { WithdrawFromStakingPool, DepositToStakingPool } from 'model/types';
 import { memoize } from 'utils/decorators';
 import { StakingPool } from 'model/types/staking';
-import { getCurrentValueOrThrow } from 'utils/rxjs';
+import { getCurrentValueOrThrow, awaitFirstNonNullableOrThrow } from 'utils/rxjs';
 import { createStakingPool } from 'generated/contracts';
 import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
 import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
@@ -144,7 +144,7 @@ export class StakingModuleApi {
   @autobind
   public async deposit(deposit: DepositToStakingPool): Promise<void> {
     const txContract = this.getPoolTxContract(deposit.poolAddress);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     await this.erc20.approve(from, ETH_NETWORK_CONFIG.contracts.akroStakingPool, deposit.amount);
 
@@ -167,7 +167,7 @@ export class StakingModuleApi {
   @autobind
   public async withdraw(withdraw: WithdrawFromStakingPool): Promise<void> {
     const txContract = this.getPoolTxContract(withdraw.poolAddress);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.unstakeAllUnlocked({ _data: '0x00' }, { from });
 

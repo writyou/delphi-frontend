@@ -7,7 +7,7 @@ import { Token, TokenAmount } from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
 import { createErc20, createTestnetERC20 } from 'generated/contracts';
-import { getCurrentValueOrThrow, awaitFirst } from 'utils/rxjs';
+import { getCurrentValueOrThrow, awaitFirst, awaitFirstNonNullableOrThrow } from 'utils/rxjs';
 
 import { Contracts, Web3ManagerModule } from '../types';
 import { TransactionsApi } from './TransactionsApi';
@@ -164,7 +164,7 @@ export class Erc20Api {
   @autobind
   public async mintTestTokens(amount: TokenAmount): Promise<void> {
     const txContract = this.getTestnetErc20TxContract(amount.currency.address);
-    const fromAddress = getCurrentValueOrThrow(this.web3Manager.account$);
+    const fromAddress = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.allocateTo(
       { recipient: fromAddress, value: amount.toBN() },
