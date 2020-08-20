@@ -1,13 +1,11 @@
 import React from 'react';
-import { useRouteMatch } from 'react-router';
-import { Link as RouterLink } from 'react-router-dom';
+import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { TabsSection, ComingSoon } from 'components';
-import { makeStyles } from 'utils/styles';
+import { TabsSection } from 'components';
 
-import { AllocateTab } from './AllocateTab';
-import { WithdrawTab } from './WithdrawTab';
+import { AllocateTab } from './innerPages/AllocateTab';
+import { WithdrawTab } from './innerPages/WithdrawTab';
 
 const tabs = [
   {
@@ -25,22 +23,19 @@ const tabs = [
 ];
 
 export function InvestmentsPage() {
-  const classes = useStyles();
-
-  const match = useRouteMatch<{ page: string }>(`${routes.investments.getRoutePath()}/:page`);
   const defaultPage = routes.investments.allocate.getElementKey();
-
-  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
-
+  const match = useRouteMatch<{ page: string }>(`${routes.investments.getRoutePath()}/:page`);
   const page = match ? match.params.page : defaultPage;
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
-    tab && setSelectedPage(tab);
-  };
+  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
 
   React.useEffect(() => {
     setSelectedPage(page);
   }, [page]);
+
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
+  };
 
   return (
     <TabsSection
@@ -48,22 +43,6 @@ export function InvestmentsPage() {
       tabs={tabs}
       tabComponent={RouterLink}
       onChange={handleTabChange}
-    >
-      <div className={classes.comingSoon}>
-        <ComingSoon variant="label" />
-      </div>
-    </TabsSection>
+    />
   );
 }
-
-const useStyles = makeStyles(
-  () => ({
-    comingSoon: {
-      flexGrow: 1,
-      alignSelf: 'center',
-      display: 'flex',
-      marginLeft: 10,
-    },
-  }),
-  { name: 'InvestmentsPage' },
-);

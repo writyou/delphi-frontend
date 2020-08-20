@@ -13,6 +13,7 @@ import { DCAModuleApi } from './modules/DCAModuleApi';
 import { StakingModuleApi } from './modules/StakingModuleApi';
 import { PricesApi } from './modules/PriceApi';
 import { RewardsApi } from './modules/RewardsApi';
+import { InvestmentsModuleApi } from './modules/InvestmentsModuleApi';
 
 export class Api {
   private subgraphApi = new SubgraphApi(this.apolloClient);
@@ -25,6 +26,13 @@ export class Api {
   public erc20 = new Erc20Api(this.web3Manager, this.transactions);
 
   public savings = new SavingsModuleApi(
+    this.web3Manager,
+    this.transactions,
+    this.erc20,
+    this.subgraphApi,
+  );
+
+  public investments = new InvestmentsModuleApi(
     this.web3Manager,
     this.transactions,
     this.erc20,
