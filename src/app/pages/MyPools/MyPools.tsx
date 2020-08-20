@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { TabsSection, ComingSoon, Card, Loading } from 'components';
+import { TabsSection, ComingSoon, Card, Loading, ModulesIntroSection } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
@@ -96,7 +96,7 @@ export function MyPools() {
             )}
           </TabsSection>
         ) : (
-          'No pools used. Data will appear here after you allocate tokens in the pool.'
+          <ModulesIntroSection />
         )}
       </Loading>
     </Card>

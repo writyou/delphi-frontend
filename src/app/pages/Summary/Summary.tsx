@@ -2,10 +2,9 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
-import { Loading, Card, Grid, ModulesIntroSection } from 'components';
+import { Loading, Card, Grid, ModulesIntroSection, PortfolioBalanceChart } from 'components';
 import { makeStyles } from 'utils/styles';
 
-import { PortfolioBalanceChart } from './Components/PortfolioBalanceChart';
 import { APYMetricsSection } from './Components/APYMetricsSection';
 
 export function Summary() {

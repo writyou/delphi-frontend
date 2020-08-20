@@ -1,9 +1,11 @@
 import * as React from 'react';
+import { Grid } from '@akropolis-web/components';
 
 import { makeStyles } from 'utils/styles';
-import { Label, Grid } from 'components';
-import { ChartWithCat } from 'components/icons';
-import { PeriodSwitch } from 'components/Chart/components/PeriodSwitch/PeriodSwitch';
+
+import { PeriodSwitch } from '../Chart/components/PeriodSwitch/PeriodSwitch';
+import { ChartWithCat } from '../icons';
+import { Label } from '../Label';
 
 type Props = {
   isUserLoggedIn: boolean;
@@ -32,7 +34,7 @@ function PortfolioBalanceChart(props: Props) {
   );
 }
 
-export const useStyles = makeStyles(
+const useStyles = makeStyles(
   () => ({
     root: {
       maxWidth: 553,

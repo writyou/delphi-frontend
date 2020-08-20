@@ -5,7 +5,14 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { useApi, Api } from 'services/api';
 import { makeStyles } from 'utils/styles';
-import { Loading, Grid, Card, FormattedAmount, ComingSoon } from 'components';
+import {
+  Loading,
+  Grid,
+  Card,
+  FormattedAmount,
+  ModulesIntroSection,
+  PortfolioBalanceChart,
+} from 'components';
 import { useSubscribable } from 'utils/react';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { getLiquidityAmountsSum } from 'utils/helpers';
@@ -82,17 +89,14 @@ export function MyRewards() {
               </div>
             </Grid>
             <Grid item xs={6}>
-              <div className={classes.sectionTitle}>Portfolio Balance</div>
-              <div className={classes.lineChartMock}>
-                <ComingSoon variant="label" />
-              </div>
+              <PortfolioBalanceChart isUserLoggedIn />
             </Grid>
             <Grid item xs={6}>
               {tableEntries && <RewardsTable data={tableEntries} />}
             </Grid>
           </Grid>
         ) : (
-          'No pools used. Data will appear here after you allocate tokens in the pool.'
+          <ModulesIntroSection />
         )}
       </Loading>
     </Card>
@@ -116,14 +120,6 @@ const useStyles = makeStyles(
     },
     withdrawButton: {
       width: 155,
-    },
-    lineChartMock: {
-      height: 250,
-      borderBottom: 'solid 1px #ffffff',
-      borderLeft: 'solid 1px #ffffff',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
     },
   }),
   { name: 'MyRewards' },
