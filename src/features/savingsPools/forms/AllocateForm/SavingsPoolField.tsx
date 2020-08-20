@@ -9,9 +9,10 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
-import { useGetDepositLimit$, useDepositAmountValidationParams } from 'features/savingsPools';
 
-import { SavingsPoolCard } from '../SavingsPoolCard/SavingsPoolCard';
+import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
+import { useDepositAmountValidationParams } from '../../hooks/useDepositAmountValidationParams';
+import { SavingsPoolCard } from '../../view/SavingsPoolCard';
 import { getDeposits } from './getDeposits';
 
 export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {

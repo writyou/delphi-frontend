@@ -3,10 +3,9 @@ import React from 'react';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribable } from 'utils/react';
-import { Loading } from 'components';
 import { makeStyles } from 'utils/styles';
-
-import { AllocateForm } from '../components/AllocateForm/AllocateForm';
+import { Loading } from 'components';
+import { AllocateForm } from 'features/savingsPools';
 
 export function AllocateTab() {
   const api = useApi();

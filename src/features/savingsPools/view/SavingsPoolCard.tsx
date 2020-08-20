@@ -5,9 +5,11 @@ import { Amount } from '@akropolis-web/primitives';
 import { useApi } from 'services/api';
 import { PoolCard } from 'components';
 import { SavingsPool } from 'model/types';
-import { SavingsPoolLiquidity, UserSavingsPoolBalance } from 'features/savingsPools';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
+
+import { SavingsPoolLiquidity } from '../data/SavingsPoolLiquidity';
+import { UserSavingsPoolBalance } from '../data/UserSavingsPoolBalance';
 
 type Props = {
   pool: SavingsPool;
