@@ -5,6 +5,7 @@ import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
+  CompositionChartSkeleton,
   SimpleLegend,
   CompositionLegend,
   Grid,
@@ -55,7 +56,7 @@ export function UserStakingPoolsBalancesComposition(props: Props) {
   const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
 
   return (
-    <Loading meta={chartDataMeta}>
+    <Loading meta={chartDataMeta} loader={<CompositionChartSkeleton size={size} />}>
       <Grid container alignItems="center" spacing={3}>
         <Grid item>
           {chartData?.length ? (

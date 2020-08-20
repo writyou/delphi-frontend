@@ -25,14 +25,14 @@ export function CatsPawPlaceholder(props: Props & CatsPawProps) {
 }
 
 const useStyles = makeStyles(
-  () => ({
+  theme => ({
     root: {
       '&$isExtraSmall': {
-        fontSize: 50,
+        fontSize: theme.sizes.chartWidth.xs * 0.85,
       },
 
       '&$isExtraLarge': {
-        fontSize: 145,
+        fontSize: theme.sizes.chartWidth.xl * 0.85,
       },
     },
 

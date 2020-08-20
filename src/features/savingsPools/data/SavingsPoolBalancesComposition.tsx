@@ -4,6 +4,7 @@ import { TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
+  CompositionChartSkeleton,
   TokensTableLegend,
   PieChartData,
   CompositionLegend,
@@ -33,7 +34,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   );
 
   return (
-    <Loading meta={entriesMeta}>
+    <Loading meta={entriesMeta} loader={<CompositionChartSkeleton size="medium" />}>
       {entries && (
         <Grid container spacing={3} wrap="nowrap">
           <Grid item>
