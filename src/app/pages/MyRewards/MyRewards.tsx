@@ -15,41 +15,34 @@ import { RewardsTable, TableData, Order } from './RewardsTable';
 import { RewardsComposition } from './RewardsComposition';
 
 function makeChartData(entries: TableData | undefined) {
-  return entries
-    ? entries.map(order => ({
-        value: order.NAV,
-        payload: order.amount,
-      }))
-    : [];
+  return (entries || []).map(order => ({
+    value: order.NAV,
+    payload: order.amount,
+  }));
 }
 
+// TODO calculate in api.user.getTotalRewardsBalance(): Observable<LiquidityAmount>
 function getTotalNav(entries: TableData | undefined) {
-  return entries
-    ? getLiquidityAmountsSum(entries.map(e => e.NAV))
-    : new LiquidityAmount(0, DEFAULT_LIQUIDITY_CURRENCY);
+  return getLiquidityAmountsSum((entries || []).map(e => e.NAV));
 }
 
 function getRewardsData$(api: Api) {
   return api.user.getRewards$().pipe(
-    switchMap(rewards => {
-      const filteredRewards = rewards
-        .filter(a => !a.isZero())
-        .map(a => api.prices.getTokenPrice$(a.currency.address));
-      if (filteredRewards.length === 0) {
-        return of([]);
-      }
-
-      return combineLatest(filteredRewards).pipe(
-        map(prices =>
-          rewards.map(
-            (amount, i): Order => ({
-              amount,
-              NAV: new LiquidityAmount(amount.mul(prices[i]), DEFAULT_LIQUIDITY_CURRENCY),
-            }),
-          ),
-        ),
-      );
-    }),
+    map(rewards => rewards.filter(a => !a.isZero())),
+    switchMap(rewards =>
+      rewards.length
+        ? combineLatest(rewards.map(a => api.prices.getTokenPrice$(a.currency.address))).pipe(
+            map(prices =>
+              rewards.map(
+                (amount, i): Order => ({
+                  amount,
+                  NAV: new LiquidityAmount(amount.mul(prices[i]), DEFAULT_LIQUIDITY_CURRENCY),
+                }),
+              ),
+            ),
+          )
+        : of([]),
+    ),
     map(data => data.sort((a, b) => b.NAV.sub(a.NAV).toNumber())),
   );
 }
@@ -67,11 +60,13 @@ export function MyRewards() {
           <Grid container className={classes.table} spacing={6}>
             <Grid item xs={6}>
               <div className={classes.sectionTitle}>Composition</div>
-              <RewardsComposition data={makeChartData(tableEntries)} />
+              {/* TODO move to features/rewards/data */}
+              <RewardsComposition data={makeChartData(tableEntries)} />{' '}
             </Grid>
             <Grid item xs={3}>
               <div className={classes.sectionTitle}>Total NAV</div>
               <div className={classes.totalNav}>
+                {/* TODO move to features/rewards/data */}
                 <FormattedAmount sum={getTotalNav(tableEntries)} />
               </div>
             </Grid>

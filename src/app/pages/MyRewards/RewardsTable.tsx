@@ -23,6 +23,7 @@ const SNX = new Token(ETH_NETWORK_CONFIG.tokens.SNX.toLowerCase(), 'SNX', 18);
 const MTA = new Token(ETH_NETWORK_CONFIG.tokens.MTA.toLowerCase(), 'MTA', 18);
 const YFI = new Token(ETH_NETWORK_CONFIG.tokens.YFI.toLowerCase(), 'YFI', 18);
 
+// TODO get current supported reward tokens from contracts
 const dataMock: Order[] = [AKRO, ADEL, BAL, COMP, CRV, SNX, MTA, YFI].map(token => ({
   amount: new TokenAmount(0, token),
   NAV: liquidityAmount,

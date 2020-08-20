@@ -90,7 +90,7 @@ export class SavingsModuleApi {
   @autobind
   public async withdrawUserRewards(): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.withdrawReward(undefined, { from });
 

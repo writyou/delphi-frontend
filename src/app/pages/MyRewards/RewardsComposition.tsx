@@ -14,6 +14,7 @@ import { CatsPaw } from 'components/icons';
 import { percentAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
 
+// TODO move to feature
 export function RewardsComposition({
   data,
 }: {

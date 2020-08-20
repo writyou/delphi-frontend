@@ -5,7 +5,7 @@ import { ConfirmationDialog, Button, ButtonProps } from 'components';
 import { useApi } from 'services/api';
 
 export function WithdrawRewardsButton({
-  totalNav,
+  totalNav, // TODO load inside button
   ...rest
 }: { totalNav: LiquidityAmount } & ButtonProps): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -22,7 +22,7 @@ export function WithdrawRewardsButton({
 
   return (
     <>
-      <Button {...rest} onClick={open}>
+      <Button {...rest} onClick={open} disabled={totalNav.isZero()}>
         Withdraw
       </Button>
       <ConfirmationDialog

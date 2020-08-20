@@ -1,7 +1,5 @@
 import React from 'react';
 import cn from 'classnames';
-import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
 import { useSubscribable } from 'utils/react';
@@ -74,27 +72,20 @@ const lowerLinksList: PriorityLinks = {
   ],
 };
 
-function getLinks$(api: ReturnType<typeof useApi>, links: PriorityLinks) {
-  return api.user
-    .getUser$()
-    .pipe(
-      map(isPoolUser => [...links.requiredLinks].concat(isPoolUser ? links.additionalLinks : [])),
-    );
+function getLinks$(links: PriorityLinks) {
+  return [...links.requiredLinks].concat(links.additionalLinks);
 }
+
+const links = {
+  upperLinks: getLinks$(upperLinksList),
+  lowerLinks: getLinks$(lowerLinksList),
+};
 
 export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
   const [account] = useSubscribable(() => api.web3Manager.account$, [], null);
-
-  const [links] = useSubscribable(
-    () =>
-      combineLatest(getLinks$(api, upperLinksList), getLinks$(api, lowerLinksList)).pipe(
-        map(([upperLinks, lowerLinks]) => ({ upperLinks, lowerLinks })),
-      ),
-    [api, upperLinksList, lowerLinksList],
-  );
 
   const [isExpanded, setCloseSidebar] = React.useState(() => sidebarStorage.getItem('isExpanded'));
 
@@ -115,8 +106,8 @@ export const Sidebar: React.FC = () => {
       })}
     >
       <div className={classes.upperPart}>
-        <nav className={classes.upperLinks}>{links?.upperLinks.map(renderLink)}</nav>
-        <nav className={classes.lowerLinks}>{links?.lowerLinks.map(renderLink)}</nav>
+        <nav className={classes.upperLinks}>{links.upperLinks.map(renderLink)}</nav>
+        <nav className={classes.lowerLinks}>{links.lowerLinks.map(renderLink)}</nav>
       </div>
       <div className={classes.lowerPart}>
         <div className={classes.lowerPart}>{renderSwitch()}</div>
