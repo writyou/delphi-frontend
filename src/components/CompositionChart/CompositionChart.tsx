@@ -4,11 +4,9 @@ import cn from 'classnames';
 import { Amount } from '@akropolis-web/primitives';
 
 import { PieChart } from '../PieChart/PieChart';
-import { PieChartData, PieSector } from './model';
+import { PieChartData, PieSector, Size } from './model';
 import { useStyles } from './CompositionChart.style';
 import { usePieSectors } from './usePieSectors';
-
-type Size = 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
 
 type Props<T extends Amount, P = void> = {
   chartData: PieChartData<T, P>[];

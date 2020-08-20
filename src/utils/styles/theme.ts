@@ -17,11 +17,23 @@ function getGradients(type: 'dark' | 'light') {
   };
 }
 
+const sizes = {
+  chartWidth: {
+    default: 135,
+    xs: 60,
+    sm: 85,
+    md: 114,
+    lg: 140,
+    xl: 170,
+  },
+};
+
 export const lightTheme = getTheme('light');
 export const darkTheme = getTheme('dark');
 
 function getTheme(type: 'light' | 'dark'): Theme {
   return createTheme(type, {
+    sizes,
     colors: localColors,
     gradients: getGradients(type),
     breakpoints: {
@@ -64,11 +76,13 @@ function getTheme(type: 'light' | 'dark'): Theme {
 
 declare module '@akropolis-web/styles/dist/theme' {
   interface ThemeOverrides {
+    sizes: typeof sizes;
     colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }
 
   interface ThemeOptionsOverrides {
+    sizes: typeof sizes;
     colors: typeof localColors;
     gradients: ReturnType<typeof getGradients>;
   }

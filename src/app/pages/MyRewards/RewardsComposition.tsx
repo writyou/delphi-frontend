@@ -10,7 +10,7 @@ import {
   Grid,
   Metric,
 } from 'components';
-import { CatsPaw } from 'components/icons';
+import { CatPaws } from 'components/icons';
 import { percentAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
 
@@ -27,7 +27,7 @@ export function RewardsComposition({
         {data.length ? (
           <CompositionChart withBackground chartData={data} size="extra-small" />
         ) : (
-          <CatsPaw className={classes.icon} />
+          <CatPaws className={classes.icon} />
         )}
       </Grid>
       <Grid item>

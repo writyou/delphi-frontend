@@ -44,14 +44,13 @@ export { InfoIcon as InfoIconV2 } from './InfoIconV2';
 export { Sun } from './Sun';
 export { Moon } from './Moon';
 export { ProfitArrow } from './ProfitArrow';
-export { CatsPaw } from './CatsPaw';
 export { Fish } from './Fish';
 export { ChartWithCat } from './ChartWithCat';
-export { ArrowStartToSave } from './ArrowStartToSave';
+export { GradientArrow } from './GradientArrow';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
 export { CloseIcon } from './CloseIcon';
 
 export { Cat1 } from './cats/Cat1';
 export { Cat2 } from './cats/Cat2';
-export { CatPaws } from './cats/CatPaws';
+export { CatPaws, Props as CatPawsProps } from './cats/CatPaws';

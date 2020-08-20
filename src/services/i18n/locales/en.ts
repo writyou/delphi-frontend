@@ -177,6 +177,28 @@ const en = {
     deFiScoreChart: {
       deFiScore: 'DeFi Score',
     },
+    modulesIntroSection: {
+      savings: {
+        title: 'Stablecoins',
+        subtitle: 'Stay simple & stable',
+        button: 'Save',
+      },
+      investments: {
+        title: 'Volatile assets',
+        subtitle: 'High risk tolerant profile',
+        button: 'Invest',
+      },
+      dca: {
+        title: 'Dollar Cost Average',
+        subtitle: 'Long-term strategy for believers',
+        button: 'DCA',
+      },
+      staking: {
+        title: 'Staking & Governance',
+        subtitle: 'AKRO & ADEL only',
+        button: 'Stake',
+      },
+    },
   },
 };
 

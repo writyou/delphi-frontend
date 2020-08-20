@@ -85,7 +85,7 @@ export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
-  const [account] = useSubscribable(() => api.web3Manager.account$, [], null);
+  const [user] = useSubscribable(() => api.user.getUser$(), [], null);
 
   const [isExpanded, setCloseSidebar] = React.useState(() => sidebarStorage.getItem('isExpanded'));
 
@@ -94,7 +94,7 @@ export const Sidebar: React.FC = () => {
     setCloseSidebar(!isExpanded);
   };
 
-  if (!account) {
+  if (!user) {
     return null;
   }
 

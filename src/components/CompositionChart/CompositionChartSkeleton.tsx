@@ -1,15 +1,39 @@
+import React from 'react';
+import cn from 'classnames';
+import { SkeletonProps } from '@material-ui/lab/Skeleton';
+import { Skeleton } from '@akropolis-web/components';
+
 import { makeStyles } from 'utils/styles';
+
+import { Size } from './model';
+
+type Props = {
+  size: Size;
+};
+
+export function CompositionChartSkeleton(props: Props & SkeletonProps) {
+  const { size, ...rest } = props;
+  const classes = useStyles();
+
+  return (
+    <Skeleton
+      {...rest}
+      variant="circle"
+      className={cn(classes.root, {
+        [classes.isExtraSmall]: size === 'extra-small',
+        [classes.isSmall]: size === 'small',
+        [classes.isMedium]: size === 'medium',
+        [classes.isLarge]: size === 'large',
+        [classes.isExtraLarge]: size === 'extra-large',
+      })}
+      component="div"
+    />
+  );
+}
 
 export const useStyles = makeStyles(
   theme => ({
-    root: {},
-    chartContainer: {
-      display: 'flex',
-      alignItems: 'center',
-      flexWrap: 'nowrap',
-    },
-    chart: {
-      position: 'relative',
+    root: {
       width: theme.sizes.chartWidth.default,
       height: theme.sizes.chartWidth.default,
 
@@ -34,25 +58,6 @@ export const useStyles = makeStyles(
         height: theme.sizes.chartWidth.xl,
       },
     },
-    innerLegend: {
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-    },
-    label: {
-      color: theme.palette.text.primary,
-    },
-    hidden: {
-      height: 0,
-      width: 0,
-      visibility: 'hidden',
-      position: 'absolute',
-      zIndex: -100,
-    },
 
     isExtraSmall: {},
     isSmall: {},
@@ -60,5 +65,5 @@ export const useStyles = makeStyles(
     isLarge: {},
     isExtraLarge: {},
   }),
-  { name: 'CompositionChart' },
+  { name: 'CompositionChartSkeleton' },
 );
