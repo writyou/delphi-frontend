@@ -37,7 +37,7 @@ export function ModulesIntroSection() {
   const { t } = useTranslate();
 
   return (
-    <Grid container direction="column" spacing={4}>
+    <Grid container direction="column" spacing={10}>
       <Grid item xs={12}>
         <Typography className={classes.text}>
           You don’t have any pools yet. Wanna become a proud yield farmer but don’t know where to

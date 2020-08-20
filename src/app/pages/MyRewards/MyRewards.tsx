@@ -5,18 +5,12 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { useApi, Api } from 'services/api';
 import { makeStyles } from 'utils/styles';
-import {
-  Loading,
-  Grid,
-  Card,
-  FormattedAmount,
-  ModulesIntroSection,
-  PortfolioBalanceChart,
-} from 'components';
+import { Loading, Grid, Card, FormattedAmount } from 'components';
 import { useSubscribable } from 'utils/react';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { getLiquidityAmountsSum } from 'utils/helpers';
 import { WithdrawRewardsButton } from 'features/rewards';
+import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
 import { RewardsTable, TableData, Order } from './RewardsTable';
 import { RewardsComposition } from './RewardsComposition';
@@ -89,14 +83,14 @@ export function MyRewards() {
               </div>
             </Grid>
             <Grid item xs={6}>
-              <PortfolioBalanceChart isUserLoggedIn />
+              <PortfolioBalanceChart />
             </Grid>
             <Grid item xs={6}>
               {tableEntries && <RewardsTable data={tableEntries} />}
             </Grid>
           </Grid>
         ) : (
-          <ModulesIntroSection />
+          <PageForGuest />
         )}
       </Loading>
     </Card>

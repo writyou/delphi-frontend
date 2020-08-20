@@ -4,18 +4,12 @@ import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import {
-  TabsSection,
-  ComingSoon,
-  Card,
-  Loading,
-  CheckAuthorization,
-  ModulesIntroSection,
-} from 'components';
+import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
+import { PageForGuest } from 'app/components';
 
 import * as innerPages from './innerPages';
 
@@ -93,7 +87,7 @@ export function MyPools() {
             )}
           </TabsSection>
         ) : (
-          <ModulesIntroSection />
+          <PageForGuest />
         )}
       </Loading>
     </Card>

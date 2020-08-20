@@ -73,4 +73,3 @@ export * from './PoolCard/PoolCard';
 export * from './AddressIcon';
 export * from './DepositLimit/DepositLimit';
 export * from './CheckAuthorization/CheckAuthorization';
-export * from './PortfolioBalanceChart/PortfolioBalanceChart';
