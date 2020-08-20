@@ -9,6 +9,7 @@ import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
+import { PageForGuest } from 'app/components';
 
 import * as innerPages from './innerPages';
 
@@ -86,7 +87,7 @@ export function MyPools() {
             )}
           </TabsSection>
         ) : (
-          'No pools used. Data will appear here after you allocate tokens in the pool.'
+          <PageForGuest />
         )}
       </Loading>
     </Card>
