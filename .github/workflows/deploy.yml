@@ -27,7 +27,9 @@ jobs:
       - run: yarn codegen:sandbox
         if: github.ref == 'refs/heads/sandbox'
       - run: yarn codegen:mainnet
-        if: github.ref == 'refs/heads/mainnet' || github.ref == 'refs/heads/pre-mainnet'
+        if: github.ref == 'refs/heads/mainnet'
+      - run: yarn codegen:pre-mainnet
+        if: github.ref == 'refs/heads/pre-mainnet'
 
       - name: Test
         run: yarn test
@@ -38,7 +40,9 @@ jobs:
       - run: yarn build:sandbox
         if: github.ref == 'refs/heads/sandbox'
       - run: yarn build:mainnet
-        if: github.ref == 'refs/heads/mainnet' || github.ref == 'refs/heads/pre-mainnet'
+        if: github.ref == 'refs/heads/mainnet'
+      - run: yarn build:pre-mainnet
+        if: github.ref == 'refs/heads/pre-mainnet'
 
       - run: echo Deploy 🚀
       - uses: JamesIves/github-pages-deploy-action@releases/v3

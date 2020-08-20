@@ -1,6 +1,6 @@
 import * as packageJson from '../../package.json';
 
-export type Mode = 'sandbox' | 'testnet' | 'mainnet';
+export type Mode = 'sandbox' | 'testnet' | 'mainnet' | 'pre-mainnet';
 
 export function getEnv() {
   const isProduction = process.env.NODE_ENV === 'production';
