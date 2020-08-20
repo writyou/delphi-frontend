@@ -43,8 +43,25 @@ export function MyPools() {
   const classes = useStyles();
   const api = useApi();
 
-  const defaultPage = routes.pools.savings.getElementKey();
+  const [filteredTabs, meta] = useSubscribable(
+    () =>
+      combineLatest(
+        api.user.getMySavingsPools$(),
+        of([1]), // TODO load Investment pools
+        api.user.getMyStakingPools$(),
+        of([1]), // TODO load DCA pools
+      ).pipe(
+        map(tabData =>
+          tabData ? tabs.filter((_, i) => Boolean(tabData[i]) && tabData[i].length > 0) : undefined,
+        ),
+      ),
+    [api],
+  );
+
   const match = useRouteMatch<{ page: string }>('/pools/:page');
+
+  const defaultPage =
+    (filteredTabs && filteredTabs[0].value) || routes.pools.savings.getElementKey();
   const [selectedPage, setSelectedPage] = React.useState(defaultPage);
 
   const page = match ? match.params.page : defaultPage;
@@ -61,21 +78,6 @@ export function MyPools() {
     routes.pools.investments.getElementKey(),
     routes.pools.dca.getElementKey(),
   ].includes(selectedPage);
-
-  const [filteredTabs, meta] = useSubscribable(
-    () =>
-      combineLatest(
-        api.user.getMySavingsPools$(),
-        of([1]), // TODO load Investment pools
-        api.user.getMyStakingPools$(),
-        of([1]), // TODO load DCA pools
-      ).pipe(
-        map(tabData =>
-          tabData ? tabs.filter((_, i) => Boolean(tabData[i]) && tabData[i].length > 0) : undefined,
-        ),
-      ),
-    [api],
-  );
 
   return (
     <Card variant="contained" className={classes.root}>
