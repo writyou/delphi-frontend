@@ -28,6 +28,7 @@ interface INetworkConfig {
     CRV: string;
     MTA: string;
     YFI: string;
+    SNX: string;
   };
   etherskanDomain: string;
 }
@@ -49,6 +50,7 @@ const testnetTokens: INetworkConfig['tokens'] = {
   CRV: `${zeroAddress.slice(-1)}4`,
   MTA: `${zeroAddress.slice(-1)}5`,
   YFI: `${zeroAddress.slice(-1)}6`,
+  SNX: `${zeroAddress.slice(-1)}7`,
 };
 
 const ethNetworkConfigTestnet: INetworkConfig = {
@@ -97,6 +99,7 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     CRV: testnetTokens.CRV,
     MTA: testnetTokens.MTA,
     YFI: testnetTokens.YFI,
+    SNX: testnetTokens.SNX,
   },
   etherskanDomain: 'https://etherscan.io/',
 };

@@ -19,10 +19,11 @@ const ADEL = new Token(ETH_NETWORK_CONFIG.tokens.ADEL.toLowerCase(), 'ADEL', 18)
 const BAL = new Token(ETH_NETWORK_CONFIG.tokens.BAL.toLowerCase(), 'BAL', 18);
 const COMP = new Token(ETH_NETWORK_CONFIG.tokens.COMP.toLowerCase(), 'COMP', 18);
 const CRV = new Token(ETH_NETWORK_CONFIG.tokens.CRV.toLowerCase(), 'CRV', 18);
+const SNX = new Token(ETH_NETWORK_CONFIG.tokens.SNX.toLowerCase(), 'SNX', 18);
 const MTA = new Token(ETH_NETWORK_CONFIG.tokens.MTA.toLowerCase(), 'MTA', 18);
 const YFI = new Token(ETH_NETWORK_CONFIG.tokens.YFI.toLowerCase(), 'YFI', 18);
 
-const dataMock: Order[] = [AKRO, ADEL, BAL, COMP, CRV, MTA, YFI].map(token => ({
+const dataMock: Order[] = [AKRO, ADEL, BAL, COMP, CRV, SNX, MTA, YFI].map(token => ({
   amount: new TokenAmount(0, token),
   NAV: liquidityAmount,
 }));
