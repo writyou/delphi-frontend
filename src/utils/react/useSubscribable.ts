@@ -11,6 +11,7 @@ export interface ISubscriptionMeta {
 
 type Result<T> = [T, ISubscriptionMeta];
 
+// TODO move all state changes to useReducer
 function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[]): Result<T | undefined>;
 function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[], fallback: T): Result<T>;
 function useSubscribable<T>(
@@ -37,10 +38,10 @@ function useSubscribable<T>(
 
     const subscription = target.subscribe({
       next: nextValue => {
+        setValue(nextValue);
+        setUpdatedAt(Date.now());
         setLoaded(true);
         setError(null);
-        setUpdatedAt(Date.now());
-        setValue(nextValue);
       },
       error: err => {
         setLoaded(true);

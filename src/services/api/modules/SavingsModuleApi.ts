@@ -13,7 +13,7 @@ import {
 } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
-import { getCurrentValueOrThrow } from 'utils/rxjs';
+import { getCurrentValueOrThrow, awaitFirstNonNullableOrThrow } from 'utils/rxjs';
 import {
   DepositToSavingsPool,
   WithdrawFromSavingsPool,
@@ -171,7 +171,7 @@ export class SavingsModuleApi {
   @autobind
   public async deposit(deposits: DepositToSavingsPool[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     await this.erc20.approveMultiple(
       from,
@@ -199,7 +199,7 @@ export class SavingsModuleApi {
   @autobind
   public async withdrawAll(withdraw: WithdrawFromSavingsPool): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.withdrawAll(
       {
@@ -220,7 +220,7 @@ export class SavingsModuleApi {
   @autobind
   public async withdraw(withdraw: WithdrawFromSavingsPool): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.withdraw(
       {
