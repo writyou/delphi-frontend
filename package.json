@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "yarn dev:sandbox",
-    "dev:testnet": "yarn codegen && cross-env MODE=testnet better-npm-run dev",
-    "dev:sandbox": "yarn codegen && cross-env MODE=sandbox better-npm-run dev",
-    "dev:mainnet": "yarn codegen && cross-env MODE=mainnet better-npm-run dev",
+    "dev:testnet": "yarn codegen:testnet && cross-env MODE=testnet better-npm-run dev",
+    "dev:sandbox": "yarn codegen:sandbox && cross-env MODE=sandbox better-npm-run dev",
+    "dev:mainnet": "yarn codegen:mainnet && cross-env MODE=mainnet better-npm-run dev",
     "build:testnet": "cross-env MODE=testnet better-npm-run build",
     "build:sandbox": "cross-env MODE=sandbox better-npm-run build",
     "build:mainnet": "cross-env MODE=mainnet better-npm-run build",
