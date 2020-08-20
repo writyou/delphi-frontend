@@ -1,8 +1,14 @@
 import React from 'react';
 
-import { Grid, FormattedAmount, Divider, PoolSummaryCard, Label, Button } from 'components';
-import { CatPaws } from 'components/icons';
-import { makeStyles } from 'utils/styles';
+import {
+  Grid,
+  FormattedAmount,
+  Divider,
+  PoolSummaryCard,
+  Label,
+  Button,
+  CatsPawPlaceholder,
+} from 'components';
 import { percentAmount } from 'utils/mock';
 
 import { UserSavingsPoolsSummary } from './UserSavingsPoolsSummary';
@@ -11,7 +17,6 @@ import { UserInvestmentPoolsSummary } from './UserInvestmentPoolsSummary';
 import { UserDCAPoolsSummary } from './UserDCAPoolsSummary';
 
 export function APYMetricsSection() {
-  const classes = useStyles();
   return (
     <Grid container spacing={4}>
       <Grid item xs={6}>
@@ -34,7 +39,7 @@ export function APYMetricsSection() {
         <Grid item>
           <PoolSummaryCard
             title={<Label withComingSoon>Harvest</Label>}
-            chart={<CatPaws variant="pink" className={classes.icon} />}
+            chart={<CatsPawPlaceholder size="extra-small" />}
             apyValue={<FormattedAmount sum={percentAmount} />}
           />
         </Grid>
@@ -48,12 +53,3 @@ export function APYMetricsSection() {
     </Grid>
   );
 }
-
-const useStyles = makeStyles(
-  () => ({
-    icon: {
-      fontSize: 50,
-    },
-  }),
-  { name: 'APYMetricsSection' },
-);

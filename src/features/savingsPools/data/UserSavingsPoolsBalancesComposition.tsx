@@ -75,7 +75,11 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
           )}
         </Grid>
       ) : (
-        <CatsPawPlaceholder size={size} />
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item>
+            <CatsPawPlaceholder size={size} />
+          </Grid>
+        </Grid>
       )}
     </Loading>
   );

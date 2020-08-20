@@ -57,33 +57,37 @@ export function UserStakingPoolsBalancesComposition(props: Props) {
 
   return (
     <Loading meta={chartDataMeta} loader={<CompositionChartSkeleton size={size} />}>
-      <Grid container alignItems="center" spacing={3}>
-        <Grid item>
-          {chartData?.length ? (
+      {chartData?.length ? (
+        <Grid container alignItems="center" spacing={3}>
+          <Grid item>
             <CompositionChart
               withBackground
               chartData={chartData}
               InnerLegend={withInnerLegend ? ChartInnerLegend : undefined}
               size={size}
             />
-          ) : (
-            <CatsPawPlaceholder variant="lilac" size={size} />
+          </Grid>
+          {withCompositionLegend && (
+            <Grid item>
+              <CompositionLegend<LiquidityAmount, TokenAmount>
+                chartData={chartData}
+                Template={legendProps => (
+                  <SimpleLegend
+                    {...legendProps}
+                    renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+                  />
+                )}
+              />
+            </Grid>
           )}
         </Grid>
-        {withCompositionLegend && chartData?.length && (
+      ) : (
+        <Grid container alignItems="center" spacing={3}>
           <Grid item>
-            <CompositionLegend<LiquidityAmount, TokenAmount>
-              chartData={chartData}
-              Template={legendProps => (
-                <SimpleLegend
-                  {...legendProps}
-                  renderLabel={({ pieData }) => pieData.payload.currency.symbol}
-                />
-              )}
-            />
+            <CatsPawPlaceholder variant="lilac" size={size} />
           </Grid>
-        )}
-      </Grid>
+        </Grid>
+      )}
     </Loading>
   );
 }
