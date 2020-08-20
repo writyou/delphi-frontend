@@ -108,6 +108,7 @@ const configsByMode: Record<Mode, INetworkConfig> = {
   testnet: ethNetworkConfigTestnet,
   sandbox: ethNetworkConfigsForSandbox,
   mainnet: ethNetworkConfigsForMainnet,
+  'pre-mainnet': ethNetworkConfigsForMainnet,
 };
 
 // eslint-disable-next-line no-nested-ternary
@@ -123,12 +124,14 @@ const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
   sandbox: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
+  'pre-mainnet': 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 const subgraphWsUrlsByMode: Record<Mode, string> = {
   testnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
   sandbox: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
+  'pre-mainnet': 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 export const SUBGRAPH_HTTP_URL = subgraphHttpUrlsByMode[getEnv().mode];
