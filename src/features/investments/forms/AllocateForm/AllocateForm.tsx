@@ -13,7 +13,7 @@ import { ETH_NETWORK_CONFIG } from 'env';
 
 import { getDeposits } from './getDeposits';
 import { stringifyName } from './utils';
-import { SavingsPoolField } from './SavingsPoolField';
+import { InvestmentsPoolField } from './InvestmentsPoolField';
 import { AllocateFormConfirmationContent } from './AllocateFormConfirmationContent';
 
 type AllocateFormProps = {
@@ -39,7 +39,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
     const filteredData = getDeposits(data);
 
     if (filteredData.length) {
-      await api.savings.deposit(filteredData);
+      await api.investments.deposit(filteredData);
     }
 
     form.reset();
@@ -56,7 +56,7 @@ export function AllocateForm({ pools }: AllocateFormProps) {
       )}
     >
       {pools.map(pool => (
-        <SavingsPoolField key={pool.address} pool={pool} name={stringifyName(pool.address)} />
+        <InvestmentsPoolField key={pool.address} pool={pool} name={stringifyName(pool.address)} />
       ))}
     </FormWithConfirmation>
   );

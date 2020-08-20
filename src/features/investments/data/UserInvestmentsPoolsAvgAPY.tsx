@@ -4,9 +4,9 @@ import { FormattedAmount, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
-export function UserSavingsPoolsAvgAPY() {
+export function UserInvestmentsPoolsAvgAPY() {
   const api = useApi();
-  const [avgAPY, avgAPYMeta] = useSubscribable(() => api.user.getSavingsPoolsAvgAPY$(), [api]);
+  const [avgAPY, avgAPYMeta] = useSubscribable(() => api.user.getInvestmentsPoolsAvgAPY$(), [api]);
 
   return <Loading meta={avgAPYMeta}>{avgAPY && <FormattedAmount sum={avgAPY} />}</Loading>;
 }

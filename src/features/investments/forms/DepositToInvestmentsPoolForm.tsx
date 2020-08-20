@@ -31,7 +31,7 @@ const fieldNames: FieldNames<FormData> = {
   amount: 'amount',
 };
 
-export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositFormProps) {
+export function DepositToInvestmentsPoolForm({ pool, onSuccessfulDeposit }: DepositFormProps) {
   const api = useApi();
   const { t } = useTranslate();
 
@@ -59,14 +59,14 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
     async ({ amount }: FormData) => {
       if (!amount) return;
 
-      await api.savings.deposit([{ amount, poolAddress: pool.address }]);
+      await api.investments.deposit([{ amount, poolAddress: pool.address }]);
 
       onSuccessfulDeposit && onSuccessfulDeposit();
     },
     [api, pool.address],
   );
 
-  const DepositToSavingsConfirmContent = ({ amount }: FormData) => {
+  const DepositToInvestmentsConfirmContent = ({ amount }: FormData) => {
     const spender = ETH_NETWORK_CONFIG.contracts.savingsModule;
 
     const [fees, feesMeta] = useSubscribable(
@@ -83,7 +83,9 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
               }),
               switchMap(account => {
                 return account && amount
-                  ? api.savings.getDepositFees$(account, [{ poolAddress: pool.address, amount }])
+                  ? api.investments.getDepositFees$(account, [
+                      { poolAddress: pool.address, amount },
+                    ])
                   : of(null);
               }),
             )
@@ -115,7 +117,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
   return (
     <FormWithConfirmation<FormData>
       title="Allocate"
-      DialogContent={DepositToSavingsConfirmContent}
+      DialogContent={DepositToInvestmentsConfirmContent}
       onSubmit={handleFormSubmit}
       submitButton="Allocate"
       CustomFormTemplate={AllocateFormTemplate}

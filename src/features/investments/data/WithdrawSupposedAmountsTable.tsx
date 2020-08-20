@@ -18,8 +18,8 @@ function getSupposedAmounts(
   amount: TokenAmount,
 ): Observable<TokenAmount[]> {
   return combineLatest([
-    api.savings.getPoolBalance$(poolAddress),
-    api.savings.getPoolBalances$(poolAddress),
+    api.investments.getPoolBalance$(poolAddress),
+    api.investments.getPoolBalances$(poolAddress),
   ]).pipe(
     map(([poolBalance, poolTokensBalances]) => {
       const amountPercent = poolBalance.isZero()

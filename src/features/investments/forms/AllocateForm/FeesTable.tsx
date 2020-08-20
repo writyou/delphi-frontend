@@ -4,7 +4,7 @@ import { getSignificantValue } from 'utils';
 import { DepositToSavingsPoolWithFee } from 'model/types';
 import { Table, FormattedAmount, TokenName } from 'components';
 
-import { SavingsPoolName } from '../../data/SavingsPoolName';
+import { InvestmentsPoolName } from '../../data/InvestmentsPoolName';
 
 export function FeesTable({ fees }: { fees: DepositToSavingsPoolWithFee[] }) {
   return <Table.Component entries={fees} columns={columns} />;
@@ -15,7 +15,7 @@ const columns: Table.models.Column<DepositToSavingsPoolWithFee>[] = [
     renderTitle: () => 'Pool',
     cellContent: {
       kind: 'simple',
-      render: fee => <SavingsPoolName poolAddress={fee.poolAddress} />,
+      render: fee => <InvestmentsPoolName poolAddress={fee.poolAddress} />,
     },
   },
   {

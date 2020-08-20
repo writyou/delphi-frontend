@@ -53,6 +53,7 @@ export class Api {
     this.dca,
     this.staking,
     this.rewards,
+    this.investments,
   );
 
   public globalStats = new GlobalStatsApi(

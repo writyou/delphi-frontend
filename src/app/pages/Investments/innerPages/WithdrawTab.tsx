@@ -7,13 +7,13 @@ import { useSubscribable } from 'utils/react';
 import { Loading, Hint, Grid, Button } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
-import { WithdrawFromSavingsPoolButton, SavingsPoolCard } from 'features/investments';
+import { WithdrawFromInvestmentsPoolButton, InvestmentsPoolCard } from 'features/investments';
 
 export function WithdrawTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribable(() => api.user.getMyInvestmentsPools$(), [api]);
 
   return (
     <>
@@ -26,10 +26,10 @@ export function WithdrawTab() {
             <Grid container alignItems="flex-start" spacing={3}>
               {pools.map(pool => (
                 <Grid key={pool.address} item xs={4}>
-                  <SavingsPoolCard
+                  <InvestmentsPoolCard
                     pool={pool}
                     content={
-                      <WithdrawFromSavingsPoolButton
+                      <WithdrawFromInvestmentsPoolButton
                         size="small"
                         color="primary"
                         variant="outlined"

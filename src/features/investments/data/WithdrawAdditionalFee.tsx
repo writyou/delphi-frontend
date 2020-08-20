@@ -15,7 +15,7 @@ export function WithdrawAdditionalFee(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
   const [additionalFee, additionalFeeMeta] = useSubscribable(
-    () => api.user.getSavingsWithdrawFee$(poolAddress, amount),
+    () => api.user.getInvestmentsWithdrawFee$(poolAddress, amount),
     [api, poolAddress, amount],
   );
 

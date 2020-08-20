@@ -19,6 +19,7 @@ import { SavingsModuleApi } from './SavingsModuleApi';
 import { DCAModuleApi } from './DCAModuleApi';
 import { StakingModuleApi } from './StakingModuleApi';
 import { RewardsApi } from './RewardsApi';
+import { InvestmentsModuleApi } from './InvestmentsModuleApi';
 
 export class UserApi {
   constructor(
@@ -29,6 +30,7 @@ export class UserApi {
     private dca: DCAModuleApi,
     private staking: StakingModuleApi,
     private rewards: RewardsApi,
+    private invesments: InvestmentsModuleApi,
   ) {}
 
   @memoize(R.identity)
@@ -130,6 +132,99 @@ export class UserApi {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
         account ? this.savings.getDepositLimit$(account, poolAddress) : empty(),
+      ),
+    );
+  }
+
+  public getInvestmentsDepositFees$(deposits: DepositToSavingsPool[]) {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.invesments.getDepositFees$(account, deposits) : empty(),
+      ),
+    );
+  }
+
+  public getInvestmentsWithdrawFee$(
+    poolAddress: string,
+    amount: TokenAmount,
+  ): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.invesments.getWithdrawFee$(account, poolAddress, amount) : empty(),
+      ),
+    );
+  }
+
+  @memoize()
+  public getAllInvestmentsPoolsBalances$(): Observable<
+    Array<{
+      balance: LiquidityAmount;
+      pool: SavingsPool;
+    }>
+  > {
+    return this.getMyInvestmentsPools$().pipe(
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getInvestmentsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @memoize(R.identity)
+  public getInvestmentsPoolBalance$(address: string): Observable<LiquidityAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.invesments.getUserBalance$(address, account) : empty())),
+    );
+  }
+
+  @memoize()
+  public getMyInvestmentsPools$(): Observable<SavingsPool[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.subgraph.loadUserSavingsPools$(account) : empty())),
+    );
+  }
+
+  @memoize(R.identity)
+  public getInvestmentsDepositLimit$(poolAddress: string): Observable<LiquidityAmount | null> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.invesments.getDepositLimit$(account, poolAddress) : empty(),
+      ),
+    );
+  }
+
+  @memoize(R.identity)
+  public getInvestmentsPoolBalances$(poolAddress: string): Observable<TokenAmount[]> {
+    return combineLatest([
+      this.getInvestmentsPoolBalance$(poolAddress),
+      this.invesments.getPoolBalance$(poolAddress),
+      this.invesments.getPoolBalances$(poolAddress),
+    ]).pipe(
+      map(([userBalance, poolBalance, poolBalances]) => {
+        const userShare = poolBalance.isZero() ? 0 : new Fraction(userBalance).div(poolBalance);
+        return poolBalances.map(balance => balance.mul(userShare));
+      }),
+    ) as any;
+  }
+
+  @memoize()
+  public getInvestmentsPoolsAvgAPY$(): Observable<PercentAmount> {
+    return this.getMyInvestmentsPools$().pipe(
+      switchMap(pools =>
+        combineLatest(
+          pools.map(pool =>
+            this.getInvestmentsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+          ),
+        ),
+      ),
+      map(
+        balances =>
+          new PercentAmount(
+            calcAvg(...balances.map(({ balance, pool }) => ({ value: pool.apy, weight: balance }))),
+          ),
       ),
     );
   }

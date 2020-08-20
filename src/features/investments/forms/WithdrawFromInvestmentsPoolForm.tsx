@@ -34,7 +34,7 @@ const initialValues: FormData = {
   amount: null,
 };
 
-export function WithdrawFromSavingsPoolForm({
+export function WithdrawFromInvestmentsPoolForm({
   poolAddress,
   supportedTokens,
   onSuccessfulWithdraw,
@@ -48,7 +48,7 @@ export function WithdrawFromSavingsPoolForm({
     () =>
       currentToken
         ? api.user
-            .getSavingsPoolBalance$(poolAddress)
+            .getInvestmentsPoolBalance$(poolAddress)
             .pipe(map(balance => denormolizeAmount(balance, currentToken)))
         : empty(),
     [api, currentToken],
@@ -74,8 +74,8 @@ export function WithdrawFromSavingsPoolForm({
       if (!amount) return;
 
       await (amount.currency === ALL_TOKEN
-        ? api.savings.withdrawAll({ amount, poolAddress })
-        : api.savings.withdraw({ amount, poolAddress }));
+        ? api.investments.withdrawAll({ amount, poolAddress })
+        : api.investments.withdraw({ amount, poolAddress }));
 
       onSuccessfulWithdraw && onSuccessfulWithdraw();
     },

@@ -37,7 +37,7 @@ export function AllocateFormConfirmationContent(values: FormData) {
           if (!hasA) {
             return of(null);
           }
-          return api.user.getSavingsDepositFees$(deposits);
+          return api.user.getInvestmentsDepositFees$(deposits);
         }),
       ),
     [api, deposits, spender],

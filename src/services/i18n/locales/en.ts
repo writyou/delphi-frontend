@@ -47,6 +47,10 @@ const en = {
       allocateTabText:
         'You can choose what pools to supply liquidity to and deposit in one transaction — just specify amounts & stablecoins and click Allocate!',
     },
+    investments: {
+      allocateTabText:
+        'Make an investment into non-stablecoin pools. Higher risk-reward pools with higher volatility — higher potential capital gains and losses.',
+    },
     staking: {
       withdrawDialog: 'Are you sure you want to unstake?',
       allocateToOnePoolDialog: 'Are you sure you want to stake %{amount}?',

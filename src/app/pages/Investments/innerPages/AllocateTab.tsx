@@ -16,7 +16,7 @@ export function AllocateTab() {
   return (
     <>
       <div className={classes.allocateTabDescription}>
-        {t(tKeys.modules.savings.allocateTabText.getKey())}
+        {t(tKeys.modules.investments.allocateTabText.getKey())}
       </div>
       <Loading meta={poolsMeta}>{pools && <AllocateForm pools={pools} />}</Loading>
     </>

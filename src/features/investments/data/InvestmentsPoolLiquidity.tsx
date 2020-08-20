@@ -9,10 +9,10 @@ type Props = {
   variant?: FormattedAmountProps['variant'];
 };
 
-export function SavingsPoolLiquidity({ poolAddress, variant }: Props) {
+export function InvestmentsPoolLiquidity({ poolAddress, variant }: Props) {
   const api = useApi();
   const [liquidity, liquidityMeta] = useSubscribable(
-    () => api.savings.getPoolBalance$(poolAddress),
+    () => api.investments.getPoolBalance$(poolAddress),
     [api, poolAddress],
   );
 

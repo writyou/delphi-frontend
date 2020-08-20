@@ -12,10 +12,10 @@ import { SpyField } from 'components';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
 import { useDepositAmountValidationParams } from '../../hooks/useDepositAmountValidationParams';
-import { SavingsPoolCard } from '../../view/SavingsPoolCard';
+import { InvestmentsPoolCard } from '../../view/InvestmentsPoolCard';
 import { getDeposits } from './getDeposits';
 
-export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
+export function InvestmentsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
   const [values, setValues] = useState<FormData | null>(null);
   const deposits = useMemo(() => (values ? getDeposits(values) : undefined), [values]);
@@ -45,7 +45,7 @@ export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPo
 
   return (
     <>
-      <SavingsPoolWithFieldWrapper
+      <InvestmentsPoolWithFieldWrapper
         name={name}
         pool={pool}
         getDepositLimit$={getDepositLimit$}
@@ -59,7 +59,7 @@ export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPo
   );
 }
 
-const SavingsPoolWithFieldWrapper = getFieldWithComponent(SavingsPoolFieldComponent);
+const InvestmentsPoolWithFieldWrapper = getFieldWithComponent(InvestmentsPoolFieldComponent);
 
 type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | 'currencies'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement> & {
@@ -71,7 +71,7 @@ type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | '
 
 type FormData = Record<string, TokenAmount> & { _: () => void };
 
-function SavingsPoolFieldComponent(props: Props) {
+function InvestmentsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
   const { t } = useTranslate();
 
@@ -95,7 +95,7 @@ function SavingsPoolFieldComponent(props: Props) {
       : meta.touched && meta.error && t(meta.error);
 
   return (
-    <SavingsPoolCard
+    <InvestmentsPoolCard
       pool={pool}
       getDepositLimit$={getDepositLimit$}
       content={

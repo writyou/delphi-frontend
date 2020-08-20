@@ -13,15 +13,15 @@ import { useApi } from 'services/api';
 
 */
 
-import { WithdrawFromSavingsPoolForm } from './WithdrawFromSavingsPoolForm';
+import { WithdrawFromInvestmentsPoolForm } from './WithdrawFromInvestmentsPoolForm';
 
-export function WithdrawFromSavingsPoolButton({
+export function WithdrawFromInvestmentsPoolButton({
   pool,
   ...rest
 }: { pool: SavingsPool } & ButtonProps): JSX.Element {
   const api = useApi();
   const [balance, balanceMeta] = useSubscribable(
-    () => api.user.getSavingsPoolBalance$(pool.address),
+    () => api.user.getInvestmentsPoolBalance$(pool.address),
     [api],
   );
 
@@ -38,7 +38,7 @@ export function WithdrawFromSavingsPoolButton({
     >
       <ModalButton {...rest} disabled={disabled} content="Withdraw">
         {({ closeModal }) => (
-          <WithdrawFromSavingsPoolForm
+          <WithdrawFromInvestmentsPoolForm
             poolAddress={pool.address}
             supportedTokens={pool.tokens}
             onSuccessfulWithdraw={closeModal}

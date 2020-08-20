@@ -18,13 +18,13 @@ type Props = {
   poolAddress: string;
 };
 
-function SavingsPoolBalancesComposition({ poolAddress }: Props) {
+function InvestmentsPoolBalancesComposition({ poolAddress }: Props) {
   const api = useApi();
   const classes = useStyles();
 
   const [entries, entriesMeta] = useSubscribable(
     () =>
-      api.savings.getPoolBalances$(poolAddress).pipe(
+      api.investments.getPoolBalances$(poolAddress).pipe(
         map(balances =>
           balances.map<PieChartData<TokenAmount>>(x => ({ value: x, payload: undefined })),
         ),
@@ -54,7 +54,7 @@ const useStyles = makeStyles(
       fontSize: 16,
     },
   }),
-  { name: 'SavingsPoolBalancesComposition' },
+  { name: 'InvestmentsPoolBalancesComposition' },
 );
 
-export { SavingsPoolBalancesComposition };
+export { InvestmentsPoolBalancesComposition };

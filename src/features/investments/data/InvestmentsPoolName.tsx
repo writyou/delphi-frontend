@@ -4,9 +4,9 @@ import { Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
-export function SavingsPoolName({ poolAddress }: { poolAddress: string }) {
+export function InvestmentsPoolName({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [pool, poolMeta] = useSubscribable(() => api.savings.getPool$(poolAddress), [
+  const [pool, poolMeta] = useSubscribable(() => api.investments.getPool$(poolAddress), [
     api,
     poolAddress,
   ]);

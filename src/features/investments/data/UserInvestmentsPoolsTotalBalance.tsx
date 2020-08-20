@@ -6,12 +6,12 @@ import { FormattedAmount, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
-export function UserSavingsPoolsTotalBalance() {
+export function UserInvestmentsPoolsTotalBalance() {
   const api = useApi();
   const [totalBalance, totalBalanceMeta] = useSubscribable(
     () =>
       api.user
-        .getAllSavingsPoolsBalances$()
+        .getAllInvestmentsPoolsBalances$()
         .pipe(map(balances => R.pluck('balance', balances).reduce((acc, cur) => acc.add(cur)))),
     [api],
   );

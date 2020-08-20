@@ -15,7 +15,7 @@ import {
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
-import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
+import { UserInvestmentsPoolsAvgAPY } from './UserInvestmentsPoolsAvgAPY';
 
 type Props = {
   size: 'extra-small' | 'extra-large';
@@ -24,9 +24,9 @@ type Props = {
 };
 
 function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
-  return api.user.getMySavingsPools$().pipe(
+  return api.user.getMyInvestmentsPools$().pipe(
     switchMap(pools =>
-      combineLatest(pools.map(pool => api.user.getSavingsPoolBalances$(pool.address))),
+      combineLatest(pools.map(pool => api.user.getInvestmentsPoolBalances$(pool.address))),
     ),
     map(balances =>
       sumTokenAmountsByToken(balances.flat()).map(balance => ({
@@ -37,7 +37,7 @@ function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
   );
 }
 
-export function UserSavingsPoolsBalancesComposition(props: Props) {
+export function UserInvestmentsPoolsBalancesComposition(props: Props) {
   const { withInnerLegend, withCompositionLegend, size } = props;
   const api = useApi();
   const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
@@ -74,5 +74,5 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
 }
 
 function ChartInnerLegend() {
-  return <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />;
+  return <Metric title="APY" value={<UserInvestmentsPoolsAvgAPY />} />;
 }
