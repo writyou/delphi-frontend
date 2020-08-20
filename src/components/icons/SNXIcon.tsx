@@ -1,7 +1,7 @@
 import * as React from 'react';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-export function SUSDIcon(props: React.ComponentProps<typeof SvgIcon>) {
+export function SNXIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
     <SvgIcon {...props} viewBox="0 0 32 32">
       <g fill="none" fillRule="evenodd">

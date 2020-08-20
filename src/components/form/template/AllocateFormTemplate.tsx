@@ -4,8 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Button, FormTemplateProps } from 'components';
-import { Hint } from 'components/Hint/Hint';
+import { Hint } from '../../Hint/Hint';
+import { Button } from '../../Button';
+import { FormTemplateProps } from './FormTemplate';
 
 type AnyObject = Record<string, any>;
 

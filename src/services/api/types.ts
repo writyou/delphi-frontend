@@ -1,6 +1,6 @@
 import PromiEvent from 'web3/promiEvent';
 import Web3 from 'web3';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { TokenAmount } from '@akropolis-web/primitives';
 
 import {
@@ -63,7 +63,8 @@ export type SubmittedTransaction =
   | IGenericSubmittedTransaction<
       'staking.withdraw',
       { withdraw: WithdrawFromStakingPool; fromAddress: string }
-    >;
+    >
+  | IGenericSubmittedTransaction<'rewards.withdraw', { fromAddress: string }>;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {
   type: T;
@@ -81,6 +82,6 @@ export type ExtractSubmittedTransaction<T extends SubmittedTransactionType> = Ex
 
 export interface Web3ManagerModule {
   web3: Web3;
-  account$: BehaviorSubject<string | null>;
+  account$: Observable<string | null>;
   txWeb3$: BehaviorSubject<Web3 | null>;
 }

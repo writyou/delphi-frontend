@@ -7,9 +7,7 @@ import { useSubscribable } from 'utils/react';
 import { Loading, Hint, Grid, Button } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
-import { WithdrawFromSavingsPoolButton } from 'features/savingsPools';
-
-import { SavingsPoolCard } from '../components/SavingsPoolCard/SavingsPoolCard';
+import { WithdrawFromSavingsPoolButton, SavingsPoolCard } from 'features/savingsPools';
 
 export function WithdrawTab() {
   const api = useApi();

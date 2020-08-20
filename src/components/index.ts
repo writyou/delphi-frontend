@@ -72,3 +72,4 @@ export * from './CompositionLegend';
 export * from './PoolCard/PoolCard';
 export * from './AddressIcon';
 export * from './DepositLimit/DepositLimit';
+export * from './CheckAuthorization/CheckAuthorization';

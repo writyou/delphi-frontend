@@ -6,4 +6,8 @@ export class RewardsApi {
   public getUserRewards$(userAddress: string) {
     return this.savings.getUserRewards$(userAddress);
   }
+
+  public withdrawUserRewards() {
+    return this.savings.withdrawUserRewards();
+  }
 }

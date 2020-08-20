@@ -1,5 +1,6 @@
 import Web3 from 'web3';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject } from 'rxjs';
+import { skipUntil } from 'rxjs/operators';
 import { autobind } from 'core-decorators';
 import { Web3WalletsManager, Connector } from '@web3-wallets-kit/core';
 import { InpageConnector } from '@web3-wallets-kit/inpage-connector';
@@ -57,6 +58,7 @@ const initialStorageState: StorageState = {
 
 export class Web3Manager {
   public connectedWallet$ = new BehaviorSubject<WalletType | null>(null);
+  private loadAccountTrigger$ = new ReplaySubject<true>();
 
   private storage = new Storage<[StorageState]>(
     'walletManager',
@@ -83,7 +85,7 @@ export class Web3Manager {
   }
 
   get account$() {
-    return this.manager.account;
+    return this.manager.account.pipe(skipUntil(this.loadAccountTrigger$));
   }
 
   get chainId$() {
@@ -109,11 +111,13 @@ export class Web3Manager {
     return payload;
   }
 
-  private connectLastProvider() {
+  private async connectLastProvider() {
     const lastProvider = this.storage.getItem('lastProvider');
 
     if (lastProvider && isWallet(lastProvider)) {
-      this.connect(lastProvider);
+      await this.connect(lastProvider);
     }
+
+    this.loadAccountTrigger$.next(true);
   }
 }
