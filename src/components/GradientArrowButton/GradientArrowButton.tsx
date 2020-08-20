@@ -18,7 +18,6 @@ export function GradientArrowButton<P = {}, D extends React.ElementType = 'butto
   const classes = useStyles();
   const theme = useTheme();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isHovered, setIsHovered] = useState(false);
 
   const handleButtonMouseOver = useCallback(() => {
@@ -37,7 +36,6 @@ export function GradientArrowButton<P = {}, D extends React.ElementType = 'butto
         color="primary"
         endIcon={
           <GradientArrow
-            id={id}
             fill={isHovered ? theme.colors.heliotrope : undefined}
             className={classes.arrow}
           />

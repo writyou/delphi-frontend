@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Label,
@@ -17,7 +18,7 @@ export function UserInvestmentPoolsSummary() {
       chart={<CatsPawPlaceholder variant="violet" size="extra-small" />}
       apyValue={<FormattedAmount sum={percentAmount} />}
       button={
-        <GradientArrowButton to={routes.investments.getRedirectPath()} id="invest">
+        <GradientArrowButton component={RouterLink} to={routes.investments.getRedirectPath()}>
           Invest
         </GradientArrowButton>
       }

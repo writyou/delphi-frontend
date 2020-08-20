@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import {
   Label,
@@ -17,7 +18,7 @@ export function UserDCAPoolsSummary() {
       chart={<CatsPawPlaceholder variant="turquoise" size="extra-small" />}
       apyValue={<FormattedAmount sum={percentAmount} />}
       button={
-        <GradientArrowButton to={routes.dca.getRedirectPath()} id="dca">
+        <GradientArrowButton component={RouterLink} to={routes.dca.getRedirectPath()}>
           DCA
         </GradientArrowButton>
       }

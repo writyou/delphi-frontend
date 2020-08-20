@@ -12,7 +12,7 @@ export function UserSavingsPoolsSummary() {
       chart={<UserSavingsPoolsBalancesComposition size="extra-small" />}
       apyValue={<UserSavingsPoolsAvgAPY />}
       button={
-        <GradientArrowButton component={RouterLink} to={routes.savings.getRedirectPath()} id="save">
+        <GradientArrowButton component={RouterLink} to={routes.savings.getRedirectPath()}>
           Save
         </GradientArrowButton>
       }
