@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Grid, FormattedAmount, Divider, PoolSummaryCard, Label, Button } from 'components';
-import { CatsPaw } from 'components/icons';
+import { CatPaws } from 'components/icons';
 import { makeStyles } from 'utils/styles';
 import { percentAmount } from 'utils/mock';
 
@@ -34,7 +34,7 @@ export function APYMetricsSection() {
         <Grid item>
           <PoolSummaryCard
             title={<Label withComingSoon>Harvest</Label>}
-            chart={<CatsPaw variant="pink" className={classes.icon} />}
+            chart={<CatPaws variant="pink" className={classes.icon} />}
             apyValue={<FormattedAmount sum={percentAmount} />}
           />
         </Grid>

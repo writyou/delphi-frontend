@@ -2,13 +2,13 @@ import React from 'react';
 import cn from 'classnames';
 
 import { makeStyles } from 'utils/styles';
-import { CatsPaw, CatsPawProps } from 'components/icons';
+import { CatPaws, CatPawsProps } from 'components/icons';
 
 type Props = {
   size: 'extra-small' | 'extra-large';
 };
 
-export function CatsPawPlaceholder(props: Props & CatsPawProps) {
+export function CatsPawPlaceholder(props: Props & CatPawsProps) {
   const classes = useStyles();
   const { size, ...rest } = props;
 
@@ -19,7 +19,7 @@ export function CatsPawPlaceholder(props: Props & CatsPawProps) {
         [classes.isExtraLarge]: size === 'extra-large',
       })}
     >
-      <CatsPaw {...rest} fontSize="inherit" />
+      <CatPaws {...rest} fontSize="inherit" />
     </div>
   );
 }
