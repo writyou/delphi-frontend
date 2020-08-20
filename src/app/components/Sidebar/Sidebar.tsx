@@ -139,8 +139,8 @@ export const Sidebar: React.FC = () => {
 
   function renderLink(link: Link.models.Link) {
     return (
-      <div className={classes.link}>
-        <Link.Link key={link.label} link={link} />
+      <div key={link.label} className={classes.link}>
+        <Link.Link link={link} />
       </div>
     );
   }
