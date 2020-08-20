@@ -12,7 +12,11 @@ export function UserStakingPoolsSummary() {
       chart={<UserStakingPoolsBalancesComposition size="extra-small" />}
       apyValue={<UserStakingPoolsAvgAPY />}
       button={
-        <GradientArrowButton component={RouterLink} to={routes.staking.getRedirectPath()}>
+        <GradientArrowButton
+          component={RouterLink}
+          to={routes.staking.getRedirectPath()}
+          id="stake"
+        >
           Stake
         </GradientArrowButton>
       }

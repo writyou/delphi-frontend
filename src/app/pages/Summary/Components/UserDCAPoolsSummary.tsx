@@ -16,7 +16,11 @@ export function UserDCAPoolsSummary() {
       title={<Label withComingSoon>DCA</Label>}
       chart={<CatsPawPlaceholder variant="turquoise" size="extra-small" />}
       apyValue={<FormattedAmount sum={percentAmount} />}
-      button={<GradientArrowButton to={routes.dca.getRedirectPath()}>DCA</GradientArrowButton>}
+      button={
+        <GradientArrowButton to={routes.dca.getRedirectPath()} id="dca">
+          DCA
+        </GradientArrowButton>
+      }
     />
   );
 }

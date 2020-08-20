@@ -17,7 +17,9 @@ export function UserInvestmentPoolsSummary() {
       chart={<CatsPawPlaceholder variant="violet" size="extra-small" />}
       apyValue={<FormattedAmount sum={percentAmount} />}
       button={
-        <GradientArrowButton to={routes.investments.getRedirectPath()}>Invest</GradientArrowButton>
+        <GradientArrowButton to={routes.investments.getRedirectPath()} id="invest">
+          Invest
+        </GradientArrowButton>
       }
     />
   );
