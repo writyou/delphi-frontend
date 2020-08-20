@@ -57,6 +57,7 @@ export function AuthButton({ children, size, connectRedirectPath, disconnectRedi
         disconnectRedirectPath && history.push(disconnectRedirectPath);
       } else {
         connectRedirectPath && cur.needToRedirect && history.push(connectRedirectPath);
+        setIsOpened(false);
       }
     },
   );
