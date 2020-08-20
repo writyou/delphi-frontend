@@ -60,8 +60,8 @@ export function MyPools() {
 
   const match = useRouteMatch<{ page: string }>('/pools/:page');
 
-  const defaultPage =
-    (filteredTabs && filteredTabs[0].value) || routes.pools.savings.getElementKey();
+  const defaultPage = filteredTabs && filteredTabs[0].value;
+
   const [selectedPage, setSelectedPage] = React.useState(defaultPage);
 
   const page = match ? match.params.page : defaultPage;
@@ -74,15 +74,16 @@ export function MyPools() {
     setSelectedPage(page);
   }, [page]);
 
-  const isComingSoonTab = [
-    routes.pools.investments.getElementKey(),
-    routes.pools.dca.getElementKey(),
-  ].includes(selectedPage);
+  const isComingSoonTab =
+    selectedPage &&
+    [routes.pools.investments.getElementKey(), routes.pools.dca.getElementKey()].includes(
+      selectedPage,
+    );
 
   return (
     <Card variant="contained" className={classes.root}>
       <Loading meta={meta}>
-        {filteredTabs && filteredTabs.length ? (
+        {filteredTabs && filteredTabs.length && selectedPage ? (
           <TabsSection
             currentValue={selectedPage}
             tabs={filteredTabs}
