@@ -32,7 +32,7 @@ export function usePieSectors<T extends Amount, P = void>(
     const totalValue =
       normalizedTokens.length > 0
         ? normalizedTokens.reduce((total, current) => total.add(current))
-        : new Fraction(0, 0);
+        : new Fraction(0);
 
     return normalizedData.map((amount, index) => {
       return {

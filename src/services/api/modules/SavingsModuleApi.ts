@@ -161,7 +161,6 @@ export class SavingsModuleApi {
     ) as any;
   }
 
-  // get rewards
   @memoize((from: string, poolAddress: string, amount: TokenAmount) =>
     [from, poolAddress, amount.toString(), amount.currency.address].join(),
   )

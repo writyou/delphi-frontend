@@ -72,9 +72,14 @@ export function SavingsPoolPage() {
             </Grid>
             <Grid container className={cn(classes.withBorder, classes.row)}>
               <Grid container item xs={6} className={classes.paddingRight} direction="column">
-                <div className={classes.metricChart}>
-                  <RewardWeeklyCompositionChart poolAddress={poolAddress} />
-                </div>
+                <Metric
+                  title="Approximate Reward Weekly"
+                  value={
+                    <div className={classes.metricChart}>
+                      <RewardWeeklyCompositionChart poolAddress={poolAddress} />
+                    </div>
+                  }
+                />
               </Grid>
               <Grid container item xs={4} direction="column">
                 <Metric
