@@ -116,6 +116,11 @@ const en = {
         success: 'Unstake from staking pool. Successful',
         error: 'Unstake from staking pool. Failed',
       },
+      'rewards.withdraw': {
+        pending: 'Rewards withdrawing. Pending',
+        success: 'Rewards withdrawing. Successful',
+        error: 'Rewards withdrawing. Failed',
+      },
     },
     networkWarning: {
       title: 'You are connected to the wrong network',

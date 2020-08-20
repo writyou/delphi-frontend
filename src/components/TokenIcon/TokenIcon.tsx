@@ -13,7 +13,12 @@ import {
   ETHIcon,
   COMPIcon,
   ADELIcon,
-  SUSDIcon,
+  sUSDIcon,
+  BALIcon,
+  CRVIcon,
+  MTAIcon,
+  YFIIcon,
+  SNXIcon,
 } from 'components/icons';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { makeStyles } from 'utils/styles';
@@ -38,7 +43,12 @@ export const tokenIcons: Record<string, CoinComponent> = {
   [ETH_NETWORK_CONFIG.tokens.WETH.toLowerCase()]: ETHIcon,
   [ETH_NETWORK_CONFIG.tokens.COMP.toLowerCase()]: COMPIcon,
   [ETH_NETWORK_CONFIG.tokens.ADEL.toLowerCase()]: ADELIcon,
-  [ETH_NETWORK_CONFIG.tokens.sUSD.toLowerCase()]: SUSDIcon,
+  [ETH_NETWORK_CONFIG.tokens.sUSD.toLowerCase()]: sUSDIcon,
+  [ETH_NETWORK_CONFIG.tokens.BAL.toLowerCase()]: BALIcon,
+  [ETH_NETWORK_CONFIG.tokens.CRV.toLowerCase()]: CRVIcon,
+  [ETH_NETWORK_CONFIG.tokens.MTA.toLowerCase()]: MTAIcon,
+  [ETH_NETWORK_CONFIG.tokens.YFI.toLowerCase()]: YFIIcon,
+  [ETH_NETWORK_CONFIG.tokens.SNX.toLowerCase()]: SNXIcon,
 };
 
 export function TokenIcon({ tokenAddress, className }: Props) {
