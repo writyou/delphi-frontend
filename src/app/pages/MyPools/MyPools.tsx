@@ -1,10 +1,10 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { useRouteMatch } from 'react-router';
 import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { TabsSection, ComingSoon, Card, Loading } from 'components';
+import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
@@ -65,8 +65,17 @@ export function MyPools() {
     page &&
     [routes.pools.investments.getElementKey(), routes.pools.dca.getElementKey()].includes(page);
 
+  const isWorthToWatchPage$ = useMemo(
+    () => of(filteredTabs ? filteredTabs.some(filteredPage => filteredPage.value === page) : false),
+    [filteredTabs, page],
+  );
+
   return (
     <Card variant="contained" className={classes.root}>
+      <CheckAuthorization
+        isAuthorized$={isWorthToWatchPage$}
+        redirectTo={routes.pools.getRoutePath()}
+      />
       <Loading meta={meta}>
         {filteredTabs?.length && page ? (
           <TabsSection currentValue={page} tabs={filteredTabs} tabComponent={RouterLink}>

@@ -18,12 +18,12 @@ export function LiveStats() {
             </Box>
           </Grid>
           <Grid item>
-            <Metric title="Active Members" titleSize="small" value={<UsersCount />} />
+            <Metric title="Active Members" value={<UsersCount />} />
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs>
-        <Metric title="Total Value Locked" titleSize="small" value={<TotalPoolsBalance />} />
+        <Metric title="Total Value Locked" value={<TotalPoolsBalance />} />
       </Grid>
     </Grid>
   );
