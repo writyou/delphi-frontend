@@ -25,7 +25,7 @@ const tabs = [
     value: routes.pools.investments.getElementKey(),
     to: routes.pools.investments.getRedirectPath(),
     renderContent: () => <innerPages.Investment />,
-    getData: () => of([1]), // TODO load Investment pools
+    getData: () => of([]), // TODO load Investment pools
   },
   {
     label: 'Staking',
@@ -39,7 +39,7 @@ const tabs = [
     value: routes.pools.dca.getElementKey(),
     to: routes.pools.dca.getRedirectPath(),
     renderContent: () => <innerPages.DCA />,
-    getData: () => of([1]), // TODO load DCA pools
+    getData: () => of([]), // TODO load DCA pools
   },
 ];
 
@@ -72,11 +72,11 @@ export function MyPools() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <CheckAuthorization
-        isAuthorized$={isWorthToWatchPage$}
-        redirectTo={routes.pools.getRoutePath()}
-      />
       <Loading meta={meta}>
+        <CheckAuthorization
+          isAuthorized$={isWorthToWatchPage$}
+          redirectTo={routes.pools.getRoutePath()}
+        />
         {filteredTabs?.length && page ? (
           <TabsSection currentValue={page} tabs={filteredTabs} tabComponent={RouterLink}>
             {isComingSoonTab && (
