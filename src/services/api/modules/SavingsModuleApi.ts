@@ -1,4 +1,5 @@
 import { autobind } from 'core-decorators';
+import moment from 'moment';
 import { BehaviorSubject, Observable, of, timer, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
@@ -19,7 +20,7 @@ import {
   WithdrawFromSavingsPool,
   DepositToSavingsPoolWithFee,
 } from 'model/types';
-import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
+import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT, REWARDS_LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
   createDefiProtocol,
@@ -160,6 +161,7 @@ export class SavingsModuleApi {
     ) as any;
   }
 
+  // get rewards
   @memoize((from: string, poolAddress: string, amount: TokenAmount) =>
     [from, poolAddress, amount.toString(), amount.currency.address].join(),
   )
@@ -184,6 +186,17 @@ export class SavingsModuleApi {
         map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
         map(dnAmount => dnAmount.sub(amount)),
       );
+  }
+
+  @memoize(R.identity)
+  public getRewards$(poolAddress: string): Observable<TokenAmount[]> {
+    return timer(0, REWARDS_LONG_POOLING_TIMEOUT).pipe(
+      switchMap(() => {
+        const rewardsPerPeriod = new BN(moment().subtract(7, 'days').unix()).toString();
+        return this.subgraph.loadRewards$(poolAddress, rewardsPerPeriod);
+      }),
+      map(rewards => sumTokenAmountsByToken(R.pluck('amount', rewards))),
+    );
   }
 
   @autobind

@@ -117,6 +117,7 @@ export const NETWORK_ID: NetworkID = ETH_NETWORK_CONFIG.id;
 export const SWARM_GATEWAY_URL = 'https://swarm-gateways.net';
 
 export const PRICE_LONG_POOLING_TIMEOUT = 15 * 60 * 1000;
+export const REWARDS_LONG_POOLING_TIMEOUT = 60 * 60 * 1000;
 export const WEB3_LONG_POOLING_TIMEOUT = 30 * 1000;
 export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
 

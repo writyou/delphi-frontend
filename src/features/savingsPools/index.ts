@@ -6,6 +6,7 @@ export * from './data/UserSavingsPoolsTotalBalance';
 export * from './data/UserSavingsPoolsBalancesComposition';
 export * from './data/SavingsPoolName';
 export * from './data/SavingsPoolDepositLimit';
+export * from './data/RewardWeeklyCompositionChart';
 
 export { AllocateForm } from './forms/AllocateForm/AllocateForm';
 export * from './forms/DepositToSavingsPoolForm';

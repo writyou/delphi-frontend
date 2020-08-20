@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TokenAmount } from '@akropolis-web/primitives';
+import { Amount, TokenAmount } from '@akropolis-web/primitives';
 
 import { Table } from '../../Table';
 import { FormattedAmount } from '../../FormattedAmount/FormattedAmount';
@@ -8,22 +8,28 @@ import { SectorColorLabel } from '../../CompositionChart/SectorColorLabel';
 import { TokenTitle } from '../../CompositionChart/TokenTitle';
 import { roundPercentAmount } from './roundPercentAmount';
 
-export function TokensTableLegend(props: CompositionChartLegendProps<TokenAmount>) {
-  const { sectors } = props;
+type Props<T extends Amount, P = void> = {
+  getTokenAmount: (sector: PieSector<T, P>) => TokenAmount;
+} & CompositionChartLegendProps<T, P>;
 
-  return <Table.Component rowPadding="small" columns={columnForLegend} entries={sectors} />;
+export function TokensTableLegend<T extends Amount, P = void>(props: Props<T, P>) {
+  const { sectors, getTokenAmount } = props;
+
+  const columns = React.useMemo(() => mkColumns(getTokenAmount), [getTokenAmount]);
+
+  return <Table.Component rowPadding="small" columns={columns} entries={sectors} />;
 }
 
-const columnForLegend: Array<Table.models.Column<PieSector<TokenAmount>>> = [
+const mkColumns = <T extends Amount, P = void>(
+  getTokenAmount: Props<T, P>['getTokenAmount'],
+): Array<Table.models.Column<PieSector<T, P>>> => [
   {
     cellContent: {
       kind: 'simple',
-      render: x => (
-        <TokenTitle
-          title={x.pieData.value.currency.symbol}
-          address={x.pieData.value.currency.address}
-        />
-      ),
+      render: x => {
+        const amount = getTokenAmount(x);
+        return <TokenTitle title={amount.currency.symbol} address={amount.currency.address} />;
+      },
     },
   },
   {
@@ -41,7 +47,7 @@ const columnForLegend: Array<Table.models.Column<PieSector<TokenAmount>>> = [
   {
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.pieData.value} variant="plain" hideSymbol />,
+      render: x => <FormattedAmount sum={getTokenAmount(x)} variant="plain" hideSymbol />,
     },
     align: 'right',
   },
