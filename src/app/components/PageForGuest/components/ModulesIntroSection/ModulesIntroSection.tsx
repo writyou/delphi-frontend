@@ -38,7 +38,7 @@ const tKeys = tKeysAll.components.modulesIntroSection;
 export function ModulesIntroSection() {
   const classes = useStyles();
   const { t } = useTranslate();
-  const { web3Manager, toggleModalVisibility } = useAuthContext();
+  const { web3Manager, openModal } = useAuthContext();
   const history = useHistory();
 
   const [account] = useSubscribable(() => web3Manager.account$, [], null);
@@ -46,7 +46,8 @@ export function ModulesIntroSection() {
   const handleModuleIntroButtonClick = useCallback(
     (module: Module) => {
       if (!account) {
-        toggleModalVisibility();
+        openModal(modulesData[module].redirectPath);
+        return;
       }
 
       history.push(modulesData[module].redirectPath);

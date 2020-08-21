@@ -18,7 +18,8 @@ export const AuthContext = createContext<AuthContext | null>(null);
 export interface AuthContext {
   web3Manager: AuthWeb3Manager;
   connectCommunication: Communication<AuthWeb3Manager['connect'], {}>;
-  toggleModalVisibility: () => void;
+  openModal: (connectRedirectPath?: string) => void;
+  closeModal: () => void;
 }
 
 export function useAuthContext(): AuthContext {

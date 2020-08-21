@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -19,7 +19,7 @@ interface Props {
 export function AuthButton({ children, size }: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
-  const { web3Manager, toggleModalVisibility, connectCommunication } = useAuthContext();
+  const { web3Manager, openModal, connectCommunication } = useAuthContext();
 
   const [account, accountMeta] = useSubscribable(() => web3Manager.account$, [], null);
   const [status] = useSubscribable(() => web3Manager.status$, [], 'pending');
@@ -27,13 +27,17 @@ export function AuthButton({ children, size }: Props) {
 
   const isConnected: boolean = accountMeta.loaded && !!account;
 
+  const handleAuthButtonClick = useCallback(() => {
+    openModal();
+  }, [openModal]);
+
   return (
     <>
       <Button
         size={size}
         color={connectedWallet ? 'default' : 'primary'}
         variant={connectedWallet ? 'outlined' : 'contained'}
-        onClick={toggleModalVisibility}
+        onClick={handleAuthButtonClick}
         disabled={!accountMeta.loaded}
         className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
