@@ -44,13 +44,13 @@ export function ModulesIntroSection() {
   const [account] = useSubscribable(() => web3Manager.account$, [], null);
 
   const handleModuleIntroButtonClick = useCallback(
-    (module: Module) => {
+    (redirectPath: string) => {
       if (!account) {
-        openModal(modulesData[module].redirectPath);
+        openModal(redirectPath);
         return;
       }
 
-      history.push(modulesData[module].redirectPath);
+      history.push(redirectPath);
     },
     [account],
   );
@@ -72,7 +72,7 @@ export function ModulesIntroSection() {
                 subtitle={t(tKeys[module].subtitle.getKey())}
                 buttonLabel={t(tKeys[module].button.getKey())}
                 backgroundPath={modulesData[module].backgroundPath}
-                onClick={() => handleModuleIntroButtonClick(module)}
+                onClick={() => handleModuleIntroButtonClick(modulesData[module].redirectPath)}
               />
             </Grid>
           </Box>
