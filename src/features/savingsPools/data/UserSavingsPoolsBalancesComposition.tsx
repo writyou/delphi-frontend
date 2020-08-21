@@ -50,40 +50,55 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
   const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
 
   return (
-    <Loading meta={chartDataMeta} loader={<CompositionChartSkeleton size={size} />}>
-      {chartData?.length ? (
-        <Grid container alignItems="center" spacing={3}>
+    <Grid container alignItems="center" spacing={3}>
+      <Loading
+        meta={chartDataMeta}
+        loader={
           <Grid item>
-            <CompositionChart
-              withBackground
-              chartData={chartData}
-              InnerLegend={withInnerLegend ? ChartInnerLegend : undefined}
-              size={size}
+            <CompositionChartSkeleton size={size} />
+          </Grid>
+        }
+      >
+        {chartData?.length ? renderChart(chartData) : renderChartPlaceholder()}
+      </Loading>
+    </Grid>
+  );
+
+  function renderChart(pieChartData: NonNullable<typeof chartData>) {
+    return (
+      <>
+        <Grid item>
+          <CompositionChart
+            withBackground
+            chartData={pieChartData}
+            InnerLegend={withInnerLegend ? ChartInnerLegend : undefined}
+            size={size}
+          />
+        </Grid>
+        {withCompositionLegend && (
+          <Grid item>
+            <CompositionLegend<TokenAmount>
+              chartData={pieChartData}
+              Template={legendProps => (
+                <SimpleLegend
+                  {...legendProps}
+                  renderLabel={({ pieData }) => pieData.value.currency.symbol}
+                />
+              )}
             />
           </Grid>
-          {withCompositionLegend && (
-            <Grid item>
-              <CompositionLegend<TokenAmount>
-                chartData={chartData}
-                Template={legendProps => (
-                  <SimpleLegend
-                    {...legendProps}
-                    renderLabel={({ pieData }) => pieData.value.currency.symbol}
-                  />
-                )}
-              />
-            </Grid>
-          )}
-        </Grid>
-      ) : (
-        <Grid container alignItems="center" spacing={3}>
-          <Grid item>
-            <CatsPawPlaceholder size={size} />
-          </Grid>
-        </Grid>
-      )}
-    </Loading>
-  );
+        )}
+      </>
+    );
+  }
+
+  function renderChartPlaceholder() {
+    return (
+      <Grid item>
+        <CatsPawPlaceholder variant="lilac" size={size} />
+      </Grid>
+    );
+  }
 }
 
 function ChartInnerLegend() {
