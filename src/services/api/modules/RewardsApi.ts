@@ -2,6 +2,7 @@ import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 import * as R from 'ramda';
+import { autobind } from 'core-decorators';
 
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { getLiquidityAmountsSum } from 'utils/helpers';
@@ -19,7 +20,7 @@ export class RewardsApi {
     return this.savings.getUserRewards$(userAddress);
   }
 
-  @memoize()
+  @autobind
   public withdrawUserRewards() {
     return this.savings.withdrawUserRewards();
   }

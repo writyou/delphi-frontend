@@ -19,10 +19,19 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const [totalBalance, meta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
 
   return (
-    <Loading meta={meta}>
-      <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
-        Withdraw
-      </Button>
+    <>
+      <Loading
+        meta={meta}
+        loader={
+          <Button {...props} disabled>
+            Withdraw
+          </Button>
+        }
+      >
+        <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
+          Withdraw
+        </Button>
+      </Loading>
       <ConfirmationDialog
         isOpen={isOpen}
         yesText="Withdraw"
@@ -30,8 +39,8 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
         onCancel={close}
         onConfirm={handleWithdraw}
       >
-        Are you sure you want to withdraw {totalBalance && totalBalance.toFormattedString()}
+        Are you sure you want to withdraw {totalBalance?.toFormattedString()}
       </ConfirmationDialog>
-    </Loading>
+    </>
   );
 }
