@@ -39,10 +39,10 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
     >
       {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit, hasValidationErrors }) => (
         <form onSubmit={handleSubmit}>
-          <Grid container justify="center" spacing={4}>
+          <Grid container justify="center" spacing={2}>
             <Grid item xs={12}>
               {title && (
-                <Typography variant="h5" gutterBottom>
+                <Typography variant="h6" gutterBottom>
                   {title}
                 </Typography>
               )}
