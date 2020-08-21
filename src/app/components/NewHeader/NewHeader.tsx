@@ -37,7 +37,7 @@ export const NewHeader: React.FC = () => {
           </div>
         )}
         <div className={classes.button}>
-          <AuthButton disconnectRedirectPath={routes.summary.getRedirectPath()} />
+          <AuthButton />
         </div>
       </div>
     </header>

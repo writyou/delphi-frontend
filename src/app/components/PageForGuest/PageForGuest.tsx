@@ -1,9 +1,11 @@
 import React from 'react';
 
 import { CatPaws, ChartWithCat } from 'components/icons';
+import { Grid, FormattedAmount, Metric } from 'components';
 import { percentAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
-import { Grid, ModulesIntroSection, FormattedAmount, Metric } from 'components';
+
+import { ModulesIntroSection } from './components/ModulesIntroSection/ModulesIntroSection';
 
 export function PageForGuest() {
   const classes = useStyles();

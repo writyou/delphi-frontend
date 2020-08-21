@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Grid, Typography, Box } from '@akropolis-web/components';
 
 import { routes } from 'app/routes';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
+import { useAuthContext } from 'services/auth';
+import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 
 import * as images from './images';
-import { ModuleIntroButton } from './ModuleIntroButton';
+import { ModuleIntroButton } from '../ModuleIntroButton/ModuleIntroButton';
 
 const modules = ['savings', 'investments', 'dca', 'staking'] as const;
 type Module = typeof modules[number];
@@ -35,6 +38,21 @@ const tKeys = tKeysAll.components.modulesIntroSection;
 export function ModulesIntroSection() {
   const classes = useStyles();
   const { t } = useTranslate();
+  const { web3Manager, toggleModalVisibility } = useAuthContext();
+  const history = useHistory();
+
+  const [account] = useSubscribable(() => web3Manager.account$, [], null);
+
+  const handleModuleIntroButtonClick = useCallback(
+    (module: Module) => {
+      if (!account) {
+        toggleModalVisibility();
+      }
+
+      history.push(modulesData[module].redirectPath);
+    },
+    [account],
+  );
 
   return (
     <Grid container direction="column" spacing={8}>
@@ -53,7 +71,7 @@ export function ModulesIntroSection() {
                 subtitle={t(tKeys[module].subtitle.getKey())}
                 buttonLabel={t(tKeys[module].button.getKey())}
                 backgroundPath={modulesData[module].backgroundPath}
-                to={modulesData[module].redirectPath}
+                onClick={() => handleModuleIntroButtonClick(module)}
               />
             </Grid>
           </Box>

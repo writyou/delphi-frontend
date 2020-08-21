@@ -36,7 +36,6 @@ export { AvailableLoansChart } from './AvailableLoansChart/AvailableLoansChart';
 export { DeFiScoreChart } from './DeFiScoreChart/DeFiScoreChart';
 export { Table } from './Table';
 export { GradientArrowButton } from './GradientArrowButton/GradientArrowButton';
-export { ModulesIntroSection } from './ModulesIntroSection/ModulesIntroSection';
 export { PoolSummaryCard } from './PoolSummaryCard/PoolSummaryCard';
 export { CatsPawPlaceholder } from './CatsPawPlaceholder/CatsPawPlaceholder';
 
