@@ -3,6 +3,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { empty, combineLatest, of } from 'rxjs';
 import * as R from 'ramda';
 import { Token } from '@akropolis-web/primitives';
+import cn from 'classnames';
 
 import { useCommunication, useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -10,10 +11,12 @@ import { tKeys as tKeysAll, useTranslate } from 'services/i18n';
 import { SwitchInput } from 'components/inputs';
 import { Loading, Label, Box, Grid } from 'components';
 import { toArray } from 'utils/array';
+import { makeStyles } from 'utils/styles';
 
 type Props = {
   tokens: Token | Token[];
   spender: string;
+  fontSize?: 'default' | 'inherit';
 };
 
 function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], spender: string) {
@@ -40,7 +43,9 @@ function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], s
 const tKeys = tKeysAll.features.infiniteApprove;
 
 export function InfiniteApproveSwitch(props: Props) {
-  const { spender } = props;
+  const { spender, fontSize = 'default' } = props;
+  const classes = useStyles();
+
   const { t } = useTranslate();
   // eslint-disable-next-line react/destructuring-assignment
   const tokens = toArray(props.tokens);
@@ -108,8 +113,21 @@ export function InfiniteApproveSwitch(props: Props) {
         disabled={isDisabled}
         checked={isChecked}
         onChange={handleOnChange}
-        label={<Label hint={t(tKeys.text.getKey())}>Infinite unlock</Label>}
+        label={
+          <Label hint={t(tKeys.text.getKey())}>
+            <span className={cn({ [classes.label]: fontSize === 'inherit' })}>Infinite unlock</span>
+          </Label>
+        }
       />
     </Grid>
   );
 }
+
+const useStyles = makeStyles(
+  {
+    label: {
+      fontSize: 'inherit',
+    },
+  },
+  { name: 'InfiniteApproveSwitch' },
+);
