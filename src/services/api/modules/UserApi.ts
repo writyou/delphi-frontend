@@ -11,7 +11,7 @@ import {
 import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
-import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
+import { SavingsPool, DepositToSavingsPool, StakingPool, RewardData } from 'model/types';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
@@ -201,15 +201,22 @@ export class UserApi {
     );
   }
 
-  @memoize()
-  public getRewards$(): Observable<TokenAmount[]> {
-    return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
-    );
-  }
-
   @autobind
   public withdrawRewards() {
     return this.rewards.withdrawUserRewards();
+  }
+
+  @memoize()
+  public getTotalRewardsBalance$(): Observable<LiquidityAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserTotalRewardsBalance(account) : empty())),
+    );
+  }
+
+  @memoize()
+  public getRewardsData$(): Observable<RewardData[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserRewardsData$(account) : empty())),
+    );
   }
 }
