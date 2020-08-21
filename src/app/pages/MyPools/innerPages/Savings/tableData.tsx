@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { PercentAmount } from '@akropolis-web/primitives';
 
 import { Table, FormattedAmount, Link, Box, TokensIcons } from 'components';
 import { SavingsPool } from 'model/types';
 import { UserSavingsPoolBalance, UserSavingsPoolsBalancesComposition } from 'features/savingsPools';
 import { routes } from 'app/routes';
+import { MAX_AVG_APY } from 'env';
 
 export const columnForChart: Array<Table.models.Column<{}>> = [
   {
@@ -58,7 +60,15 @@ export const columnsWithSubtable: Array<Table.models.Column<SavingsPool, number>
     renderTitle: () => 'APY',
     cellContent: {
       kind: 'simple',
-      render: x => <FormattedAmount sum={x.apy} variant="plain" />,
+      render: x =>
+        x.apy.lt(MAX_AVG_APY) ? (
+          <FormattedAmount sum={x.apy} variant="plain" />
+        ) : (
+          <>
+            &gt;&nbsp;
+            <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
+          </>
+        ),
     },
   },
 
