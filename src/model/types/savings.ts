@@ -8,6 +8,10 @@ export type SavingsPool = {
   tokens: Token[];
 };
 
+export type Reward = {
+  amount: TokenAmount;
+};
+
 export type DepositToSavingsPool = {
   poolAddress: string;
   amount: TokenAmount;
