@@ -1,4 +1,6 @@
 import React from 'react';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { ModalButton, ButtonProps, Loading, Button } from 'components';
 import { StakingPool } from 'model/types';
@@ -13,21 +15,30 @@ export function DepositToStakingPoolButton({
 }: { pool: StakingPool } & ButtonProps): JSX.Element {
   const api = useApi();
 
-  const [depositLimit, depositLimitMeta] = useSubscribable(
-    () => api.user.getStakingDepositLimit$(pool.address),
+  const [isStakeDisabled, meta] = useSubscribable(
+    () =>
+      combineLatest([
+        api.user.getStakingDepositLimit$(pool.address),
+        api.user.getFullStakingPoolBalance$(pool.address),
+      ]).pipe(
+        map(
+          ([depositLimit, balance]) =>
+            (!!depositLimit && !depositLimit.gt(0)) || !balance || balance.isZero(),
+        ),
+      ),
     [api, pool.address],
   );
 
   return (
     <Loading
-      meta={depositLimitMeta}
+      meta={meta}
       loader={
         <Button {...rest} disabled>
           Stake
         </Button>
       }
     >
-      <ModalButton {...rest} disabled={!!depositLimit && !depositLimit.gt(0)} content="Stake">
+      <ModalButton {...rest} disabled={isStakeDisabled} content="Stake">
         {({ closeModal }) => (
           <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
         )}
