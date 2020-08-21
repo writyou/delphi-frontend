@@ -3,6 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { combineLatest, Observable, of } from 'rxjs';
 import { TokenAmount, sumTokenAmountsByToken } from '@akropolis-web/primitives';
 
+import { makeStyles } from 'utils/styles';
 import {
   CompositionChart,
   CompositionChartSkeleton,
@@ -86,5 +87,16 @@ export function UserSavingsPoolsBalancesComposition(props: Props) {
 }
 
 function ChartInnerLegend() {
-  return <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />;
+  const classes = useStyles();
+  return (
+    <div className={classes.chartInnerLegend}>
+      <Metric title="APY" value={<UserSavingsPoolsAvgAPY />} />
+    </div>
+  );
 }
+
+const useStyles = makeStyles({
+  chartInnerLegend: {
+    marginTop: -27, // TODO refactor negative margin
+  },
+});

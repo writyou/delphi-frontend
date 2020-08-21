@@ -30,7 +30,6 @@ export const useStyles = makeStyles(
 
     links: {
       display: 'flex',
-      marginLeft: 10,
       alignItems: 'center',
     },
   },
