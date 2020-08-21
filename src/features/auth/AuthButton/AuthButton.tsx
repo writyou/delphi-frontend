@@ -23,7 +23,6 @@ export function AuthButton({ children, size }: Props) {
 
   const [account, accountMeta] = useSubscribable(() => web3Manager.account$, [], null);
   const [status] = useSubscribable(() => web3Manager.status$, [], 'pending');
-  const [connectedWallet] = useSubscribable(() => web3Manager.connectedWallet$, [], null);
 
   const isConnected: boolean = accountMeta.loaded && !!account;
 
@@ -35,8 +34,8 @@ export function AuthButton({ children, size }: Props) {
     <>
       <Button
         size={size}
-        color={connectedWallet ? 'default' : 'primary'}
-        variant={connectedWallet ? 'outlined' : 'contained'}
+        color={isConnected ? 'default' : 'primary'}
+        variant={isConnected ? 'outlined' : 'contained'}
         onClick={handleAuthButtonClick}
         disabled={!accountMeta.loaded}
         className={cn(classes.root, { [classes.connected]: isConnected })}

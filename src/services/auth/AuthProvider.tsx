@@ -39,7 +39,7 @@ export function AuthProvider(props: Props) {
 
       return connectResult;
     },
-    [web3Manager, disconnectRedirectPath, connectRedirectPath],
+    [web3Manager, connectedWallet, disconnectRedirectPath, connectRedirectPath],
   );
   const connectCommunication = useCommunication(connectToWallet, []);
 
