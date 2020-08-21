@@ -31,7 +31,7 @@ export class Api {
     this.subgraphApi,
   );
 
-  public rewards = new RewardsApi(this.savings);
+  public rewards = new RewardsApi(this.savings, this.prices);
 
   public staking = new StakingModuleApi(this.web3Manager, this.transactions, this.erc20);
 
