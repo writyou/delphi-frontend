@@ -66,8 +66,6 @@ export const useStyles = makeStyles(
     },
 
     socials: {
-      display: 'flex',
-      justifyContent: 'center',
       paddingBottom: 35,
 
       [theme.breakpoints.up('tabletXS')]: {
