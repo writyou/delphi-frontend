@@ -10,6 +10,7 @@ export const colors = {
   grape: '#8a43ba',
   lavender: '#edc4ed',
   lilac: '#e8e4fc',
+  lilac2: '#e0abff',
   northWesternPurple: '#4d2c66',
   persianRed: '#d32f2f',
   royalPurple: '#613AAF',
