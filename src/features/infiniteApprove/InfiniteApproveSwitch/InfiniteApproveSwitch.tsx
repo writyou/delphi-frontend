@@ -115,7 +115,14 @@ export function InfiniteApproveSwitch(props: Props) {
         onChange={handleOnChange}
         label={
           <Label hint={t(tKeys.text.getKey())}>
-            <span className={cn({ [classes.label]: fontSize === 'inherit' })}>Infinite unlock</span>
+            <span
+              className={cn({
+                [classes.label]: fontSize === 'default',
+                [classes.fontSizeInherit]: fontSize === 'inherit',
+              })}
+            >
+              Infinite unlock
+            </span>
           </Label>
         }
       />
@@ -125,8 +132,11 @@ export function InfiniteApproveSwitch(props: Props) {
 
 const useStyles = makeStyles(
   {
-    label: {
+    fontSizeInherit: {
       fontSize: 'inherit',
+    },
+    label: {
+      fontSize: '1rem',
     },
   },
   { name: 'InfiniteApproveSwitch' },
