@@ -129,7 +129,7 @@ function renderPercentAmount(
 const useStyles = makeStyles(
   {
     percentRoot: {
-      display: 'flex',
+      display: 'inline-flex',
       flexWrap: 'nowrap',
       lineHeight: 'normal',
 

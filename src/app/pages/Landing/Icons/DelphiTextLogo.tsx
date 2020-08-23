@@ -16,13 +16,7 @@ function DelphiTextLogo(props: React.ComponentProps<typeof SvgIcon>) {
 
   return (
     <SvgIcon {...props} classes={classes} viewBox="0 0 130 21">
-      <defs>
-        <linearGradient id="DelphiTextLogo-gradient" x1="0%" x2="100%" y1="50%" y2="50%">
-          {theme.gradients.landingText.points.map(({ offset, color }, index) => (
-            <stop key={index} offset={offset} stopColor={color} />
-          ))}
-        </linearGradient>
-      </defs>
+      {theme.gradients.landingText.svgLinear('DelphiTextLogo-gradient')}
       <g fill="none" fillRule="evenodd" transform="translate(-243 -192)">
         <path
           fill="url(#DelphiTextLogo-gradient)"

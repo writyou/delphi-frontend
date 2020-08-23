@@ -45,6 +45,7 @@ function AkropolisSocialLinks(props: IProps) {
 const useStyles = makeStyles(() => ({
   root: {
     display: 'flex',
+    justifyContent: 'center',
 
     '&$row': {
       flexDirection: 'row',

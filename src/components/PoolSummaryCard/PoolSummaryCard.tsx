@@ -49,6 +49,7 @@ const useStyles = makeStyles(
     apyValue: {
       fontSize: 32,
       fontWeight: 300,
+      lineHeight: 'normal',
     },
   }),
   { name: 'PoolSummaryCard' },

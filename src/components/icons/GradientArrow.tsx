@@ -6,6 +6,8 @@ import { makeStyles, useTheme } from 'utils/styles';
 const useStyles = makeStyles(
   () => ({
     root: {
+      width: 'unset',
+
       '& stop': {
         transition: '0.5s',
       },
