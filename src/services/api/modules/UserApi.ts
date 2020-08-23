@@ -136,7 +136,7 @@ export class UserApi {
   public getSavingsDepositLimit$(poolAddress: string): Observable<LiquidityAmount | null> {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
-        account ? this.savings.getDepositLimit$(account, poolAddress) : empty(),
+        account ? this.savings.getUserDepositLimit$(account, poolAddress) : empty(),
       ),
     );
   }

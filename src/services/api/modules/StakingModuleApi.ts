@@ -95,13 +95,24 @@ export class StakingModuleApi {
     ]).pipe(map(([pool, unlocked]) => new TokenAmount(unlocked, pool.token)));
   }
 
+  @memoize(R.identity)
+  public getPoolCapacity$(poolAddress: string): Observable<TokenAmount | null> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return combineLatest([
+      this.getPool$(poolAddress),
+      this.getPoolCapEnabled$(poolAddress),
+      poolContract.methods.stakingCap(undefined, [poolContract.events.StakingCapChanged()]),
+    ]).pipe(map(([pool, enabled, cap]) => (enabled ? new TokenAmount(cap, pool.token) : null)));
+  }
+
   @memoize((...args: string[]) => args.join())
   public getDepositLimit$(poolAddress: string, account: string): Observable<TokenAmount | null> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
 
     return combineLatest([
       this.getPool$(poolAddress),
-      this.getDepositLimitsEnabled$(poolAddress),
+      this.getUserCapEnabled$(poolAddress),
       poolContract.methods.userCap(
         {
           '': account,
@@ -120,7 +131,16 @@ export class StakingModuleApi {
   }
 
   @memoize(R.identity)
-  private getDepositLimitsEnabled$(poolAddress: string): Observable<boolean> {
+  private getPoolCapEnabled$(poolAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return poolContract.methods.stakingCapEnabled(undefined, [
+      poolContract.events.StakingCapEnabledChange(),
+    ]);
+  }
+
+  @memoize(R.identity)
+  private getUserCapEnabled$(poolAddress: string): Observable<boolean> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
 
     return poolContract.methods.userCapEnabled(undefined, [
