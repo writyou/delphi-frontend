@@ -1,4 +1,4 @@
-import { getTheme as createTheme, makeGradient, Theme } from '@akropolis-web/styles';
+import { getTheme as createTheme, makeGradient, Theme, colors } from '@akropolis-web/styles';
 
 import { colors as localColors } from './colors';
 
@@ -6,10 +6,10 @@ function getGradients(type: 'dark' | 'light') {
   return {
     landingIcon: makeGradient(
       type === 'dark'
-        ? [localColors.northWesternPurple, localColors.darkPurple]
+        ? [localColors.northWesternPurple, colors.valhalla]
         : [localColors.blushPink2, localColors.lavender],
     ),
-    landingText: makeGradient([localColors.lilac, localColors.grape]),
+    landingText: makeGradient([localColors.lilac2, localColors.grape]),
     poolBalanceChart: [
       makeGradient(['#fc87e2', '#f24cb6']),
       makeGradient(['#63afdd', '#574cf2']),

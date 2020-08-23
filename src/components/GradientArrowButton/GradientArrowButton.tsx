@@ -54,8 +54,8 @@ export function GradientArrowButton<P = {}, D extends React.ElementType = 'butto
 const useStyles = makeStyles(
   () => ({
     arrow: {
-      fontSize: '44px !important',
-      height: 11,
+      fontSize: '11px !important',
+      marginBottom: '-0.25em',
     },
   }),
   { name: 'GradientArrowButton' },
