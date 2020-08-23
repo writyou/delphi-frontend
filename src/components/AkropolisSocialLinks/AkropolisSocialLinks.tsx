@@ -18,7 +18,7 @@ const links: Array<[string, boolean]> = [
   ['https://t.me/akropolis_official', true],
   ['https://medium.com/akropolis', true],
   ['https://discord.gg/Y58CGUW', true],
-  ['https://defipulse.com/defi-list', true],
+  ['https://defipulse.com/blog/delphi', true],
 ];
 
 function AkropolisSocialLinks(props: IProps) {
