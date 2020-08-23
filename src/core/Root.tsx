@@ -3,11 +3,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { useApolloClient } from '@apollo/react-hooks';
 
 import { App } from 'app/App';
+import { routes } from 'app/routes';
+import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
 import { Api, ApiContext } from 'services/api';
 import { ApolloProvider } from 'services/apollo';
 import { I18nProvider } from 'services/i18n';
 import { ThemeProvider } from 'services/theme';
-import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
+import { AuthProvider } from 'services/auth/';
 import { AdaptabilityProvider } from 'services/adaptability';
 import { NetworkWarning } from 'features/networkWarning';
 import { TransactionsNotifications } from 'features/transactionsNotifications';
@@ -39,10 +41,15 @@ function ApiWrapper() {
         <ThemeProvider>
           <Snackbar>
             <AdaptabilityProvider>
-              <CssBaseline />
-              <App />
-              <TransactionsNotifications />
-              <NetworkWarning />
+              <AuthProvider
+                web3Manager={api.web3Manager}
+                disconnectRedirectPath={routes.summary.getRedirectPath()}
+              >
+                <CssBaseline />
+                <App />
+                <TransactionsNotifications />
+                <NetworkWarning />
+              </AuthProvider>
             </AdaptabilityProvider>
           </Snackbar>
         </ThemeProvider>
