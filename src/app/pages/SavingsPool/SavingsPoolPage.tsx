@@ -18,6 +18,7 @@ import {
   SavingsPoolBalancesComposition,
   SavingsPoolDepositLimit,
   RewardWeeklyCompositionChart,
+  SavingsPoolCapacity,
 } from 'features/savingsPools';
 import { MAX_AVG_APY } from 'env';
 
@@ -106,15 +107,20 @@ export function SavingsPoolPage() {
                 />
               </Grid>
             </Grid>
-            <Grid container>
-              <Grid item xs={4}>
-                <Metric
-                  title="My Supply Balance"
-                  value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
-                />
-                <div className={classes.depositLimit}>
-                  <SavingsPoolDepositLimit poolAddress={poolAddress} />
-                </div>
+            <Grid container spacing={6}>
+              <Grid item container xs={4} spacing={2}>
+                <Grid item xs={12}>
+                  <Metric
+                    title="My Supply Balance"
+                    value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <SavingsPoolCapacity poolAddress={poolAddress} />
+                  <div className={classes.depositLimit}>
+                    <SavingsPoolDepositLimit poolAddress={poolAddress} />
+                  </div>
+                </Grid>
               </Grid>
               <Grid item xs={8}>
                 <DepositToSavingsPoolForm pool={pool} />
@@ -167,6 +173,7 @@ const useStyles = makeStyles(
     },
     depositLimit: {
       fontSize: 12,
+      marginTop: 8,
     },
   }),
   { name: 'SavingsPoolPage' },

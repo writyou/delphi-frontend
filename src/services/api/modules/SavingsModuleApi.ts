@@ -122,7 +122,7 @@ export class SavingsModuleApi {
     );
   }
 
-  @memoize((...args: string[]) => args.join())
+  @memoize(R.identity)
   public getPoolBalance$(poolAddress: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
@@ -270,8 +270,27 @@ export class SavingsModuleApi {
     await promiEvent;
   }
 
+  @memoize(R.identity)
+  public getPoolCapacity$(poolAddress: string): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      toLiquidityAmount$(
+        this.readonlyContract.methods.protocolCap(
+          {
+            '': poolAddress,
+          },
+          [
+            this.readonlyContract.events.ProtocolCapChanged({
+              filter: { protocol: poolAddress },
+            }),
+          ],
+        ),
+      ),
+      this.getPoolCapEnabled$(),
+    ]).pipe(map(([capacity, enabled]) => (enabled ? capacity : null)));
+  }
+
   @memoize((...args: string[]) => args.join())
-  public getDepositLimit$(
+  public getUserDepositLimit$(
     userAddress: string,
     poolAddress: string,
   ): Observable<LiquidityAmount | null> {
@@ -289,7 +308,7 @@ export class SavingsModuleApi {
           ],
         ),
       ),
-      this.getDepositLimitsEnabled$(),
+      this.getUserCapEnabled$(),
     ]).pipe(
       map(([limit, enabled]) => {
         const roundedLimit = limit.toBN().gt(getSignificantValue(limit.currency.decimals))
@@ -301,9 +320,16 @@ export class SavingsModuleApi {
   }
 
   @memoize()
-  private getDepositLimitsEnabled$(): Observable<boolean> {
+  private getUserCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.userCapEnabled(undefined, [
       this.readonlyContract.events.UserCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getPoolCapEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.protocolCapEnabled(undefined, [
+      this.readonlyContract.events.ProtocolCapEnabledChange(),
     ]);
   }
 
