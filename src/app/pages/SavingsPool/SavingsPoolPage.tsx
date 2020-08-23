@@ -116,7 +116,7 @@ export function SavingsPoolPage() {
               </Grid>
             </Grid>
             <Grid container>
-              <Grid item container xs={6} direction="column" spacing={2}>
+              <Grid item container xs={4} direction="column" spacing={2}>
                 <Grid item>
                   <Metric
                     title="My Supply Balance"
@@ -135,7 +135,7 @@ export function SavingsPoolPage() {
                   <SavingsPoolDepositLimit poolAddress={poolAddress} />
                 </div>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={8}>
                 <DepositToSavingsPoolForm pool={pool} />
               </Grid>
             </Grid>

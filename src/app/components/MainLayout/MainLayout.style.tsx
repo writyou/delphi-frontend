@@ -29,6 +29,7 @@ export const useStyles = makeStyles(
 
     preauditVersionWarning: {
       marginTop: 47,
+      fontSize: 12,
 
       '&:empty': {
         display: 'none',
