@@ -132,10 +132,11 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
         </Grid>
         {currentToken && (
           // TODO: can't set center align cause row height changing
-          <Grid item style={{ paddingTop: 7 }}>
+          <Grid item style={{ paddingTop: 7, fontSize: 12 }}>
             <InfiniteApproveSwitch
               tokens={currentToken}
               spender={ETH_NETWORK_CONFIG.contracts.savingsModule}
+              fontSize="inherit"
             />
           </Grid>
         )}

@@ -46,9 +46,7 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
           {!dirtySinceLastSubmit && !!submitError && (
             <Grid item xs={12}>
               <Hint>
-                <Typography style={{ color: '#FE5A59' }} color="error">
-                  {submitError}
-                </Typography>
+                <Typography color="error">{submitError}</Typography>
               </Hint>
             </Grid>
           )}

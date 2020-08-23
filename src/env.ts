@@ -86,7 +86,7 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
     USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     USDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-    TUSD: testnetTokens.TUSD,
+    TUSD: '0x0000000000085d4780b73119b644ae5ecd22b376',
     sUSD: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
     renBTC: testnetTokens.renBTC,
     WBTC: testnetTokens.WBTC,
@@ -120,6 +120,7 @@ export const PRICE_LONG_POOLING_TIMEOUT = 15 * 60 * 1000;
 export const REWARDS_LONG_POOLING_TIMEOUT = 60 * 60 * 1000;
 export const WEB3_LONG_POOLING_TIMEOUT = 30 * 1000;
 export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
+export const MAX_AVG_APY = 300;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
   testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',

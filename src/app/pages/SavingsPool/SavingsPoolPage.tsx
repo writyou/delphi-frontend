@@ -2,6 +2,7 @@ import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import cn from 'classnames';
+import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
@@ -18,6 +19,7 @@ import {
   SavingsPoolDepositLimit,
   RewardWeeklyCompositionChart,
 } from 'features/savingsPools';
+import { MAX_AVG_APY } from 'env';
 
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>(routes.savings.pool.id.getRoutePath());
@@ -66,7 +68,19 @@ export function SavingsPoolPage() {
                     title="Pool Liquidity"
                     value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
                   />
-                  <Metric title="APY" value={<FormattedAmount sum={pool.apy} />} />
+                  <Metric
+                    title="APY"
+                    value={
+                      pool.apy.lt(MAX_AVG_APY) ? (
+                        <FormattedAmount sum={pool.apy} />
+                      ) : (
+                        <>
+                          &gt;&nbsp;
+                          <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
+                        </>
+                      )
+                    }
+                  />
                 </Grid>
               </Grid>
             </Grid>
@@ -128,11 +142,6 @@ const useStyles = makeStyles(
     root: {
       padding: '30px 50px',
       minHeight: '100%',
-
-      // TODO find a way to set error hint color
-      '& .MuiFormHelperText-root.MuiFormHelperText-contained.Mui-error': {
-        color: '#FE5A59',
-      },
     },
     poolTitle: {
       color: 'white',

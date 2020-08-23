@@ -2,13 +2,13 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.7.1.tgz#aee8f33db8c406d1fbe155e08fefa69c740ec1d1"
-  integrity sha512-lroC7002hsF8mJCY4RtCscojM6vIFpri5r6GwX7pWBZq5+W3Mu7KiLlFuaL37cPgGDatLp3WjUmKdxfszGAdJA==
+"@akropolis-web/components@^0.7.2":
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.7.2.tgz#5d325d0d489f3a5b3649f49bfce2661bb73e2164"
+  integrity sha512-lrKaoGXqkFX7jRsDQ/GEKfL6LgSBhI9jotv7yoEL8/tDO0JAMZKzw6/Axw0WOK3jEsi2nKVpPX3d2G2zE7w7NQ==
   dependencies:
     "@akropolis-web/primitives" "^0.2.1"
-    "@akropolis-web/styles" "^0.8.1"
+    "@akropolis-web/styles" "^0.8.2"
     "@types/color" "^3.0.1"
     "@types/mersenne-twister" "^1.1.2"
     "@types/react-copy-to-clipboard" "^4.3.0"
@@ -21,10 +21,10 @@
   resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.1.tgz#92d4347f73eaa3db5570d8cebc2ca4e904754e72"
   integrity sha512-/Edq9IoMv4FlMLaK/eTuYqtK5tPcs8h+NjDrxzyKJND7A1ZQLwGHqcsSjEUmnf4uekcc9hCvVe5+l3r0CGzuSg==
 
-"@akropolis-web/styles@^0.8.1":
-  version "0.8.1"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/styles/-/styles-0.8.1.tgz#bff7848617318edc6e355c869de9edd63374e497"
-  integrity sha512-PtvLaM0WOANZRajlcbIernCX0CHHmEUPdTtIImPMLadJxZgNaUn5cjsjKJGfuJ/DeRV3pGeZbUmWE7HpHAio7Q==
+"@akropolis-web/styles@^0.8.2":
+  version "0.8.2"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/styles/-/styles-0.8.2.tgz#c78ccc20b5cc467e79ef064129a2d7709315ab81"
+  integrity sha512-z5BNHuR4ktphB+btkXxpTkhOF1lPbO82SKqwdY37rI2A8KN3zVQNcnr8hF8al0ynQmpgAii7Z+aIUGVx9nOTUg==
 
 "@apollo/react-common@^3.1.3":
   version "3.1.3"
