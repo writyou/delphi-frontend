@@ -6,7 +6,16 @@ import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
+import {
+  Grid,
+  Metric,
+  IconButton,
+  Hint,
+  Loading,
+  FormattedAmount,
+  Card,
+  PoolFillingLimit,
+} from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -107,11 +116,21 @@ export function SavingsPoolPage() {
               </Grid>
             </Grid>
             <Grid container>
-              <Grid item xs={6}>
-                <Metric
-                  title="My Supply Balance"
-                  value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
-                />
+              <Grid item container xs={6} direction="column" spacing={2}>
+                <Grid item>
+                  <Metric
+                    title="My Supply Balance"
+                    value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
+                  />
+                </Grid>
+                <Grid item>
+                  <PoolFillingLimit />
+                </Grid>
+                <Grid item>
+                  <div className={classes.depositLimit}>
+                    <SavingsPoolDepositLimit poolAddress={poolAddress} />
+                  </div>
+                </Grid>
                 <div className={classes.depositLimit}>
                   <SavingsPoolDepositLimit poolAddress={poolAddress} />
                 </div>

@@ -14,6 +14,7 @@ import { TokenIcon } from '../TokenIcon/TokenIcon';
 import { Card } from '../Card';
 import { useStyles } from './PoolCard.style';
 import { DepositLimit } from '../DepositLimit/DepositLimit';
+import { PoolFillingLimit } from '../PoolFillingLimit/PoolFillingLimit';
 
 type Props = {
   address: string;
@@ -75,13 +76,14 @@ export function PoolCard(props: Props) {
           <span>{poolLiquidityTitle || t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>{poolLiquidity}</span>
         </div>
-        {getDepositLimit$ && (
-          <div className={cn(classes.row, classes.availableDepositRow)}>
-            <Loading meta={depositLimitMeta} progressProps={{ width: '100%' }}>
-              {depositLimit && <DepositLimit limit={depositLimit} />}
-            </Loading>
-          </div>
-        )}
+
+        <div className={classes.row}>
+          <PoolFillingLimit />
+          <Loading meta={depositLimitMeta} progressProps={{ width: '100%' }}>
+            {depositLimit && <DepositLimit limit={depositLimit} />}
+          </Loading>
+        </div>
+
         <div className={classes.row}>
           <Grid container justify="space-between">
             <Grid item>{content}</Grid>
