@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
 import { makeStyles } from '@akropolis-web/styles';
 import { ButtonBase, ButtonBaseProps, Grid, Typography } from '@akropolis-web/components';
 
@@ -12,18 +11,13 @@ type Props = {
   backgroundPath?: string;
 };
 
-export function ModuleIntroButton(props: Props & ButtonBaseProps<typeof RouterLink>) {
+export function ModuleIntroButton(props: Props & ButtonBaseProps) {
   const classes = useStyles(props);
 
-  const { title, subtitle, buttonLabel, to } = props;
+  const { title, subtitle, buttonLabel, backgroundPath, ...rest } = props;
 
   return (
-    <ButtonBase
-      className={classes.root}
-      component={RouterLink}
-      to={to}
-      focusVisibleClassName={classes.focusVisible}
-    >
+    <ButtonBase {...rest} className={classes.root} focusVisibleClassName={classes.focusVisible}>
       <Grid container direction="column" className={classes.container}>
         <Grid item>
           <Typography>{title}</Typography>
@@ -32,7 +26,9 @@ export function ModuleIntroButton(props: Props & ButtonBaseProps<typeof RouterLi
           <Typography className={classes.subtitle}>{subtitle}</Typography>
         </Grid>
         <Grid item>
-          <GradientArrowButton tabIndex={-1}>{buttonLabel}</GradientArrowButton>
+          <GradientArrowButton tabIndex={-1} component="div">
+            {buttonLabel}
+          </GradientArrowButton>
         </Grid>
       </Grid>
     </ButtonBase>
@@ -60,6 +56,7 @@ const useStyles = makeStyles(
       height: '100%',
       display: 'flex',
       flexDirection: 'column',
+      alignItems: 'flex-start',
     },
     subtitle: {
       fontWeight: 300,

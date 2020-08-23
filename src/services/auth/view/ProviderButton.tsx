@@ -71,7 +71,7 @@ export function ProviderButton({
           <Icon className={classes.icon} />
         </Grid>
         <Grid item>
-          <Typography className={classes.title}>
+          <Typography className={classes.title} component="div">
             {connectedAddress ? <Address address={connectedAddress} /> : walletTitle[type]}
           </Typography>
         </Grid>
@@ -84,7 +84,7 @@ export function ProviderButton({
             </Grid>
             <Box clone alignSelf="stretch">
               <Grid item>
-                <Button variant="outlined" color="primary" size="small" fullWidth>
+                <Button variant="outlined" color="primary" size="small" component="div" fullWidth>
                   {t(tKeys.features.auth.modalTitle.disconnect.getKey())}
                 </Button>
               </Grid>
