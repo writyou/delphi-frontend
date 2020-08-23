@@ -6,16 +6,7 @@ import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import {
-  Grid,
-  Metric,
-  IconButton,
-  Hint,
-  Loading,
-  FormattedAmount,
-  Card,
-  PoolFillingLimit,
-} from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -27,6 +18,7 @@ import {
   SavingsPoolBalancesComposition,
   SavingsPoolDepositLimit,
   RewardWeeklyCompositionChart,
+  SavingsPoolCapacity,
 } from 'features/savingsPools';
 import { MAX_AVG_APY } from 'env';
 
@@ -115,25 +107,20 @@ export function SavingsPoolPage() {
                 />
               </Grid>
             </Grid>
-            <Grid container>
-              <Grid item container xs={4} direction="column" spacing={2}>
-                <Grid item>
+            <Grid container spacing={6}>
+              <Grid item container xs={4} spacing={2}>
+                <Grid item xs={12}>
                   <Metric
                     title="My Supply Balance"
                     value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
                   />
                 </Grid>
-                <Grid item>
-                  <PoolFillingLimit />
-                </Grid>
-                <Grid item>
+                <Grid item xs={12}>
+                  <SavingsPoolCapacity poolAddress={poolAddress} />
                   <div className={classes.depositLimit}>
                     <SavingsPoolDepositLimit poolAddress={poolAddress} />
                   </div>
                 </Grid>
-                <div className={classes.depositLimit}>
-                  <SavingsPoolDepositLimit poolAddress={poolAddress} />
-                </div>
               </Grid>
               <Grid item xs={8}>
                 <DepositToSavingsPoolForm pool={pool} />
@@ -186,6 +173,7 @@ const useStyles = makeStyles(
     },
     depositLimit: {
       fontSize: 12,
+      marginTop: 8,
     },
   }),
   { name: 'SavingsPoolPage' },
