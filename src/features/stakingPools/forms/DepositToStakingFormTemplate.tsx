@@ -53,6 +53,7 @@ export function DepositToStakingFormTemplate<FormValues extends AnyObject>(
               </Grid>
               <Grid container item justify="flex-end" spacing={2}>
                 <Grid item className={classes.submit}>
+                  {/* TODO: refactor */}
                   {children[1]}
                 </Grid>
                 <Grid item>
