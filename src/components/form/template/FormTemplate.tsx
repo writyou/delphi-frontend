@@ -95,13 +95,16 @@ export function FormTemplate<FormValues extends AnyObject>(props: FormTemplatePr
   );
 }
 
-const useStyles = makeStyles(() => ({
-  formElement: {
-    borderBottom: '1px solid rgba(255,255,255,0.1)',
-    marginBottom: 24,
-  },
-  withoutBorder: {
-    border: 'none',
-    marginBottom: 0,
-  },
-}));
+const useStyles = makeStyles(
+  () => ({
+    formElement: {
+      borderBottom: '1px solid rgba(255,255,255,0.1)',
+      marginBottom: 24,
+    },
+    withoutBorder: {
+      border: 'none',
+      marginBottom: 0,
+    },
+  }),
+  { name: 'Form' },
+);

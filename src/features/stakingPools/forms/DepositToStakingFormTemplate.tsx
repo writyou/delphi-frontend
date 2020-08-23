@@ -19,7 +19,7 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   onCancel?(): void;
 };
 
-export function AllocateFormTemplate<FormValues extends AnyObject>(
+export function DepositToStakingFormTemplate<FormValues extends AnyObject>(
   props: FormTemplateProps<FormValues>,
 ) {
   const { title, cancelButton, submitButton, onCancel, ...restProps } = props;
@@ -47,21 +47,27 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
                 </Typography>
               )}
             </Grid>
-            <Grid container item wrap="nowrap">
-              <Grid item container xs>
-                {children}
+            <Grid container item direction="column" spacing={4}>
+              <Grid item xs>
+                {children[0]}
               </Grid>
-              <Grid item className={classes.submit}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  fullWidth
-                  disabled={submitting || hasValidationErrors}
-                >
-                  {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
-                </Button>
+              <Grid container item justify="flex-end" spacing={2}>
+                <Grid item className={classes.submit}>
+                  {/* TODO: refactor */}
+                  {children[1]}
+                </Grid>
+                <Grid item>
+                  <Button
+                    size="small"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    fullWidth
+                    disabled={submitting || hasValidationErrors}
+                  >
+                    {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
             {!dirtySinceLastSubmit && !!submitError && (
@@ -80,7 +86,6 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
 
 const useStyles = makeStyles(() => ({
   submit: {
-    paddingTop: 3,
-    paddingLeft: 32,
+    marginTop: 3,
   },
 }));
