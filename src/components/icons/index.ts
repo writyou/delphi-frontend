@@ -27,6 +27,7 @@ export { CRVIcon } from './CRVIcon';
 export { MTAIcon } from './MTAIcon';
 export { YFIIcon } from './YFIIcon';
 export { SNXIcon } from './SNXIcon';
+export { BUSDIcon } from './BUSDIcon';
 
 export { DeFiPulseIcon } from './DeFiPulseIcon';
 export { getSocialIconByLink } from './getSocialIconByLink';
