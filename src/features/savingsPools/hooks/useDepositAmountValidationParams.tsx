@@ -8,6 +8,7 @@ import {
   denormolizeAmount,
   isEqualHex,
 } from '@akropolis-web/primitives';
+import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -58,7 +59,7 @@ export function useDepositAmountValidationParams(
             }),
           )
         : empty(),
-    [api, token, poolAddress, formValues],
+    [api, token?.address, poolAddress, R.toString(formValues)],
   );
 
   const maxValue = validationParams?.maxValue;
