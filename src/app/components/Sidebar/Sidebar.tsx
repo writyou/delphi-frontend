@@ -2,9 +2,9 @@ import React from 'react';
 import cn from 'classnames';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
-import { IconButton } from 'components';
+import { IconButton, Loading } from 'components';
 import * as icons from 'components/icons/navigation';
 
 import { routes } from '../../routes';
@@ -85,7 +85,7 @@ export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
-  const [account] = useSubscribableDeprecated(() => api.web3Manager.account$, [api], null);
+  const accountRD = useSubscribable(() => api.web3Manager.account$, [api]);
 
   const [isExpanded, setCloseSidebar] = React.useState(() => sidebarStorage.getItem('isExpanded'));
 
@@ -94,25 +94,27 @@ export const Sidebar: React.FC = () => {
     setCloseSidebar(!isExpanded);
   };
 
-  if (!account) {
-    return null;
-  }
-
   return (
-    <div
-      className={cn({
-        [classes.root]: true,
-        [classes.rootShort]: !isExpanded,
-      })}
-    >
-      <div className={classes.upperPart}>
-        <nav className={classes.upperLinks}>{links.upperLinks.map(renderLink)}</nav>
-        <nav className={classes.lowerLinks}>{links.lowerLinks.map(renderLink)}</nav>
-      </div>
-      <div className={classes.lowerPart}>
-        <div className={classes.lowerPart}>{renderSwitch()}</div>
-      </div>
-    </div>
+    <Loading data={accountRD}>
+      {account =>
+        account !== null ? (
+          <div
+            className={cn({
+              [classes.root]: true,
+              [classes.rootShort]: !isExpanded,
+            })}
+          >
+            <div className={classes.upperPart}>
+              <nav className={classes.upperLinks}>{links.upperLinks.map(renderLink)}</nav>
+              <nav className={classes.lowerLinks}>{links.lowerLinks.map(renderLink)}</nav>
+            </div>
+            <div className={classes.lowerPart}>
+              <div className={classes.lowerPart}>{renderSwitch()}</div>
+            </div>
+          </div>
+        ) : null
+      }
+    </Loading>
   );
 
   function renderSwitch() {

@@ -2,10 +2,10 @@ import React from 'react';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ModalButton, ButtonProps, DeprecatedLoading, Button } from 'components';
+import { ModalButton, ButtonProps, Loading, Button } from 'components';
 import { StakingPool } from 'model/types';
 import { useApi } from 'services/api';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 
 import { DepositToStakingPoolForm } from './DepositToStakingPoolForm';
 
@@ -15,7 +15,7 @@ export function DepositToStakingPoolButton({
 }: { pool: StakingPool } & ButtonProps): JSX.Element {
   const api = useApi();
 
-  const [isStakeDisabled, meta] = useSubscribableDeprecated(
+  const isStakeDisabledRD = useSubscribable(
     () =>
       combineLatest([
         api.user.getStakingDepositLimit$(pool.address),
@@ -30,19 +30,21 @@ export function DepositToStakingPoolButton({
   );
 
   return (
-    <DeprecatedLoading
-      meta={meta}
+    <Loading
+      data={isStakeDisabledRD}
       loader={
         <Button {...rest} disabled>
           Stake
         </Button>
       }
     >
-      <ModalButton {...rest} disabled={isStakeDisabled} content="Stake">
-        {({ closeModal }) => (
-          <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
-        )}
-      </ModalButton>
-    </DeprecatedLoading>
+      {isStakeDisabled => (
+        <ModalButton {...rest} disabled={isStakeDisabled} content="Stake">
+          {({ closeModal }) => (
+            <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
+          )}
+        </ModalButton>
+      )}
+    </Loading>
   );
 }

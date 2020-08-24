@@ -1,15 +1,16 @@
 import React from 'react';
 
-import { DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { Loading } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function SavingsPoolName({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [pool, poolMeta] = useSubscribableDeprecated(() => api.savings.getPool$(poolAddress), [
-    api,
-    poolAddress,
-  ]);
+  const poolRD = useSubscribable(() => api.savings.getPool$(poolAddress), [api, poolAddress]);
 
-  return <DeprecatedLoading meta={poolMeta}>{pool && pool.poolName}</DeprecatedLoading>;
+  return (
+    <Loading data={poolRD}>
+      {pool => <>{pool ? pool.poolName : 'Got no name after loading'}</>}
+    </Loading>
+  );
 }

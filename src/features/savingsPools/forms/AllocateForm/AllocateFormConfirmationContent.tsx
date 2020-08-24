@@ -8,8 +8,8 @@ import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { useSubscribableDeprecated } from 'utils/react';
-import { Grid, DeprecatedLoading } from 'components';
+import { useSubscribable } from 'utils/react';
+import { Grid, Loading } from 'components';
 
 import { getDeposits } from './getDeposits';
 import { FeesTable } from './FeesTable';
@@ -21,7 +21,7 @@ export function AllocateFormConfirmationContent(values: FormData) {
   const api = useApi();
   const deposits = useMemo(() => getDeposits(values), [values]);
 
-  const [fees, feesMeta] = useSubscribableDeprecated(
+  const feesRD = useSubscribable(
     () =>
       api.web3Manager.account$.pipe(
         switchMap(account =>
@@ -49,13 +49,15 @@ export function AllocateFormConfirmationContent(values: FormData) {
         <Typography>{t(tKeys.modules.savings.allocateDialog.getKey())}</Typography>
       </Grid>
       <Grid item xs={12} container>
-        <DeprecatedLoading meta={feesMeta}>
-          {fees ? (
-            <FeesTable fees={fees} />
-          ) : (
-            t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())
-          )}
-        </DeprecatedLoading>
+        <Loading data={feesRD}>
+          {fees =>
+            fees ? (
+              <FeesTable fees={fees} />
+            ) : (
+              <>{t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())}</>
+            )
+          }
+        </Loading>
       </Grid>
       <Grid item xs={12} container justify="flex-end">
         <InfiniteApproveSwitch

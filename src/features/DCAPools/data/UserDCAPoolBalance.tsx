@@ -1,19 +1,19 @@
 import React from 'react';
 
-import { FormattedAmount, DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { FormattedAmount, Loading } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function UserDCAPoolBalance({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribableDeprecated(
-    () => api.user.getDCAPoolBalance$(poolAddress),
-    [api, poolAddress],
-  );
+  const balanceRD = useSubscribable(() => api.user.getDCAPoolBalance$(poolAddress), [
+    api,
+    poolAddress,
+  ]);
 
   return (
-    <DeprecatedLoading meta={balanceMeta}>
-      {balance && <FormattedAmount sum={balance} variant="plain" />}
-    </DeprecatedLoading>
+    <Loading data={balanceRD}>
+      {balance => <FormattedAmount sum={balance} variant="plain" />}
+    </Loading>
   );
 }

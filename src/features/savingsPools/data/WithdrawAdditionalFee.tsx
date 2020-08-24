@@ -1,8 +1,8 @@
 import React from 'react';
 import { TokenAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, DeprecatedLoading, Box } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { FormattedAmount, Loading, Box } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { getSignificantValue } from 'utils';
 
@@ -14,21 +14,22 @@ type Props = {
 export function WithdrawAdditionalFee(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [additionalFee, additionalFeeMeta] = useSubscribableDeprecated(
+  const additionalFeeRD = useSubscribable(
     () => api.user.getSavingsWithdrawFee$(poolAddress, amount),
     [api, poolAddress, amount],
   );
 
   return (
     <Box component="span" display="inline-block">
-      <DeprecatedLoading meta={additionalFeeMeta} progressProps={{ width: 50 }}>
-        {additionalFee &&
-          (additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
+      <Loading data={additionalFeeRD} progressProps={{ width: 50 }}>
+        {additionalFee =>
+          additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
             <FormattedAmount sum={additionalFee} variant="plain" />
           ) : (
-            'zero'
-          ))}
-      </DeprecatedLoading>
+            <>zero</>
+          )
+        }
+      </Loading>
     </Box>
   );
 }

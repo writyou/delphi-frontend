@@ -2,13 +2,13 @@ import React from 'react';
 import * as R from 'ramda';
 import { map } from 'rxjs/operators';
 
-import { FormattedAmount, DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { FormattedAmount, Loading } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function UserSavingsPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribableDeprecated(
+  const totalBalanceRD = useSubscribable(
     () =>
       api.user
         .getAllSavingsPoolsBalances$()
@@ -17,8 +17,8 @@ export function UserSavingsPoolsTotalBalance() {
   );
 
   return (
-    <DeprecatedLoading meta={totalBalanceMeta}>
-      {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
-    </DeprecatedLoading>
+    <Loading data={totalBalanceRD}>
+      {totalBalance => <FormattedAmount sum={totalBalance} variant="plain" />}
+    </Loading>
   );
 }

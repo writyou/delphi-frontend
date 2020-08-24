@@ -14,7 +14,7 @@ const defaultProgressVariant: DefaultProgressVariant = 'skeleton';
 
 type Props<R, E, V extends ProgressVariant> = {
   data: RemoteData<R, E>;
-  children: (data: R) => JSX.Element;
+  children: (data: R) => JSX.Element | null;
   progressVariant?: V;
   progressProps?: {
     linear: LinearProgressProps;

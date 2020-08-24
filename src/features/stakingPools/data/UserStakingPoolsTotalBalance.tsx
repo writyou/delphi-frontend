@@ -3,8 +3,8 @@ import { switchMap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { FormattedAmount, Loading } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
@@ -14,7 +14,7 @@ const reduceLiquidityAmounts = map<LiquidityAmount[], LiquidityAmount>(balances 
 
 export function UserStakingPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribableDeprecated(
+  const totalBalanceRD = useSubscribable(
     () =>
       api.user.getMyStakingPools$().pipe(
         switchMap(pools =>
@@ -43,8 +43,8 @@ export function UserStakingPoolsTotalBalance() {
   );
 
   return (
-    <DeprecatedLoading meta={totalBalanceMeta}>
-      {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
-    </DeprecatedLoading>
+    <Loading data={totalBalanceRD}>
+      {totalBalance => <FormattedAmount sum={totalBalance} variant="plain" />}
+    </Loading>
   );
 }

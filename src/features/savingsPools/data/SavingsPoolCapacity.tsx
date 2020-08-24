@@ -2,14 +2,14 @@ import React from 'react';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
-import { DeprecatedLoading, PoolFillingLimit } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { Loading, PoolFillingLimit } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function SavingsPoolCapacity({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
 
-  const [poolFilling, poolFillingMeta] = useSubscribableDeprecated(
+  const poolFillingRD = useSubscribable(
     () =>
       combineLatest([
         api.savings.getPoolBalance$(poolAddress),
@@ -24,10 +24,12 @@ export function SavingsPoolCapacity({ poolAddress }: { poolAddress: string }) {
   );
 
   return (
-    <DeprecatedLoading meta={poolFillingMeta}>
-      {poolFilling && poolFilling.poolCapacity && (
-        <PoolFillingLimit capacity={poolFilling.poolCapacity} filled={poolFilling.poolBalance} />
-      )}
-    </DeprecatedLoading>
+    <Loading data={poolFillingRD}>
+      {poolFilling =>
+        poolFilling.poolCapacity ? (
+          <PoolFillingLimit capacity={poolFilling.poolCapacity} filled={poolFilling.poolBalance} />
+        ) : null
+      }
+    </Loading>
   );
 }

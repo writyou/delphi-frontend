@@ -3,8 +3,8 @@ import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TokenAmount, PercentAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, DeprecatedLoading, Table, Grid, TokenIcon } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { FormattedAmount, Loading, Table, Grid, TokenIcon } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
 type Props = {
@@ -34,15 +34,16 @@ function getSupposedAmounts(
 export function WithdrawSupposedAmountsTable(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [supposedAmounts, supposedAmountsMeta] = useSubscribableDeprecated(
-    () => getSupposedAmounts(api, poolAddress, amount),
-    [api, poolAddress, amount],
-  );
+  const supposedAmountsRD = useSubscribable(() => getSupposedAmounts(api, poolAddress, amount), [
+    api,
+    poolAddress,
+    amount,
+  ]);
 
   return (
-    <DeprecatedLoading meta={supposedAmountsMeta}>
-      {supposedAmounts && <Table.Component columns={columns} entries={supposedAmounts} />}
-    </DeprecatedLoading>
+    <Loading data={supposedAmountsRD}>
+      {supposedAmounts => <Table.Component columns={columns} entries={supposedAmounts} />}
+    </Loading>
   );
 }
 

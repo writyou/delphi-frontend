@@ -9,10 +9,10 @@ import {
   PieChartData,
   CompositionLegend,
   Grid,
-  DeprecatedLoading,
+  Loading,
 } from 'components';
 import { useApi } from 'services/api';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 
 type Props = {
@@ -23,7 +23,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   const api = useApi();
   const classes = useStyles();
 
-  const [entries, entriesMeta] = useSubscribableDeprecated(
+  const entriesRD = useSubscribable(
     () =>
       api.savings.getPoolBalances$(poolAddress).pipe(
         map(balances =>
@@ -34,8 +34,8 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   );
 
   return (
-    <DeprecatedLoading meta={entriesMeta} loader={<CompositionChartSkeleton size="medium" />}>
-      {entries && (
+    <Loading data={entriesRD} loader={<CompositionChartSkeleton size="medium" />}>
+      {entries => (
         <Grid container spacing={3} wrap="nowrap">
           <Grid item>
             <CompositionChart withBackground chartData={entries} size="medium" />
@@ -50,7 +50,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
           </Grid>
         </Grid>
       )}
-    </DeprecatedLoading>
+    </Loading>
   );
 }
 

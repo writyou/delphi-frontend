@@ -1,12 +1,14 @@
 import React from 'react';
 
-import { DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
+import { Loading } from 'components';
 
 export function UsersCount() {
   const api = useApi();
-  const [stats, statsMeta] = useSubscribableDeprecated(() => api.globalStats.getStats$(), [api]);
+  const stats = useSubscribable(() => api.globalStats.getStats$(), [api]);
 
-  return <DeprecatedLoading meta={statsMeta}>{stats?.activeMembersCount}</DeprecatedLoading>;
+  return (
+    <Loading data={stats}>{({ activeMembersCount }) => <div>{activeMembersCount}</div>}</Loading>
+  );
 }

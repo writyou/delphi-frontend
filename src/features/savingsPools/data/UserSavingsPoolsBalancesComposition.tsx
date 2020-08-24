@@ -11,11 +11,11 @@ import {
   CompositionLegend,
   Grid,
   Metric,
-  DeprecatedLoading,
+  Loading,
   PieChartData,
   CatsPawPlaceholder,
 } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
 import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
@@ -26,7 +26,9 @@ type Props = {
   withCompositionLegend?: boolean;
 };
 
-function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
+type ChartData = PieChartData<TokenAmount>[];
+
+function getChartData$(api: Api): Observable<ChartData> {
   return api.user.getMySavingsPools$().pipe(
     switchMap(pools =>
       pools.length
@@ -47,24 +49,24 @@ function getChartData$(api: Api): Observable<PieChartData<TokenAmount>[]> {
 export function UserSavingsPoolsBalancesComposition(props: Props) {
   const { withInnerLegend, withCompositionLegend, size } = props;
   const api = useApi();
-  const [chartData, chartDataMeta] = useSubscribableDeprecated(() => getChartData$(api), [api]);
+  const chartDataRD = useSubscribable(() => getChartData$(api), [api]);
 
   return (
     <Grid container alignItems="center" spacing={3}>
-      <DeprecatedLoading
-        meta={chartDataMeta}
+      <Loading
+        data={chartDataRD}
         loader={
           <Grid item>
             <CompositionChartSkeleton size={size} />
           </Grid>
         }
       >
-        {chartData?.length ? renderChart(chartData) : renderChartPlaceholder()}
-      </DeprecatedLoading>
+        {chartData => (chartData.length ? renderChart(chartData) : renderChartPlaceholder())}
+      </Loading>
     </Grid>
   );
 
-  function renderChart(pieChartData: NonNullable<typeof chartData>) {
+  function renderChart(pieChartData: ChartData) {
     return (
       <>
         <Grid item>

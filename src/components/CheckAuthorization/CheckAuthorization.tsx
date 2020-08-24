@@ -2,32 +2,30 @@ import React from 'react';
 import { Observable } from 'rxjs';
 import { Redirect, Route, Switch } from 'react-router';
 
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 
-import { DeprecatedLoading } from '../DeprecatedLoading';
+import { Loading } from '../Loading';
 
-type IProps = {
+type Props = {
   isAuthorized$: Observable<boolean>;
   redirectTo: string;
   excludePath?: string;
   children?: React.ReactNode;
 };
 
-export const CheckAuthorization: React.FC<IProps> = (props: IProps) => {
+export const CheckAuthorization: React.FC<Props> = (props: Props) => {
   const { isAuthorized$, redirectTo, excludePath, children } = props;
-  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribableDeprecated(() => isAuthorized$, [
-    isAuthorized$,
-  ]);
+  const isAuthorizedRD = useSubscribable(() => isAuthorized$, [isAuthorized$]);
+
+  if (!children) {
+    return null;
+  }
 
   return (
-    <DeprecatedLoading meta={isWorthyToWatchMeta} loader={!children ? <>{null}</> : undefined}>
-      {renderContent()}
-    </DeprecatedLoading>
+    <Loading data={isAuthorizedRD}>
+      {isAuthorized => (isAuthorized ? <>{children}</> : renderRedirect())}
+    </Loading>
   );
-
-  function renderContent() {
-    return isWorthyToWatch ? children : renderRedirect();
-  }
 
   function renderRedirect() {
     return excludePath ? (

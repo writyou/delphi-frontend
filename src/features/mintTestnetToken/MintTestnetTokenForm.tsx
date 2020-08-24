@@ -6,9 +6,9 @@ import { TokenAmount, Token, decimalsToWei } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { DeprecatedLoading } from 'components';
+import { Loading } from 'components';
 import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {
@@ -26,7 +26,7 @@ const fieldNames: FieldNames<FormData> = {
 export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps) {
   const api = useApi();
 
-  const [tokens, tokensMeta] = useSubscribableDeprecated(
+  const tokensRD = useSubscribable(
     () =>
       combineLatest(
         Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress => {
@@ -69,17 +69,15 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
       DialogContent={getDialogContent}
       onSubmit={handleFormSubmit}
     >
-      <>
-        <DeprecatedLoading meta={tokensMeta}>
-          {tokens && (
-            <TokenAmountField
-              inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
-              name={fieldNames.amount}
-              currencies={tokens}
-            />
-          )}
-        </DeprecatedLoading>
-      </>
+      <Loading data={tokensRD}>
+        {tokens => (
+          <TokenAmountField
+            inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
+            name={fieldNames.amount}
+            currencies={tokens}
+          />
+        )}
+      </Loading>
     </FormWithConfirmation>
   );
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { useApi } from 'services/api';
-import { useSubscribableDeprecated } from 'utils/react';
-import { DeprecatedLoading, Card, Grid } from 'components';
+import { useSubscribable } from 'utils/react';
+import { Loading, Card, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
 import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
@@ -12,24 +12,26 @@ export function Summary() {
   const classes = useStyles();
 
   const api = useApi();
-  const [isUserExist, userMeta] = useSubscribableDeprecated(() => api.user.isUserExist$(), [api]);
+  const doesUserExistRD = useSubscribable(() => api.user.isUserExist$(), [api]);
 
   return (
     <Card variant="contained" className={classes.root}>
-      <DeprecatedLoading meta={userMeta}>
-        {isUserExist ? (
-          <Grid container spacing={10}>
-            <Grid item xs={6}>
-              <PortfolioBalanceChart />
+      <Loading data={doesUserExistRD}>
+        {doesUserExist =>
+          doesUserExist ? (
+            <Grid container spacing={10}>
+              <Grid item xs={6}>
+                <PortfolioBalanceChart />
+              </Grid>
+              <Grid item xs={6}>
+                <APYMetricsSection />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <APYMetricsSection />
-            </Grid>
-          </Grid>
-        ) : (
-          <PageForGuest />
-        )}
-      </DeprecatedLoading>
+          ) : (
+            <PageForGuest />
+          )
+        }
+      </Loading>
     </Card>
   );
 }
