@@ -13,7 +13,7 @@ export function SectorColorLabel(props: Props) {
 
   return (
     <div className={classes.root}>
-      <div className={classes.cycle} style={{ backgroundColor: color }} />
+      <div className={classes.circle} style={{ backgroundColor: color }} />
       <div className={classes.title}>{title}</div>
     </div>
   );
@@ -22,13 +22,13 @@ export function SectorColorLabel(props: Props) {
 const useStyles = makeStyles(
   () => ({
     root: {
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
     },
     title: {
       marginLeft: 10,
     },
-    cycle: {
+    circle: {
       width: 10,
       height: 10,
       borderRadius: 5,

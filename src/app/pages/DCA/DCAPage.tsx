@@ -2,7 +2,7 @@ import React from 'react';
 import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 
 import { routes } from 'app/routes';
-import { Tabs, ComingSoon } from 'components';
+import { TabsSection, ComingSoon } from 'components';
 import { makeStyles } from 'utils/styles';
 
 import { DepositTab } from './innerPages/DepositTab';
@@ -35,12 +35,12 @@ export function DCAPage() {
     setSelectedPage(page);
   }, [page]);
 
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
+  const handleTabChange = (_: React.ChangeEvent<{}>, tab?: string) => {
+    tab && setSelectedPage(tab);
   };
 
   return (
-    <Tabs
+    <TabsSection
       currentValue={selectedPage}
       tabs={tabs}
       tabComponent={RouterLink}
@@ -49,7 +49,7 @@ export function DCAPage() {
       <div className={classes.comingSoon}>
         <ComingSoon variant="label" />
       </div>
-    </Tabs>
+    </TabsSection>
   );
 }
 

@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 import { ConfirmationDialog } from 'components/ConfirmationDialog/ConfirmationDialog';
 
-import { FormTemplate, FormTemplateProps } from './FormTemplate';
+import { FormTemplate, FormTemplateProps } from './template/FormTemplate';
 
 type AnyObject = Record<string, any>;
 

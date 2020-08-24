@@ -14,6 +14,8 @@ import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 
+import { DepositToStakingFormTemplate } from './DepositToStakingFormTemplate';
+
 interface FormData {
   amount: TokenAmount | null;
 }
@@ -100,6 +102,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
       DialogContent={DialogContent}
       onSubmit={handleFormSubmit}
       submitButton="Stake"
+      CustomFormTemplate={DepositToStakingFormTemplate}
     >
       <>
         <TokenAmountField

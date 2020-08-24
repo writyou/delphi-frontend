@@ -1,19 +1,21 @@
 import React from 'react';
-import { Observable, empty } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import cn from 'classnames';
 import { Token, Amount } from '@akropolis-web/primitives';
+import { map } from 'rxjs/operators';
 
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribable } from 'utils/react';
-import { Loading } from 'components/Loading';
 
+import { Loading } from '../Loading';
+import { DepositLimit } from '../DepositLimit/DepositLimit';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 import { Card } from '../Card';
+import { PoolFillingLimit } from '../PoolFillingLimit/PoolFillingLimit';
 import { useStyles } from './PoolCard.style';
-import { DepositLimit } from '../DepositLimit/DepositLimit';
 
 type Props = {
   address: string;
@@ -28,6 +30,8 @@ type Props = {
   poolLiquidityTitle?: string;
   additionalElement?: JSX.Element;
   getDepositLimit$?(poolAddress: string): Observable<Amount | null>;
+  getPoolCapacity$?(poolAddress: string): Observable<Amount | null>;
+  getPoolBalance$?(poolAddress: string): Observable<Amount>;
   getUserBalance$(poolAddress: string): Observable<Amount>;
 };
 
@@ -40,20 +44,34 @@ export function PoolCard(props: Props) {
     address,
     poolName,
     tokens,
-    poolBalance,
+    poolBalance: poolBalanceElement,
     poolBalanceTitle,
     poolLiquidity,
     poolLiquidityTitle,
     getDepositLimit$,
+    getPoolBalance$,
+    getPoolCapacity$,
     getUserBalance$,
   } = props;
   const classes = useStyles();
   const { t } = useTranslate();
 
   const [balance] = useSubscribable(() => getUserBalance$(address), [getUserBalance$, address]);
-  const [depositLimit, depositLimitMeta] = useSubscribable(
-    () => (getDepositLimit$ ? getDepositLimit$(address) : empty()),
+  const [availableForDeposit, availableForDepositMeta] = useSubscribable(
+    () => (getDepositLimit$ ? getDepositLimit$(address) : of(null)),
     [getDepositLimit$, address],
+  );
+  const [poolFilling, poolFillingMeta] = useSubscribable(
+    () =>
+      getDepositLimit$ && getPoolBalance$ && getPoolCapacity$
+        ? combineLatest([getPoolBalance$(address), getPoolCapacity$(address)]).pipe(
+            map(([poolBalance, poolCapacity]) => ({
+              poolBalance,
+              poolCapacity,
+            })),
+          )
+        : of(null),
+    [getPoolBalance$, getPoolCapacity$, address],
   );
 
   return (
@@ -69,19 +87,38 @@ export function PoolCard(props: Props) {
       <div className={classes.content}>
         <div className={classes.row}>
           <span>{poolBalanceTitle || t(tKeys.modules.savings.mySupplyBalance.getKey())}</span>
-          <span className={classes.balance}>{poolBalance}</span>
+          <span className={classes.balance}>{poolBalanceElement}</span>
         </div>
         <div className={classes.row}>
           <span>{poolLiquidityTitle || t(tKeys.modules.savings.poolLiquidity.getKey())}</span>
           <span>{poolLiquidity}</span>
         </div>
-        {getDepositLimit$ && (
-          <div className={cn(classes.row, classes.availableDepositRow)}>
-            <Loading meta={depositLimitMeta} progressProps={{ width: '100%' }}>
-              {depositLimit && <DepositLimit limit={depositLimit} />}
-            </Loading>
-          </div>
-        )}
+
+        <div className={cn(classes.row, classes.availableDepositRow)}>
+          <Loading
+            meta={[availableForDepositMeta, poolFillingMeta]}
+            progressProps={{ width: '100%' }}
+          >
+            {(availableForDeposit || poolFilling) && (
+              <Grid container justify="space-between" className={classes.root} spacing={1}>
+                {poolFilling && poolFilling.poolCapacity && (
+                  <Grid item xs={12}>
+                    <PoolFillingLimit
+                      capacity={poolFilling.poolCapacity}
+                      filled={poolFilling.poolBalance}
+                    />
+                  </Grid>
+                )}
+                {availableForDeposit && (
+                  <Grid item xs={12}>
+                    <DepositLimit limit={availableForDeposit} />
+                  </Grid>
+                )}
+              </Grid>
+            )}
+          </Loading>
+        </div>
+
         <div className={classes.row}>
           <Grid container justify="space-between">
             <Grid item>{content}</Grid>

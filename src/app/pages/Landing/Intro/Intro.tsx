@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { Button, Link, Intro, Loading, LinkProps } from 'components';
+import { Button, Link, Intro, LinkProps, Grid, ButtonProps } from 'components';
 import { routes } from 'app/routes';
-import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
-import { AuthButton } from 'features/auth';
+import { Adaptive, useBreakpointsMatch } from 'services/adaptability';
 
 import { LandingIcon, DelphiTextLogo } from '../Icons';
 import { useStyles } from './Intro.styles';
@@ -13,6 +11,8 @@ import { DCA_LINK } from '../constants';
 
 function LandingIntro() {
   const classes = useStyles();
+
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
 
   return (
     <Intro
@@ -33,20 +33,18 @@ function LandingIntro() {
         </div>
       }
     >
-      <div className={classes.buttons}>
-        Try it on{' '}
-        <div className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi.akropolis.io" variant="contained">
+      <Grid container spacing={isMobile ? 3 : 5} alignItems="center" className={classes.buttons}>
+        <Grid item xs className={classes.button}>
+          <RedirectButton to="https://delphi.akropolis.io" variant="contained">
             Mainnet
-          </RedirectOrAuthButton>
-        </div>
-        or{' '}
-        <div className={classes.button}>
-          <RedirectOrAuthButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
+          </RedirectButton>
+        </Grid>
+        <Grid item xs className={classes.button}>
+          <RedirectButton to="https://delphi-rinkeby.akropolis.io" variant="outlined">
             Rinkeby
-          </RedirectOrAuthButton>
-        </div>
-        <div className={classes.button}>
+          </RedirectButton>
+        </Grid>
+        <Grid item className={classes.button}>
           <Link
             href="https://invis.io/Z3YEH8QNYSK#/425936541_Delphi"
             color="inherit"
@@ -55,13 +53,13 @@ function LandingIntro() {
           >
             View Prototype
           </Link>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     </Intro>
   );
 }
 
-function RedirectOrAuthButton({
+function RedirectButton({
   to,
   variant,
   children,
@@ -70,10 +68,7 @@ function RedirectOrAuthButton({
   variant: 'outlined' | 'contained';
   children: React.ReactNode;
 }) {
-  const api = useApi();
-  const [account, accountMeta] = useSubscribable(() => api.web3Manager.account$, [api]);
-
-  const needToAuth = window.location.origin.includes(to);
+  const isEqualDomain = window.location.origin.includes(to);
 
   const commonProps = {
     size: 'large',
@@ -82,28 +77,36 @@ function RedirectOrAuthButton({
     children,
   } as const;
 
-  if (!needToAuth) {
+  if (!isEqualDomain) {
+    return (
+      <>
+        <Adaptive from="mobileXS" to="tabletXS">
+          {renderButton('small')}
+        </Adaptive>
+        <Adaptive from="tabletXS">{renderButton('large')}</Adaptive>
+      </>
+    );
+  }
+
+  return <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />;
+
+  function renderButton(size?: ButtonProps['size']) {
+    const classes = useStyles();
+
     return (
       <Button
         {...commonProps}
         component={Link as React.FunctionComponent<Omit<LinkProps, 'variant'>>}
         underline="none"
         href={to}
+        fullWidth
+        className={classes.buttonComponent}
+        size={size}
         target="_blank"
         rel="noopener noreferrer"
       />
     );
   }
-
-  return (
-    <Loading meta={accountMeta} loader={<Button {...commonProps} disabled />}>
-      {account ? (
-        <Button {...commonProps} component={RouterLink} to={routes.summary.getRedirectPath()} />
-      ) : (
-        <AuthButton {...commonProps} connectRedirectPath={routes.summary.getRedirectPath()} />
-      )}
-    </Loading>
-  );
 }
 
 export { LandingIntro };

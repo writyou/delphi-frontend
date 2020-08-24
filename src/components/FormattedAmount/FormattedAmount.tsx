@@ -16,7 +16,7 @@ import { SIGNIFICANT_FRACTIONAL_DIGITS } from 'env';
 
 import { Decimal } from './Decimal';
 
-interface IProps {
+export interface FormattedAmountProps {
   sum: Amount;
   precision?: number;
   hideSymbol?: boolean;
@@ -27,7 +27,7 @@ interface IProps {
 
 const percentPrecision = 5;
 
-function FormattedAmount(props: IProps) {
+export function FormattedAmount(props: FormattedAmountProps) {
   const { sum, hideSymbol, precision = 2, className, hasSign = false, variant = 'default' } = props;
   const formattedBalance = sum.toFormattedString(precision);
   const notRoundedBalance = sum.toFormattedString(
@@ -36,7 +36,7 @@ function FormattedAmount(props: IProps) {
   const needToRenderPlus = hasSign && sum.gt(0);
 
   return (
-    <Tooltip title={notRoundedBalance}>
+    <Tooltip title={notRoundedBalance} disableHoverListener={sum.isZero()}>
       <span className={className}>
         {(sum instanceof LiquidityAmount &&
           renderLiquidityAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
@@ -113,7 +113,12 @@ function renderPercentAmount(
   const classes = useStyles();
 
   return (
-    <span className={cn({ [classes.percentRoot]: variant === 'default' })}>
+    <span
+      className={cn({
+        [classes.percentRoot]: variant === 'default',
+        [classes.isZero]: sum.isZero(),
+      })}
+    >
       {(sum.isNeg() && '-') || (needToRenderPlus && '+')}
       {(sum.isNeg() ? sum.mul(new BN(-1)) : sum).toFormattedString(precision, false)}
       <span className={classes.percentSymbol}>{sum.currency.symbol}</span>
@@ -124,14 +129,17 @@ function renderPercentAmount(
 const useStyles = makeStyles(
   {
     percentRoot: {
-      display: 'flex',
+      display: 'inline-flex',
       flexWrap: 'nowrap',
       lineHeight: 'normal',
 
       '& $percentSymbol': {
         fontSize: '0.5em',
         paddingLeft: 2,
-        lineHeight: '1.8em',
+        lineHeight: '2.2em',
+      },
+      '&$isZero': {
+        opacity: 0.5,
       },
     },
 
@@ -140,8 +148,7 @@ const useStyles = makeStyles(
     },
 
     percentSymbol: {},
+    isZero: {},
   },
   { name: 'FormattedAmount' },
 );
-
-export { FormattedAmount };

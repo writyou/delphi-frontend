@@ -119,6 +119,7 @@ const config: webpack.Configuration = {
                       sandbox: 'ghPageRootSandbox',
                       testnet: 'ghPageRootTestnet',
                       mainnet: 'ghPageRootMainnet',
+                      'pre-mainnet': 'ghPageRootPreMainnet',
                     }[mode]
                   }/**`,
                   destination: `build`,

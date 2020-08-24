@@ -1,4 +1,4 @@
-import { Observable, empty, combineLatest } from 'rxjs';
+import { Observable, empty, combineLatest, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
 import {
@@ -8,9 +8,10 @@ import {
   Fraction,
   calcAvg,
 } from '@akropolis-web/primitives';
+import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
-import { SavingsPool, DepositToSavingsPool, StakingPool } from 'model/types';
+import { SavingsPool, DepositToSavingsPool, StakingPool, RewardData } from 'model/types';
 
 import { Web3ManagerModule } from '../types';
 import { Erc20Api } from './Erc20Api';
@@ -18,6 +19,7 @@ import { SubgraphApi } from './SubgraphApi/SubgraphApi';
 import { SavingsModuleApi } from './SavingsModuleApi';
 import { DCAModuleApi } from './DCAModuleApi';
 import { StakingModuleApi } from './StakingModuleApi';
+import { RewardsApi } from './RewardsApi';
 
 export class UserApi {
   constructor(
@@ -27,13 +29,19 @@ export class UserApi {
     private savings: SavingsModuleApi,
     private dca: DCAModuleApi,
     private staking: StakingModuleApi,
+    private rewards: RewardsApi,
   ) {}
 
   @memoize(R.identity)
   public getUser$(): Observable<User | null> {
     return this.web3Manager.account$.pipe(
-      switchMap(account => (account ? this.subgraph.loadUser$(account) : empty())),
+      switchMap(account => (account ? this.subgraph.loadUser$(account) : of(null))),
     );
+  }
+
+  @memoize(R.identity)
+  public isUserExist$(): Observable<boolean> {
+    return this.getUser$().pipe(map(Boolean));
   }
 
   @memoize(R.identity)
@@ -47,11 +55,13 @@ export class UserApi {
   public getSavingsPoolsAvgAPY$(): Observable<PercentAmount> {
     return this.getMySavingsPools$().pipe(
       switchMap(pools =>
-        combineLatest(
-          pools.map(pool =>
-            this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
-          ),
-        ),
+        pools.length
+          ? combineLatest(
+              pools.map(pool =>
+                this.getSavingsPoolBalance$(pool.address).pipe(map(balance => ({ balance, pool }))),
+              ),
+            )
+          : of([]),
       ),
       map(
         balances =>
@@ -126,7 +136,7 @@ export class UserApi {
   public getSavingsDepositLimit$(poolAddress: string): Observable<LiquidityAmount | null> {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
-        account ? this.savings.getDepositLimit$(account, poolAddress) : empty(),
+        account ? this.savings.getUserDepositLimit$(account, poolAddress) : empty(),
       ),
     );
   }
@@ -188,6 +198,25 @@ export class UserApi {
         ),
       ),
       map(pools => pools.filter((pool): pool is StakingPool => !!pool)),
+    );
+  }
+
+  @autobind
+  public withdrawRewards() {
+    return this.rewards.withdrawUserRewards();
+  }
+
+  @memoize()
+  public getTotalRewardsBalance$(): Observable<LiquidityAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserTotalRewardsBalance(account) : empty())),
+    );
+  }
+
+  @memoize()
+  public getRewardsData$(): Observable<RewardData[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserRewardsData$(account) : empty())),
     );
   }
 }

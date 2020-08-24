@@ -103,7 +103,9 @@ export function Loading<T extends ProgressVariant = DefaultProgressVariant>(prop
       )}
       {loaded && needToShowError && (
         <Wrapper>
-          <Typography color="error">{error}</Typography>
+          <Typography color="error" variant="body2">
+            {error}
+          </Typography>
         </Wrapper>
       )}
       {loaded && !needToShowError && children}

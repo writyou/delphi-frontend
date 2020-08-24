@@ -11,7 +11,7 @@ import { useCommunication, ISubscriptionMeta } from 'utils/react';
 import { Hint } from 'components/Hint/Hint';
 import { makeStyles } from 'utils/styles';
 
-import { Button } from '../Button/Button';
+import { Button } from '../Button';
 
 export type ConfirmationDialogProps = {
   isOpen: boolean;

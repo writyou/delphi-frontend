@@ -63,8 +63,8 @@ const en = {
     auth: {
       applicationNetwork: 'This application works with the network "%{networkName}"',
       modalTitle: {
-        connected: 'Disconnect or change wallet:',
-        disconnected: 'Choose your wallet:',
+        connected: 'Disconnect or change wallet',
+        disconnected: 'Connect wallet',
         connectedTo: 'Connected to',
         disconnect: 'Disconnect',
       },
@@ -115,6 +115,11 @@ const en = {
         pending: 'Unstake from staking pool. Pending',
         success: 'Unstake from staking pool. Successful',
         error: 'Unstake from staking pool. Failed',
+      },
+      'rewards.withdraw': {
+        pending: 'Rewards withdrawing. Pending',
+        success: 'Rewards withdrawing. Successful',
+        error: 'Rewards withdrawing. Failed',
       },
     },
     networkWarning: {
@@ -171,6 +176,28 @@ const en = {
     },
     deFiScoreChart: {
       deFiScore: 'DeFi Score',
+    },
+    modulesIntroSection: {
+      savings: {
+        title: 'Stablecoins',
+        subtitle: 'Stay simple & stable',
+        button: 'Save',
+      },
+      investments: {
+        title: 'Volatile assets',
+        subtitle: 'High risk tolerant profile',
+        button: 'Invest',
+      },
+      dca: {
+        title: 'Dollar Cost Average',
+        subtitle: 'Long-term strategy for believers',
+        button: 'DCA',
+      },
+      staking: {
+        title: 'Staking & Governance',
+        subtitle: 'AKRO & ADEL only',
+        button: 'Stake',
+      },
     },
   },
 };

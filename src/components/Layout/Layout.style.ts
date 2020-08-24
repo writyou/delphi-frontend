@@ -43,9 +43,9 @@ export const useStyles = makeStyles(
 
     header: {
       paddingTop: theme.spacing(2.5),
-      paddingBottom: theme.spacing(3.5),
+      paddingBottom: 20,
       [theme.breakpoints.up('tabletXS')]: {
-        paddingBottom: theme.spacing(6),
+        paddingBottom: 90,
       },
       [theme.breakpoints.up('tabletSM')]: {
         paddingTop: theme.spacing(5),
@@ -54,8 +54,8 @@ export const useStyles = makeStyles(
 
     footer: {
       marginTop: 'auto',
-      paddingBottom: 28,
 
+      paddingBottom: 28,
       [theme.breakpoints.up('tabletXS')]: {
         paddingBottom: 34,
       },
@@ -66,14 +66,16 @@ export const useStyles = makeStyles(
     },
 
     socials: {
-      position: 'fixed',
-      display: 'none',
-      marginRight: theme.spacing(2),
-      top: '29%',
-      right: 0,
+      paddingBottom: 35,
 
-      [theme.breakpoints.up('lg')]: {
-        display: 'block',
+      [theme.breakpoints.up('tabletXS')]: {
+        position: 'fixed',
+        top: '29%',
+        right: -3,
+      },
+
+      [theme.breakpoints.up('tabletSM')]: {
+        right: 18,
       },
     },
   }),

@@ -12,7 +12,7 @@ export function Staking() {
 
   return (
     <Loading meta={poolsMeta}>
-      <Grid container alignItems="flex-start" spacing={3}>
+      <Grid container alignItems="flex-start" spacing={6}>
         {pools &&
           pools.length &&
           pools.map(pool => (

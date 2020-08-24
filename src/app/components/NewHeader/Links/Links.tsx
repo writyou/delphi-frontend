@@ -1,34 +1,13 @@
 import React from 'react';
 
 import * as Link from '../../Link';
-import { routes } from '../../../routes';
 import { useStyles } from './Links.style';
 
 const links: Link.models.Link[] = [
   {
-    kind: 'internal',
-    label: 'My Summary',
-    ref: routes.summary.getRoutePath(),
-  },
-  {
-    kind: 'internal',
-    label: 'Savings',
-    ref: routes.savings.getRoutePath(),
-  },
-  {
-    kind: 'internal',
-    label: 'Investments',
-    ref: routes.investments.getRoutePath(),
-  },
-  {
-    kind: 'internal',
-    label: 'DCA',
-    ref: routes.dca.getRoutePath(),
-  },
-  {
-    kind: 'internal',
-    label: 'Staking',
-    ref: routes.staking.getRoutePath(),
+    kind: 'external',
+    label: 'Wiki',
+    ref: 'https://wiki.akropolis.io/delphi/',
   },
 ];
 
@@ -43,7 +22,7 @@ function renderLink(link: Link.models.Link) {
 
   return (
     <div className={classes.link} key={link.label}>
-      <Link.Link link={link} shouldRenderLabel />
+      <Link.Link link={link} />
     </div>
   );
 }

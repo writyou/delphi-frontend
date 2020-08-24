@@ -1,4 +1,5 @@
 import { autobind } from 'core-decorators';
+import moment from 'moment';
 import { BehaviorSubject, Observable, of, timer, combineLatest } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import * as R from 'ramda';
@@ -10,16 +11,18 @@ import {
   denormolizeAmount,
   sumTokenAmountsByToken,
   isEqualHex,
+  min,
+  max,
 } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
-import { getCurrentValueOrThrow } from 'utils/rxjs';
+import { getCurrentValueOrThrow, awaitFirstNonNullableOrThrow } from 'utils/rxjs';
 import {
   DepositToSavingsPool,
   WithdrawFromSavingsPool,
   DepositToSavingsPoolWithFee,
 } from 'model/types';
-import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT } from 'env';
+import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT, REWARDS_LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
   createDefiProtocol,
@@ -68,6 +71,40 @@ export class SavingsModuleApi {
   }
 
   @memoize((...args: string[]) => args.join())
+  public getUserRewards$(userAddress: string) {
+    return combineLatest([
+      this.readonlyContract.methods.supportedRewardTokens(),
+      this.readonlyContract.methods.withdrawReward.read(
+        undefined,
+        {
+          from: userAddress,
+        },
+        [this.readonlyContract.events.RewardWithdraw({ filter: { user: userAddress } })],
+      ),
+    ]).pipe(
+      switchMap(([tokensAddresses, rewards]) =>
+        combineLatest(tokensAddresses.map(tokenAddress => this.erc20.getToken$(tokenAddress))).pipe(
+          map(tokens => tokens.map((token, index) => new TokenAmount(rewards[index], token))),
+        ),
+      ),
+    );
+  }
+
+  @autobind
+  public async withdrawUserRewards(): Promise<void> {
+    const txContract = getCurrentValueOrThrow(this.txContract);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
+
+    const promiEvent = txContract.methods.withdrawReward(undefined, { from });
+
+    this.transactionsApi.pushToSubmittedTransactions('rewards.withdraw', promiEvent, {
+      fromAddress: from,
+    });
+
+    await promiEvent;
+  }
+
+  @memoize((...args: string[]) => args.join())
   public getUserBalance$(poolAddress: string, account: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
       this.subgraph.loadSavingsPool$(poolAddress).pipe(
@@ -87,7 +124,7 @@ export class SavingsModuleApi {
     );
   }
 
-  @memoize((...args: string[]) => args.join())
+  @memoize(R.identity)
   public getPoolBalance$(poolAddress: string): Observable<LiquidityAmount> {
     return toLiquidityAmount$(
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
@@ -152,10 +189,21 @@ export class SavingsModuleApi {
       );
   }
 
+  @memoize(R.identity)
+  public getRewards$(poolAddress: string): Observable<TokenAmount[]> {
+    return timer(0, REWARDS_LONG_POOLING_TIMEOUT).pipe(
+      switchMap(() => {
+        const rewardsPerPeriod = new BN(moment().subtract(7, 'days').unix()).toString();
+        return this.subgraph.loadRewards$(poolAddress, rewardsPerPeriod);
+      }),
+      map(rewards => sumTokenAmountsByToken(R.pluck('amount', rewards))),
+    );
+  }
+
   @autobind
   public async deposit(deposits: DepositToSavingsPool[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     await this.erc20.approveMultiple(
       from,
@@ -183,7 +231,7 @@ export class SavingsModuleApi {
   @autobind
   public async withdrawAll(withdraw: WithdrawFromSavingsPool): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.withdrawAll(
       {
@@ -204,7 +252,7 @@ export class SavingsModuleApi {
   @autobind
   public async withdraw(withdraw: WithdrawFromSavingsPool): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
-    const from = getCurrentValueOrThrow(this.web3Manager.account$);
+    const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
     const promiEvent = txContract.methods.withdraw(
       {
@@ -225,10 +273,48 @@ export class SavingsModuleApi {
   }
 
   @memoize((...args: string[]) => args.join())
-  public getDepositLimit$(
+  public getUserDepositLimit$(
     userAddress: string,
     poolAddress: string,
   ): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      this.getUserCap$(userAddress, poolAddress),
+      this.getPoolCapacity$(poolAddress),
+      this.getPoolBalance$(poolAddress),
+    ]).pipe(
+      map(([userCap, poolCapacity, poolBalance]) => {
+        const availableCapacity = poolCapacity
+          ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
+          : null;
+        if (userCap && availableCapacity) {
+          return min(userCap, availableCapacity);
+        }
+        return userCap || poolCapacity;
+      }),
+    );
+  }
+
+  @memoize(R.identity)
+  public getPoolCapacity$(poolAddress: string): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      toLiquidityAmount$(
+        this.readonlyContract.methods.protocolCap(
+          {
+            '': poolAddress,
+          },
+          [
+            this.readonlyContract.events.ProtocolCapChanged({
+              filter: { protocol: poolAddress },
+            }),
+          ],
+        ),
+      ),
+      this.getPoolCapEnabled$(),
+    ]).pipe(map(([capacity, enabled]) => (enabled ? capacity : null)));
+  }
+
+  @memoize((...args: string[]) => args.join())
+  public getUserCap$(userAddress: string, poolAddress: string): Observable<LiquidityAmount | null> {
     return combineLatest([
       toLiquidityAmount$(
         this.readonlyContract.methods.userCap(
@@ -237,13 +323,19 @@ export class SavingsModuleApi {
             user: userAddress,
           },
           [
-            this.readonlyContract.events.UserCapChanged({
-              filter: { user: userAddress, protocol: poolAddress },
+            this.readonlyContract.events.DefaultUserCapChanged({
+              filter: { protocol: poolAddress },
+            }),
+            this.readonlyContract.events.Deposit({
+              filter: { user: userAddress },
+            }),
+            this.readonlyContract.events.Withdraw({
+              filter: { user: userAddress },
             }),
           ],
         ),
       ),
-      this.getDepositLimitsEnabled$(),
+      this.getUserCapEnabled$(),
     ]).pipe(
       map(([limit, enabled]) => {
         const roundedLimit = limit.toBN().gt(getSignificantValue(limit.currency.decimals))
@@ -255,9 +347,16 @@ export class SavingsModuleApi {
   }
 
   @memoize()
-  private getDepositLimitsEnabled$(): Observable<boolean> {
+  private getUserCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.userCapEnabled(undefined, [
       this.readonlyContract.events.UserCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getPoolCapEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.protocolCapEnabled(undefined, [
+      this.readonlyContract.events.ProtocolCapEnabledChange(),
     ]);
   }
 

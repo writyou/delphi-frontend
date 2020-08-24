@@ -1,48 +1,58 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
+import { of } from 'rxjs';
 
 import { routes } from 'app/routes';
-import { Tabs } from 'components';
+import { TabsSection, CheckAuthorization, Loading } from 'components';
+import { Api, useApi } from 'services/api';
+import { useSubscribable } from 'utils/react';
 
 import { AllocateTab } from './innerPages/AllocateTab';
 import { WithdrawTab } from './innerPages/WithdrawTab';
 
-const tabs = [
-  {
-    label: 'Allocate',
-    value: routes.savings.allocate.getElementKey(),
-    to: routes.savings.allocate.getRedirectPath(),
-    renderContent: () => <AllocateTab />,
-  },
-  {
-    label: 'Withdraw',
-    value: routes.savings.withdraw.getElementKey(),
-    to: routes.savings.withdraw.getRedirectPath(),
-    renderContent: () => <WithdrawTab />,
-  },
-];
+const allocateTab = {
+  label: 'Allocate',
+  value: routes.savings.allocate.getElementKey(),
+  to: routes.savings.allocate.getRedirectPath(),
+  renderContent: () => <AllocateTab />,
+  getData: (api: Api) => api.savings.getPools$(),
+};
+
+const withdrawTab = {
+  label: 'Withdraw',
+  value: routes.savings.withdraw.getElementKey(),
+  to: routes.savings.withdraw.getRedirectPath(),
+  renderContent: () => <WithdrawTab />,
+  getData: (api: Api) => api.user.getMySavingsPools$(),
+};
+
+const tabs = [allocateTab, withdrawTab];
 
 export function SavingsPage() {
-  const defaultPage = routes.savings.allocate.getElementKey();
+  const api = useApi();
+
+  const [myPools, meta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+
   const match = useRouteMatch<{ page: string }>('/savings/:page');
-  const page = match ? match.params.page : defaultPage;
 
-  const [selectedPage, setSelectedPage] = React.useState(defaultPage);
+  const page = match ? match.params.page : allocateTab.value;
 
-  React.useEffect(() => {
-    setSelectedPage(page);
-  }, [page]);
-
-  const handleTabChange = (_: React.ChangeEvent<{}>, tab: string) => {
-    setSelectedPage(tab);
-  };
+  const isWorthToWatchPage$ = useMemo(
+    () => of(myPools ? page !== withdrawTab.value || !!myPools.length : false),
+    [myPools, page],
+  );
 
   return (
-    <Tabs
-      currentValue={selectedPage}
-      tabs={tabs}
-      tabComponent={RouterLink}
-      onChange={handleTabChange}
-    />
+    <Loading meta={meta}>
+      <CheckAuthorization
+        isAuthorized$={isWorthToWatchPage$}
+        redirectTo={routes.savings.getRoutePath()}
+      />
+      {myPools?.length && page ? (
+        <TabsSection currentValue={page} tabs={tabs} tabComponent={RouterLink} />
+      ) : (
+        <AllocateTab />
+      )}
+    </Loading>
   );
 }
