@@ -88,7 +88,7 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     ADEL: testnetTokens.ADEL,
     AKRO: '0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7',
     BAL: testnetTokens.BAL,
-    COMP: testnetTokens.COMP,
+    COMP: '0xc00e94cb662c3520282e6f5717214004a7f26888',
     CRV: '0xd533a949740bb3306d119cc777fa900ba034cd52',
     DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
     MTA: testnetTokens.MTA,
