@@ -35,6 +35,8 @@ export function ModuleIntroButton<C extends React.ElementType>(
       focusVisibleClassName={classes.focusVisible}
       onMouseEnter={handleButtonMouseEnter}
       onMouseLeave={handleButtonMouseLeave}
+      onFocus={handleButtonMouseEnter}
+      onBlur={handleButtonMouseLeave}
     >
       <Grid container direction="column" className={classes.container}>
         <Grid item>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import cn from 'classnames';
 
 import { Button, ButtonProps } from 'components/Button';
@@ -14,7 +14,15 @@ export function GradientArrowButton<C extends React.ElementType>(
 ) {
   const { children, isHovered, ...rest } = props;
   const classes = useStyles();
+  const [localIsHovered, setLocalIsHovered] = useState(false);
 
+  const handleButtonMouseOver = useCallback(() => {
+    setLocalIsHovered(true);
+  }, []);
+
+  const handleButtonMouseLeave = useCallback(() => {
+    setLocalIsHovered(false);
+  }, []);
   return (
     <>
       <Button
@@ -22,7 +30,11 @@ export function GradientArrowButton<C extends React.ElementType>(
         variant="text"
         color="primary"
         endIcon={<GradientArrow className={classes.arrow} />}
-        className={cn(classes.root, { [classes.isHovered]: isHovered })}
+        className={cn(classes.root, { [classes.isHovered]: isHovered || localIsHovered })}
+        onMouseOver={handleButtonMouseOver}
+        onFocus={handleButtonMouseOver}
+        onMouseOut={handleButtonMouseLeave}
+        onBlur={handleButtonMouseLeave}
       >
         {children}
       </Button>
