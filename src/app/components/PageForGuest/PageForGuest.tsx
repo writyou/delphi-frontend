@@ -11,7 +11,7 @@ export function PageForGuest() {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={10}>
+    <Grid container spacing={6}>
       <Grid item xs={12} container alignItems="center" spacing={4}>
         <Grid item xs={6} container alignItems="center" spacing={3}>
           <Grid item xs={12}>
