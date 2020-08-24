@@ -36,7 +36,7 @@ export function FormattedAmount(props: FormattedAmountProps) {
   const needToRenderPlus = hasSign && sum.gt(0);
 
   return (
-    <Tooltip title={notRoundedBalance}>
+    <Tooltip title={notRoundedBalance} disableHoverListener={sum.isZero()}>
       <span className={className}>
         {(sum instanceof LiquidityAmount &&
           renderLiquidityAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
