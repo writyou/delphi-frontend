@@ -27,10 +27,12 @@ export function PoolFillingLimit(props: Props) {
       <Grid item>
         Capacity: <FormattedAmount sum={capacity} variant="plain" />
       </Grid>
-      <Grid item>
-        Filled: <FormattedAmount sum={roundedPercent} variant="plain" />
-        {renderProgressBar()}
-      </Grid>
+      {!capacity.isZero() && (
+        <Grid item>
+          Filled: <FormattedAmount sum={roundedPercent} variant="plain" />
+          {renderProgressBar()}
+        </Grid>
+      )}
     </Grid>
   );
 

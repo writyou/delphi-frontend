@@ -25,7 +25,7 @@ export function WithdrawFromSavingsPoolButton({
     [api],
   );
 
-  const disabled = !!balance && !balance.gt(getSignificantValue(balance.currency.decimals));
+  const disabled = !balance || balance.lt(getSignificantValue(balance.currency.decimals));
 
   return (
     <Loading

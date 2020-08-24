@@ -19,13 +19,8 @@ export function DepositToStakingPoolButton({
     () =>
       combineLatest([
         api.user.getStakingDepositLimit$(pool.address),
-        api.user.getFullStakingPoolBalance$(pool.address),
-      ]).pipe(
-        map(
-          ([depositLimit, balance]) =>
-            (!!depositLimit && !depositLimit.gt(0)) || !balance || balance.isZero(),
-        ),
-      ),
+        api.user.getTokenBalance$(pool.token.address),
+      ]).pipe(map(([depositLimit, balance]) => depositLimit?.isZero() || balance.isZero())),
     [api, pool.address],
   );
 
