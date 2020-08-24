@@ -37,7 +37,7 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
     >
       {({ handleSubmit, submitError, submitting, dirtySinceLastSubmit, hasValidationErrors }) => (
         <form onSubmit={handleSubmit}>
-          <Grid container alignItems="flex-start" spacing={3}>
+          <Grid container alignItems="flex-start" spacing={6}>
             {children.map((child, index) => (
               <Grid key={index} item xs={4}>
                 {child}
