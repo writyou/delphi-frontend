@@ -70,19 +70,23 @@ export function ModulesIntroSection() {
   );
 
   function renderModuleIntroButton(module: Module) {
-    return (
+    const commonProps = {
+      title: t(tKeys[module].title.getKey()),
+      subtitle: t(tKeys[module].subtitle.getKey()),
+      buttonLabel: t(tKeys[module].button.getKey()),
+      backgroundPath: modulesData[module].backgroundPath,
+    };
+
+    return account ? (
       <ModuleIntroButton
-        title={t(tKeys[module].title.getKey())}
-        subtitle={t(tKeys[module].subtitle.getKey())}
-        buttonLabel={t(tKeys[module].button.getKey())}
-        backgroundPath={modulesData[module].backgroundPath}
-        component={account ? RouterLink : 'button'}
-        to={account ? modulesData[module].redirectPath : undefined}
-        onClick={
-          !account
-            ? () => handleModuleIntroButtonClick(modulesData[module].redirectPath)
-            : undefined
-        }
+        {...commonProps}
+        component={RouterLink}
+        to={modulesData[module].redirectPath}
+      />
+    ) : (
+      <ModuleIntroButton
+        {...commonProps}
+        onClick={() => handleModuleIntroButtonClick(modulesData[module].redirectPath)}
       />
     );
   }
