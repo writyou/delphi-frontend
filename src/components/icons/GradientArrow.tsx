@@ -17,17 +17,16 @@ const useStyles = makeStyles(
 );
 
 function GradientArrow(props: React.ComponentProps<typeof SvgIcon>) {
-  const { fill, ...rest } = props;
   const classes = useStyles();
   const theme = useTheme();
   const gradientId = useMemo(() => Math.floor(Math.random() * 1000000000), []);
 
   return (
-    <SvgIcon classes={{ root: classes.root }} {...rest} viewBox="0 0 44 11">
+    <SvgIcon classes={{ root: classes.root }} {...props} viewBox="0 0 44 11">
       <defs>
         <linearGradient id={`GradientArrow_${gradientId}`} x1="100%" x2="0%" y1="50%" y2="50%">
-          <stop offset="0%" stopColor={fill || theme.colors.purpleHeart} />
-          <stop offset="100%" stopColor={fill || theme.colors.heliotrope} />
+          <stop offset="0%" stopColor={theme.colors.purpleHeart} />
+          <stop offset="100%" stopColor={theme.colors.heliotrope} />
         </linearGradient>
       </defs>
       <path

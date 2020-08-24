@@ -1,25 +1,19 @@
-import React, { useCallback, useState } from 'react';
+import React from 'react';
+import cn from 'classnames';
 
 import { Button, ButtonProps } from 'components/Button';
 import { GradientArrow } from 'components/icons';
-import { makeStyles, useTheme } from 'utils/styles';
+import { makeStyles } from 'utils/styles';
+
+type OwnProps = {
+  isHovered?: boolean;
+};
 
 export function GradientArrowButton<C extends React.ElementType>(
-  props: ButtonProps<C, { component?: C }>,
+  props: OwnProps & ButtonProps<C, { component?: C }>,
 ) {
-  const { children, ...rest } = props;
+  const { children, isHovered, ...rest } = props;
   const classes = useStyles();
-  const theme = useTheme();
-
-  const [isHovered, setIsHovered] = useState(false);
-
-  const handleButtonMouseOver = useCallback(() => {
-    setIsHovered(true);
-  }, []);
-
-  const handleButtonMouseLeave = useCallback(() => {
-    setIsHovered(false);
-  }, []);
 
   return (
     <>
@@ -27,16 +21,8 @@ export function GradientArrowButton<C extends React.ElementType>(
         {...rest}
         variant="text"
         color="primary"
-        endIcon={
-          <GradientArrow
-            fill={isHovered ? theme.colors.heliotrope : undefined}
-            className={classes.arrow}
-          />
-        }
-        onMouseOver={handleButtonMouseOver}
-        onFocus={handleButtonMouseOver}
-        onMouseOut={handleButtonMouseLeave}
-        onBlur={handleButtonMouseLeave}
+        endIcon={<GradientArrow className={classes.arrow} />}
+        className={cn(classes.root, { [classes.isHovered]: isHovered })}
       >
         {children}
       </Button>
@@ -45,11 +31,23 @@ export function GradientArrowButton<C extends React.ElementType>(
 }
 
 const useStyles = makeStyles(
-  () => ({
+  theme => ({
+    root: {
+      '&$isHovered': {
+        color: theme.colors.heliotrope,
+        backgroundColor: 'transparent',
+        backgroundSize: '500%',
+
+        '& stop': {
+          stopColor: theme.colors.heliotrope,
+        },
+      },
+    },
     arrow: {
       fontSize: '11px !important',
       marginBottom: '-0.25em',
     },
+    isHovered: {},
   }),
   { name: 'GradientArrowButton' },
 );
