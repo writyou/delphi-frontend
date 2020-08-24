@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useApi } from 'services/api';
 import { makeStyles } from 'utils/styles';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { Loading, Grid, Card } from 'components';
 import {
   WithdrawRewardsButton,
@@ -15,7 +15,7 @@ import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 export function MyRewards() {
   const classes = useStyles();
   const api = useApi();
-  const [isUserExist, userMeta] = useSubscribable(() => api.user.isUserExist$(), [api]); // TODO add check pool balances
+  const [isUserExist, userMeta] = useSubscribableDeprecated(() => api.user.isUserExist$(), [api]); // TODO add check pool balances
 
   return (
     <Card variant="contained" className={classes.root}>

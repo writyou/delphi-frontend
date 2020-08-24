@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 import { PageForGuest } from 'app/components';
 
@@ -48,7 +48,7 @@ export function MyPools() {
   const classes = useStyles();
   const api = useApi();
 
-  const [filteredTabs, meta] = useSubscribable(
+  const [filteredTabs, meta] = useSubscribableDeprecated(
     () =>
       combineLatest(tabs.map(tab => tab.getData(api))).pipe(
         map(tabData => (tabData ? tabs.filter((_, i) => Boolean(tabData[i]?.length)) : undefined)),

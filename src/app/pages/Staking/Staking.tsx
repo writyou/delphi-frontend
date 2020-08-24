@@ -1,14 +1,14 @@
 import React from 'react';
 
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { Loading, Grid } from 'components';
 
 import { StakingPoolCard } from './StakingPoolCard';
 
 export function Staking() {
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.staking.getPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.staking.getPools$(), [api]);
 
   return (
     <Loading meta={poolsMeta}>

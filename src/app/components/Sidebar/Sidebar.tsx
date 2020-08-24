@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { IconButton } from 'components';
 import * as icons from 'components/icons/navigation';
@@ -85,7 +85,7 @@ export const Sidebar: React.FC = () => {
   const classes = useStyles();
   const api = useApi();
 
-  const [account] = useSubscribable(() => api.web3Manager.account$, [api], null);
+  const [account] = useSubscribableDeprecated(() => api.web3Manager.account$, [api], null);
 
   const [isExpanded, setCloseSidebar] = React.useState(() => sidebarStorage.getItem('isExpanded'));
 

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 
 import { ConfirmationDialog, Button, ButtonProps, Loading } from 'components';
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -16,7 +16,9 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
     await api.user.withdrawRewards();
     close();
   }, [api]);
-  const [totalBalance, meta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
+  const [totalBalance, meta] = useSubscribableDeprecated(() => api.user.getTotalRewardsBalance$(), [
+    api,
+  ]);
 
   return (
     <>

@@ -14,7 +14,7 @@ import {
   PieChartData,
   CatsPawPlaceholder,
 } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
@@ -53,7 +53,7 @@ function getChartData$(api: Api): Observable<PieChartData<LiquidityAmount, Token
 export function UserStakingPoolsBalancesComposition(props: Props) {
   const { withInnerLegend, withCompositionLegend, size } = props;
   const api = useApi();
-  const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
+  const [chartData, chartDataMeta] = useSubscribableDeprecated(() => getChartData$(api), [api]);
 
   return (
     <Grid container alignItems="center" spacing={3}>

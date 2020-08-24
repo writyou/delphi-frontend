@@ -3,13 +3,13 @@ import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 import { Loading, PoolFillingLimit } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function SavingsPoolCapacity({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
 
-  const [poolFilling, poolFillingMeta] = useSubscribable(
+  const [poolFilling, poolFillingMeta] = useSubscribableDeprecated(
     () =>
       combineLatest([
         api.savings.getPoolBalance$(poolAddress),

@@ -3,7 +3,7 @@ import React from 'react';
 import { getSignificantValue } from 'utils';
 import { ModalButton, ButtonProps, Loading, Button } from 'components';
 import { SavingsPool } from 'model/types';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
 /*
@@ -20,7 +20,7 @@ export function WithdrawFromSavingsPoolButton({
   ...rest
 }: { pool: SavingsPool } & ButtonProps): JSX.Element {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(
+  const [balance, balanceMeta] = useSubscribableDeprecated(
     () => api.user.getSavingsPoolBalance$(pool.address),
     [api],
   );

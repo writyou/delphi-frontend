@@ -2,13 +2,15 @@ import React from 'react';
 import { PercentAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { MAX_AVG_APY } from 'env';
 
 export function UserSavingsPoolsAvgAPY() {
   const api = useApi();
-  const [avgAPY, avgAPYMeta] = useSubscribable(() => api.user.getSavingsPoolsAvgAPY$(), [api]);
+  const [avgAPY, avgAPYMeta] = useSubscribableDeprecated(() => api.user.getSavingsPoolsAvgAPY$(), [
+    api,
+  ]);
 
   return (
     <Loading meta={avgAPYMeta}>

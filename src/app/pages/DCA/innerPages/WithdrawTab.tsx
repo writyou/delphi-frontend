@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Grid, Loading, PoolCard } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { DCAPoolLiquidity, UserDCAPoolBalance } from 'features/DCAPools';
@@ -14,7 +14,7 @@ export function WithdrawTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.dca.getPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.dca.getPools$(), [api]);
 
   return (
     <>

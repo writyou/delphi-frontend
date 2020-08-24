@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useSubscribable, useOnChangeState } from 'utils/react';
+import { useSubscribableDeprecated, useOnChangeState } from 'utils/react';
 import { useApi } from 'services/api';
 import { NETWORK_ID } from 'env';
 import { ConfirmationDialog } from 'components';
@@ -12,7 +12,7 @@ export function NetworkWarning() {
   const api = useApi();
   const { t } = useTranslate();
 
-  const [chainId] = useSubscribable(() => api.web3Manager.chainId$, [api]);
+  const [chainId] = useSubscribableDeprecated(() => api.web3Manager.chainId$, [api]);
   const [isOpen, setIsOpen] = React.useState(false);
 
   useOnChangeState(

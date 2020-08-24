@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { DepositDCAPoolButton, ChangeDCAPoolButton } from 'features/DCAPools';
 import { DCAPool } from 'model/types';
@@ -12,7 +12,7 @@ type Props = {
 
 export function DCADepositCardButtons({ pool }: Props) {
   const api = useApi();
-  const [balance] = useSubscribable(() => api.user.getDCAPoolBalance$(pool.address), [
+  const [balance] = useSubscribableDeprecated(() => api.user.getDCAPoolBalance$(pool.address), [
     api,
     pool.address,
   ]);

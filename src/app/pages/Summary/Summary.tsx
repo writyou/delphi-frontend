@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { Loading, Card, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
 import { PageForGuest, PortfolioBalanceChart } from 'app/components';
@@ -12,7 +12,7 @@ export function Summary() {
   const classes = useStyles();
 
   const api = useApi();
-  const [isUserExist, userMeta] = useSubscribable(() => api.user.isUserExist$(), [api]);
+  const [isUserExist, userMeta] = useSubscribableDeprecated(() => api.user.isUserExist$(), [api]);
 
   return (
     <Card variant="contained" className={classes.root}>

@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import { Token } from '@akropolis-web/primitives';
 import cn from 'classnames';
 
-import { useCommunication, useSubscribable } from 'utils/react';
+import { useCommunication, useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { tKeys as tKeysAll, useTranslate } from 'services/i18n';
 import { SwitchInput } from 'components/inputs';
@@ -51,9 +51,9 @@ export function InfiniteApproveSwitch(props: Props) {
   const tokens = toArray(props.tokens);
 
   const api = useApi();
-  const [account] = useSubscribable(() => api.web3Manager.account$, [api]);
+  const [account] = useSubscribableDeprecated(() => api.web3Manager.account$, [api]);
 
-  const [tokensWithApproves, tokensWithApprovesMeta] = useSubscribable(
+  const [tokensWithApproves, tokensWithApprovesMeta] = useSubscribableDeprecated(
     () => getInfiniteApproves$(api, tokens, spender),
     [api, R.pluck('address', tokens).join(), spender],
   );

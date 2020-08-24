@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { TokenAmount, PercentAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading, Table, Grid, TokenIcon } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
 type Props = {
@@ -34,7 +34,7 @@ function getSupposedAmounts(
 export function WithdrawSupposedAmountsTable(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [supposedAmounts, supposedAmountsMeta] = useSubscribable(
+  const [supposedAmounts, supposedAmountsMeta] = useSubscribableDeprecated(
     () => getSupposedAmounts(api, poolAddress, amount),
     [api, poolAddress, amount],
   );

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { Loading } from 'components';
 import { AllocateForm } from 'features/savingsPools';
@@ -11,7 +11,7 @@ export function AllocateTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.savings.getPools$(), [api]);
 
   return (
     <>

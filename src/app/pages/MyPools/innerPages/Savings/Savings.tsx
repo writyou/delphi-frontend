@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Grid } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
 
@@ -13,7 +13,7 @@ export function Savings() {
   const classes = useStyles();
 
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.user.getMySavingsPools$(), [api]);
 
   return (
     <div className={classes.root}>

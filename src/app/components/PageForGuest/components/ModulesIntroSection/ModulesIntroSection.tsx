@@ -5,7 +5,7 @@ import { Grid, Typography, Box } from '@akropolis-web/components';
 import { routes } from 'app/routes';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useAuthContext } from 'services/auth';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 
 import * as images from './images';
@@ -41,7 +41,7 @@ export function ModulesIntroSection() {
   const { web3Manager, openModal } = useAuthContext();
   const history = useHistory();
 
-  const [account] = useSubscribable(() => web3Manager.account$, [], null);
+  const [account] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
 
   const handleModuleIntroButtonClick = useCallback(
     (redirectPath: string) => {

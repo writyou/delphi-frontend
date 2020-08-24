@@ -3,12 +3,12 @@ import * as R from 'ramda';
 import { map } from 'rxjs/operators';
 
 import { FormattedAmount, Loading } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function UserSavingsPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribable(
+  const [totalBalance, totalBalanceMeta] = useSubscribableDeprecated(
     () =>
       api.user
         .getAllSavingsPoolsBalances$()

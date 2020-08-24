@@ -8,7 +8,7 @@ import { Token, Amount } from '@akropolis-web/primitives';
 import { map } from 'rxjs/operators';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { Loading } from '../Loading';
 import { DepositLimit } from '../DepositLimit/DepositLimit';
@@ -56,12 +56,15 @@ export function PoolCard(props: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [balance] = useSubscribable(() => getUserBalance$(address), [getUserBalance$, address]);
-  const [availableForDeposit, availableForDepositMeta] = useSubscribable(
+  const [balance] = useSubscribableDeprecated(() => getUserBalance$(address), [
+    getUserBalance$,
+    address,
+  ]);
+  const [availableForDeposit, availableForDepositMeta] = useSubscribableDeprecated(
     () => (getDepositLimit$ ? getDepositLimit$(address) : of(null)),
     [getDepositLimit$, address],
   );
-  const [poolFilling, poolFillingMeta] = useSubscribable(
+  const [poolFilling, poolFillingMeta] = useSubscribableDeprecated(
     () =>
       getDepositLimit$ && getPoolBalance$ && getPoolCapacity$
         ? combineLatest([getPoolBalance$(address), getPoolCapacity$(address)]).pipe(

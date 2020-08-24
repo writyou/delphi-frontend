@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { FormattedAmount, Loading } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
 export function UserSavingsPoolBalance({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(
+  const [balance, balanceMeta] = useSubscribableDeprecated(
     () => api.user.getSavingsPoolBalance$(poolAddress),
     [api, poolAddress],
   );

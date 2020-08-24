@@ -12,9 +12,17 @@ export interface ISubscriptionMeta {
 type Result<T> = [T, ISubscriptionMeta];
 
 // TODO move all state changes to useReducer
-function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[]): Result<T | undefined>;
-function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[], fallback: T): Result<T>;
-function useSubscribable<T>(
+/** @deprecated Use useSubscribable that uses RemoteData. */
+function useSubscribableDeprecated<T>(
+  getTarget: () => Subscribable<T>,
+  deps: any[],
+): Result<T | undefined>;
+function useSubscribableDeprecated<T>(
+  getTarget: () => Subscribable<T>,
+  deps: any[],
+  fallback: T,
+): Result<T>;
+function useSubscribableDeprecated<T>(
   getTarget: () => Subscribable<T>,
   deps: any[],
   fallback?: T,
@@ -67,4 +75,4 @@ function useSubscribable<T>(
   return [value, meta];
 }
 
-export { useSubscribable };
+export { useSubscribableDeprecated };

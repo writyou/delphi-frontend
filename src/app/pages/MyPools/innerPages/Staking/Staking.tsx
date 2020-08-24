@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 
 import { makeStyles } from 'utils/styles';
 import { Table, Loading, Typography, Hint, Grid } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserStakingPoolsTotalBalance } from 'features/stakingPools';
 
@@ -14,7 +14,7 @@ export function Staking() {
   const classes = useStyles();
 
   const api = useApi();
-  const [stakingPools, stakingPoolsMeta] = useSubscribable(
+  const [stakingPools, stakingPoolsMeta] = useSubscribableDeprecated(
     () =>
       api.user.getMyStakingPools$().pipe(
         switchMap(pools =>

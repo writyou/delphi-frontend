@@ -11,7 +11,7 @@ import {
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { DepositToSavingsPool } from 'model/types';
 
 export function useDepositAmountValidationParams(
@@ -22,7 +22,7 @@ export function useDepositAmountValidationParams(
   const { t } = useTranslate();
   const api = useApi();
 
-  const [validationParams] = useSubscribable(
+  const [validationParams] = useSubscribableDeprecated(
     () =>
       token
         ? combineLatest([

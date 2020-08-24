@@ -7,7 +7,7 @@ import { useAuthContext } from 'services/auth';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Adaptive } from 'services/adaptability';
 import { getShortAddress } from 'utils/format';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { Button, Loading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
 
@@ -21,8 +21,8 @@ export function AuthButton({ children, size }: Props) {
   const { t } = useTranslate();
   const { web3Manager, openModal, connectCommunication } = useAuthContext();
 
-  const [account, accountMeta] = useSubscribable(() => web3Manager.account$, [], null);
-  const [status] = useSubscribable(() => web3Manager.status$, [], 'pending');
+  const [account, accountMeta] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
+  const [status] = useSubscribableDeprecated(() => web3Manager.status$, [], 'pending');
 
   const isConnected: boolean = accountMeta.loaded && !!account;
 

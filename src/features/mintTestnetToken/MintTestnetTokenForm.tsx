@@ -6,7 +6,7 @@ import { TokenAmount, Token, decimalsToWei } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { Loading } from 'components';
 import { ALL_TOKEN } from 'utils/mock';
@@ -26,7 +26,7 @@ const fieldNames: FieldNames<FormData> = {
 export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps) {
   const api = useApi();
 
-  const [tokens, tokensMeta] = useSubscribable(
+  const [tokens, tokensMeta] = useSubscribableDeprecated(
     () =>
       combineLatest(
         Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress => {

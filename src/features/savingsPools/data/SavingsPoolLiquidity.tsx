@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { FormattedAmount, FormattedAmountProps, Loading } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
 
 export function SavingsPoolLiquidity({ poolAddress, variant }: Props) {
   const api = useApi();
-  const [liquidity, liquidityMeta] = useSubscribable(
+  const [liquidity, liquidityMeta] = useSubscribableDeprecated(
     () => api.savings.getPoolBalance$(poolAddress),
     [api, poolAddress],
   );

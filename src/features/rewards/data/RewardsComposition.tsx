@@ -14,7 +14,7 @@ import {
 import { CatPaws } from 'components/icons';
 import { percentAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { RewardData } from 'model/types';
 
@@ -30,7 +30,9 @@ function makeChartData(
 export function RewardsComposition() {
   const classes = useStyles();
   const api = useApi();
-  const [rewardsData, rewardsMeta] = useSubscribable(() => api.user.getRewardsData$(), [api]);
+  const [rewardsData, rewardsMeta] = useSubscribableDeprecated(() => api.user.getRewardsData$(), [
+    api,
+  ]);
   const data = makeChartData(rewardsData);
   return (
     <Loading meta={rewardsMeta}>

@@ -12,7 +12,7 @@ import {
   Loading,
 } from 'components';
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 
 type Props = {
@@ -23,7 +23,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   const api = useApi();
   const classes = useStyles();
 
-  const [entries, entriesMeta] = useSubscribable(
+  const [entries, entriesMeta] = useSubscribableDeprecated(
     () =>
       api.savings.getPoolBalances$(poolAddress).pipe(
         map(balances =>

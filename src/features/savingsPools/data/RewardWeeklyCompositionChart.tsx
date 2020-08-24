@@ -3,7 +3,7 @@ import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import { CompositionChart, TokensTableLegend, CompositionLegend, Grid, Loading } from 'components';
 import { makeStyles } from 'utils/styles';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
@@ -16,7 +16,10 @@ function RewardWeeklyCompositionChart(props: Props) {
   const classes = useStyles();
 
   const api = useApi();
-  const [rewards, rewardsMeta] = useSubscribable(() => api.savings.getRewards$(poolAddress), [api]);
+  const [rewards, rewardsMeta] = useSubscribableDeprecated(
+    () => api.savings.getRewards$(poolAddress),
+    [api],
+  );
 
   const chartData = React.useMemo(
     () =>

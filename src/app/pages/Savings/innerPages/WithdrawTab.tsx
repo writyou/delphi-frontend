@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { Loading, Hint, Grid, Button } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
@@ -13,7 +13,7 @@ export function WithdrawTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.user.getMySavingsPools$(), [api]);
 
   return (
     <>

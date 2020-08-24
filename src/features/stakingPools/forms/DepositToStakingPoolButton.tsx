@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { ModalButton, ButtonProps, Loading, Button } from 'components';
 import { StakingPool } from 'model/types';
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { DepositToStakingPoolForm } from './DepositToStakingPoolForm';
 
@@ -15,7 +15,7 @@ export function DepositToStakingPoolButton({
 }: { pool: StakingPool } & ButtonProps): JSX.Element {
   const api = useApi();
 
-  const [isStakeDisabled, meta] = useSubscribable(
+  const [isStakeDisabled, meta] = useSubscribableDeprecated(
     () =>
       combineLatest([
         api.user.getStakingDepositLimit$(pool.address),

@@ -6,7 +6,7 @@ import { Table, FormattedAmount, Grid, TokenName, Loading } from 'components';
 import { Cat2, CatPaws } from 'components/icons';
 import { liquidityAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { RewardData } from 'model/types';
 
@@ -54,7 +54,7 @@ const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
 export function RewardsTable() {
   const classes = useStyles();
   const api = useApi();
-  const [data, meta] = useSubscribable(() => api.user.getRewardsData$(), [api]);
+  const [data, meta] = useSubscribableDeprecated(() => api.user.getRewardsData$(), [api]);
 
   return (
     <Loading meta={meta}>

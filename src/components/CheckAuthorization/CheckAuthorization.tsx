@@ -2,7 +2,7 @@ import React from 'react';
 import { Observable } from 'rxjs';
 import { Redirect, Route, Switch } from 'react-router';
 
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { Loading } from '../Loading';
 
@@ -15,7 +15,7 @@ type IProps = {
 
 export const CheckAuthorization: React.FC<IProps> = (props: IProps) => {
   const { isAuthorized$, redirectTo, excludePath, children } = props;
-  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribable(() => isAuthorized$, [
+  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribableDeprecated(() => isAuthorized$, [
     isAuthorized$,
   ]);
 

@@ -7,7 +7,7 @@ import { TokenAmount, Token, Amount } from '@akropolis-web/primitives';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
-import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
+import { getFieldWithComponent, useValidateAmount, useSubscribableDeprecated } from 'utils/react';
 import { SpyField } from 'components';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
@@ -75,7 +75,9 @@ function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
   const { t } = useTranslate();
 
-  const [depositLimit, depositLimitMeta] = useSubscribable(getDepositLimit$, [getDepositLimit$]);
+  const [depositLimit, depositLimitMeta] = useSubscribableDeprecated(getDepositLimit$, [
+    getDepositLimit$,
+  ]);
 
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
 

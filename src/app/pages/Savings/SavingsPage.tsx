@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { routes } from 'app/routes';
 import { TabsSection, CheckAuthorization, Loading } from 'components';
 import { Api, useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { PageForGuest } from 'app/components';
 
 import { AllocateTab } from './innerPages/AllocateTab';
@@ -38,7 +38,7 @@ export function SavingsPage() {
 
   const api = useApi();
 
-  const [filteredTabs, meta] = useSubscribable(
+  const [filteredTabs, meta] = useSubscribableDeprecated(
     () =>
       combineLatest(tabs.map(tab => tab.getData(api))).pipe(
         map(tabData => (tabData ? tabs.filter((_, i) => Boolean(tabData[i]?.length)) : undefined)),

@@ -4,7 +4,7 @@ import { combineLatest } from 'rxjs';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { FormattedAmount, Loading } from 'components';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
@@ -14,7 +14,7 @@ const reduceLiquidityAmounts = map<LiquidityAmount[], LiquidityAmount>(balances 
 
 export function UserStakingPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribable(
+  const [totalBalance, totalBalanceMeta] = useSubscribableDeprecated(
     () =>
       api.user.getMyStakingPools$().pipe(
         switchMap(pools =>

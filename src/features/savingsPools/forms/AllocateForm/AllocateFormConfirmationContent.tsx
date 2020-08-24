@@ -8,7 +8,7 @@ import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { Grid, Loading } from 'components';
 
 import { getDeposits } from './getDeposits';
@@ -21,7 +21,7 @@ export function AllocateFormConfirmationContent(values: FormData) {
   const api = useApi();
   const deposits = useMemo(() => getDeposits(values), [values]);
 
-  const [fees, feesMeta] = useSubscribable(
+  const [fees, feesMeta] = useSubscribableDeprecated(
     () =>
       api.web3Manager.account$.pipe(
         switchMap(account =>

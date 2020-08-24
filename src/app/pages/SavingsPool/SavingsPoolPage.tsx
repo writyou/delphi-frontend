@@ -8,7 +8,7 @@ import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
 import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
 import { routes } from 'app/routes';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import {
   SavingsPoolLiquidity,
@@ -31,7 +31,7 @@ export function SavingsPoolPage() {
   }
 
   const api = useApi();
-  const [pool, poolMeta] = useSubscribable(() => api.savings.getPool$(poolAddress), [
+  const [pool, poolMeta] = useSubscribableDeprecated(() => api.savings.getPool$(poolAddress), [
     api,
     poolAddress,
   ]);
