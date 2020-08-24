@@ -149,7 +149,12 @@ export class SavingsModuleApi {
       this.getPool$(poolAddress),
       contract.methods.supportedTokens(),
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
-        switchMap(() => contract.methods.balanceOfAll.read(undefined, { from: poolAddress })),
+        switchMap(() =>
+          contract.methods.balanceOfAll.read(undefined, { from: poolAddress }, [
+            this.readonlyContract.events.Withdraw(),
+            this.readonlyContract.events.Deposit(),
+          ]),
+        ),
       ),
     ]).pipe(
       map(([pool, tokens, balances]) => {

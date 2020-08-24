@@ -1,5 +1,6 @@
 import React from 'react';
 import { combineLatest, of } from 'rxjs';
+import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -18,7 +19,7 @@ export function AllocateTab() {
       pools?.length
         ? combineLatest(pools.map(p => api.user.getSavingsDepositLimit$(p.address)))
         : of(undefined),
-    [api, pools],
+    [api, R.toString(pools)],
   );
   const hasLimits = limits ? limits.some(l => l && !l.isZero()) : false;
 
