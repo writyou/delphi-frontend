@@ -11,7 +11,9 @@ type Props = {
   backgroundPath?: string;
 };
 
-export function ModuleIntroButton(props: Props & ButtonBaseProps) {
+export function ModuleIntroButton<C extends React.ElementType>(
+  props: Props & ButtonBaseProps<C, { component?: C }>,
+) {
   const classes = useStyles(props);
 
   const { title, subtitle, buttonLabel, backgroundPath, ...rest } = props;
