@@ -28,6 +28,7 @@ export const useStyles = makeStyles(
 
         '&$colorError': {
           color: theme.palette.error.main,
+          fontSize: 12,
           backgroundColor: lighten(theme.palette.error.main, 0.8),
         },
 
