@@ -9,7 +9,7 @@ import {
   CompositionLegend,
   Grid,
   Metric,
-  Loading,
+  DeprecatedLoading,
 } from 'components';
 import { CatPaws } from 'components/icons';
 import { percentAmount } from 'utils/mock';
@@ -35,7 +35,7 @@ export function RewardsComposition() {
   ]);
   const data = makeChartData(rewardsData);
   return (
-    <Loading meta={rewardsMeta}>
+    <DeprecatedLoading meta={rewardsMeta}>
       <Grid container alignItems="center" spacing={3}>
         <Grid item>
           {data.length ? (
@@ -60,7 +60,7 @@ export function RewardsComposition() {
           )}
         </Grid>
       </Grid>
-    </Loading>
+    </DeprecatedLoading>
   );
 }
 

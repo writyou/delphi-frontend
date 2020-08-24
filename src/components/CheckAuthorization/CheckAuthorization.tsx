@@ -4,7 +4,7 @@ import { Redirect, Route, Switch } from 'react-router';
 
 import { useSubscribableDeprecated } from 'utils/react';
 
-import { Loading } from '../Loading';
+import { DeprecatedLoading } from '../DeprecatedLoading';
 
 type IProps = {
   isAuthorized$: Observable<boolean>;
@@ -20,9 +20,9 @@ export const CheckAuthorization: React.FC<IProps> = (props: IProps) => {
   ]);
 
   return (
-    <Loading meta={isWorthyToWatchMeta} loader={!children ? <>{null}</> : undefined}>
+    <DeprecatedLoading meta={isWorthyToWatchMeta} loader={!children ? <>{null}</> : undefined}>
       {renderContent()}
-    </Loading>
+    </DeprecatedLoading>
   );
 
   function renderContent() {

@@ -9,7 +9,7 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { useSubscribableDeprecated } from 'utils/react';
-import { Grid, Loading } from 'components';
+import { Grid, DeprecatedLoading } from 'components';
 
 import { getDeposits } from './getDeposits';
 import { FeesTable } from './FeesTable';
@@ -49,13 +49,13 @@ export function AllocateFormConfirmationContent(values: FormData) {
         <Typography>{t(tKeys.modules.savings.allocateDialog.getKey())}</Typography>
       </Grid>
       <Grid item xs={12} container>
-        <Loading meta={feesMeta}>
+        <DeprecatedLoading meta={feesMeta}>
           {fees ? (
             <FeesTable fees={fees} />
           ) : (
             t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())
           )}
-        </Loading>
+        </DeprecatedLoading>
       </Grid>
       <Grid item xs={12} container justify="flex-end">
         <InfiniteApproveSwitch

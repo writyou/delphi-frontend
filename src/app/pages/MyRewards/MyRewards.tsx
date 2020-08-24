@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useApi } from 'services/api';
 import { makeStyles } from 'utils/styles';
 import { useSubscribableDeprecated } from 'utils/react';
-import { Loading, Grid, Card } from 'components';
+import { DeprecatedLoading, Grid, Card } from 'components';
 import {
   WithdrawRewardsButton,
   TotalRewardsBalance,
@@ -19,7 +19,7 @@ export function MyRewards() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>
+      <DeprecatedLoading meta={userMeta}>
         {isUserExist ? (
           <Grid container className={classes.table} spacing={6}>
             <Grid item xs={6}>
@@ -47,7 +47,7 @@ export function MyRewards() {
         ) : (
           <PageForGuest />
         )}
-      </Loading>
+      </DeprecatedLoading>
     </Card>
   );
 }

@@ -6,7 +6,15 @@ import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
+import {
+  Grid,
+  Metric,
+  IconButton,
+  Hint,
+  DeprecatedLoading,
+  FormattedAmount,
+  Card,
+} from 'components';
 import { routes } from 'app/routes';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
@@ -40,7 +48,7 @@ export function SavingsPoolPage() {
   const classes = useStyles();
 
   return (
-    <Loading meta={poolMeta}>
+    <DeprecatedLoading meta={poolMeta}>
       <Card variant="contained" className={classes.root}>
         {pool ? (
           <Grid container direction="column">
@@ -131,7 +139,7 @@ export function SavingsPoolPage() {
           <Hint>Savings pool with address &quot;{poolAddress}&quot; not found</Hint>
         )}
       </Card>
-    </Loading>
+    </DeprecatedLoading>
   );
 
   function handleBackOnClick() {

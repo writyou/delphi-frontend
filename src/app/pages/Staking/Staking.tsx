@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
-import { Loading, Grid } from 'components';
+import { DeprecatedLoading, Grid } from 'components';
 
 import { StakingPoolCard } from './StakingPoolCard';
 
@@ -11,7 +11,7 @@ export function Staking() {
   const [pools, poolsMeta] = useSubscribableDeprecated(() => api.staking.getPools$(), [api]);
 
   return (
-    <Loading meta={poolsMeta}>
+    <DeprecatedLoading meta={poolsMeta}>
       <Grid container alignItems="flex-start" spacing={3}>
         {pools &&
           pools.length &&
@@ -21,6 +21,6 @@ export function Staking() {
             </Grid>
           ))}
       </Grid>
-    </Loading>
+    </DeprecatedLoading>
   );
 }

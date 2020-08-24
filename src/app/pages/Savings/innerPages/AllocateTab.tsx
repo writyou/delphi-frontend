@@ -4,7 +4,7 @@ import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { Loading } from 'components';
+import { DeprecatedLoading } from 'components';
 import { AllocateForm } from 'features/savingsPools';
 
 export function AllocateTab() {
@@ -18,7 +18,9 @@ export function AllocateTab() {
       <div className={classes.allocateTabDescription}>
         {t(tKeys.modules.savings.allocateTabText.getKey())}
       </div>
-      <Loading meta={poolsMeta}>{pools && <AllocateForm pools={pools} />}</Loading>
+      <DeprecatedLoading meta={poolsMeta}>
+        {pools && <AllocateForm pools={pools} />}
+      </DeprecatedLoading>
     </>
   );
 }

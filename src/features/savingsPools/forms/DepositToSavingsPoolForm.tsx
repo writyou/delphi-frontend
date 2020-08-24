@@ -11,7 +11,7 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { useValidateAmount, useSubscribableDeprecated } from 'utils/react';
 import { SavingsPool } from 'model/types';
-import { Grid, Loading, FormattedAmount, Typography } from 'components';
+import { Grid, DeprecatedLoading, FormattedAmount, Typography } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
 import { ETH_NETWORK_CONFIG } from 'env';
 
@@ -98,7 +98,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
         {`${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
           amount: amount ? amount.toFormattedString() : '⏳',
         })}`}
-        <Loading meta={feesMeta}>
+        <DeprecatedLoading meta={feesMeta}>
           <Typography>
             Additional fee is{' '}
             {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
@@ -107,7 +107,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
               'zero'
             )}
           </Typography>
-        </Loading>
+        </DeprecatedLoading>
       </>
     );
   };

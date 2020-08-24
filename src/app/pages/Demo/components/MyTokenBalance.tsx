@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Loading, FormattedAmount } from 'components';
+import { DeprecatedLoading, FormattedAmount } from 'components';
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
 
@@ -11,5 +11,9 @@ export function MyTokenBalance({ address }: { address: string }) {
     [api, address],
   );
 
-  return <Loading meta={balanceMeta}>{balance && <FormattedAmount sum={balance} />}</Loading>;
+  return (
+    <DeprecatedLoading meta={balanceMeta}>
+      {balance && <FormattedAmount sum={balance} />}
+    </DeprecatedLoading>
+  );
 }

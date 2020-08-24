@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Loading, DepositLimit } from 'components';
+import { DeprecatedLoading, DepositLimit } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -11,5 +11,9 @@ export function SavingsPoolDepositLimit({ poolAddress }: { poolAddress: string }
     [api, poolAddress],
   );
 
-  return <Loading meta={limitMeta}>{limit && <DepositLimit limit={limit} />}</Loading>;
+  return (
+    <DeprecatedLoading meta={limitMeta}>
+      {limit && <DepositLimit limit={limit} />}
+    </DeprecatedLoading>
+  );
 }

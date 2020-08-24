@@ -3,7 +3,7 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { StakingPool } from 'model/types';
-import { ConfirmationDialog, Loading, Button, ButtonProps } from 'components';
+import { ConfirmationDialog, DeprecatedLoading, Button, ButtonProps } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
@@ -31,7 +31,7 @@ export function WithdrawFromStakingPoolButton({
 
   return (
     <>
-      <Loading
+      <DeprecatedLoading
         meta={paramsMeta}
         loader={
           <Button {...rest} disabled>
@@ -42,7 +42,7 @@ export function WithdrawFromStakingPoolButton({
         <Button {...rest} onClick={open} disabled={unstakeDisabled}>
           Unstake
         </Button>
-      </Loading>
+      </DeprecatedLoading>
       <ConfirmationDialog
         isOpen={isOpen}
         yesText="Unstake"

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Grid } from 'components';
+import { Table, DeprecatedLoading, Grid } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserSavingsPoolsTotalBalance } from 'features/savingsPools';
@@ -17,7 +17,7 @@ export function Savings() {
 
   return (
     <div className={classes.root}>
-      <Loading meta={[poolsMeta]}>
+      <DeprecatedLoading meta={[poolsMeta]}>
         {!pools?.length ? (
           <EmptyListHint redirectPage="savings" />
         ) : (
@@ -37,7 +37,7 @@ export function Savings() {
             </Grid>
           </Grid>
         )}
-      </Loading>
+      </DeprecatedLoading>
     </div>
   );
 }

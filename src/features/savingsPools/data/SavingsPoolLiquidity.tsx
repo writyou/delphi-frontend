@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedAmount, FormattedAmountProps, Loading } from 'components';
+import { FormattedAmount, FormattedAmountProps, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -17,8 +17,8 @@ export function SavingsPoolLiquidity({ poolAddress, variant }: Props) {
   );
 
   return (
-    <Loading meta={liquidityMeta}>
+    <DeprecatedLoading meta={liquidityMeta}>
       {liquidity && <FormattedAmount sum={liquidity} variant={variant} />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

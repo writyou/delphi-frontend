@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
-import { Loading, Card, Grid } from 'components';
+import { DeprecatedLoading, Card, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
 import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
@@ -16,7 +16,7 @@ export function Summary() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>
+      <DeprecatedLoading meta={userMeta}>
         {isUserExist ? (
           <Grid container spacing={10}>
             <Grid item xs={6}>
@@ -29,7 +29,7 @@ export function Summary() {
         ) : (
           <PageForGuest />
         )}
-      </Loading>
+      </DeprecatedLoading>
     </Card>
   );
 }

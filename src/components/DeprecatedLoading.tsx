@@ -58,7 +58,9 @@ function gqlResultsToMetas(values: MaybeArray<SubscriptionResult>): IMeta[] {
   }));
 }
 
-export function Loading<T extends ProgressVariant = DefaultProgressVariant>(props: IProps<T>) {
+export function DeprecatedLoading<T extends ProgressVariant = DefaultProgressVariant>(
+  props: IProps<T>,
+) {
   const classes = useStyles();
   const {
     children,

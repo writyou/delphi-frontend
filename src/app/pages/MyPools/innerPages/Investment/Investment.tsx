@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Grid } from 'components';
+import { Table, DeprecatedLoading, Grid } from 'components';
 import { percentAmount, tokenAmount, getMockCompositionChartEntriesLiquidity } from 'utils/mock';
 
 import * as tableData from './tableData';
@@ -23,7 +23,7 @@ export function Investment() {
 
   return (
     <div className={classes.root}>
-      <Loading>
+      <DeprecatedLoading>
         {!entries.length ? (
           <EmptyListHint redirectPage="investments" />
         ) : (
@@ -39,7 +39,7 @@ export function Investment() {
             </Grid>
           </Grid>
         )}
-      </Loading>
+      </DeprecatedLoading>
     </div>
   );
 }

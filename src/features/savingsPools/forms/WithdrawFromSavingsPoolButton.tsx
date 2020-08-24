@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { getSignificantValue } from 'utils';
-import { ModalButton, ButtonProps, Loading, Button } from 'components';
+import { ModalButton, ButtonProps, DeprecatedLoading, Button } from 'components';
 import { SavingsPool } from 'model/types';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
@@ -28,7 +28,7 @@ export function WithdrawFromSavingsPoolButton({
   const disabled = !!balance && !balance.gt(getSignificantValue(balance.currency.decimals));
 
   return (
-    <Loading
+    <DeprecatedLoading
       meta={balanceMeta}
       loader={
         <Button {...rest} disabled>
@@ -45,6 +45,6 @@ export function WithdrawFromSavingsPoolButton({
           />
         )}
       </ModalButton>
-    </Loading>
+    </DeprecatedLoading>
   );
 }

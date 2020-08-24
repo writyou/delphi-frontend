@@ -3,7 +3,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Typography, Hint, Grid } from 'components';
+import { Table, DeprecatedLoading, Typography, Hint, Grid } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { UserStakingPoolsTotalBalance } from 'features/stakingPools';
@@ -39,7 +39,7 @@ export function Staking() {
 
   return (
     <div className={classes.root}>
-      <Loading meta={stakingPoolsMeta}>
+      <DeprecatedLoading meta={stakingPoolsMeta}>
         {!stakingPools?.length ? (
           <Hint>
             <Typography>Not found</Typography>
@@ -61,7 +61,7 @@ export function Staking() {
             </Grid>
           </Grid>
         )}
-      </Loading>
+      </DeprecatedLoading>
     </div>
   );
 }

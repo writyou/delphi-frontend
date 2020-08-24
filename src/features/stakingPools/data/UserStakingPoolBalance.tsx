@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -11,5 +11,9 @@ export function UserStakingPoolBalance({ poolAddress }: { poolAddress: string })
     [api, poolAddress],
   );
 
-  return <Loading meta={balanceMeta}>{balance && <FormattedAmount sum={balance} />}</Loading>;
+  return (
+    <DeprecatedLoading meta={balanceMeta}>
+      {balance && <FormattedAmount sum={balance} />}
+    </DeprecatedLoading>
+  );
 }

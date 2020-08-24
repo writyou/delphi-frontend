@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribableDeprecated } from 'utils/react';
-import { Loading, Hint, Grid, Button } from 'components';
+import { DeprecatedLoading, Hint, Grid, Button } from 'components';
 import { routes } from 'app/routes';
 import { makeStyles } from 'utils/styles';
 import { WithdrawFromSavingsPoolButton, SavingsPoolCard } from 'features/savingsPools';
@@ -17,7 +17,7 @@ export function WithdrawTab() {
 
   return (
     <>
-      <Loading meta={poolsMeta}>
+      <DeprecatedLoading meta={poolsMeta}>
         {pools && pools.length ? (
           <>
             <div className={classes.withdrawTabDescription}>
@@ -58,7 +58,7 @@ export function WithdrawTab() {
             You don’t have any active savings pools yet.
           </Hint>
         )}
-      </Loading>
+      </DeprecatedLoading>
     </>
   );
 }

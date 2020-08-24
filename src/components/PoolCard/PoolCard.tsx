@@ -10,7 +10,7 @@ import { map } from 'rxjs/operators';
 import { tKeys, useTranslate } from 'services/i18n';
 import { useSubscribableDeprecated } from 'utils/react';
 
-import { Loading } from '../Loading';
+import { DeprecatedLoading } from '../DeprecatedLoading';
 import { DepositLimit } from '../DepositLimit/DepositLimit';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 import { Card } from '../Card';
@@ -98,7 +98,7 @@ export function PoolCard(props: Props) {
         </div>
 
         <div className={cn(classes.row, classes.availableDepositRow)}>
-          <Loading
+          <DeprecatedLoading
             meta={[availableForDepositMeta, poolFillingMeta]}
             progressProps={{ width: '100%' }}
           >
@@ -119,7 +119,7 @@ export function PoolCard(props: Props) {
                 )}
               </Grid>
             )}
-          </Loading>
+          </DeprecatedLoading>
         </div>
 
         <div className={classes.row}>

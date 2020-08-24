@@ -9,7 +9,7 @@ import { useCommunication, useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { tKeys as tKeysAll, useTranslate } from 'services/i18n';
 import { SwitchInput } from 'components/inputs';
-import { Loading, Label, Box, Grid } from 'components';
+import { DeprecatedLoading, Label, Box, Grid } from 'components';
 import { toArray } from 'utils/array';
 import { makeStyles } from 'utils/styles';
 
@@ -101,7 +101,7 @@ export function InfiniteApproveSwitch(props: Props) {
   return (
     <Grid container wrap="nowrap">
       <Box mr={1} display="flex">
-        <Loading
+        <DeprecatedLoading
           meta={tokensWithApprovesMeta}
           communication={communication}
           progressVariant="circle"

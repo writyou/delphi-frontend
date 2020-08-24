@@ -7,7 +7,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { useCommunication, ISubscriptionMeta } from 'utils/react';
-// import { Loading } from 'components/Loading';
 import { Hint } from 'components/Hint/Hint';
 import { makeStyles } from 'utils/styles';
 

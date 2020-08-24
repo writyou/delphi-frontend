@@ -3,7 +3,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
@@ -43,8 +43,8 @@ export function UserStakingPoolsTotalBalance() {
   );
 
   return (
-    <Loading meta={totalBalanceMeta}>
+    <DeprecatedLoading meta={totalBalanceMeta}>
       {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

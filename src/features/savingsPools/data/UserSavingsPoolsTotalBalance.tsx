@@ -2,7 +2,7 @@ import React from 'react';
 import * as R from 'ramda';
 import { map } from 'rxjs/operators';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -17,8 +17,8 @@ export function UserSavingsPoolsTotalBalance() {
   );
 
   return (
-    <Loading meta={totalBalanceMeta}>
+    <DeprecatedLoading meta={totalBalanceMeta}>
       {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

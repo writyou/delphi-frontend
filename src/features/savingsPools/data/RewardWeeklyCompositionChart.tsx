@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
-import { CompositionChart, TokensTableLegend, CompositionLegend, Grid, Loading } from 'components';
+import {
+  CompositionChart,
+  TokensTableLegend,
+  CompositionLegend,
+  Grid,
+  DeprecatedLoading,
+} from 'components';
 import { makeStyles } from 'utils/styles';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
@@ -30,7 +36,7 @@ function RewardWeeklyCompositionChart(props: Props) {
     [rewards],
   );
   return (
-    <Loading meta={rewardsMeta}>
+    <DeprecatedLoading meta={rewardsMeta}>
       <Grid container spacing={3} wrap="nowrap">
         <Grid item>
           <CompositionChart withBackground chartData={chartData} size="medium" />
@@ -47,7 +53,7 @@ function RewardWeeklyCompositionChart(props: Props) {
           />
         </Grid>
       </Grid>
-    </Loading>
+    </DeprecatedLoading>
   );
 }
 

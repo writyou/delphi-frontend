@@ -2,7 +2,7 @@ import * as React from 'react';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Grid, PieChartData } from 'components';
+import { Table, DeprecatedLoading, Grid, PieChartData } from 'components';
 import {
   percentAmount,
   tokenAmount,
@@ -44,7 +44,7 @@ export function DCA() {
 
   return (
     <div className={classes.root}>
-      <Loading>
+      <DeprecatedLoading>
         {!entries.length ? (
           <EmptyListHint redirectPage="dca" />
         ) : (
@@ -60,7 +60,7 @@ export function DCA() {
             </Grid>
           </Grid>
         )}
-      </Loading>
+      </DeprecatedLoading>
     </div>
   );
 }

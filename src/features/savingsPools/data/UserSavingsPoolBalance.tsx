@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -12,8 +12,8 @@ export function UserSavingsPoolBalance({ poolAddress }: { poolAddress: string })
   );
 
   return (
-    <Loading meta={balanceMeta}>
+    <DeprecatedLoading meta={balanceMeta}>
       {balance && <FormattedAmount sum={balance} variant="plain" />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

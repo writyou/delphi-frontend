@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Loading, Grid } from 'components';
+import { DeprecatedLoading, Grid } from 'components';
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
 
@@ -11,7 +11,7 @@ export function SavingsPollsList() {
   const [pools, poolsMeta] = useSubscribableDeprecated(() => api.savings.getPools$(), [api]);
 
   return (
-    <Loading meta={poolsMeta}>
+    <DeprecatedLoading meta={poolsMeta}>
       <Grid container spacing={3}>
         {pools &&
           pools.map(pool => (
@@ -20,6 +20,6 @@ export function SavingsPollsList() {
             </Grid>
           ))}
       </Grid>
-    </Loading>
+    </DeprecatedLoading>
   );
 }

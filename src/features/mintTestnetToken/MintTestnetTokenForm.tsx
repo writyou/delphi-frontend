@@ -8,7 +8,7 @@ import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
 import { useSubscribableDeprecated } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
-import { Loading } from 'components';
+import { DeprecatedLoading } from 'components';
 import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {
@@ -70,7 +70,7 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
       onSubmit={handleFormSubmit}
     >
       <>
-        <Loading meta={tokensMeta}>
+        <DeprecatedLoading meta={tokensMeta}>
           {tokens && (
             <TokenAmountField
               inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
@@ -78,7 +78,7 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
               currencies={tokens}
             />
           )}
-        </Loading>
+        </DeprecatedLoading>
       </>
     </FormWithConfirmation>
   );

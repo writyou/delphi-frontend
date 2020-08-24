@@ -10,7 +10,7 @@ import {
   CompositionLegend,
   Grid,
   Metric,
-  Loading,
+  DeprecatedLoading,
   PieChartData,
   CatsPawPlaceholder,
 } from 'components';
@@ -57,7 +57,7 @@ export function UserStakingPoolsBalancesComposition(props: Props) {
 
   return (
     <Grid container alignItems="center" spacing={3}>
-      <Loading
+      <DeprecatedLoading
         meta={chartDataMeta}
         loader={
           <Grid item>
@@ -66,7 +66,7 @@ export function UserStakingPoolsBalancesComposition(props: Props) {
         }
       >
         {chartData?.length ? renderChart(chartData) : renderChartPlaceholder()}
-      </Loading>
+      </DeprecatedLoading>
     </Grid>
   );
 

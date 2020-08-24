@@ -3,7 +3,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TokenAmount, PercentAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, Loading, Table, Grid, TokenIcon } from 'components';
+import { FormattedAmount, DeprecatedLoading, Table, Grid, TokenIcon } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
@@ -40,9 +40,9 @@ export function WithdrawSupposedAmountsTable(props: Props) {
   );
 
   return (
-    <Loading meta={supposedAmountsMeta}>
+    <DeprecatedLoading meta={supposedAmountsMeta}>
       {supposedAmounts && <Table.Component columns={columns} entries={supposedAmounts} />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TokenAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, Loading, Box } from 'components';
+import { FormattedAmount, DeprecatedLoading, Box } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { getSignificantValue } from 'utils';
@@ -21,14 +21,14 @@ export function WithdrawAdditionalFee(props: Props) {
 
   return (
     <Box component="span" display="inline-block">
-      <Loading meta={additionalFeeMeta} progressProps={{ width: 50 }}>
+      <DeprecatedLoading meta={additionalFeeMeta} progressProps={{ width: 50 }}>
         {additionalFee &&
           (additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
             <FormattedAmount sum={additionalFee} variant="plain" />
           ) : (
             'zero'
           ))}
-      </Loading>
+      </DeprecatedLoading>
     </Box>
   );
 }

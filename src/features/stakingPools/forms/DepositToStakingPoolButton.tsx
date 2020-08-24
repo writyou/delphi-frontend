@@ -2,7 +2,7 @@ import React from 'react';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ModalButton, ButtonProps, Loading, Button } from 'components';
+import { ModalButton, ButtonProps, DeprecatedLoading, Button } from 'components';
 import { StakingPool } from 'model/types';
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
@@ -30,7 +30,7 @@ export function DepositToStakingPoolButton({
   );
 
   return (
-    <Loading
+    <DeprecatedLoading
       meta={meta}
       loader={
         <Button {...rest} disabled>
@@ -43,6 +43,6 @@ export function DepositToStakingPoolButton({
           <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
         )}
       </ModalButton>
-    </Loading>
+    </DeprecatedLoading>
   );
 }

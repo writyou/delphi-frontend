@@ -4,7 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
+import { TabsSection, ComingSoon, Card, DeprecatedLoading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
 import { useSubscribableDeprecated } from 'utils/react';
@@ -73,7 +73,7 @@ export function MyPools() {
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={meta}>
+      <DeprecatedLoading meta={meta}>
         <CheckAuthorization
           isAuthorized$={isWorthToWatchPage$}
           redirectTo={routes.pools.getRoutePath()}
@@ -89,7 +89,7 @@ export function MyPools() {
         ) : (
           <PageForGuest />
         )}
-      </Loading>
+      </DeprecatedLoading>
     </Card>
   );
 }

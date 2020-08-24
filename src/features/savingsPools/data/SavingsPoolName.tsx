@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Loading } from 'components';
+import { DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -11,5 +11,5 @@ export function SavingsPoolName({ poolAddress }: { poolAddress: string }) {
     poolAddress,
   ]);
 
-  return <Loading meta={poolMeta}>{pool && pool.poolName}</Loading>;
+  return <DeprecatedLoading meta={poolMeta}>{pool && pool.poolName}</DeprecatedLoading>;
 }

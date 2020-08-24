@@ -9,7 +9,7 @@ import { Adaptive } from 'services/adaptability';
 import { getShortAddress } from 'utils/format';
 import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { Button, Loading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
+import { Button, DeprecatedLoading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
 
 interface Props {
   children?: React.ReactNode;
@@ -40,7 +40,7 @@ export function AuthButton({ children, size }: Props) {
         disabled={!accountMeta.loaded}
         className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
-          <Loading
+          <DeprecatedLoading
             ignoreError
             meta={{ loaded: status !== 'pending', error: null }}
             communication={connectCommunication}
@@ -51,7 +51,7 @@ export function AuthButton({ children, size }: Props) {
           />
         }
       >
-        <Loading meta={accountMeta}>
+        <DeprecatedLoading meta={accountMeta}>
           {account ? (
             <>
               <Avatar className={classes.icon}>
@@ -80,7 +80,7 @@ export function AuthButton({ children, size }: Props) {
           ) : (
             children || t(tKeys.features.auth.connect.getKey())
           )}
-        </Loading>
+        </DeprecatedLoading>
       </Button>
     </>
   );

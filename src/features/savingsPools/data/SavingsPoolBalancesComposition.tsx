@@ -9,7 +9,7 @@ import {
   PieChartData,
   CompositionLegend,
   Grid,
-  Loading,
+  DeprecatedLoading,
 } from 'components';
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
@@ -34,7 +34,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   );
 
   return (
-    <Loading meta={entriesMeta} loader={<CompositionChartSkeleton size="medium" />}>
+    <DeprecatedLoading meta={entriesMeta} loader={<CompositionChartSkeleton size="medium" />}>
       {entries && (
         <Grid container spacing={3} wrap="nowrap">
           <Grid item>
@@ -50,7 +50,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
           </Grid>
         </Grid>
       )}
-    </Loading>
+    </DeprecatedLoading>
   );
 }
 

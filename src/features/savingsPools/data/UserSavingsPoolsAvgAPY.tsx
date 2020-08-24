@@ -1,7 +1,7 @@
 import React from 'react';
 import { PercentAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 import { MAX_AVG_APY } from 'env';
@@ -13,7 +13,7 @@ export function UserSavingsPoolsAvgAPY() {
   ]);
 
   return (
-    <Loading meta={avgAPYMeta}>
+    <DeprecatedLoading meta={avgAPYMeta}>
       {avgAPY && avgAPY.lt(MAX_AVG_APY) ? (
         <FormattedAmount sum={avgAPY} />
       ) : (
@@ -22,6 +22,6 @@ export function UserSavingsPoolsAvgAPY() {
           <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
         </>
       )}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

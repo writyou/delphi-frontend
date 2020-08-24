@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { ConfirmationDialog, Button, ButtonProps, Loading } from 'components';
+import { ConfirmationDialog, Button, ButtonProps, DeprecatedLoading } from 'components';
 import { useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
 
@@ -22,7 +22,7 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
 
   return (
     <>
-      <Loading
+      <DeprecatedLoading
         meta={meta}
         loader={
           <Button {...props} disabled>
@@ -33,7 +33,7 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
         <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
           Withdraw
         </Button>
-      </Loading>
+      </DeprecatedLoading>
       <ConfirmationDialog
         isOpen={isOpen}
         yesText="Withdraw"

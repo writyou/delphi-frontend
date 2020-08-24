@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, DeprecatedLoading } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { useApi } from 'services/api';
 
@@ -12,8 +12,8 @@ export function DCAPoolLiquidity({ poolAddress }: { poolAddress: string }) {
   );
 
   return (
-    <Loading meta={liquidityMeta}>
+    <DeprecatedLoading meta={liquidityMeta}>
       {liquidity && <FormattedAmount sum={liquidity} variant="plain" />}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Grid, Loading, PoolCard } from 'components';
+import { Grid, DeprecatedLoading, PoolCard } from 'components';
 import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
@@ -19,7 +19,7 @@ export function WithdrawTab() {
   return (
     <>
       <div className={classes.description}>{t(tKeys.modules.dca.description.getKey())}</div>
-      <Loading meta={poolsMeta}>
+      <DeprecatedLoading meta={poolsMeta}>
         <Grid container alignItems="flex-start" spacing={3}>
           {pools &&
             pools.length &&
@@ -39,7 +39,7 @@ export function WithdrawTab() {
               </Grid>
             ))}
         </Grid>
-      </Loading>
+      </DeprecatedLoading>
     </>
   );
 }

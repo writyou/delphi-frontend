@@ -4,7 +4,7 @@ import { of, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { routes } from 'app/routes';
-import { TabsSection, CheckAuthorization, Loading } from 'components';
+import { TabsSection, CheckAuthorization, DeprecatedLoading } from 'components';
 import { Api, useApi } from 'services/api';
 import { useSubscribableDeprecated } from 'utils/react';
 import { PageForGuest } from 'app/components';
@@ -60,7 +60,7 @@ export function SavingsPage() {
   };
 
   return (
-    <Loading meta={meta}>
+    <DeprecatedLoading meta={meta}>
       <CheckAuthorization
         isAuthorized$={isWorthToWatchPage$}
         redirectTo={routes.savings.getRoutePath()}
@@ -75,6 +75,6 @@ export function SavingsPage() {
       ) : (
         <PageForGuest />
       )}
-    </Loading>
+    </DeprecatedLoading>
   );
 }
