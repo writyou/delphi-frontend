@@ -143,4 +143,3 @@ export const SUBGRAPH_HTTP_URL = subgraphHttpUrlsByMode[getEnv().mode];
 export const SUBGRAPH_WS_URL = subgraphWsUrlsByMode[getEnv().mode];
 
 export const DISCORD_URL = 'https://discord.gg/Y58CGUW';
-export const PREAUDIT_VERSION_ANNOUNCEMENT_URL = '#';
