@@ -14,13 +14,14 @@ export type AllocateFormTemplateProps<FormValues extends AnyObject> = FormTempla
   FormValues
 > & {
   infiniteUnlock: ReactNode;
+  hasLimits: boolean;
   gasPriceField?: ReactNode;
 };
 
 export function AllocateFormTemplate<FormValues extends AnyObject>(
   props: AllocateFormTemplateProps<FormValues>,
 ) {
-  const { submitButton, infiniteUnlock, gasPriceField, ...restProps } = props;
+  const { submitButton, infiniteUnlock, gasPriceField, hasLimits, ...restProps } = props;
 
   const children = React.Children.toArray(restProps.children);
 
@@ -50,25 +51,27 @@ export function AllocateFormTemplate<FormValues extends AnyObject>(
               </Hint>
             </Grid>
           )}
-          <Grid container justify="space-between" alignItems="flex-start" spacing={6}>
-            {gasPriceField && <Grid item>{gasPriceField}</Grid>}
-            <Grid item xs>
-              <Grid container spacing={6} justify="flex-end" alignItems="center">
-                <Grid item>{infiniteUnlock}</Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    fullWidth
-                    disabled={submitting || hasValidationErrors}
-                  >
-                    {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
-                  </Button>
+          {hasLimits && (
+            <Grid container justify="space-between" alignItems="flex-start" spacing={6}>
+              {gasPriceField && <Grid item>{gasPriceField}</Grid>}
+              <Grid item xs>
+                <Grid container spacing={6} justify="flex-end" alignItems="center">
+                  <Grid item>{infiniteUnlock}</Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      fullWidth
+                      disabled={submitting || hasValidationErrors}
+                    >
+                      {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          )}
         </form>
       )}
     </Form>

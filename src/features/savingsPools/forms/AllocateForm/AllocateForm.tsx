@@ -18,6 +18,7 @@ import { AllocateFormConfirmationContent } from './AllocateFormConfirmationConte
 
 type AllocateFormProps = {
   pools: SavingsPool[];
+  hasLimits: boolean;
 };
 
 export type FormData = Record<string, TokenAmount> & { _: () => void };
@@ -31,7 +32,7 @@ const validate = (values: FormData) => {
   return errors;
 };
 
-export function AllocateForm({ pools }: AllocateFormProps) {
+export function AllocateForm({ pools, hasLimits }: AllocateFormProps) {
   const { t } = useTranslate();
   const api = useApi();
 
@@ -52,7 +53,11 @@ export function AllocateForm({ pools }: AllocateFormProps) {
       onSubmit={handleFormSubmit}
       submitButton={t(tKeys.modules.savings.allocate.getKey())}
       CustomFormTemplate={props => (
-        <AllocateFormTemplate {...props} infiniteUnlock={renderInfiniteUnlockSwitcher()} />
+        <AllocateFormTemplate
+          {...props}
+          infiniteUnlock={renderInfiniteUnlockSwitcher()}
+          hasLimits={hasLimits}
+        />
       )}
     >
       {pools.map(pool => (
