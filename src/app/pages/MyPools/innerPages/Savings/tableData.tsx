@@ -64,10 +64,10 @@ export const columnsWithSubtable: Array<Table.models.Column<SavingsPool, number>
         x.apy.lt(MAX_AVG_APY) ? (
           <FormattedAmount sum={x.apy} variant="plain" />
         ) : (
-          <>
+          <Box component="span" whiteSpace="nowrap">
             &gt;&nbsp;
             <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
-          </>
+          </Box>
         ),
     },
   },
