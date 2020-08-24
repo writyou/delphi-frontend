@@ -3,7 +3,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 export function BUSDIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
-    <SvgIcon {...props} viewBox="0 0 22 22">
+    <SvgIcon {...props} viewBox="0 0 20 20">
       <defs>
         <linearGradient id="1twusdtxfa" x1="50%" x2="50%" y1="0%" y2="100%">
           <stop offset="0%" stopColor="#FFEEB8" />
