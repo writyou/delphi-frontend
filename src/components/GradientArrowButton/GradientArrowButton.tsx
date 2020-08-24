@@ -1,20 +1,13 @@
 import React, { useCallback, useState } from 'react';
-import { ButtonTypeMap } from '@material-ui/core/Button';
-import { OverrideProps } from '@material-ui/core/OverridableComponent';
 
-import { Button } from 'components/Button';
+import { Button, ButtonProps } from 'components/Button';
 import { GradientArrow } from 'components/icons';
 import { makeStyles, useTheme } from 'utils/styles';
 
-export type ButtonProps<
-  D extends React.ElementType = ButtonTypeMap['defaultComponent'],
-  P = {}
-> = OverrideProps<ButtonTypeMap<P, D>, D>;
-
-export function GradientArrowButton<P = {}, D extends React.ElementType = 'button'>(
-  props: ButtonProps<D, P>,
+export function GradientArrowButton<C extends React.ElementType>(
+  props: ButtonProps<C, { component?: C }>,
 ) {
-  const { children, id, ...rest } = props;
+  const { children, ...rest } = props;
   const classes = useStyles();
   const theme = useTheme();
 
