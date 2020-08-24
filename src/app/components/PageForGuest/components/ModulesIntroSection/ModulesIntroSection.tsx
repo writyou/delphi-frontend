@@ -1,12 +1,11 @@
 import React, { useCallback } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Grid, Typography, Box } from '@akropolis-web/components';
+import { Grid, Box } from '@akropolis-web/components';
 
 import { routes } from 'app/routes';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useAuthContext } from 'services/auth';
 import { useSubscribable } from 'utils/react';
-import { makeStyles } from 'utils/styles';
 
 import * as images from './images';
 import { ModuleIntroButton } from '../ModuleIntroButton/ModuleIntroButton';
@@ -36,7 +35,6 @@ const modulesData: Record<Module, { redirectPath: string; backgroundPath: string
 const tKeys = tKeysAll.components.modulesIntroSection;
 
 export function ModulesIntroSection() {
-  const classes = useStyles();
   const { t } = useTranslate();
   const { web3Manager, openModal } = useAuthContext();
 
@@ -50,22 +48,14 @@ export function ModulesIntroSection() {
   );
 
   return (
-    <Grid container direction="column" spacing={8}>
-      <Grid item xs={12}>
-        <Typography className={classes.text}>
-          You don’t have any pools yet. Wanna become a proud yield farmer but don’t know where to
-          start? Here are some tips:
-        </Typography>
-      </Grid>
-      <Grid container item spacing={4} justify="center">
-        {modules.map((module, index) => (
-          <Box clone minWidth={215} key={index}>
-            <Grid container item xs={12} md={6}>
-              {renderModuleIntroButton(module)}
-            </Grid>
-          </Box>
-        ))}
-      </Grid>
+    <Grid container spacing={4}>
+      {modules.map((module, index) => (
+        <Box clone minWidth={215} key={index}>
+          <Grid container item xs={12} md={6}>
+            {renderModuleIntroButton(module)}
+          </Grid>
+        </Box>
+      ))}
     </Grid>
   );
 
@@ -91,12 +81,3 @@ export function ModulesIntroSection() {
     );
   }
 }
-
-const useStyles = makeStyles(
-  () => ({
-    text: {
-      fontWeight: 300,
-    },
-  }),
-  { name: 'ModulesIntroSection' },
-);
