@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { combineLatest, of } from 'rxjs';
 import * as R from 'ramda';
 
@@ -9,7 +9,7 @@ import { makeStyles } from 'utils/styles';
 import { Loading } from 'components';
 import { AllocateForm } from 'features/savingsPools';
 
-export function AllocateTab() {
+export const AllocateTab = memo(() => {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
@@ -33,7 +33,7 @@ export function AllocateTab() {
       </Loading>
     </>
   );
-}
+});
 
 const useStyles = makeStyles(() => ({
   allocateTabDescription: {
