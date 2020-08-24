@@ -25,7 +25,7 @@ export function PoolFillingLimit(props: Props) {
   return (
     <Grid container justify="space-between" className={classes.root} spacing={1}>
       <Grid item>
-        Capacity: <FormattedAmount sum={capacity} variant="plain" />
+        Capacity: <FormattedAmount sum={capacity} variant="plain" hideSymbol />
       </Grid>
       {!capacity.isZero() && (
         <Grid item>
