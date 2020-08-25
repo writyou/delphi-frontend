@@ -1,73 +1,51 @@
 import * as React from 'react';
-import { LiquidityAmount, TokenAmount, Fraction } from '@akropolis-web/primitives';
-import { combineLatest } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
 
-import { useApi, Api } from 'services/api';
+import { useApi } from 'services/api';
 import { makeStyles } from 'utils/styles';
-import { Table, Loading, Grid, Card } from 'components';
 import { useSubscribable } from 'utils/react';
-import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
-
-import * as tableData from './tableData';
-
-function makeEntriesForChart(entries: tableData.Order[]) {
-  return [
-    entries.map(order => ({
-      value: order.NAV,
-      payload: order.amount,
-    })),
-  ];
-}
-
-function makeTableEntry(amount: TokenAmount, price: Fraction): tableData.Order {
-  return {
-    amount,
-    NAV: new LiquidityAmount(amount.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
-  };
-}
-
-function getChartData$(api: Api) {
-  return api.user.getRewards$().pipe(
-    switchMap(rewards =>
-      combineLatest(rewards.map(a => api.prices.getTokenPrice$(a.currency.address))).pipe(
-        map(prices => {
-          return rewards.map((r, i) => makeTableEntry(r, prices[i]));
-        }),
-      ),
-    ),
-    map(data =>
-      data.sort((a, b) => {
-        return b.NAV.sub(a.NAV).toNumber();
-      }),
-    ),
-  );
-}
+import { Loading, Grid, Card } from 'components';
+import {
+  WithdrawRewardsButton,
+  TotalRewardsBalance,
+  RewardsComposition,
+  RewardsTable,
+} from 'features/rewards';
+import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
 export function MyRewards() {
   const classes = useStyles();
   const api = useApi();
-  const [tableEntries, rewardsMeta] = useSubscribable(() => getChartData$(api), [api]);
+  const [isUserExist, userMeta] = useSubscribable(() => api.user.isUserExist$(), [api]); // TODO add check pool balances
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={rewardsMeta}>
-        {tableEntries && (
-          <Grid container className={classes.table}>
-            <Grid item xs={8}>
-              <Table.Component
-                rowPadding="small"
-                columns={tableData.columnsWithoutExpandableRows}
-                entries={tableEntries}
-              />
+      <Loading meta={userMeta}>
+        {isUserExist ? (
+          <Grid container className={classes.table} spacing={6}>
+            <Grid item xs={6}>
+              <div className={classes.sectionTitle}>Composition</div>
+              <RewardsComposition />
             </Grid>
-            <Grid item xs>
-              <Table.Component
-                columns={tableData.columnForChart}
-                entries={makeEntriesForChart(tableEntries)}
-              />
+            <Grid item xs={3}>
+              <div className={classes.sectionTitle}>Total NAV</div>
+              <div className={classes.totalNav}>
+                <TotalRewardsBalance />
+              </div>
+            </Grid>
+            <Grid item container xs={3} justify="flex-end">
+              <div className={classes.withdrawButton}>
+                <WithdrawRewardsButton size="small" color="primary" variant="outlined" fullWidth />
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <PortfolioBalanceChart />
+            </Grid>
+            <Grid item xs={6}>
+              <RewardsTable />
             </Grid>
           </Grid>
+        ) : (
+          <PageForGuest />
         )}
       </Loading>
     </Card>
@@ -82,6 +60,15 @@ const useStyles = makeStyles(
     },
     table: {
       position: 'relative',
+    },
+    sectionTitle: {
+      marginBottom: 26,
+    },
+    totalNav: {
+      fontSize: 22,
+    },
+    withdrawButton: {
+      width: 155,
     },
   }),
   { name: 'MyRewards' },

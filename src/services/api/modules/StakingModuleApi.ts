@@ -5,7 +5,7 @@ import { autobind } from 'core-decorators';
 import BN from 'bn.js';
 import { switchMap, map } from 'rxjs/operators';
 import * as R from 'ramda';
-import { TokenAmount, Token } from '@akropolis-web/primitives';
+import { TokenAmount, Token, min, max } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
 import { WithdrawFromStakingPool, DepositToStakingPool } from 'model/types';
@@ -97,30 +97,65 @@ export class StakingModuleApi {
 
   @memoize((...args: string[]) => args.join())
   public getDepositLimit$(poolAddress: string, account: string): Observable<TokenAmount | null> {
+    return combineLatest([
+      this.getUserCap$(poolAddress, account),
+      this.getPoolCapacity$(poolAddress),
+      this.getPoolBalance$(poolAddress),
+    ]).pipe(
+      map(([userCap, poolCapacity, poolBalance]) => {
+        const availableCapacity = poolCapacity
+          ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
+          : null;
+        if (userCap && availableCapacity) {
+          return min(userCap, availableCapacity);
+        }
+        return userCap || poolCapacity;
+      }),
+    );
+  }
+
+  @memoize(R.identity)
+  public getPoolCapacity$(poolAddress: string): Observable<TokenAmount | null> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
 
     return combineLatest([
       this.getPool$(poolAddress),
-      this.getDepositLimitsEnabled$(poolAddress),
-      poolContract.methods.userCap(
-        {
-          '': account,
-        },
-        [
-          poolContract.events.UserCapChanged({ filter: { user: account } }),
-          poolContract.events.UserCapEnabledChange(),
-        ],
-      ),
+      this.getPoolCapEnabled$(poolAddress),
+      poolContract.methods.stakingCap(undefined, [poolContract.events.StakingCapChanged()]),
+    ]).pipe(map(([pool, enabled, cap]) => (enabled ? new TokenAmount(cap, pool.token) : null)));
+  }
+
+  @memoize((...args: string[]) => args.join())
+  public getUserCap$(poolAddress: string, account: string): Observable<TokenAmount | null> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return combineLatest([
+      this.getPool$(poolAddress),
+      this.getUserCapEnabled$(poolAddress),
+      this.getFullUserBalance$(poolAddress, account),
+      poolContract.methods.defaultUserCap(undefined, [poolContract.events.DefaultUserCapChanged()]),
     ]).pipe(
-      map(([pool, enabled, cap]) => {
-        const roundedCap = cap.gt(getSignificantValue(pool.token.decimals)) ? cap : new BN(0);
+      map(([pool, enabled, balance, defaultUserCap]) => {
+        const userCap = defaultUserCap.sub(balance.toBN());
+        const roundedCap = userCap.gt(getSignificantValue(pool.token.decimals))
+          ? userCap
+          : new BN(0);
         return enabled ? new TokenAmount(roundedCap, pool.token) : null;
       }),
     );
   }
 
   @memoize(R.identity)
-  private getDepositLimitsEnabled$(poolAddress: string): Observable<boolean> {
+  private getPoolCapEnabled$(poolAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return poolContract.methods.stakingCapEnabled(undefined, [
+      poolContract.events.StakingCapEnabledChange(),
+    ]);
+  }
+
+  @memoize(R.identity)
+  private getUserCapEnabled$(poolAddress: string): Observable<boolean> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
 
     return poolContract.methods.userCapEnabled(undefined, [

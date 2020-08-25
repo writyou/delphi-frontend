@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Observable } from 'rxjs';
 import { Amount } from '@akropolis-web/primitives';
 
@@ -38,7 +38,9 @@ export function SavingsPoolCard({ pool, content, additionalElement, getDepositLi
       poolBalance={<UserSavingsPoolBalance poolAddress={address} />}
       poolBalanceTitle="Supplied"
       poolLiquidity={<SavingsPoolLiquidity poolAddress={address} variant="plain" />}
-      getUserBalance$={(s: string) => api.user.getSavingsPoolBalance$(s)}
+      getUserBalance$={useCallback((s: string) => api.user.getSavingsPoolBalance$(s), [api])}
+      getPoolBalance$={useCallback((s: string) => api.savings.getPoolBalance$(s), [api])}
+      getPoolCapacity$={useCallback((s: string) => api.savings.getPoolCapacity$(s), [api])}
     />
   );
 }

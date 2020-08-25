@@ -36,7 +36,7 @@ export function FormattedAmount(props: FormattedAmountProps) {
   const needToRenderPlus = hasSign && sum.gt(0);
 
   return (
-    <Tooltip title={notRoundedBalance}>
+    <Tooltip title={notRoundedBalance} disableHoverListener={sum.isZero()}>
       <span className={className}>
         {(sum instanceof LiquidityAmount &&
           renderLiquidityAmount(sum, precision, hideSymbol, needToRenderPlus, variant)) ||
@@ -113,7 +113,12 @@ function renderPercentAmount(
   const classes = useStyles();
 
   return (
-    <span className={cn({ [classes.percentRoot]: variant === 'default' })}>
+    <span
+      className={cn({
+        [classes.percentRoot]: variant === 'default',
+        [classes.isZero]: sum.isZero(),
+      })}
+    >
       {(sum.isNeg() && '-') || (needToRenderPlus && '+')}
       {(sum.isNeg() ? sum.mul(new BN(-1)) : sum).toFormattedString(precision, false)}
       <span className={classes.percentSymbol}>{sum.currency.symbol}</span>
@@ -124,14 +129,17 @@ function renderPercentAmount(
 const useStyles = makeStyles(
   {
     percentRoot: {
-      display: 'flex',
+      display: 'inline-flex',
       flexWrap: 'nowrap',
       lineHeight: 'normal',
 
       '& $percentSymbol': {
         fontSize: '0.5em',
         paddingLeft: 2,
-        lineHeight: '1.8em',
+        lineHeight: '2.2em',
+      },
+      '&$isZero': {
+        opacity: 0.5,
       },
     },
 
@@ -140,6 +148,7 @@ const useStyles = makeStyles(
     },
 
     percentSymbol: {},
+    isZero: {},
   },
   { name: 'FormattedAmount' },
 );

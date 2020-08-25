@@ -3,8 +3,9 @@ name: Deploy to GH Pages
 on:
   push:
     branches:
-    - testnet
     - sandbox
+    - testnet
+    - pre-mainnet
     - mainnet
 
 jobs:
@@ -27,6 +28,8 @@ jobs:
         if: github.ref == 'refs/heads/sandbox'
       - run: yarn codegen:mainnet
         if: github.ref == 'refs/heads/mainnet'
+      - run: yarn codegen:pre-mainnet
+        if: github.ref == 'refs/heads/pre-mainnet'
 
       - name: Test
         run: yarn test
@@ -38,6 +41,8 @@ jobs:
         if: github.ref == 'refs/heads/sandbox'
       - run: yarn build:mainnet
         if: github.ref == 'refs/heads/mainnet'
+      - run: yarn build:pre-mainnet
+        if: github.ref == 'refs/heads/pre-mainnet'
 
       - run: echo Deploy 🚀
       - uses: JamesIves/github-pages-deploy-action@releases/v3
@@ -62,3 +67,11 @@ jobs:
           BRANCH: gh-pages
           FOLDER: build
           REPOSITORY_NAME: akropolisio/delphi-mainnet-frontend
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        if: github.ref == 'refs/heads/pre-mainnet'
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          REPOSITORY_NAME: akropolisio/delphi-pre-mainnet-frontend

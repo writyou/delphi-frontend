@@ -27,7 +27,10 @@ interface StorageState {
   lastProvider: null | WalletType;
 }
 
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const INFURA_API_KEY = 'd17ec743acac452d8d5707894840cf24';
+const INFURA_API_KEY_V2 = 'abe86a1956214927bd8b39477bc6ec88';
 
 const BITSKI_API_KEY = '45e6d1b2-f059-4ebd-8afc-3c1cfa0262a4';
 const BITSKI_REDIR_URL = getEnv().isDevelopment
@@ -41,7 +44,7 @@ const PORTIS_API_KEY = 'a7e75afe-29c6-4e7e-9bcb-87bbec6d0be8';
 const connectors: Record<WalletType, Connector> = {
   metamask: new InpageConnector(),
   connectWallet: new ConnectWalletConnector({
-    infuraId: INFURA_API_KEY,
+    infuraId: INFURA_API_KEY_V2,
     chainId: ETH_NETWORK_CONFIG.id,
   }),
   bitski: new BitskiConnector({ clientId: BITSKI_API_KEY, redirectUri: BITSKI_REDIR_URL }),
@@ -68,7 +71,7 @@ export class Web3Manager {
   );
 
   private manager = new Web3WalletsManager<Web3>({
-    defaultProvider: { network: ETH_NETWORK_CONFIG.name, infuraAccessToken: INFURA_API_KEY },
+    defaultProvider: { network: ETH_NETWORK_CONFIG.name, infuraAccessToken: INFURA_API_KEY_V2 },
     makeWeb3: provider => new Web3(provider),
   });
 

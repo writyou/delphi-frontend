@@ -1,7 +1,13 @@
-import { Token, PercentAmount, decimalsToWei, calcAvg } from '@akropolis-web/primitives';
+import {
+  Token,
+  PercentAmount,
+  decimalsToWei,
+  calcAvg,
+  TokenAmount,
+} from '@akropolis-web/primitives';
 
 import * as SR from 'generated/gql/subgraphRequests';
-import { SavingsPool } from 'model/types';
+import { SavingsPool, Reward } from 'model/types';
 
 export function convertSavingsPool(
   d: Pick<SR.SavingsPool, 'id'> & {
@@ -40,4 +46,13 @@ function convertAPRHistoryToAvgAPR(
       .div(decimalsToWei(aprDecimals))
       .mul(100),
   );
+}
+
+export function convertReward(reward: SR.RewardsSubscription['srewards'][0]): Reward {
+  return {
+    amount: new TokenAmount(
+      reward.amount,
+      new Token(reward.token.id, reward.token.symbol, reward.token.decimals),
+    ),
+  };
 }

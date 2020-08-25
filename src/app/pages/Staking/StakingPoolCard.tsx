@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { useApi } from 'services/api';
 import { PoolCard, Grid } from 'components';
@@ -47,8 +47,10 @@ export function StakingPoolCard({ pool }: Props) {
       poolBalanceTitle="My Stake"
       poolLiquidity={<StakingPoolLiquidity poolAddress={address} />}
       poolLiquidityTitle="Staked overall"
-      getDepositLimit$={() => api.user.getStakingDepositLimit$(pool.address)}
-      getUserBalance$={(s: string) => api.user.getFullStakingPoolBalance$(s)}
+      getDepositLimit$={useCallback(() => api.user.getStakingDepositLimit$(pool.address), [])}
+      getUserBalance$={useCallback((s: string) => api.user.getFullStakingPoolBalance$(s), [])}
+      getPoolBalance$={useCallback((s: string) => api.staking.getPoolBalance$(s), [])}
+      getPoolCapacity$={useCallback((s: string) => api.staking.getPoolCapacity$(s), [])}
     />
   );
 }

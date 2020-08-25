@@ -30,7 +30,7 @@ const columns: Table.models.Column<DepositToSavingsPoolWithFee>[] = [
     align: 'right',
     cellContent: {
       kind: 'simple',
-      render: fee => <FormattedAmount sum={fee.amount} hideSymbol />,
+      render: fee => <FormattedAmount sum={fee.amount} hideSymbol variant="plain" />,
     },
   },
   {

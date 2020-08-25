@@ -2,21 +2,34 @@ import React from 'react';
 
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
-import { Loading, Card } from 'components';
+import { Loading, Card, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
+import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
-import { SummaryPage } from './SummaryPage';
-import { SummaryEmptyPage } from '../SummaryEmpty/SummaryEmptyPage';
+import { APYMetricsSection } from './Components/APYMetricsSection';
 
 export function Summary() {
   const classes = useStyles();
 
   const api = useApi();
-  const [user, userMeta] = useSubscribable(() => api.user.getUser$(), [api]);
+  const [isUserExist, userMeta] = useSubscribable(() => api.user.isUserExist$(), [api]);
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>{user ? <SummaryPage /> : <SummaryEmptyPage />}</Loading>
+      <Loading meta={userMeta}>
+        {isUserExist ? (
+          <Grid container spacing={10}>
+            <Grid item xs={6}>
+              <PortfolioBalanceChart />
+            </Grid>
+            <Grid item xs={6}>
+              <APYMetricsSection />
+            </Grid>
+          </Grid>
+        ) : (
+          <PageForGuest />
+        )}
+      </Loading>
     </Card>
   );
 }

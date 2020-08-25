@@ -1,0 +1,17 @@
+subscription Rewards($poolAddress: String!, $dateGt: BigInt!) {
+  srewards(first: 1000, orderBy: date, orderDirection: desc, where:{pool: $poolAddress, date_gt: $dateGt}) {
+    pool {
+      poolToken {
+        name
+      }
+    }
+    token {
+      id
+      name
+      symbol
+      decimals
+    }
+    amount
+    date
+  }
+}

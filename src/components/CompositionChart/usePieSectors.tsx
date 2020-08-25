@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as R from 'ramda';
-import { Amount, PercentAmount, normalizeAmounts } from '@akropolis-web/primitives';
+import { Amount, PercentAmount, normalizeAmounts, Fraction } from '@akropolis-web/primitives';
 
 import { useTheme } from 'utils/styles';
 
@@ -13,7 +13,9 @@ export function usePieSectors<T extends Amount, P = void>(
 
   const colors: ChartColor[] = React.useMemo(
     () =>
-      theme.gradients.poolCompositionChart.map<ChartColor>((gradient, index) => ({
+      [...theme.gradients.poolCompositionChart, ...theme.gradients.additionalChartColors].map<
+        ChartColor
+      >((gradient, index) => ({
         rgb: R.last(gradient.points)!.color,
         svgGradientID: `url(#poolCompositionSector${index})`,
         svgGradient: (
@@ -28,9 +30,11 @@ export function usePieSectors<T extends Amount, P = void>(
   const sectors = React.useMemo(() => {
     const normalizedData = normalizeAmounts(R.pluck('value', chartData));
 
-    const totalValue = R.pluck('value', normalizedData).reduce((total, current) =>
-      total.add(current),
-    );
+    const normalizedTokens = R.pluck('value', normalizedData);
+    const totalValue =
+      normalizedTokens.length > 0
+        ? normalizedTokens.reduce((total, current) => total.add(current))
+        : new Fraction(0);
 
     return normalizedData.map((amount, index) => {
       return {

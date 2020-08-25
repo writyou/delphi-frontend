@@ -2,10 +2,11 @@ import React from 'react';
 import { useRouteMatch } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import cn from 'classnames';
+import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Label, Card } from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card, Box } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -16,9 +17,10 @@ import {
   DepositToSavingsPoolForm,
   SavingsPoolBalancesComposition,
   SavingsPoolDepositLimit,
+  RewardWeeklyCompositionChart,
+  SavingsPoolCapacity,
 } from 'features/savingsPools';
-
-import { RewardCompositionChartMock } from './RewardCompositionChartMock';
+import { MAX_AVG_APY } from 'env';
 
 export function SavingsPoolPage() {
   const match = useRouteMatch<{ id: string }>(routes.savings.pool.id.getRoutePath());
@@ -67,17 +69,29 @@ export function SavingsPoolPage() {
                     title="Pool Liquidity"
                     value={<SavingsPoolLiquidity poolAddress={poolAddress} />}
                   />
-                  <Metric title="APY" value={<FormattedAmount sum={pool.apy} />} />
+                  <Metric
+                    title="APY"
+                    value={
+                      pool.apy.lt(MAX_AVG_APY) ? (
+                        <FormattedAmount sum={pool.apy} />
+                      ) : (
+                        <Box component="span" whiteSpace="nowrap">
+                          &gt;&nbsp;
+                          <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
+                        </Box>
+                      )
+                    }
+                  />
                 </Grid>
               </Grid>
             </Grid>
             <Grid container className={cn(classes.withBorder, classes.row)}>
               <Grid container item xs={6} className={classes.paddingRight} direction="column">
                 <Metric
-                  title={<Label withComingSoon>Approximate Reward Weekly</Label>}
+                  title="Approximate Reward Weekly"
                   value={
                     <div className={classes.metricChart}>
-                      <RewardCompositionChartMock poolsNumber={3} />
+                      <RewardWeeklyCompositionChart poolAddress={poolAddress} />
                     </div>
                   }
                 />
@@ -93,17 +107,22 @@ export function SavingsPoolPage() {
                 />
               </Grid>
             </Grid>
-            <Grid container>
-              <Grid item xs={6}>
-                <Metric
-                  title="My Supply Balance"
-                  value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
-                />
-                <div className={classes.depositLimit}>
-                  <SavingsPoolDepositLimit poolAddress={poolAddress} />
-                </div>
+            <Grid container spacing={6}>
+              <Grid item container xs={4} spacing={2}>
+                <Grid item xs={12}>
+                  <Metric
+                    title="My Supply Balance"
+                    value={<UserSavingsPoolBalance poolAddress={poolAddress} />}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <SavingsPoolCapacity poolAddress={poolAddress} />
+                  <div className={classes.depositLimit}>
+                    <SavingsPoolDepositLimit poolAddress={poolAddress} />
+                  </div>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={8}>
                 <DepositToSavingsPoolForm pool={pool} />
               </Grid>
             </Grid>
@@ -154,6 +173,7 @@ const useStyles = makeStyles(
     },
     depositLimit: {
       fontSize: 12,
+      marginTop: 8,
     },
   }),
   { name: 'SavingsPoolPage' },

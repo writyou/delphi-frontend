@@ -1,16 +1,18 @@
 import React from 'react';
-import { map, switchMap } from 'rxjs/operators';
-import { combineLatest, Observable } from 'rxjs';
+import { map, switchMap, filter } from 'rxjs/operators';
+import { combineLatest, Observable, of } from 'rxjs';
 import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 
 import {
   CompositionChart,
+  CompositionChartSkeleton,
   SimpleLegend,
   CompositionLegend,
   Grid,
   Metric,
   Loading,
   PieChartData,
+  CatsPawPlaceholder,
 } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
@@ -27,20 +29,23 @@ type Props = {
 function getChartData$(api: Api): Observable<PieChartData<LiquidityAmount, TokenAmount>[]> {
   return api.user.getMyStakingPools$().pipe(
     switchMap(pools =>
-      combineLatest(
-        pools.map(pool =>
-          api.user.getFullStakingPoolBalance$(pool.address).pipe(
-            switchMap(balance =>
-              api.prices.getTokenPrice$(balance.currency.address).pipe(
-                map(price => ({
-                  value: new LiquidityAmount(balance.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
-                  payload: balance,
-                })),
+      pools.length
+        ? combineLatest(
+            pools.map(pool =>
+              api.user.getFullStakingPoolBalance$(pool.address).pipe(
+                switchMap(balance =>
+                  api.prices.getTokenPrice$(balance.currency.address).pipe(
+                    map(price => ({
+                      value: new LiquidityAmount(balance.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
+                      payload: balance,
+                    })),
+                    filter(({ value }) => !value.isZero()),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
-      ),
+          )
+        : of([]),
     ),
   );
 }
@@ -51,34 +56,55 @@ export function UserStakingPoolsBalancesComposition(props: Props) {
   const [chartData, chartDataMeta] = useSubscribable(() => getChartData$(api), [api]);
 
   return (
-    <Loading meta={chartDataMeta}>
-      {chartData && (
-        <Grid container alignItems="center" spacing={3}>
+    <Grid container alignItems="center" spacing={3}>
+      <Loading
+        meta={chartDataMeta}
+        loader={
           <Grid item>
-            <CompositionChart
-              withBackground
-              chartData={chartData}
-              InnerLegend={withInnerLegend ? ChartInnerLegend : undefined}
-              size={size}
+            <CompositionChartSkeleton size={size} />
+          </Grid>
+        }
+      >
+        {chartData?.length ? renderChart(chartData) : renderChartPlaceholder()}
+      </Loading>
+    </Grid>
+  );
+
+  function renderChart(pieChartData: NonNullable<typeof chartData>) {
+    return (
+      <>
+        <Grid item>
+          <CompositionChart
+            withBackground
+            chartData={pieChartData}
+            InnerLegend={withInnerLegend ? ChartInnerLegend : undefined}
+            size={size}
+          />
+        </Grid>
+        {withCompositionLegend && (
+          <Grid item>
+            <CompositionLegend<LiquidityAmount, TokenAmount>
+              chartData={pieChartData}
+              Template={legendProps => (
+                <SimpleLegend
+                  {...legendProps}
+                  renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+                />
+              )}
             />
           </Grid>
-          {withCompositionLegend && (
-            <Grid item>
-              <CompositionLegend<LiquidityAmount, TokenAmount>
-                chartData={chartData}
-                Template={legendProps => (
-                  <SimpleLegend
-                    {...legendProps}
-                    renderLabel={({ pieData }) => pieData.payload.currency.symbol}
-                  />
-                )}
-              />
-            </Grid>
-          )}
-        </Grid>
-      )}
-    </Loading>
-  );
+        )}
+      </>
+    );
+  }
+
+  function renderChartPlaceholder() {
+    return (
+      <Grid item>
+        <CatsPawPlaceholder variant="lilac" size={size} />
+      </Grid>
+    );
+  }
 }
 
 function ChartInnerLegend() {

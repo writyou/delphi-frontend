@@ -23,6 +23,17 @@
   {
     "anonymous": false,
     "inputs": [{
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "newCap",
+      "type": "uint256"
+    }],
+    "name": "DefaultUserCapChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{
         "indexed": true,
         "internalType": "address",
         "name": "previousOwner",
@@ -77,6 +88,28 @@
       }
     ],
     "name": "Staked",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{
+      "indexed": false,
+      "internalType": "uint256",
+      "name": "newCap",
+      "type": "uint256"
+    }],
+    "name": "StakingCapChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{
+      "indexed": false,
+      "internalType": "bool",
+      "name": "enabled",
+      "type": "bool"
+    }],
+    "name": "StakingCapEnabledChange",
     "type": "event"
   },
   {
@@ -166,6 +199,19 @@
     "constant": true,
     "inputs": [],
     "name": "defaultLockInDuration",
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "defaultUserCap",
     "outputs": [{
       "internalType": "uint256",
       "name": "",
@@ -308,6 +354,32 @@
     "type": "function"
   },
   {
+    "constant": true,
+    "inputs": [],
+    "name": "stakingCap",
+    "outputs": [{
+      "internalType": "uint256",
+      "name": "",
+      "type": "uint256"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "stakingCapEnabled",
+    "outputs": [{
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "constant": false,
     "inputs": [{
       "internalType": "address",
@@ -353,6 +425,19 @@
   {
     "constant": false,
     "inputs": [{
+      "internalType": "address",
+      "name": "sender",
+      "type": "address"
+    }],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{
         "internalType": "address",
         "name": "_pool",
         "type": "address"
@@ -386,19 +471,6 @@
   {
     "constant": false,
     "inputs": [{
-      "internalType": "address",
-      "name": "sender",
-      "type": "address"
-    }],
-    "name": "initialize",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [{
       "internalType": "uint256",
       "name": "_defaultLockInDuration",
       "type": "uint256"
@@ -417,6 +489,45 @@
       "type": "bool"
     }],
     "name": "setUserCapEnabled",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{
+      "internalType": "bool",
+      "name": "_stakingCapEnabled",
+      "type": "bool"
+    }],
+    "name": "setStakingCapEnabled",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{
+      "internalType": "uint256",
+      "name": "_newCap",
+      "type": "uint256"
+    }],
+    "name": "setDefaultUserCap",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [{
+      "internalType": "uint256",
+      "name": "_newCap",
+      "type": "uint256"
+    }],
+    "name": "setStakingCap",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
@@ -464,6 +575,19 @@
     "constant": true,
     "inputs": [],
     "name": "isUserCapEnabled",
+    "outputs": [{
+      "internalType": "bool",
+      "name": "",
+      "type": "bool"
+    }],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "iStakingCapEnabled",
     "outputs": [{
       "internalType": "bool",
       "name": "",

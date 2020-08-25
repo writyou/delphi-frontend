@@ -23,7 +23,7 @@ export function WithdrawTab() {
             <div className={classes.withdrawTabDescription}>
               {t(tKeys.modules.savings.withdrawTabText.getKey())}
             </div>
-            <Grid container alignItems="flex-start" spacing={3}>
+            <Grid container alignItems="flex-start" spacing={6}>
               {pools.map(pool => (
                 <Grid key={pool.address} item xs={4}>
                   <SavingsPoolCard
