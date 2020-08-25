@@ -11,6 +11,8 @@ import {
   denormolizeAmount,
   sumTokenAmountsByToken,
   isEqualHex,
+  min,
+  max,
 } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
@@ -147,7 +149,12 @@ export class SavingsModuleApi {
       this.getPool$(poolAddress),
       contract.methods.supportedTokens(),
       timer(0, WEB3_LONG_POOLING_TIMEOUT).pipe(
-        switchMap(() => contract.methods.balanceOfAll.read(undefined, { from: poolAddress })),
+        switchMap(() =>
+          contract.methods.balanceOfAll.read(undefined, { from: poolAddress }, [
+            this.readonlyContract.events.Withdraw(),
+            this.readonlyContract.events.Deposit(),
+          ]),
+        ),
       ),
     ]).pipe(
       map(([pool, tokens, balances]) => {
@@ -270,6 +277,28 @@ export class SavingsModuleApi {
     await promiEvent;
   }
 
+  @memoize((...args: string[]) => args.join())
+  public getUserDepositLimit$(
+    userAddress: string,
+    poolAddress: string,
+  ): Observable<LiquidityAmount | null> {
+    return combineLatest([
+      this.getUserCap$(userAddress, poolAddress),
+      this.getPoolCapacity$(poolAddress),
+      this.getPoolBalance$(poolAddress),
+    ]).pipe(
+      map(([userCap, poolCapacity, poolBalance]) => {
+        const availableCapacity = poolCapacity
+          ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
+          : null;
+        if (userCap && availableCapacity) {
+          return min(userCap, availableCapacity);
+        }
+        return userCap || poolCapacity;
+      }),
+    );
+  }
+
   @memoize(R.identity)
   public getPoolCapacity$(poolAddress: string): Observable<LiquidityAmount | null> {
     return combineLatest([
@@ -290,10 +319,7 @@ export class SavingsModuleApi {
   }
 
   @memoize((...args: string[]) => args.join())
-  public getUserDepositLimit$(
-    userAddress: string,
-    poolAddress: string,
-  ): Observable<LiquidityAmount | null> {
+  public getUserCap$(userAddress: string, poolAddress: string): Observable<LiquidityAmount | null> {
     return combineLatest([
       toLiquidityAmount$(
         this.readonlyContract.methods.userCap(
@@ -302,8 +328,14 @@ export class SavingsModuleApi {
             user: userAddress,
           },
           [
-            this.readonlyContract.events.UserCapChanged({
-              filter: { user: userAddress, protocol: poolAddress },
+            this.readonlyContract.events.DefaultUserCapChanged({
+              filter: { protocol: poolAddress },
+            }),
+            this.readonlyContract.events.Deposit({
+              filter: { user: userAddress },
+            }),
+            this.readonlyContract.events.Withdraw({
+              filter: { user: userAddress },
             }),
           ],
         ),

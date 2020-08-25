@@ -14,6 +14,25 @@ function getGradients(type: 'dark' | 'light') {
       makeGradient(['#fc87e2', '#f24cb6']),
       makeGradient(['#63afdd', '#574cf2']),
     ] as const,
+    additionalChartColors: [
+      makeGradient(['#A88BEB', '#F8CEEC']),
+      makeGradient(['#647DEE', '#7F53AC']),
+      makeGradient(['#F53844', '#42378F']),
+      makeGradient(['#0652C5', '#D4418E']),
+      makeGradient(['#B621FE', '#1FD1F9']),
+      makeGradient(['#5F72BE', '#9921E8']),
+      makeGradient(['#05D6D9', '#F907FC']),
+      makeGradient(['#AD1DEB', '#6E72FC']),
+      makeGradient(['#E975A8', '#726CF8']),
+      makeGradient(['#A1BAFE', '#8D5185']),
+      makeGradient(['#AA4465', '#861657']),
+      makeGradient(['#000000', '#923CB5']),
+      makeGradient(['#000000', '#E056FD']),
+      makeGradient(['#746CC0', '#58427C']),
+      makeGradient(['#8241B8', '#6C33A3']),
+      makeGradient(['#EE696B', '#523A78']),
+      makeGradient(['#A594F9', '#6247AA']),
+    ],
   };
 }
 

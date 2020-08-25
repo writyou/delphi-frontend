@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { makeStyles } from '@akropolis-web/styles';
 import { ButtonBase, ButtonBaseProps, Grid, Typography } from '@akropolis-web/components';
 
@@ -11,13 +11,33 @@ type Props = {
   backgroundPath?: string;
 };
 
-export function ModuleIntroButton(props: Props & ButtonBaseProps) {
+export function ModuleIntroButton<C extends React.ElementType>(
+  props: Props & ButtonBaseProps<C, { component?: C }>,
+) {
   const classes = useStyles(props);
 
   const { title, subtitle, buttonLabel, backgroundPath, ...rest } = props;
 
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleButtonMouseEnter = useCallback(() => {
+    setIsHovered(true);
+  }, []);
+
+  const handleButtonMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
+
   return (
-    <ButtonBase {...rest} className={classes.root} focusVisibleClassName={classes.focusVisible}>
+    <ButtonBase
+      {...rest}
+      className={classes.root}
+      focusVisibleClassName={classes.focusVisible}
+      onMouseEnter={handleButtonMouseEnter}
+      onMouseLeave={handleButtonMouseLeave}
+      onFocus={handleButtonMouseEnter}
+      onBlur={handleButtonMouseLeave}
+    >
       <Grid container direction="column" className={classes.container}>
         <Grid item>
           <Typography>{title}</Typography>
@@ -26,7 +46,7 @@ export function ModuleIntroButton(props: Props & ButtonBaseProps) {
           <Typography className={classes.subtitle}>{subtitle}</Typography>
         </Grid>
         <Grid item>
-          <GradientArrowButton tabIndex={-1} component="div">
+          <GradientArrowButton isHovered={isHovered} tabIndex={-1} component="div">
             {buttonLabel}
           </GradientArrowButton>
         </Grid>

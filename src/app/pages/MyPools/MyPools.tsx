@@ -51,7 +51,11 @@ export function MyPools() {
   const [filteredTabs, meta] = useSubscribableDeprecated(
     () =>
       combineLatest(tabs.map(tab => tab.getData(api))).pipe(
-        map(tabData => (tabData ? tabs.filter((_, i) => Boolean(tabData[i]?.length)) : undefined)),
+        map(tabData =>
+          tabData
+            ? tabs.filter((_, i) => Boolean(tabData[i]?.length)).map(({ getData, ...tab }) => tab)
+            : undefined,
+        ),
       ),
     [api],
   );

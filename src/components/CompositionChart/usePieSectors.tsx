@@ -13,7 +13,9 @@ export function usePieSectors<T extends Amount, P = void>(
 
   const colors: ChartColor[] = React.useMemo(
     () =>
-      theme.gradients.poolCompositionChart.map<ChartColor>((gradient, index) => ({
+      [...theme.gradients.poolCompositionChart, ...theme.gradients.additionalChartColors].map<
+        ChartColor
+      >((gradient, index) => ({
         rgb: R.last(gradient.points)!.color,
         svgGradientID: `url(#poolCompositionSector${index})`,
         svgGradient: (

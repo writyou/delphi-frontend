@@ -1,7 +1,7 @@
 import React from 'react';
 import { PercentAmount } from '@akropolis-web/primitives';
 
-import { FormattedAmount, Loading } from 'components';
+import { FormattedAmount, Loading, Box } from 'components';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { MAX_AVG_APY } from 'env';
@@ -16,10 +16,10 @@ export function UserSavingsPoolsAvgAPY() {
         avgAPY.lt(MAX_AVG_APY) ? (
           <FormattedAmount sum={avgAPY} />
         ) : (
-          <>
+          <Box component="span" whiteSpace="nowrap">
             &gt;&nbsp;
             <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
-          </>
+          </Box>
         )
       }
     </Loading>

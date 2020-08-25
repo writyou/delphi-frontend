@@ -1,8 +1,9 @@
-import React, { useCallback, useState, useMemo } from 'react';
+import React, { useCallback, useState, useMemo, memo } from 'react';
 import { FieldRenderProps, FormSpy } from 'react-final-form';
 import { Observable } from 'rxjs';
 import { FormState } from 'final-form';
 import { TokenAmount, Token, Amount } from '@akropolis-web/primitives';
+import * as R from 'ramda';
 
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -15,49 +16,52 @@ import { useDepositAmountValidationParams } from '../../hooks/useDepositAmountVa
 import { SavingsPoolCard } from '../../view/SavingsPoolCard';
 import { getDeposits } from './getDeposits';
 
-export function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
-  const [currentToken, setCurrentToken] = useState<Token | null>(null);
-  const [values, setValues] = useState<FormData | null>(null);
-  const deposits = useMemo(() => (values ? getDeposits(values) : undefined), [values]);
+export const SavingsPoolField = memo(
+  function SavingsPoolField({ name, pool }: { name: string; pool: SavingsPool }) {
+    const [currentToken, setCurrentToken] = useState<Token | null>(null);
+    const [values, setValues] = useState<FormData | null>(null);
+    const deposits = useMemo(() => (values ? getDeposits(values) : undefined), [values]);
 
-  const getDepositLimit$ = useGetDepositLimit$(pool.address);
-  const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(
-    pool.address,
-    currentToken,
-    deposits,
-  );
+    const getDepositLimit$ = useGetDepositLimit$(pool.address);
+    const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(
+      pool.address,
+      currentToken,
+      deposits,
+    );
 
-  const handleFormChange = useCallback(
-    (data: FormState<FormData>) => {
-      const amount = data.values[name];
-      setValues(data.values);
-      if (!currentToken || !amount || !currentToken.equals(amount.currency)) {
-        setCurrentToken(amount?.currency || null);
-      }
-    },
-    [currentToken],
-  );
+    const handleFormChange = useCallback(
+      (data: FormState<FormData>) => {
+        const amount = data.values[name];
+        setValues(data.values);
+        if (!currentToken || !amount || !currentToken.equals(amount.currency)) {
+          setCurrentToken(amount?.currency || null);
+        }
+      },
+      [currentToken],
+    );
 
-  const validateAmount = useValidateAmount({
-    maxValue,
-    maxErrorTKey,
-  });
+    const validateAmount = useValidateAmount({
+      maxValue,
+      maxErrorTKey,
+    });
 
-  return (
-    <>
-      <SavingsPoolWithFieldWrapper
-        name={name}
-        pool={pool}
-        getDepositLimit$={getDepositLimit$}
-        validate={validateAmount}
-        currentToken={currentToken}
-        maxValue={maxValue}
-      />
-      <SpyField name="_" fieldValue={validateAmount} />
-      <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
-    </>
-  );
-}
+    return (
+      <>
+        <SavingsPoolWithFieldWrapper
+          name={name}
+          pool={pool}
+          getDepositLimit$={getDepositLimit$}
+          validate={validateAmount}
+          currentToken={currentToken}
+          maxValue={maxValue}
+        />
+        <SpyField name="_" fieldValue={validateAmount} />
+        <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
+      </>
+    );
+  },
+  (prev, cur) => R.toString(prev) === R.toString(cur),
+);
 
 const SavingsPoolWithFieldWrapper = getFieldWithComponent(SavingsPoolFieldComponent);
 

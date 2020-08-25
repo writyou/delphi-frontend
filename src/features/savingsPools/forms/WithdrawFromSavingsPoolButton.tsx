@@ -25,7 +25,7 @@ export function WithdrawFromSavingsPoolButton({
       }
     >
       {balance => {
-        const modalDisabled = balance.gt(getSignificantValue(balance.currency.decimals));
+        const modalDisabled = balance.lt(getSignificantValue(balance.currency.decimals));
 
         return (
           <ModalButton {...rest} disabled={modalDisabled} content="Withdraw">

@@ -6,7 +6,7 @@ import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
 import { Back } from 'components/icons';
-import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card } from 'components';
+import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card, Box } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
@@ -73,10 +73,10 @@ export function SavingsPoolPage() {
                         pool.apy.lt(MAX_AVG_APY) ? (
                           <FormattedAmount sum={pool.apy} />
                         ) : (
-                          <>
+                          <Box component="span" whiteSpace="nowrap">
                             &gt;&nbsp;
                             <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
-                          </>
+                          </Box>
                         )
                       }
                     />

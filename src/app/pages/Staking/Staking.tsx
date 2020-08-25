@@ -13,7 +13,7 @@ export function Staking() {
   return (
     <Loading data={poolsRD}>
       {pools => (
-        <Grid container alignItems="flex-start" spacing={3}>
+        <Grid container alignItems="flex-start" spacing={6}>
           {pools.map(pool => (
             <Grid key={pool.address} item xs={4}>
               <StakingPoolCard pool={pool} />

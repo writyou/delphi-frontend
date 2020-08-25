@@ -1,45 +1,36 @@
-import React, { useCallback, useState } from 'react';
-import { ButtonTypeMap } from '@material-ui/core/Button';
-import { OverrideProps } from '@material-ui/core/OverridableComponent';
+import React, { useState, useCallback } from 'react';
+import cn from 'classnames';
 
-import { Button } from 'components/Button';
+import { Button, ButtonProps } from 'components/Button';
 import { GradientArrow } from 'components/icons';
-import { makeStyles, useTheme } from 'utils/styles';
+import { makeStyles } from 'utils/styles';
 
-export type ButtonProps<
-  D extends React.ElementType = ButtonTypeMap['defaultComponent'],
-  P = {}
-> = OverrideProps<ButtonTypeMap<P, D>, D>;
+type OwnProps = {
+  isHovered?: boolean;
+};
 
-export function GradientArrowButton<P = {}, D extends React.ElementType = 'button'>(
-  props: ButtonProps<D, P>,
+export function GradientArrowButton<C extends React.ElementType>(
+  props: OwnProps & ButtonProps<C, { component?: C }>,
 ) {
-  const { children, id, ...rest } = props;
+  const { children, isHovered, ...rest } = props;
   const classes = useStyles();
-  const theme = useTheme();
-
-  const [isHovered, setIsHovered] = useState(false);
+  const [localIsHovered, setLocalIsHovered] = useState(false);
 
   const handleButtonMouseOver = useCallback(() => {
-    setIsHovered(true);
+    setLocalIsHovered(true);
   }, []);
 
   const handleButtonMouseLeave = useCallback(() => {
-    setIsHovered(false);
+    setLocalIsHovered(false);
   }, []);
-
   return (
     <>
       <Button
         {...rest}
         variant="text"
         color="primary"
-        endIcon={
-          <GradientArrow
-            fill={isHovered ? theme.colors.heliotrope : undefined}
-            className={classes.arrow}
-          />
-        }
+        endIcon={<GradientArrow className={classes.arrow} />}
+        className={cn(classes.root, { [classes.isHovered]: isHovered || localIsHovered })}
         onMouseOver={handleButtonMouseOver}
         onFocus={handleButtonMouseOver}
         onMouseOut={handleButtonMouseLeave}
@@ -52,11 +43,23 @@ export function GradientArrowButton<P = {}, D extends React.ElementType = 'butto
 }
 
 const useStyles = makeStyles(
-  () => ({
+  theme => ({
+    root: {
+      '&$isHovered': {
+        color: theme.colors.heliotrope,
+        backgroundColor: 'transparent',
+        backgroundSize: '500%',
+
+        '& stop': {
+          stopColor: theme.colors.heliotrope,
+        },
+      },
+    },
     arrow: {
       fontSize: '11px !important',
       marginBottom: '-0.25em',
     },
+    isHovered: {},
   }),
   { name: 'GradientArrowButton' },
 );
