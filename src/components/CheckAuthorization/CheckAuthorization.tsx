@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { Redirect, Route, Switch } from 'react-router';
 
 import { useSubscribable } from 'utils/react';
+import { isNotAsked, isLoading } from 'utils/remoteData';
 
 import { Loading } from '../Loading';
 
@@ -17,7 +18,7 @@ export const CheckAuthorization: React.FC<Props> = (props: Props) => {
   const { isAuthorized$, redirectTo, excludePath, children } = props;
   const isAuthorizedRD = useSubscribable(() => isAuthorized$, [isAuthorized$]);
 
-  if (!children) {
+  if (!children && (isNotAsked(isAuthorizedRD) || isLoading(isAuthorizedRD))) {
     return null;
   }
 
