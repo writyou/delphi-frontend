@@ -6,10 +6,10 @@ import { useApi } from 'services/api';
 
 export function SavingsPoolDepositLimit({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [limit, limitMeta] = useSubscribable(() => api.user.getSavingsDepositLimit$(poolAddress), [
+  const limitRD = useSubscribable(() => api.user.getSavingsDepositLimit$(poolAddress), [
     api,
     poolAddress,
   ]);
 
-  return <Loading meta={limitMeta}>{limit && <DepositLimit limit={limit} />}</Loading>;
+  return <Loading data={limitRD}>{limit => limit && <DepositLimit limit={limit} />}</Loading>;
 }

@@ -8,18 +8,20 @@ import { MAX_AVG_APY } from 'env';
 
 export function UserSavingsPoolsAvgAPY() {
   const api = useApi();
-  const [avgAPY, avgAPYMeta] = useSubscribable(() => api.user.getSavingsPoolsAvgAPY$(), [api]);
+  const avgAPYRD = useSubscribable(() => api.user.getSavingsPoolsAvgAPY$(), [api]);
 
   return (
-    <Loading meta={avgAPYMeta}>
-      {avgAPY && avgAPY.lt(MAX_AVG_APY) ? (
-        <FormattedAmount sum={avgAPY} />
-      ) : (
-        <Box component="span" whiteSpace="nowrap">
-          &gt;&nbsp;
-          <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
-        </Box>
-      )}
+    <Loading data={avgAPYRD}>
+      {avgAPY =>
+        avgAPY.lt(MAX_AVG_APY) ? (
+          <FormattedAmount sum={avgAPY} />
+        ) : (
+          <Box component="span" whiteSpace="nowrap">
+            &gt;&nbsp;
+            <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
+          </Box>
+        )
+      }
     </Loading>
   );
 }

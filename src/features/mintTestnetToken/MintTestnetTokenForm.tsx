@@ -26,7 +26,7 @@ const fieldNames: FieldNames<FormData> = {
 export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps) {
   const api = useApi();
 
-  const [tokens, tokensMeta] = useSubscribable(
+  const tokensRD = useSubscribable(
     () =>
       combineLatest(
         Object.values(ETH_NETWORK_CONFIG.tokens).map(tokenAddress => {
@@ -69,17 +69,15 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
       DialogContent={getDialogContent}
       onSubmit={handleFormSubmit}
     >
-      <>
-        <Loading meta={tokensMeta}>
-          {tokens && (
-            <TokenAmountField
-              inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
-              name={fieldNames.amount}
-              currencies={tokens}
-            />
-          )}
-        </Loading>
-      </>
+      <Loading data={tokensRD}>
+        {tokens => (
+          <TokenAmountField
+            inputProps={{ disabled: process.env.NODE_ENV !== 'development' }}
+            name={fieldNames.amount}
+            currencies={tokens}
+          />
+        )}
+      </Loading>
     </FormWithConfirmation>
   );
 }

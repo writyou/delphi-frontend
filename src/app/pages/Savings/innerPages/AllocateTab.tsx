@@ -4,17 +4,17 @@ import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { Loading } from 'components';
+import { DeprecatedLoading } from 'components';
 import { AllocateForm } from 'features/savingsPools';
 
 export const AllocateTab = memo(() => {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]);
-  const [limits, limitsMeta] = useSubscribable(
+  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.savings.getPools$(), [api]);
+  const [limits, limitsMeta] = useSubscribableDeprecated(
     () =>
       pools?.length
         ? combineLatest(pools.map(p => api.user.getSavingsDepositLimit$(p.address)))
@@ -28,9 +28,9 @@ export const AllocateTab = memo(() => {
       <div className={classes.allocateTabDescription}>
         {t(tKeys.modules.savings.allocateTabText.getKey())}
       </div>
-      <Loading meta={[poolsMeta, limitsMeta]}>
+      <DeprecatedLoading meta={[poolsMeta, limitsMeta]}>
         {pools && <AllocateForm pools={pools} hasLimits={hasLimits} />}
-      </Loading>
+      </DeprecatedLoading>
     </>
   );
 });

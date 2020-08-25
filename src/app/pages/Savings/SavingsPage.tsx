@@ -3,9 +3,9 @@ import { useRouteMatch, Link as RouterLink } from 'react-router-dom';
 import { of } from 'rxjs';
 
 import { routes } from 'app/routes';
-import { TabsSection, CheckAuthorization, Loading } from 'components';
+import { TabsSection, CheckAuthorization, DeprecatedLoading } from 'components';
 import { Api, useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { AllocateTab } from './innerPages/AllocateTab';
 import { WithdrawTab } from './innerPages/WithdrawTab';
@@ -31,7 +31,7 @@ const tabs = [allocateTab, withdrawTab];
 export function SavingsPage() {
   const api = useApi();
 
-  const [myPools, meta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const [myPools, meta] = useSubscribableDeprecated(() => api.user.getMySavingsPools$(), [api]);
 
   const match = useRouteMatch<{ page: string }>('/savings/:page');
 
@@ -43,7 +43,7 @@ export function SavingsPage() {
   );
 
   return (
-    <Loading meta={meta}>
+    <DeprecatedLoading meta={meta}>
       <CheckAuthorization
         isAuthorized$={isWorthToWatchPage$}
         redirectTo={routes.savings.getRoutePath()}
@@ -53,6 +53,6 @@ export function SavingsPage() {
       ) : (
         <AllocateTab />
       )}
-    </Loading>
+    </DeprecatedLoading>
   );
 }

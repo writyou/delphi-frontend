@@ -14,7 +14,7 @@ const reduceLiquidityAmounts = map<LiquidityAmount[], LiquidityAmount>(balances 
 
 export function UserStakingPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribable(
+  const totalBalanceRD = useSubscribable(
     () =>
       api.user.getMyStakingPools$().pipe(
         switchMap(pools =>
@@ -43,8 +43,8 @@ export function UserStakingPoolsTotalBalance() {
   );
 
   return (
-    <Loading meta={totalBalanceMeta}>
-      {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
+    <Loading data={totalBalanceRD}>
+      {totalBalance => <FormattedAmount sum={totalBalance} variant="plain" />}
     </Loading>
   );
 }

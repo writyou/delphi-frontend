@@ -6,7 +6,7 @@ import { useApi } from 'services/api';
 import { PoolCard } from 'components';
 import { SavingsPool } from 'model/types';
 import { routes } from 'app/routes';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { SavingsPoolLiquidity } from '../data/SavingsPoolLiquidity';
 import { UserSavingsPoolBalance } from '../data/UserSavingsPoolBalance';
@@ -21,7 +21,7 @@ type Props = {
 export function SavingsPoolCard({ pool, content, additionalElement, getDepositLimit$ }: Props) {
   const { address, poolName, tokens } = pool;
   const api = useApi();
-  const [poolBalance, poolBalanceMeta] = useSubscribable(
+  const [poolBalance, poolBalanceMeta] = useSubscribableDeprecated(
     () => api.savings.getPoolBalance$(address),
     [api, address],
   );

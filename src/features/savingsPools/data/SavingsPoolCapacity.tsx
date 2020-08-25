@@ -9,7 +9,7 @@ import { useApi } from 'services/api';
 export function SavingsPoolCapacity({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
 
-  const [poolFilling, poolFillingMeta] = useSubscribable(
+  const poolFillingRD = useSubscribable(
     () =>
       combineLatest([
         api.savings.getPoolBalance$(poolAddress),
@@ -24,10 +24,12 @@ export function SavingsPoolCapacity({ poolAddress }: { poolAddress: string }) {
   );
 
   return (
-    <Loading meta={poolFillingMeta}>
-      {poolFilling && poolFilling.poolCapacity && (
-        <PoolFillingLimit capacity={poolFilling.poolCapacity} filled={poolFilling.poolBalance} />
-      )}
+    <Loading data={poolFillingRD}>
+      {poolFilling =>
+        poolFilling.poolCapacity ? (
+          <PoolFillingLimit capacity={poolFilling.poolCapacity} filled={poolFilling.poolBalance} />
+        ) : null
+      }
     </Loading>
   );
 }

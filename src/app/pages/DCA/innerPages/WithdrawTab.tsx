@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { Grid, Loading, PoolCard } from 'components';
+import { Grid, PoolCard, Loading } from 'components';
 import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
@@ -14,16 +14,15 @@ export function WithdrawTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.dca.getPools$(), [api]);
+  const poolsRD = useSubscribable(() => api.dca.getPools$(), [api]);
 
   return (
     <>
       <div className={classes.description}>{t(tKeys.modules.dca.description.getKey())}</div>
-      <Loading meta={poolsMeta}>
-        <Grid container alignItems="flex-start" spacing={3}>
-          {pools &&
-            pools.length &&
-            pools.map(pool => (
+      <Loading data={poolsRD}>
+        {pools => (
+          <Grid container alignItems="flex-start" spacing={3}>
+            {pools.map(pool => (
               <Grid key={pool.address} item xs={4}>
                 <PoolCard
                   address={pool.address}
@@ -38,7 +37,8 @@ export function WithdrawTab() {
                 />
               </Grid>
             ))}
-        </Grid>
+          </Grid>
+        )}
       </Loading>
     </>
   );

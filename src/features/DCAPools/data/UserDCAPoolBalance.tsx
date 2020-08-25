@@ -6,14 +6,14 @@ import { useApi } from 'services/api';
 
 export function UserDCAPoolBalance({ poolAddress }: { poolAddress: string }) {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(() => api.user.getDCAPoolBalance$(poolAddress), [
+  const balanceRD = useSubscribable(() => api.user.getDCAPoolBalance$(poolAddress), [
     api,
     poolAddress,
   ]);
 
   return (
-    <Loading meta={balanceMeta}>
-      {balance && <FormattedAmount sum={balance} variant="plain" />}
+    <Loading data={balanceRD}>
+      {balance => <FormattedAmount sum={balance} variant="plain" />}
     </Loading>
   );
 }

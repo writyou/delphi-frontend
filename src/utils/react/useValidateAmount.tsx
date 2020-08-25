@@ -13,7 +13,7 @@ import {
 } from 'utils/validators';
 import { toObservable } from 'utils/rxjs';
 
-import { useSubscribable } from './useSubscribable';
+import { useSubscribableDeprecated } from './useSubscribableDeprecated';
 
 interface ValidateAmountOptions {
   required?: boolean;
@@ -28,7 +28,7 @@ interface ValidateAmountOptions {
 export function useValidateAmount(options: ValidateAmountOptions) {
   const { positive, required, moreThanZero, maxErrorTKey } = options;
 
-  const [{ maxValue, minValue }] = useSubscribable<{
+  const [{ maxValue, minValue }] = useSubscribableDeprecated<{
     maxValue?: BN;
     minValue?: BN;
   }>(

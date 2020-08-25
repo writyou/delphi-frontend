@@ -11,14 +11,14 @@ type Props = {
 
 export function SavingsPoolLiquidity({ poolAddress, variant }: Props) {
   const api = useApi();
-  const [liquidity, liquidityMeta] = useSubscribable(
-    () => api.savings.getPoolBalance$(poolAddress),
-    [api, poolAddress],
-  );
+  const liquidityRD = useSubscribable(() => api.savings.getPoolBalance$(poolAddress), [
+    api,
+    poolAddress,
+  ]);
 
   return (
-    <Loading meta={liquidityMeta}>
-      {liquidity && <FormattedAmount sum={liquidity} variant={variant} />}
+    <Loading data={liquidityRD}>
+      {liquidity => <FormattedAmount sum={liquidity} variant={variant} />}
     </Loading>
   );
 }

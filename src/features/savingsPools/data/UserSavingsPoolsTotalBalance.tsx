@@ -8,7 +8,7 @@ import { useApi } from 'services/api';
 
 export function UserSavingsPoolsTotalBalance() {
   const api = useApi();
-  const [totalBalance, totalBalanceMeta] = useSubscribable(
+  const totalBalanceRD = useSubscribable(
     () =>
       api.user
         .getAllSavingsPoolsBalances$()
@@ -17,8 +17,8 @@ export function UserSavingsPoolsTotalBalance() {
   );
 
   return (
-    <Loading meta={totalBalanceMeta}>
-      {totalBalance && <FormattedAmount sum={totalBalance} variant="plain" />}
+    <Loading data={totalBalanceRD}>
+      {totalBalance => <FormattedAmount sum={totalBalance} variant="plain" />}
     </Loading>
   );
 }

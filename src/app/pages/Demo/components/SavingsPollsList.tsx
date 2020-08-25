@@ -8,18 +8,19 @@ import { Pool } from './Pool';
 
 export function SavingsPollsList() {
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]);
+  const poolsRD = useSubscribable(() => api.savings.getPools$(), [api]);
 
   return (
-    <Loading meta={poolsMeta}>
-      <Grid container spacing={3}>
-        {pools &&
-          pools.map(pool => (
+    <Loading data={poolsRD}>
+      {pools => (
+        <Grid container spacing={3}>
+          {pools.map(pool => (
             <Grid key={pool.address} item xs={6}>
               <Pool {...pool} />
             </Grid>
           ))}
-      </Grid>
+        </Grid>
+      )}
     </Loading>
   );
 }
