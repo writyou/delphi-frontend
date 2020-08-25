@@ -6,11 +6,11 @@ import { Amount } from '@akropolis-web/primitives';
 import { makeStyles } from 'utils/styles';
 import { FormattedAmount } from 'components/FormattedAmount/FormattedAmount';
 
-export function DepositLimit({ limit }: { limit: Amount | null }) {
+export function DepositLimit({ limit }: { limit: Amount }) {
   const classes = useStyles();
   return (
     <Grid container alignItems="baseline">
-      {limit === null || limit.isZero() ? (
+      {limit.isZero() ? (
         <>
           <span className={classes.circle} /> Not Available for deposit
         </>

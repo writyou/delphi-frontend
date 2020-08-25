@@ -11,5 +11,5 @@ export function SavingsPoolDepositLimit({ poolAddress }: { poolAddress: string }
     poolAddress,
   ]);
 
-  return <Loading data={limitRD}>{limit => <DepositLimit limit={limit} />}</Loading>;
+  return <Loading data={limitRD}>{limit => limit && <DepositLimit limit={limit} />}</Loading>;
 }
