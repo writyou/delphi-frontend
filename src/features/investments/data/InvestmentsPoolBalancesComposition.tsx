@@ -40,7 +40,12 @@ function InvestmentsPoolBalancesComposition({ poolAddress }: Props) {
             <CompositionChart withBackground chartData={entries} size="medium" />
           </Grid>
           <Grid item className={classes.legend} xs>
-            <CompositionLegend chartData={entries} Template={TokensTableLegend} />
+            <CompositionLegend
+              chartData={entries}
+              Template={props => (
+                <TokensTableLegend<TokenAmount> getTokenAmount={x => x.pieData.value} {...props} />
+              )}
+            />
           </Grid>
         </Grid>
       )}

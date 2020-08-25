@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { TokenAmount } from '@akropolis-web/primitives';
 
 import { CompositionChart, TokensTableLegend, CompositionLegend, Grid, Loading } from 'components';
 import { getMockCompositionChartEntriesToken } from 'utils/mock';
@@ -24,7 +25,9 @@ function RewardCompositionChartMock({ poolsNumber }: Props) {
         <Grid item className={classes.legend} xs>
           <CompositionLegend
             chartData={getMockCompositionChartEntriesToken(poolsNumber)}
-            Template={TokensTableLegend}
+            Template={props => (
+              <TokensTableLegend<TokenAmount> getTokenAmount={x => x.pieData.value} {...props} />
+            )}
           />
         </Grid>
       </Grid>
