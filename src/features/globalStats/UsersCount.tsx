@@ -9,6 +9,6 @@ export function UsersCount() {
   const stats = useSubscribable(() => api.globalStats.getStats$(), [api]);
 
   return (
-    <Loading data={stats}>{({ activeMembersCount }) => <div>{activeMembersCount}</div>}</Loading>
+    <Loading data={stats}>{({ activeMembersCount }) => <span>{activeMembersCount}</span>}</Loading>
   );
 }
