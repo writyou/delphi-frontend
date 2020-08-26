@@ -3,16 +3,38 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 function ETHIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
-    <SvgIcon {...props} viewBox="0 0 32 32">
-      <g fill="none" fillRule="evenodd">
-        <circle cx="16" cy="16" r="16" fill="#627EEA" />
-        <g fill="#FFF" fillRule="nonzero">
-          <path fillOpacity=".6" d="M16.5 4v8.9l7.5 3.3z" />
-          <path d="M16.5 4L9 16.2l7.5-3.3z" />
-          <path fillOpacity=".6" d="M16.5 22v6L24 17.6z" />
-          <path d="M16.5 28v-6L9 17.6z" />
-          <path fillOpacity=".2" d="M16.5 20.6l7.5-4.4-7.5-3.3z" />
-          <path fillOpacity=".6" d="M9 16.2l7.5 4.4v-7.7z" />
+    <SvgIcon {...props} viewBox="0 0 20 20">
+      <defs>
+        <linearGradient id="nui1dzi9qa" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor="#9BB5F6" />
+          <stop offset="100%" stopColor="#627EEA" />
+        </linearGradient>
+      </defs>
+      <g fill="none">
+        <circle cx="10" cy="10" r="10" fill="url(#nui1dzi9qa)" />
+        <g fill="#FFF">
+          <path
+            fillOpacity=".602"
+            d="M4.686 0L4.686 5.544 9.372 7.638z"
+            transform="translate(5.625 2.5)"
+          />
+          <path d="M4.686 0L0 7.638 4.686 5.544z" transform="translate(5.625 2.5)" />
+          <path
+            fillOpacity=".602"
+            d="M4.686 11.23L4.686 14.997 9.375 8.51z"
+            transform="translate(5.625 2.5)"
+          />
+          <path d="M4.686 14.997L4.686 11.229 0 8.51z" transform="translate(5.625 2.5)" />
+          <path
+            fillOpacity=".2"
+            d="M4.686 10.358L9.372 7.638 4.686 5.545z"
+            transform="translate(5.625 2.5)"
+          />
+          <path
+            fillOpacity=".602"
+            d="M0 7.638L4.686 10.358 4.686 5.545z"
+            transform="translate(5.625 2.5)"
+          />
         </g>
       </g>
     </SvgIcon>
