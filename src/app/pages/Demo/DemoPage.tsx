@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { Typography, Box } from 'components';
 
-import { SavingsPollsList } from './components/SavingsPollsList';
+import { AllTokenIcons } from './AllTokenIcons';
 
 export function DemoPage() {
   return (
@@ -10,7 +10,7 @@ export function DemoPage() {
       <Typography variant="h4" gutterBottom>
         Page for developers
       </Typography>
-      <SavingsPollsList />
+      <AllTokenIcons />
     </Box>
   );
 }
