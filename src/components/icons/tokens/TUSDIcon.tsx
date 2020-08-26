@@ -4,8 +4,21 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 function TUSDIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
     <SvgIcon {...props} viewBox="0 0 20 20">
+      <defs>
+        <linearGradient id="e273sl3oaa" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor="#0051A1" />
+          <stop offset="100%" stopColor="#002868" />
+        </linearGradient>
+        <linearGradient id="mtbd56nkpb" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor="#0051A1" />
+          <stop offset="100%" stopColor="#003B82" />
+        </linearGradient>
+      </defs>
       <g fill="none">
-        <path fill="#002868" d="M10 20C4.5 20 0 15.5 0 10S4.5 0 10 0s10 4.5 10 10-4.5 10-10 10z" />
+        <path
+          fill="url(#e273sl3oaa)"
+          d="M10 20C4.5 20 0 15.5 0 10S4.5 0 10 0s10 4.5 10 10-4.5 10-10 10z"
+        />
         <path
           fill="#FFF"
           d="M15.04 16H4.96c-.528 0-.96-.432-.96-.96V4.96c0-.528.432-.96.96-.96h10.08c.528 0 .96.432.96.96v10.08c0 .528-.432.96-.96.96z"
@@ -17,7 +30,7 @@ function TUSDIcon(props: React.ComponentProps<typeof SvgIcon>) {
           />
         </g>
         <path
-          fill="#002868"
+          fill="url(#mtbd56nkpb)"
           d="M15.68 11.44H4.32c-.088 0-.16-.072-.16-.16V4.96c0-.44.36-.8.8-.8h10.08c.44 0 .8.36.8.8v6.32c0 .088-.072.16-.16.16z"
         />
         <path
