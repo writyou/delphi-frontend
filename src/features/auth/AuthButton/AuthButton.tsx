@@ -1,15 +1,26 @@
 import React, { useCallback } from 'react';
 import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
+import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 import { NETWORK_ID } from 'env';
 import { useAuthContext } from 'services/auth';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Adaptive } from 'services/adaptability';
 import { getShortAddress } from 'utils/format';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { Button, DeprecatedLoading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
+import {
+  Button,
+  Typography,
+  Grid,
+  AddressIcon,
+  ButtonProps,
+  Loading,
+  DeprecatedLoading,
+} from 'components';
+import { isLoading, isSuccess } from 'utils/remoteData';
 
 interface Props {
   children?: React.ReactNode;
@@ -21,10 +32,18 @@ export function AuthButton({ children, size }: Props) {
   const { t } = useTranslate();
   const { web3Manager, openModal, connectCommunication } = useAuthContext();
 
-  const [account, accountMeta] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
-  const [status] = useSubscribableDeprecated(() => web3Manager.status$, [], 'pending');
+  const accountStatusRD = useSubscribable(
+    () =>
+      combineLatest([web3Manager.account$, web3Manager.status$]).pipe(
+        map(([account, status]) => ({
+          account,
+          status,
+        })),
+      ),
+    [web3Manager],
+  );
 
-  const isConnected: boolean = accountMeta.loaded && !!account;
+  const isConnected: boolean = isSuccess(accountStatusRD);
 
   const handleAuthButtonClick = useCallback(() => {
     openModal();
@@ -37,12 +56,12 @@ export function AuthButton({ children, size }: Props) {
         color={isConnected ? 'default' : 'primary'}
         variant={isConnected ? 'outlined' : 'contained'}
         onClick={handleAuthButtonClick}
-        disabled={!accountMeta.loaded}
+        disabled={isLoading(accountStatusRD)}
         className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
           <DeprecatedLoading
             ignoreError
-            meta={{ loaded: status !== 'pending', error: null }}
+            meta={{ loaded: !isLoading(accountStatusRD), error: null }}
             communication={connectCommunication}
             progressVariant="circle"
             progressProps={{
@@ -51,36 +70,40 @@ export function AuthButton({ children, size }: Props) {
           />
         }
       >
-        <DeprecatedLoading meta={accountMeta}>
-          {account ? (
-            <>
-              <Avatar className={classes.icon}>
-                <AddressIcon address={account} />
-              </Avatar>
-              <Adaptive from="mobileMD">
-                <Grid
-                  container
-                  alignItems="flex-start"
-                  direction="column"
-                  spacing={0}
-                  className={classes.container}
-                >
-                  <Grid item>
-                    <Typography className={classes.address}>{getShortAddress(account)}</Typography>
+        <Loading data={accountStatusRD}>
+          {accountStatus =>
+            accountStatus.account ? (
+              <>
+                <Avatar className={classes.icon}>
+                  <AddressIcon address={accountStatus.account} />
+                </Avatar>
+                <Adaptive from="mobileMD">
+                  <Grid
+                    container
+                    alignItems="flex-start"
+                    direction="column"
+                    spacing={0}
+                    className={classes.container}
+                  >
+                    <Grid item>
+                      <Typography className={classes.address}>
+                        {getShortAddress(accountStatus.account)}
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography className={classes.connectedTo} align="left">
+                        {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
+                        ${t(tKeys.features.networkWarning.networkType[NETWORK_ID].getKey())}`}
+                      </Typography>
+                    </Grid>
                   </Grid>
-                  <Grid item>
-                    <Typography className={classes.connectedTo} align="left">
-                      {`${t(tKeys.features.auth.modalTitle.connectedTo.getKey())} 
-                    ${t(tKeys.features.networkWarning.networkType[NETWORK_ID].getKey())}`}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Adaptive>
-            </>
-          ) : (
-            children || t(tKeys.features.auth.connect.getKey())
-          )}
-        </DeprecatedLoading>
+                </Adaptive>
+              </>
+            ) : (
+              <> {children || t(tKeys.features.auth.connect.getKey())} </>
+            )
+          }
+        </Loading>
       </Button>
     </>
   );

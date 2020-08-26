@@ -1,36 +1,46 @@
 import React, { memo } from 'react';
-import { combineLatest, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { DeprecatedLoading } from 'components';
+import { Loading } from 'components';
 import { AllocateForm } from 'features/savingsPools';
 
 export const AllocateTab = memo(() => {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribableDeprecated(() => api.savings.getPools$(), [api]);
-  const [limits, limitsMeta] = useSubscribableDeprecated(
+
+  const poolsRD = useSubscribable(
     () =>
-      pools?.length
-        ? combineLatest(pools.map(p => api.user.getSavingsDepositLimit$(p.address)))
-        : of(undefined),
-    [api, R.toString(pools)],
+      api.savings.getPools$().pipe(
+        switchMap(pools =>
+          combineLatest(
+            pools.map(p =>
+              api.user.getSavingsDepositLimit$(p.address).pipe(map(limit => ({ pool: p, limit }))),
+            ),
+          ),
+        ),
+        map(data => ({
+          pools: R.pluck('pool', data),
+          hasLimits: R.pluck('limit', data).some(l => l && !l.isZero()),
+        })),
+      ),
+    [api],
   );
-  const hasLimits = limits ? limits.some(l => l && !l.isZero()) : false;
 
   return (
     <>
       <div className={classes.allocateTabDescription}>
         {t(tKeys.modules.savings.allocateTabText.getKey())}
       </div>
-      <DeprecatedLoading meta={[poolsMeta, limitsMeta]}>
-        {pools && <AllocateForm pools={pools} hasLimits={hasLimits} />}
-      </DeprecatedLoading>
+      <Loading data={poolsRD}>
+        {poolsData => <AllocateForm pools={poolsData.pools} hasLimits={poolsData.hasLimits} />}
+      </Loading>
     </>
   );
 });

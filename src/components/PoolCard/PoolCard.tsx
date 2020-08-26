@@ -8,9 +8,9 @@ import { Token, Amount } from '@akropolis-web/primitives';
 import { map } from 'rxjs/operators';
 
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 
-import { DeprecatedLoading } from '../DeprecatedLoading';
+import { Loading } from '../Loading';
 import { DepositLimit } from '../DepositLimit/DepositLimit';
 import { TokenIcon } from '../TokenIcon/TokenIcon';
 import { Card } from '../Card';
@@ -56,25 +56,22 @@ export function PoolCard(props: Props) {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const [balance] = useSubscribableDeprecated(() => getUserBalance$(address), [
-    getUserBalance$,
-    address,
-  ]);
-  const [availableForDeposit, availableForDepositMeta] = useSubscribableDeprecated(
-    () => (getDepositLimit$ ? getDepositLimit$(address) : of(null)),
-    [getDepositLimit$, address],
-  );
-  const [poolFilling, poolFillingMeta] = useSubscribableDeprecated(
+  const balancesDataRD = useSubscribable(
     () =>
-      getDepositLimit$ && getPoolBalance$ && getPoolCapacity$
-        ? combineLatest([getPoolBalance$(address), getPoolCapacity$(address)]).pipe(
-            map(([poolBalance, poolCapacity]) => ({
-              poolBalance,
-              poolCapacity,
-            })),
-          )
-        : of(null),
-    [getPoolBalance$, getPoolCapacity$, address],
+      combineLatest([
+        getUserBalance$ ? getUserBalance$(address) : of(null),
+        getDepositLimit$ ? getDepositLimit$(address) : of(null),
+        getPoolBalance$ ? getPoolBalance$(address) : of(null),
+        getPoolCapacity$ ? getPoolCapacity$(address) : of(null),
+      ]).pipe(
+        map(([balance, availableForDeposit, poolBalance, poolCapacity]) => ({
+          balance,
+          availableForDeposit,
+          poolBalance,
+          poolCapacity,
+        })),
+      ),
+    [getPoolBalance$, getPoolCapacity$, getDepositLimit$, address],
   );
 
   return (
@@ -82,7 +79,13 @@ export function PoolCard(props: Props) {
       className={classes.root}
       variant="contained"
       label={poolName}
-      isActive={balance && !balance.isZero()}
+      // TODO need to research api
+      isActive={balancesDataRD.fold(
+        () => undefined,
+        () => undefined,
+        () => undefined,
+        ({ balance }) => !!balance && !balance.isZero(),
+      )}
       icons={tokens.map(x => (
         <TokenIcon key={x.address} className={classes.tokenIcon} tokenAddress={x.address} />
       ))}
@@ -98,28 +101,25 @@ export function PoolCard(props: Props) {
         </div>
 
         <div className={cn(classes.row, classes.availableDepositRow)}>
-          <DeprecatedLoading
-            meta={[availableForDepositMeta, poolFillingMeta]}
-            progressProps={{ width: '100%' }}
-          >
-            {(availableForDeposit || poolFilling) && (
+          <Loading data={balancesDataRD} progressProps={{ width: '100%' }}>
+            {balancesData => (
               <Grid container justify="space-between" className={classes.root} spacing={1}>
-                {poolFilling && poolFilling.poolCapacity && (
+                {balancesData.poolCapacity && balancesData.poolBalance && (
                   <Grid item xs={12}>
                     <PoolFillingLimit
-                      capacity={poolFilling.poolCapacity}
-                      filled={poolFilling.poolBalance}
+                      capacity={balancesData.poolCapacity}
+                      filled={balancesData.poolBalance}
                     />
                   </Grid>
                 )}
-                {availableForDeposit && (
+                {balancesData.availableForDeposit && (
                   <Grid item xs={12}>
-                    <DepositLimit limit={availableForDeposit} />
+                    <DepositLimit limit={balancesData.availableForDeposit} />
                   </Grid>
                 )}
               </Grid>
             )}
-          </DeprecatedLoading>
+          </Loading>
         </div>
 
         <div className={classes.row}>
