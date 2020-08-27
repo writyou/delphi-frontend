@@ -7,6 +7,8 @@ import { REWARDS_TABLE_URL } from 'env';
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
 
+//  If you want to see overall AKRO & ADEL rewards for each pool & calculate yours — please check this gsheet.
+
 export function RewardsClaimRulesMessage() {
   const classes = useStyles();
   const api = useApi();
@@ -21,10 +23,9 @@ export function RewardsClaimRulesMessage() {
         <Loading data={rewardsRD}>
           {rewards => (
             <div className={classes.text}>
-              {`Pool harvests are claimed once per day${
-                rewards.length ? '.' : ' — come back later to see your rewards!'
-              }`}{' '}
-              If you want to see AKRO & ADEL rewards — please check{' '}
+              Pool harvests are claimed once per day$
+              {rewards.length ? '.' : ' — come back later to see your rewards!'} If you want to see
+              overall AKRO & ADEL rewards for each pool & calculate yours — please check{' '}
               <Link
                 href={REWARDS_TABLE_URL}
                 color="textPrimary"

@@ -145,4 +145,4 @@ export const SUBGRAPH_WS_URL = subgraphWsUrlsByMode[getEnv().mode];
 export const DISCORD_URL = 'https://discord.gg/Y58CGUW';
 
 export const REWARDS_TABLE_URL =
-  'https://docs.google.com/spreadsheets/d/1nOJ6a2QAbHkpBggFfw1RL3W7ajtbgLNElkCRO_5Kh6M/edit';
+  'https://docs.google.com/spreadsheets/d/1WF-SC-L2d4LGEM1Cpvk2leGFhBoHUhGwEBEvTBuCDag/edit';
