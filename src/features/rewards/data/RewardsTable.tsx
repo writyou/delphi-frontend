@@ -2,11 +2,11 @@ import React from 'react';
 import { TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
-import { Table, FormattedAmount, Grid, TokenName, DeprecatedLoading } from 'components';
+import { Table, FormattedAmount, Grid, TokenName, Loading } from 'components';
 import { Cat2, CatPaws } from 'components/icons';
 import { liquidityAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { RewardData } from 'model/types';
 
@@ -54,37 +54,43 @@ const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
 export function RewardsTable() {
   const classes = useStyles();
   const api = useApi();
-  const [data, meta] = useSubscribableDeprecated(() => api.user.getRewardsData$(), [api]);
+  const rewardsRD = useSubscribable(() => api.user.getRewardsData$(), [api]);
 
   return (
-    <DeprecatedLoading meta={meta}>
-      {data && data.length ? (
-        <Table.Component rowPadding="small" columns={columnsWithoutExpandableRows} entries={data} />
-      ) : (
-        <Grid container>
-          <Grid item xs={4}>
-            <Table.Component
-              rowPadding="small"
-              columns={[columnsWithoutExpandableRows[0]]}
-              entries={dataMock}
-            />
+    <Loading data={rewardsRD}>
+      {rewards =>
+        rewards && rewards.length ? (
+          <Table.Component
+            rowPadding="small"
+            columns={columnsWithoutExpandableRows}
+            entries={rewards}
+          />
+        ) : (
+          <Grid container>
+            <Grid item xs={4}>
+              <Table.Component
+                rowPadding="small"
+                columns={[columnsWithoutExpandableRows[0]]}
+                entries={dataMock}
+              />
+            </Grid>
+            <Grid item xs={8}>
+              <Table.Component
+                rowPadding="small"
+                columns={[columnsWithoutExpandableRows[1], columnsWithoutExpandableRows[2]]}
+                entries={[]}
+              />
+              <Cat2 className={classes.cat} />
+              <p>
+                No harvest to check — you withdrawn everything.
+                <CatPaws className={classes.catPaws} />
+              </p>
+              <p>Chill with Delphic while your crops are getting ready to grow.</p>
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            <Table.Component
-              rowPadding="small"
-              columns={[columnsWithoutExpandableRows[1], columnsWithoutExpandableRows[2]]}
-              entries={[]}
-            />
-            <Cat2 className={classes.cat} />
-            <p>
-              No harvest to check — you withdrawn everything.
-              <CatPaws className={classes.catPaws} />
-            </p>
-            <p>Chill with Delphic while your crops are getting ready to grow.</p>
-          </Grid>
-        </Grid>
-      )}
-    </DeprecatedLoading>
+        )
+      }
+    </Loading>
   );
 }
 

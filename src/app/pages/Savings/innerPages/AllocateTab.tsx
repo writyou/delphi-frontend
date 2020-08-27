@@ -15,7 +15,7 @@ export const AllocateTab = memo(() => {
   const classes = useStyles();
   const { t } = useTranslate();
 
-  const poolsRD = useSubscribable(
+  const poolsDataRD = useSubscribable(
     () =>
       api.savings.getPools$().pipe(
         switchMap(pools =>
@@ -38,7 +38,7 @@ export const AllocateTab = memo(() => {
       <div className={classes.allocateTabDescription}>
         {t(tKeys.modules.savings.allocateTabText.getKey())}
       </div>
-      <Loading data={poolsRD}>
+      <Loading data={poolsDataRD}>
         {poolsData => <AllocateForm pools={poolsData.pools} hasLimits={poolsData.hasLimits} />}
       </Loading>
     </>
