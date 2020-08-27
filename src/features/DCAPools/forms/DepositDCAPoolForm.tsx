@@ -7,7 +7,7 @@ import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Grid } from 'components';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount, useSubscribableDeprecated } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 import { lessThanOrEqual } from 'utils/validators';
 
 interface FormData {
@@ -39,15 +39,18 @@ export function DepositDCAPoolForm({
   const api = useApi();
   const { t } = useTranslate();
 
-  const [maxValue] = useSubscribableDeprecated(
-    () => api.user.getTokenBalance$(tokenToSell.address),
-    [api],
-  );
+  const maxValueRD = useSubscribable(() => api.user.getTokenBalance$(tokenToSell.address), [api]);
 
   const validateAmount = useValidateAmount({
     required: true,
     moreThanZero: true,
-    maxValue,
+    // TODO need to research api
+    maxValue: maxValueRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      maxValue => maxValue,
+    ),
     maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
 
@@ -100,7 +103,15 @@ export function DepositDCAPoolForm({
               currencies={[tokenToSell]}
               placeholder="Enter sum"
               validate={validateAmount}
-              maxValue={maxValue}
+              maxValue={
+                // TODO need to research api
+                maxValueRD.fold(
+                  () => undefined,
+                  () => undefined,
+                  () => undefined,
+                  maxValue => maxValue,
+                )
+              }
             />
           </Grid>
         </Grid>

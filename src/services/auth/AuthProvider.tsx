@@ -1,8 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
+import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
-import { useSubscribableDeprecated, useCommunication } from 'utils/react';
+import { useSubscribable, useCommunication } from 'utils/react';
 import { WalletType } from 'services/api';
+import { Loading } from 'components';
 
 import { AuthModal } from './view/AuthModal';
 import { AuthContext, AuthWeb3Manager } from './AuthContext';
@@ -20,8 +23,21 @@ export function AuthProvider(props: Props) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [connectRedirectPath, setConnectRedirectPath] = useState(defaultConnectRedirectPath);
 
-  const [account] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
-  const [connectedWallet] = useSubscribableDeprecated(() => web3Manager.connectedWallet$, [], null);
+  const authStateRD = useSubscribable(
+    () =>
+      combineLatest(web3Manager.account$, web3Manager.connectedWallet$).pipe(
+        map(([account, connectedWallet]) => ({ account, connectedWallet })),
+      ),
+    [],
+  );
+
+  // TODO need to research api
+  const connectedWallet = authStateRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    values => values.connectedWallet,
+  );
 
   const history = useHistory();
 
@@ -76,15 +92,19 @@ export function AuthProvider(props: Props) {
   return (
     <AuthContext.Provider value={context}>
       {children}
-      <AuthModal
-        connectedWallet={connectedWallet}
-        isOpened={isModalOpened}
-        onClose={closeModal}
-        account={account}
-        connecting={connectCommunication}
-        connect={connectCommunication.execute}
-        disconnect={handleAuthModalDisconnect}
-      />
+      <Loading data={authStateRD}>
+        {authState => (
+          <AuthModal
+            connectedWallet={authState.connectedWallet}
+            isOpened={isModalOpened}
+            onClose={closeModal}
+            account={authState.account}
+            connecting={connectCommunication}
+            connect={connectCommunication.execute}
+            disconnect={handleAuthModalDisconnect}
+          />
+        )}
+      </Loading>
     </AuthContext.Provider>
   );
 }

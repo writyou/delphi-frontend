@@ -13,7 +13,7 @@ import {
 } from 'utils/validators';
 import { toObservable } from 'utils/rxjs';
 
-import { useSubscribableDeprecated } from './useSubscribableDeprecated';
+import { useSubscribable } from './useSubscribable';
 
 interface ValidateAmountOptions {
   required?: boolean;
@@ -28,7 +28,7 @@ interface ValidateAmountOptions {
 export function useValidateAmount(options: ValidateAmountOptions) {
   const { positive, required, moreThanZero, maxErrorTKey } = options;
 
-  const [{ maxValue, minValue }] = useSubscribableDeprecated<{
+  const amplitudeValuesRD = useSubscribable<{
     maxValue?: BN;
     minValue?: BN;
   }>(
@@ -40,8 +40,16 @@ export function useValidateAmount(options: ValidateAmountOptions) {
         })),
       ),
     [options.maxValue, options.minValue],
-    {},
   );
+
+  // TODO need to research api
+  const { maxValue, minValue } =
+    amplitudeValuesRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      values => values,
+    ) || {};
 
   return useMemo(() => {
     return (amount: '' | Amount | null) => {

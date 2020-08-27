@@ -9,6 +9,7 @@ import {
   TotalRewardsBalance,
   RewardsComposition,
   RewardsTable,
+  RewardsClaimRulesMessage,
 } from 'features/rewards';
 import { PageForGuest, PortfolioBalanceChart } from 'app/components';
 
@@ -47,7 +48,10 @@ export function MyRewards() {
                 <PortfolioBalanceChart />
               </Grid>
               <Grid item xs={6}>
-                <RewardsTable />
+                <RewardsClaimRulesMessage />
+                <div className={classes.rewardsTable}>
+                  <RewardsTable />
+                </div>
               </Grid>
             </Grid>
           ) : (
@@ -76,6 +80,9 @@ const useStyles = makeStyles(
     },
     withdrawButton: {
       width: 155,
+    },
+    rewardsTable: {
+      marginTop: 44,
     },
   }),
   { name: 'MyRewards' },

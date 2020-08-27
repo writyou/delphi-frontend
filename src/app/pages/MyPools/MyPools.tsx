@@ -4,10 +4,10 @@ import { Link as RouterLink } from 'react-router-dom';
 import { combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { TabsSection, ComingSoon, Card, DeprecatedLoading, CheckAuthorization } from 'components';
+import { TabsSection, ComingSoon, Card, Loading, CheckAuthorization } from 'components';
 import { makeStyles } from 'utils/styles';
 import { routes } from 'app/routes';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 import { PageForGuest } from 'app/components';
 
@@ -48,13 +48,11 @@ export function MyPools() {
   const classes = useStyles();
   const api = useApi();
 
-  const [filteredTabs, meta] = useSubscribableDeprecated(
+  const filteredTabsRD = useSubscribable(
     () =>
       combineLatest(tabs.map(tab => tab.getData(api))).pipe(
         map(tabData =>
-          tabData
-            ? tabs.filter((_, i) => Boolean(tabData[i]?.length)).map(({ getData, ...tab }) => tab)
-            : undefined,
+          tabs.filter((_, i) => Boolean(tabData[i]?.length)).map(({ getData, ...tab }) => tab),
         ),
       ),
     [api],
@@ -62,7 +60,13 @@ export function MyPools() {
 
   const match = useRouteMatch<{ page: string }>('/pools/:page');
 
-  const defaultPage = filteredTabs?.[0]?.value;
+  // TODO need to research api
+  const defaultPage = filteredTabsRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    filteredTabs => filteredTabs[0]?.value,
+  );
 
   const page = match ? match.params.page : defaultPage;
 
@@ -71,29 +75,42 @@ export function MyPools() {
     [routes.pools.investments.getElementKey(), routes.pools.dca.getElementKey()].includes(page);
 
   const isWorthToWatchPage$ = useMemo(
-    () => of(filteredTabs ? filteredTabs.some(filteredPage => filteredPage.value === page) : false),
-    [filteredTabs, page],
+    () =>
+      // TODO need to research api
+      of(
+        filteredTabsRD.fold(
+          () => false,
+          () => false,
+          () => false,
+          filteredTabs => filteredTabs.some(filteredTab => filteredTab.value === page),
+        ),
+      ),
+    [filteredTabsRD, page],
   );
 
   return (
     <Card variant="contained" className={classes.root}>
-      <DeprecatedLoading meta={meta}>
-        <CheckAuthorization
-          isAuthorized$={isWorthToWatchPage$}
-          redirectTo={routes.pools.getRoutePath()}
-        />
-        {filteredTabs?.length && page ? (
-          <TabsSection currentValue={page} tabs={filteredTabs} tabComponent={RouterLink}>
-            {isComingSoonTab && (
-              <div className={classes.comingSoon}>
-                <ComingSoon variant="label" />
-              </div>
+      <Loading data={filteredTabsRD}>
+        {filteredTabs => (
+          <>
+            <CheckAuthorization
+              isAuthorized$={isWorthToWatchPage$}
+              redirectTo={routes.pools.getRoutePath()}
+            />
+            {filteredTabs?.length && page ? (
+              <TabsSection currentValue={page} tabs={filteredTabs} tabComponent={RouterLink}>
+                {isComingSoonTab && (
+                  <div className={classes.comingSoon}>
+                    <ComingSoon variant="label" />
+                  </div>
+                )}
+              </TabsSection>
+            ) : (
+              <PageForGuest />
             )}
-          </TabsSection>
-        ) : (
-          <PageForGuest />
+          </>
         )}
-      </DeprecatedLoading>
+      </Loading>
     </Card>
   );
 }

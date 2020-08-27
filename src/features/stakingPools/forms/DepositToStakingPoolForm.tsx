@@ -8,7 +8,7 @@ import { TokenAmount, Token, min } from '@akropolis-web/primitives';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount, useSubscribableDeprecated } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 import { StakingPool } from 'model/types';
 import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
@@ -35,7 +35,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const [validationParams] = useSubscribableDeprecated(
+  const validationParamsRD = useSubscribable(
     () =>
       currentToken
         ? combineLatest([
@@ -56,8 +56,14 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, currentToken, pool.address],
   );
 
-  const maxValue = validationParams?.maxValue;
-  const maxErrorTKey = validationParams?.maxErrorTKey;
+  // TODO need to research api
+  const { maxValue, maxErrorTKey } =
+    validationParamsRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      params => params,
+    ) || {};
 
   const validateAmount = useValidateAmount({
     required: true,
