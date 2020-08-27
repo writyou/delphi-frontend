@@ -3,8 +3,8 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { StakingPool } from 'model/types';
-import { ConfirmationDialog, DeprecatedLoading, Button, ButtonProps } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { ConfirmationDialog, Loading, Button, ButtonProps } from 'components';
+import { useSubscribable } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
 export function WithdrawFromStakingPoolButton({
@@ -17,42 +17,42 @@ export function WithdrawFromStakingPoolButton({
   const close = React.useCallback(() => setIsOpen(false), []);
 
   const api = useApi();
-  const [params, paramsMeta] = useSubscribableDeprecated(
-    () => getConfirmationParams$(api, pool.address),
-    [api, pool.address],
-  );
+  const confirmationParamsRD = useSubscribable(() => getConfirmationParams$(api, pool.address), [
+    api,
+    pool.address,
+  ]);
 
   const handleUnstake = useCallback(async (): Promise<void> => {
     await api.staking.withdraw({ poolAddress: pool.address });
     close();
   }, [api, pool.address]);
 
-  const unstakeDisabled: boolean = !params || params.unlockedBalance.isZero();
-
   return (
-    <>
-      <DeprecatedLoading
-        meta={paramsMeta}
-        loader={
-          <Button {...rest} disabled>
-            Unstake
-          </Button>
-        }
-      >
-        <Button {...rest} onClick={open} disabled={unstakeDisabled}>
+    <Loading
+      data={confirmationParamsRD}
+      loader={
+        <Button {...rest} disabled>
           Unstake
         </Button>
-      </DeprecatedLoading>
-      <ConfirmationDialog
-        isOpen={isOpen}
-        yesText="Unstake"
-        title="Unstake"
-        onCancel={close}
-        onConfirm={handleUnstake}
-      >
-        Are you sure you want to unstake {params?.unlockedBalance.toFormattedString()}
-      </ConfirmationDialog>
-    </>
+      }
+    >
+      {params => (
+        <>
+          <Button {...rest} onClick={open} disabled={params.unlockedBalance.isZero()}>
+            Unstake
+          </Button>
+          <ConfirmationDialog
+            isOpen={isOpen}
+            yesText="Unstake"
+            title="Unstake"
+            onCancel={close}
+            onConfirm={handleUnstake}
+          >
+            Are you sure you want to unstake {params.unlockedBalance.toFormattedString()}
+          </ConfirmationDialog>
+        </>
+      )}
+    </Loading>
   );
 }
 
