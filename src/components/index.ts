@@ -42,6 +42,7 @@ export { CatsPawPlaceholder } from './CatsPawPlaceholder/CatsPawPlaceholder';
 export * from './ComingSoon';
 export * from './ErrorBoundary';
 export * from './Hint/Hint';
+export * from './DeprecatedLoading';
 export * from './Loading';
 export * from './Snackbar/Snackbar';
 export * from './RowsLayout/RowsLayout';

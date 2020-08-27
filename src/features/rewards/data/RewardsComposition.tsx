@@ -18,9 +18,7 @@ import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { RewardData } from 'model/types';
 
-function makeChartData(
-  entries: RewardData[] | undefined,
-): PieChartData<LiquidityAmount, TokenAmount>[] {
+function makeChartData(entries: RewardData[]): PieChartData<LiquidityAmount, TokenAmount>[] {
   return (entries || []).map(order => ({
     value: order.NAV,
     payload: order.amount,
@@ -30,34 +28,42 @@ function makeChartData(
 export function RewardsComposition() {
   const classes = useStyles();
   const api = useApi();
-  const [rewardsData, rewardsMeta] = useSubscribable(() => api.user.getRewardsData$(), [api]);
-  const data = makeChartData(rewardsData);
+  const rewardsDataRD = useSubscribable(() => api.user.getRewardsData$(), [api]);
   return (
-    <Loading meta={rewardsMeta}>
-      <Grid container alignItems="center" spacing={3}>
-        <Grid item>
-          {data.length ? (
-            <CompositionChart withBackground chartData={data} size="extra-small" />
-          ) : (
-            <CatPaws className={classes.icon} />
-          )}
-        </Grid>
-        <Grid item>
-          {data.length ? (
-            <CompositionLegend<LiquidityAmount, TokenAmount>
-              chartData={data}
-              Template={props => (
-                <SimpleLegend
-                  {...props}
-                  renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+    <Loading data={rewardsDataRD}>
+      {rewardsData => {
+        const chartData = makeChartData(rewardsData);
+        return (
+          <Grid container alignItems="center" spacing={3}>
+            <Grid item>
+              {chartData.length ? (
+                <CompositionChart withBackground chartData={chartData} size="extra-small" />
+              ) : (
+                <CatPaws className={classes.icon} />
+              )}
+            </Grid>
+            <Grid item>
+              {chartData.length ? (
+                <CompositionLegend<LiquidityAmount, TokenAmount>
+                  chartData={chartData}
+                  Template={props => (
+                    <SimpleLegend
+                      {...props}
+                      renderLabel={({ pieData }) => pieData.payload.currency.symbol}
+                    />
+                  )}
+                />
+              ) : (
+                <Metric
+                  title="APY"
+                  value={<FormattedAmount sum={percentAmount} />}
+                  variant="condensed"
                 />
               )}
-            />
-          ) : (
-            <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
-          )}
-        </Grid>
-      </Grid>
+            </Grid>
+          </Grid>
+        );
+      }}
     </Loading>
   );
 }

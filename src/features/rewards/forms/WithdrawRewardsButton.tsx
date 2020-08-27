@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 
-import { ConfirmationDialog, Button, ButtonProps, Loading } from 'components';
+import { ConfirmationDialog, Button, ButtonProps, DeprecatedLoading } from 'components';
 import { useApi } from 'services/api';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -16,11 +16,13 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
     await api.user.withdrawRewards();
     close();
   }, [api]);
-  const [totalBalance, meta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
+  const [totalBalance, meta] = useSubscribableDeprecated(() => api.user.getTotalRewardsBalance$(), [
+    api,
+  ]);
 
   return (
     <>
-      <Loading
+      <DeprecatedLoading
         meta={meta}
         loader={
           <Button {...props} disabled>
@@ -31,7 +33,7 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
         <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
           Withdraw
         </Button>
-      </Loading>
+      </DeprecatedLoading>
       <ConfirmationDialog
         isOpen={isOpen}
         yesText="Withdraw"

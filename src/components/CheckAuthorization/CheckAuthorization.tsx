@@ -3,31 +3,30 @@ import { Observable } from 'rxjs';
 import { Redirect, Route, Switch } from 'react-router';
 
 import { useSubscribable } from 'utils/react';
+import { isNotAsked, isLoading } from 'utils/remoteData';
 
 import { Loading } from '../Loading';
 
-type IProps = {
+type Props = {
   isAuthorized$: Observable<boolean>;
   redirectTo: string;
   excludePath?: string;
   children?: React.ReactNode;
 };
 
-export const CheckAuthorization: React.FC<IProps> = (props: IProps) => {
+export const CheckAuthorization: React.FC<Props> = (props: Props) => {
   const { isAuthorized$, redirectTo, excludePath, children } = props;
-  const [isWorthyToWatch, isWorthyToWatchMeta] = useSubscribable(() => isAuthorized$, [
-    isAuthorized$,
-  ]);
+  const isAuthorizedRD = useSubscribable(() => isAuthorized$, [isAuthorized$]);
+
+  if (!children && (isNotAsked(isAuthorizedRD) || isLoading(isAuthorizedRD))) {
+    return null;
+  }
 
   return (
-    <Loading meta={isWorthyToWatchMeta} loader={!children ? <>{null}</> : undefined}>
-      {renderContent()}
+    <Loading data={isAuthorizedRD}>
+      {isAuthorized => (isAuthorized ? <>{children}</> : renderRedirect())}
     </Loading>
   );
-
-  function renderContent() {
-    return isWorthyToWatch ? children : renderRedirect();
-  }
 
   function renderRedirect() {
     return excludePath ? (

@@ -7,9 +7,9 @@ import { useAuthContext } from 'services/auth';
 import { tKeys, useTranslate } from 'services/i18n';
 import { Adaptive } from 'services/adaptability';
 import { getShortAddress } from 'utils/format';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 import { makeStyles } from 'utils/styles';
-import { Button, Loading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
+import { Button, DeprecatedLoading, Typography, Grid, AddressIcon, ButtonProps } from 'components';
 
 interface Props {
   children?: React.ReactNode;
@@ -21,8 +21,8 @@ export function AuthButton({ children, size }: Props) {
   const { t } = useTranslate();
   const { web3Manager, openModal, connectCommunication } = useAuthContext();
 
-  const [account, accountMeta] = useSubscribable(() => web3Manager.account$, [], null);
-  const [status] = useSubscribable(() => web3Manager.status$, [], 'pending');
+  const [account, accountMeta] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
+  const [status] = useSubscribableDeprecated(() => web3Manager.status$, [], 'pending');
 
   const isConnected: boolean = accountMeta.loaded && !!account;
 
@@ -40,7 +40,7 @@ export function AuthButton({ children, size }: Props) {
         disabled={!accountMeta.loaded}
         className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
-          <Loading
+          <DeprecatedLoading
             ignoreError
             meta={{ loaded: status !== 'pending', error: null }}
             communication={connectCommunication}
@@ -51,7 +51,7 @@ export function AuthButton({ children, size }: Props) {
           />
         }
       >
-        <Loading meta={accountMeta}>
+        <DeprecatedLoading meta={accountMeta}>
           {account ? (
             <>
               <Avatar className={classes.icon}>
@@ -80,7 +80,7 @@ export function AuthButton({ children, size }: Props) {
           ) : (
             children || t(tKeys.features.auth.connect.getKey())
           )}
-        </Loading>
+        </DeprecatedLoading>
       </Button>
     </>
   );

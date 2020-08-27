@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
 
-import { useSubscribable, useCommunication } from 'utils/react';
+import { useSubscribableDeprecated, useCommunication } from 'utils/react';
 import { WalletType } from 'services/api';
 
 import { AuthModal } from './view/AuthModal';
@@ -20,8 +20,8 @@ export function AuthProvider(props: Props) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [connectRedirectPath, setConnectRedirectPath] = useState(defaultConnectRedirectPath);
 
-  const [account] = useSubscribable(() => web3Manager.account$, [], null);
-  const [connectedWallet] = useSubscribable(() => web3Manager.connectedWallet$, [], null);
+  const [account] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
+  const [connectedWallet] = useSubscribableDeprecated(() => web3Manager.connectedWallet$, [], null);
 
   const history = useHistory();
 

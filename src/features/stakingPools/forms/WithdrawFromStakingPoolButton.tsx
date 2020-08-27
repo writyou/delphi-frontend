@@ -3,8 +3,8 @@ import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { StakingPool } from 'model/types';
-import { ConfirmationDialog, Loading, Button, ButtonProps } from 'components';
-import { useSubscribable } from 'utils/react';
+import { ConfirmationDialog, DeprecatedLoading, Button, ButtonProps } from 'components';
+import { useSubscribableDeprecated } from 'utils/react';
 import { useApi, Api } from 'services/api';
 
 export function WithdrawFromStakingPoolButton({
@@ -17,10 +17,10 @@ export function WithdrawFromStakingPoolButton({
   const close = React.useCallback(() => setIsOpen(false), []);
 
   const api = useApi();
-  const [params, paramsMeta] = useSubscribable(() => getConfirmationParams$(api, pool.address), [
-    api,
-    pool.address,
-  ]);
+  const [params, paramsMeta] = useSubscribableDeprecated(
+    () => getConfirmationParams$(api, pool.address),
+    [api, pool.address],
+  );
 
   const handleUnstake = useCallback(async (): Promise<void> => {
     await api.staking.withdraw({ poolAddress: pool.address });
@@ -31,7 +31,7 @@ export function WithdrawFromStakingPoolButton({
 
   return (
     <>
-      <Loading
+      <DeprecatedLoading
         meta={paramsMeta}
         loader={
           <Button {...rest} disabled>
@@ -42,7 +42,7 @@ export function WithdrawFromStakingPoolButton({
         <Button {...rest} onClick={open} disabled={unstakeDisabled}>
           Unstake
         </Button>
-      </Loading>
+      </DeprecatedLoading>
       <ConfirmationDialog
         isOpen={isOpen}
         yesText="Unstake"

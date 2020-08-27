@@ -8,7 +8,7 @@ import { TokenAmount, Token, min } from '@akropolis-web/primitives';
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount, useSubscribable } from 'utils/react';
+import { useValidateAmount, useSubscribableDeprecated } from 'utils/react';
 import { StakingPool } from 'model/types';
 import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
@@ -35,7 +35,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const [validationParams] = useSubscribable(
+  const [validationParams] = useSubscribableDeprecated(
     () =>
       currentToken
         ? combineLatest([

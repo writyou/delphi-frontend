@@ -21,7 +21,7 @@ export function AllocateFormConfirmationContent(values: FormData) {
   const api = useApi();
   const deposits = useMemo(() => getDeposits(values), [values]);
 
-  const [fees, feesMeta] = useSubscribable(
+  const feesRD = useSubscribable(
     () =>
       api.web3Manager.account$.pipe(
         switchMap(account =>
@@ -49,12 +49,14 @@ export function AllocateFormConfirmationContent(values: FormData) {
         <Typography>{t(tKeys.modules.savings.allocateDialog.getKey())}</Typography>
       </Grid>
       <Grid item xs={12} container>
-        <Loading meta={feesMeta}>
-          {fees ? (
-            <FeesTable fees={fees} />
-          ) : (
-            t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())
-          )}
+        <Loading data={feesRD}>
+          {fees =>
+            fees ? (
+              <FeesTable fees={fees} />
+            ) : (
+              <>{t(tKeys.modules.savings.allocateNoApprovesWarning.getKey())}</>
+            )
+          }
         </Loading>
       </Grid>
       <Grid item xs={12} container justify="flex-end">

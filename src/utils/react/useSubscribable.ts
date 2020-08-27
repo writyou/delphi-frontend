@@ -1,51 +1,24 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Subscribable } from 'rxjs';
 
+import { RemoteData, success, failure, loading } from '../remoteData';
 import { getErrorMsg } from '../getErrorMsg';
 
-export interface ISubscriptionMeta {
-  loaded: boolean;
-  error: string | null;
-  updatedAt: number;
-}
-
-type Result<T> = [T, ISubscriptionMeta];
-
-// TODO move all state changes to useReducer
-function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[]): Result<T | undefined>;
-function useSubscribable<T>(getTarget: () => Subscribable<T>, deps: any[], fallback: T): Result<T>;
-function useSubscribable<T>(
-  getTarget: () => Subscribable<T>,
+function useSubscribable<R>(
+  getTarget: () => Subscribable<R>, // TODO: R or RemoteData<R, E>
   deps: any[],
-  fallback?: T,
-): Result<T | undefined> {
-  const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [updatedAt, setUpdatedAt] = useState(() => Date.now());
-  const [value, setValue] = useState<T | undefined>(fallback);
-
-  const resetState = React.useCallback(() => {
-    setLoaded(false);
-    setError(null);
-    setUpdatedAt(Date.now());
-    setValue(fallback);
-  }, [fallback]);
+  initial: RemoteData<R, string> = loading,
+): RemoteData<R, string> {
+  const [value, setValue] = useState<RemoteData<R, string>>(initial);
 
   const target = useMemo(getTarget, deps);
 
   useEffect(() => {
-    resetState();
-
+    setValue(initial);
     const subscription = target.subscribe({
-      next: nextValue => {
-        setValue(nextValue);
-        setUpdatedAt(Date.now());
-        setLoaded(true);
-        setError(null);
-      },
+      next: nextValue => setValue(success(nextValue)),
       error: err => {
-        setLoaded(true);
-        setError(getErrorMsg(err));
+        setValue(failure(getErrorMsg(err)));
         if (process.env.NODE_ENV === 'development') {
           console.error(err);
         }
@@ -55,16 +28,7 @@ function useSubscribable<T>(
     return () => subscription.unsubscribe();
   }, [target]);
 
-  const meta: ISubscriptionMeta = useMemo(
-    () => ({
-      loaded,
-      updatedAt,
-      error,
-    }),
-    [loaded, updatedAt, error],
-  );
-
-  return [value, meta];
+  return value;
 }
 
 export { useSubscribable };

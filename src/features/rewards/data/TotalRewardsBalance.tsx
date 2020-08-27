@@ -6,6 +6,11 @@ import { Loading, FormattedAmount } from 'components';
 
 export function TotalRewardsBalance() {
   const api = useApi();
-  const [totalBalance, meta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
-  return <Loading meta={meta}>{totalBalance && <FormattedAmount sum={totalBalance} />}</Loading>;
+  const totalBalanceRD = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
+
+  return (
+    <Loading data={totalBalanceRD}>
+      {totalBalance => <FormattedAmount sum={totalBalance} />}
+    </Loading>
+  );
 }

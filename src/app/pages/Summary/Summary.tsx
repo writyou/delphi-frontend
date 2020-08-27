@@ -12,23 +12,25 @@ export function Summary() {
   const classes = useStyles();
 
   const api = useApi();
-  const [isUserExist, userMeta] = useSubscribable(() => api.user.isUserExist$(), [api]);
+  const doesUserExistRD = useSubscribable(() => api.user.isUserExist$(), [api]);
 
   return (
     <Card variant="contained" className={classes.root}>
-      <Loading meta={userMeta}>
-        {isUserExist ? (
-          <Grid container spacing={10}>
-            <Grid item xs={6}>
-              <PortfolioBalanceChart />
+      <Loading data={doesUserExistRD}>
+        {doesUserExist =>
+          doesUserExist ? (
+            <Grid container spacing={10}>
+              <Grid item xs={6}>
+                <PortfolioBalanceChart />
+              </Grid>
+              <Grid item xs={6}>
+                <APYMetricsSection />
+              </Grid>
             </Grid>
-            <Grid item xs={6}>
-              <APYMetricsSection />
-            </Grid>
-          </Grid>
-        ) : (
-          <PageForGuest />
-        )}
+          ) : (
+            <PageForGuest />
+          )
+        }
       </Loading>
     </Card>
   );

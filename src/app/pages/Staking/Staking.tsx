@@ -8,19 +8,19 @@ import { StakingPoolCard } from './StakingPoolCard';
 
 export function Staking() {
   const api = useApi();
-  const [pools, poolsMeta] = useSubscribable(() => api.staking.getPools$(), [api]);
+  const poolsRD = useSubscribable(() => api.staking.getPools$(), [api]);
 
   return (
-    <Loading meta={poolsMeta}>
-      <Grid container alignItems="flex-start" spacing={6}>
-        {pools &&
-          pools.length &&
-          pools.map(pool => (
+    <Loading data={poolsRD}>
+      {pools => (
+        <Grid container alignItems="flex-start" spacing={6}>
+          {pools.map(pool => (
             <Grid key={pool.address} item xs={4}>
               <StakingPoolCard pool={pool} />
             </Grid>
           ))}
-      </Grid>
+        </Grid>
+      )}
     </Loading>
   );
 }
