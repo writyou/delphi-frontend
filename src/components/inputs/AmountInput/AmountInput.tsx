@@ -13,10 +13,9 @@ import { SelectInput, TextInput, DecimalsInput } from '@akropolis-web/components
 import { Amount, IToBN, bnToBn } from '@akropolis-web/primitives';
 
 import { toObservable } from 'utils/rxjs';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated } from 'utils/react';
 
 import { useStyles } from './AmountInput.style';
-import { Loading } from '../../Loading';
 
 interface IOwnProps<A extends Amount> {
   currencies: Array<A['currency']>;
@@ -62,7 +61,9 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
 
   const isSingleOptionSelect = Boolean(currencies.length <= 1 && currentCurrency);
 
-  const maxValueRD = useSubscribable(() => toObservable(max), [max]);
+  const [maxValue] = useSubscribableDeprecated(() => toObservable(max), [max]);
+
+  const isDisabled = disabled !== undefined ? disabled : maxValue && bnToBn(maxValue).isZero();
 
   // initialize or update value if currencies is not contain current currency
   useEffect(() => {
@@ -112,21 +113,17 @@ export function AmountInput<A extends Amount>(props: AmountInputProps<A>) {
           [classes.withCurrencySelect]: !hideCurrencySelect && !isSingleOptionSelect,
         })}
       >
-        <Loading data={maxValueRD}>
-          {maxValue => (
-            <DecimalsInput
-              {...restInputProps}
-              baseDecimals={currentDecimals}
-              value={currentValue.toString()}
-              maxValue={maxValue}
-              onChange={handleInputChange}
-              disabled={disabled !== undefined ? disabled : maxValue && bnToBn(maxValue).isZero()}
-              InputProps={{
-                className: classes.decimalInput,
-              }}
-            />
-          )}
-        </Loading>
+        <DecimalsInput
+          {...restInputProps}
+          baseDecimals={currentDecimals}
+          value={currentValue.toString()}
+          maxValue={maxValue}
+          onChange={handleInputChange}
+          disabled={isDisabled}
+          InputProps={{
+            className: classes.decimalInput,
+          }}
+        />
       </div>
       {!hideCurrencySelect && (
         <div className={classes.select}>
