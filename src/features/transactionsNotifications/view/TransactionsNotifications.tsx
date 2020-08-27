@@ -14,7 +14,15 @@ function TransactionsNotifications() {
   const api = useApi();
   const transactionRD = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
-    [],
+    [api],
+  );
+
+  // TODO need to research api
+  const transaction = transactionRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    t => t,
   );
 
   const showNotifications = React.useCallback(
@@ -45,15 +53,8 @@ function TransactionsNotifications() {
   );
 
   React.useEffect(() => {
-    // TODO need to research api
-    const transaction = transactionRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      t => t,
-    );
     transaction && showNotifications(transaction);
-  }, [transactionRD]);
+  }, [transaction]);
 
   return <></>;
 }

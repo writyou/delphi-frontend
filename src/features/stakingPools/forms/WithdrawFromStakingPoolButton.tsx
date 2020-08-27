@@ -38,7 +38,7 @@ export function WithdrawFromStakingPoolButton({
     >
       {params => (
         <>
-          <Button {...rest} onClick={open} disabled={!params || params.unlockedBalance.isZero()}>
+          <Button {...rest} onClick={open} disabled={params.unlockedBalance.isZero()}>
             Unstake
           </Button>
           <ConfirmationDialog

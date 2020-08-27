@@ -23,7 +23,7 @@ export function AuthProvider(props: Props) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [connectRedirectPath, setConnectRedirectPath] = useState(defaultConnectRedirectPath);
 
-  const accountWalletRD = useSubscribable(
+  const authStateRD = useSubscribable(
     () =>
       combineLatest(web3Manager.account$, web3Manager.connectedWallet$).pipe(
         map(([account, connectedWallet]) => ({ account, connectedWallet })),
@@ -31,17 +31,18 @@ export function AuthProvider(props: Props) {
     [],
   );
 
+  // TODO need to research api
+  const connectedWallet = authStateRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    values => values.connectedWallet,
+  );
+
   const history = useHistory();
 
   const connectToWallet = useCallback(
     async (wallet: WalletType) => {
-      // TODO need to research api
-      const connectedWallet = accountWalletRD.fold(
-        () => undefined,
-        () => undefined,
-        () => undefined,
-        values => values.connectedWallet,
-      );
       const currentWallet = connectedWallet;
       const connectResult = await web3Manager.connect(wallet);
       if (wallet === currentWallet) {
@@ -54,7 +55,7 @@ export function AuthProvider(props: Props) {
 
       return connectResult;
     },
-    [web3Manager, accountWalletRD, disconnectRedirectPath, connectRedirectPath],
+    [web3Manager, connectedWallet, disconnectRedirectPath, connectRedirectPath],
   );
   const connectCommunication = useCommunication(connectToWallet, []);
 
@@ -91,13 +92,13 @@ export function AuthProvider(props: Props) {
   return (
     <AuthContext.Provider value={context}>
       {children}
-      <Loading data={accountWalletRD}>
-        {accountWallet => (
+      <Loading data={authStateRD}>
+        {authState => (
           <AuthModal
-            connectedWallet={accountWallet.connectedWallet}
+            connectedWallet={authState.connectedWallet}
             isOpened={isModalOpened}
             onClose={closeModal}
-            account={accountWallet.account}
+            account={authState.account}
             connecting={connectCommunication}
             connect={connectCommunication.execute}
             disconnect={handleAuthModalDisconnect}

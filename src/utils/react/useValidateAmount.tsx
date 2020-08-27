@@ -42,24 +42,20 @@ export function useValidateAmount(options: ValidateAmountOptions) {
     [options.maxValue, options.minValue],
   );
 
+  // TODO need to research api
+  const { maxValue, minValue } =
+    amplitudeValuesRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      values => values,
+    ) || {};
+
   return useMemo(() => {
     return (amount: '' | Amount | null) => {
       if (!amount) {
         return required ? isRequired(amount) : undefined;
       }
-      // TODO need to research api
-      const maxValue = amplitudeValuesRD.fold(
-        () => undefined,
-        () => undefined,
-        () => undefined,
-        values => values.maxValue,
-      );
-      const minValue = amplitudeValuesRD.fold(
-        () => undefined,
-        () => undefined,
-        () => undefined,
-        values => values.minValue,
-      );
       return (
         (positive && validatePositiveNumber(amount.toBN())) ||
         (moreThanZero && moreThan(new BN(0), amount.toBN())) ||
@@ -76,5 +72,5 @@ export function useValidateAmount(options: ValidateAmountOptions) {
           ))
       );
     };
-  }, [amplitudeValuesRD, maxErrorTKey]);
+  }, [maxValue?.toString(), minValue?.toString(), maxErrorTKey]);
 }

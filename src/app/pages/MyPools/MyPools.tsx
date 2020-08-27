@@ -52,9 +52,7 @@ export function MyPools() {
     () =>
       combineLatest(tabs.map(tab => tab.getData(api))).pipe(
         map(tabData =>
-          tabData
-            ? tabs.filter((_, i) => Boolean(tabData[i]?.length)).map(({ getData, ...tab }) => tab)
-            : undefined,
+          tabs.filter((_, i) => Boolean(tabData[i]?.length)).map(({ getData, ...tab }) => tab),
         ),
       ),
     [api],
@@ -67,7 +65,7 @@ export function MyPools() {
     () => undefined,
     () => undefined,
     () => undefined,
-    filteredTabs => filteredTabs?.[0]?.value,
+    filteredTabs => filteredTabs[0]?.value,
   );
 
   const page = match ? match.params.page : defaultPage;
@@ -81,12 +79,11 @@ export function MyPools() {
       // TODO need to research api
       of(
         filteredTabsRD.fold(
-          () => undefined,
-          () => undefined,
-          () => undefined,
-          filteredTabs =>
-            filteredTabs && filteredTabs.some(filteredTab => filteredTab.value === page),
-        ) || false,
+          () => false,
+          () => false,
+          () => false,
+          filteredTabs => filteredTabs.some(filteredTab => filteredTab.value === page),
+        ),
       ),
     [filteredTabsRD, page],
   );

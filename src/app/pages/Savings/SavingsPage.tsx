@@ -42,13 +42,12 @@ export function SavingsPage() {
       // TODO need to research api
       of(
         page !== withdrawTab.value ||
-          !!poolsRD.fold(
-            () => undefined,
-            () => undefined,
-            () => undefined,
-            pools => pools.length,
-          ) ||
-          false,
+          poolsRD.fold(
+            () => false,
+            () => false,
+            () => false,
+            pools => !!pools.length,
+          ),
       ),
     [poolsRD, page],
   );

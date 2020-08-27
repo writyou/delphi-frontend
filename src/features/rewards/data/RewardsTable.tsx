@@ -59,7 +59,7 @@ export function RewardsTable() {
   return (
     <Loading data={rewardsRD}>
       {rewards =>
-        rewards && rewards.length ? (
+        rewards.length ? (
           <Table.Component
             rowPadding="small"
             columns={columnsWithoutExpandableRows}

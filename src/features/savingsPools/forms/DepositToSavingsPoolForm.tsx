@@ -97,16 +97,19 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
           amount: amount ? amount.toFormattedString() : '⏳',
         })}`}
         <Loading data={feesRD}>
-          {fees => (
-            <Typography>
-              Additional fee is{' '}
-              {fees && fees[0].fee.gt(getSignificantValue(fees[0].fee.currency.decimals)) ? (
-                <FormattedAmount sum={fees[0]?.fee} variant="plain" />
-              ) : (
-                'zero'
-              )}
-            </Typography>
-          )}
+          {fees => {
+            const fee = fees?.[0]?.fee;
+            return (
+              <Typography>
+                Additional fee is{' '}
+                {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
+                  <FormattedAmount sum={fee} variant="plain" />
+                ) : (
+                  'zero'
+                )}
+              </Typography>
+            );
+          }}
         </Loading>
       </>
     );

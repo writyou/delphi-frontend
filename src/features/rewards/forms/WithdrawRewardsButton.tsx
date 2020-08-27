@@ -31,7 +31,7 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
       >
         {totalBalance => (
           <>
-            <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
+            <Button {...props} onClick={open} disabled={totalBalance.isZero()}>
               Withdraw
             </Button>
             <ConfirmationDialog

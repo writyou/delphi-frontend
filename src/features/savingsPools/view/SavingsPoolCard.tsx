@@ -7,7 +7,6 @@ import { PoolCard } from 'components';
 import { SavingsPool } from 'model/types';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
-import { isSuccess } from 'utils/remoteData';
 
 import { SavingsPoolLiquidity } from '../data/SavingsPoolLiquidity';
 import { UserSavingsPoolBalance } from '../data/UserSavingsPoolBalance';
@@ -23,21 +22,21 @@ export function SavingsPoolCard({ pool, content, additionalElement, getDepositLi
   const { address, poolName, tokens } = pool;
   const api = useApi();
   const poolBalanceRD = useSubscribable(() => api.savings.getPoolBalance$(address), [api, address]);
+
+  const isDisabledLink = poolBalanceRD.fold(
+    () => true,
+    () => true,
+    () => true,
+    balance => balance.isZero(),
+  );
+
   return (
     <PoolCard
       address={address}
       poolName={poolName}
       tokens={tokens}
       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-      isDisabledLink={
-        !isSuccess(poolBalanceRD) ||
-        poolBalanceRD.fold(
-          () => undefined,
-          () => undefined,
-          () => undefined,
-          balance => balance.isZero(),
-        )
-      }
+      isDisabledLink={isDisabledLink}
       content={content}
       getDepositLimit$={getDepositLimit$}
       additionalElement={additionalElement}

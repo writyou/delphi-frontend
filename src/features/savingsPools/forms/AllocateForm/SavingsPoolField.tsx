@@ -10,7 +10,6 @@ import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
 import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
-import { isSuccess } from 'utils/remoteData';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
 import { useDepositAmountValidationParams } from '../../hooks/useDepositAmountValidationParams';
@@ -92,14 +91,12 @@ function SavingsPoolFieldComponent(props: Props) {
   };
 
   const switchDisabled =
-    isSuccess(depositLimitRD) &&
-    !!depositLimitRD &&
     // TODO need to research api
-    !depositLimitRD?.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      limit => limit && limit.gt(0),
+    depositLimitRD.fold(
+      () => true,
+      () => true,
+      () => true,
+      limit => limit?.isZero(),
     );
 
   const switchChecked = !switchDisabled && isAllocated;
