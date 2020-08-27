@@ -38,3 +38,4 @@ export { CloseIcon } from './CloseIcon';
 export { Cat1 } from './cats/Cat1';
 export { Cat2 } from './cats/Cat2';
 export { CatPaws, Props as CatPawsProps } from './cats/CatPaws';
+export { CatTwoPaws } from './cats/CatTwoPaws';
