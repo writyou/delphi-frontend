@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react';
 import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
-import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
 
 import { NETWORK_ID } from 'env';
 import { useAuthContext } from 'services/auth';
@@ -18,9 +16,9 @@ import {
   AddressIcon,
   ButtonProps,
   Loading,
-  DeprecatedLoading,
+  CircularProgress,
 } from 'components';
-import { isLoading, isSuccess } from 'utils/remoteData';
+import { isLoading } from 'utils/remoteData';
 
 interface Props {
   children?: React.ReactNode;
@@ -32,22 +30,21 @@ export function AuthButton({ children, size }: Props) {
   const { t } = useTranslate();
   const { web3Manager, openModal, connectCommunication } = useAuthContext();
 
-  const accountStatusRD = useSubscribable(
-    () =>
-      combineLatest([web3Manager.account$, web3Manager.status$]).pipe(
-        map(([account, status]) => ({
-          account,
-          status,
-        })),
-      ),
-    [web3Manager],
-  );
+  const accountRD = useSubscribable(() => web3Manager.account$, [web3Manager]);
 
-  const isConnected: boolean = isSuccess(accountStatusRD);
+  // TODO: refactor
+  const isConnected: boolean = accountRD.fold(
+    () => false,
+    () => false,
+    () => false,
+    account => !!account,
+  );
 
   const handleAuthButtonClick = useCallback(() => {
     openModal();
   }, [openModal]);
+
+  const buttonContent = children || t(tKeys.features.auth.connect.getKey());
 
   return (
     <>
@@ -56,26 +53,20 @@ export function AuthButton({ children, size }: Props) {
         color={isConnected ? 'default' : 'primary'}
         variant={isConnected ? 'outlined' : 'contained'}
         onClick={handleAuthButtonClick}
-        disabled={isLoading(accountStatusRD)}
+        disabled={isLoading(accountRD)}
         className={cn(classes.root, { [classes.connected]: isConnected })}
         endIcon={
-          <DeprecatedLoading
-            ignoreError
-            meta={{ loaded: !isLoading(accountStatusRD), error: null }}
-            communication={connectCommunication}
-            progressVariant="circle"
-            progressProps={{
-              size: 16,
-            }}
-          />
+          (isLoading(accountRD) || connectCommunication.status === 'pending') && (
+            <CircularProgress size={16} />
+          )
         }
       >
-        <Loading data={accountStatusRD}>
-          {accountStatus =>
-            accountStatus.account ? (
+        <Loading data={accountRD} loader={buttonContent}>
+          {account =>
+            account ? (
               <>
                 <Avatar className={classes.icon}>
-                  <AddressIcon address={accountStatus.account} />
+                  <AddressIcon address={account} />
                 </Avatar>
                 <Adaptive from="mobileMD">
                   <Grid
@@ -87,7 +78,7 @@ export function AuthButton({ children, size }: Props) {
                   >
                     <Grid item>
                       <Typography className={classes.address}>
-                        {getShortAddress(accountStatus.account)}
+                        {getShortAddress(account)}
                       </Typography>
                     </Grid>
                     <Grid item>
@@ -100,7 +91,7 @@ export function AuthButton({ children, size }: Props) {
                 </Adaptive>
               </>
             ) : (
-              <> {children || t(tKeys.features.auth.connect.getKey())} </>
+              <>{buttonContent}</>
             )
           }
         </Loading>
