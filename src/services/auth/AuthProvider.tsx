@@ -1,8 +1,11 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useHistory } from 'react-router';
+import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
-import { useSubscribableDeprecated, useCommunication } from 'utils/react';
+import { useSubscribable, useCommunication } from 'utils/react';
 import { WalletType } from 'services/api';
+import { Loading } from 'components';
 
 import { AuthModal } from './view/AuthModal';
 import { AuthContext, AuthWeb3Manager } from './AuthContext';
@@ -20,13 +23,25 @@ export function AuthProvider(props: Props) {
   const [isModalOpened, setIsModalOpened] = useState(false);
   const [connectRedirectPath, setConnectRedirectPath] = useState(defaultConnectRedirectPath);
 
-  const [account] = useSubscribableDeprecated(() => web3Manager.account$, [], null);
-  const [connectedWallet] = useSubscribableDeprecated(() => web3Manager.connectedWallet$, [], null);
+  const accountWalletRD = useSubscribable(
+    () =>
+      combineLatest(web3Manager.account$, web3Manager.connectedWallet$).pipe(
+        map(([account, connectedWallet]) => ({ account, connectedWallet })),
+      ),
+    [],
+  );
 
   const history = useHistory();
 
   const connectToWallet = useCallback(
     async (wallet: WalletType) => {
+      // TODO need to research api
+      const connectedWallet = accountWalletRD.fold(
+        () => undefined,
+        () => undefined,
+        () => undefined,
+        values => values.connectedWallet,
+      );
       const currentWallet = connectedWallet;
       const connectResult = await web3Manager.connect(wallet);
       if (wallet === currentWallet) {
@@ -39,7 +54,7 @@ export function AuthProvider(props: Props) {
 
       return connectResult;
     },
-    [web3Manager, connectedWallet, disconnectRedirectPath, connectRedirectPath],
+    [web3Manager, accountWalletRD, disconnectRedirectPath, connectRedirectPath],
   );
   const connectCommunication = useCommunication(connectToWallet, []);
 
@@ -76,15 +91,19 @@ export function AuthProvider(props: Props) {
   return (
     <AuthContext.Provider value={context}>
       {children}
-      <AuthModal
-        connectedWallet={connectedWallet}
-        isOpened={isModalOpened}
-        onClose={closeModal}
-        account={account}
-        connecting={connectCommunication}
-        connect={connectCommunication.execute}
-        disconnect={handleAuthModalDisconnect}
-      />
+      <Loading data={accountWalletRD}>
+        {accountWallet => (
+          <AuthModal
+            connectedWallet={accountWallet.connectedWallet}
+            isOpened={isModalOpened}
+            onClose={closeModal}
+            account={accountWallet.account}
+            connecting={connectCommunication}
+            connect={connectCommunication.execute}
+            disconnect={handleAuthModalDisconnect}
+          />
+        )}
+      </Loading>
     </AuthContext.Provider>
   );
 }

@@ -12,7 +12,7 @@ import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { DepositToSavingsPool } from 'model/types';
 
 export function useDepositAmountValidationParams(
@@ -23,7 +23,7 @@ export function useDepositAmountValidationParams(
   const { t } = useTranslate();
   const api = useApi();
 
-  const [validationParams] = useSubscribableDeprecated(
+  const validationParamsRD = useSubscribable(
     () =>
       token
         ? combineLatest([
@@ -62,8 +62,19 @@ export function useDepositAmountValidationParams(
     [api, token?.address, poolAddress, R.toString(formValues)],
   );
 
-  const maxValue = validationParams?.maxValue;
-  const maxErrorTKey = validationParams?.maxErrorTKey;
+  // TODO need to research api
+  const maxValue = validationParamsRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    params => params.maxValue,
+  );
+  const maxErrorTKey = validationParamsRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    params => params.maxErrorTKey,
+  );
 
   return { maxValue, maxErrorTKey };
 }

@@ -13,7 +13,7 @@ import {
 } from 'utils/validators';
 import { toObservable } from 'utils/rxjs';
 
-import { useSubscribableDeprecated } from './useSubscribableDeprecated';
+import { useSubscribable } from './useSubscribable';
 
 interface ValidateAmountOptions {
   required?: boolean;
@@ -28,7 +28,7 @@ interface ValidateAmountOptions {
 export function useValidateAmount(options: ValidateAmountOptions) {
   const { positive, required, moreThanZero, maxErrorTKey } = options;
 
-  const [{ maxValue, minValue }] = useSubscribableDeprecated<{
+  const amplitudeValuesRD = useSubscribable<{
     maxValue?: BN;
     minValue?: BN;
   }>(
@@ -40,7 +40,6 @@ export function useValidateAmount(options: ValidateAmountOptions) {
         })),
       ),
     [options.maxValue, options.minValue],
-    {},
   );
 
   return useMemo(() => {
@@ -48,6 +47,19 @@ export function useValidateAmount(options: ValidateAmountOptions) {
       if (!amount) {
         return required ? isRequired(amount) : undefined;
       }
+      // TODO need to research api
+      const maxValue = amplitudeValuesRD.fold(
+        () => undefined,
+        () => undefined,
+        () => undefined,
+        values => values.maxValue,
+      );
+      const minValue = amplitudeValuesRD.fold(
+        () => undefined,
+        () => undefined,
+        () => undefined,
+        values => values.minValue,
+      );
       return (
         (positive && validatePositiveNumber(amount.toBN())) ||
         (moreThanZero && moreThan(new BN(0), amount.toBN())) ||
@@ -64,5 +76,5 @@ export function useValidateAmount(options: ValidateAmountOptions) {
           ))
       );
     };
-  }, [maxValue?.toString(), minValue?.toString(), maxErrorTKey]);
+  }, [amplitudeValuesRD, maxErrorTKey]);
 }

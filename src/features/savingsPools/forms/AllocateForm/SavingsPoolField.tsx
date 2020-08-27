@@ -8,8 +8,9 @@ import * as R from 'ramda';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
-import { getFieldWithComponent, useValidateAmount, useSubscribableDeprecated } from 'utils/react';
+import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
+import { isSuccess } from 'utils/remoteData';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
 import { useDepositAmountValidationParams } from '../../hooks/useDepositAmountValidationParams';
@@ -79,9 +80,7 @@ function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
   const { t } = useTranslate();
 
-  const [depositLimit, depositLimitMeta] = useSubscribableDeprecated(getDepositLimit$, [
-    getDepositLimit$,
-  ]);
+  const depositLimitRD = useSubscribable(getDepositLimit$, [getDepositLimit$]);
 
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
 
@@ -92,7 +91,17 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
-  const switchDisabled = depositLimitMeta.loaded && !!depositLimit && !depositLimit.gt(0);
+  const switchDisabled =
+    isSuccess(depositLimitRD) &&
+    !!depositLimitRD &&
+    // TODO need to research api
+    !depositLimitRD?.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      limit => limit && limit.gt(0),
+    );
+
   const switchChecked = !switchDisabled && isAllocated;
 
   const error =

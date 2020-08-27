@@ -2,7 +2,7 @@ import React from 'react';
 import { useSnackbar } from 'notistack';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
-import { useSubscribableDeprecated } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useApi, SubmittedTransaction } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
@@ -12,7 +12,7 @@ const tKeys = tKeysAll.features.notifications;
 function TransactionsNotifications() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const api = useApi();
-  const [transaction] = useSubscribableDeprecated<SubmittedTransaction>(
+  const transactionRD = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
     [],
   );
@@ -45,8 +45,15 @@ function TransactionsNotifications() {
   );
 
   React.useEffect(() => {
+    // TODO need to research api
+    const transaction = transactionRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      t => t,
+    );
     transaction && showNotifications(transaction);
-  }, [transaction]);
+  }, [transactionRD]);
 
   return <></>;
 }
