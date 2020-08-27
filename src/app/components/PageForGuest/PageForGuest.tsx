@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { CatPaws, ChartWithCat } from 'components/icons';
-import { Grid, FormattedAmount, Label, Typography } from 'components';
+import { Grid, FormattedAmount, Label, Typography, Metric } from 'components';
 import { percentAmount } from 'utils/mock';
 import { makeStyles } from 'utils/styles';
 
@@ -17,16 +17,17 @@ export function PageForGuest() {
           <Grid item xs={12}>
             <Label>Composition</Label>
           </Grid>
-          <Grid item>
-            <CatPaws className={classes.icon} />
-          </Grid>
-          <Grid item>
-            <div className={classes.metric}>
-              <div className={classes.title}>APY</div>
-              <div className={classes.apyValue}>
-                <FormattedAmount sum={percentAmount} />
-              </div>
-            </div>
+          <Grid item container spacing={2} wrap="nowrap">
+            <Grid item className={classes.icon}>
+              <CatPaws fontSize="inherit" />
+            </Grid>
+            <Grid item>
+              <Metric
+                title="APY"
+                value={<FormattedAmount sum={percentAmount} />}
+                variant="condensed"
+              />
+            </Grid>
           </Grid>
         </Grid>
         <Grid item xs={6}>
@@ -52,21 +53,14 @@ export function PageForGuest() {
 const useStyles = makeStyles(
   () => ({
     icon: {
-      fontSize: 50,
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: 52,
     },
     cat: {
       width: '100%',
       height: 'unset',
       maxWidth: 553,
-    },
-    metric: {},
-    title: {
-      fontSize: 16,
-      fontWeight: 300,
-    },
-    apyValue: {
-      fontSize: 32,
-      fontWeight: 300,
     },
     text: {
       padding: '0 20px',

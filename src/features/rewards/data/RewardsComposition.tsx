@@ -54,7 +54,11 @@ export function RewardsComposition() {
                   )}
                 />
               ) : (
-                <Metric title="APY" value={<FormattedAmount sum={percentAmount} />} />
+                <Metric
+                  title="APY"
+                  value={<FormattedAmount sum={percentAmount} />}
+                  variant="condensed"
+                />
               )}
             </Grid>
           </Grid>
