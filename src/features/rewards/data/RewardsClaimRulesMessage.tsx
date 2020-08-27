@@ -22,7 +22,7 @@ export function RewardsClaimRulesMessage() {
           {rewards => (
             <div className={classes.text}>
               {`Pool harvests are claimed once per day${
-                !rewards ? ' — come back later to see your rewards!' : '.'
+                rewards.length ? '.' : ' — come back later to see your rewards!'
               }`}{' '}
               If you want to see AKRO & ADEL rewards — please check{' '}
               <Link
