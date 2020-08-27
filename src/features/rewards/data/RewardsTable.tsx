@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { useApi } from 'services/api';
-import { Table, FormattedAmount, TokenName, DeprecatedLoading } from 'components';
-import { useSubscribableDeprecated } from 'utils/react';
+import { Table, FormattedAmount, TokenName, Loading } from 'components';
+import { useSubscribable } from 'utils/react';
 import { RewardData } from 'model/types';
 
 const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
@@ -33,13 +33,19 @@ const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
 
 export function RewardsTable() {
   const api = useApi();
-  const [data, meta] = useSubscribableDeprecated(() => api.user.getRewardsData$(), [api]);
+  const rewardsRD = useSubscribable(() => api.user.getRewardsData$(), [api]);
 
   return (
-    <DeprecatedLoading meta={meta}>
-      {data && data.length ? (
-        <Table.Component rowPadding="small" columns={columnsWithoutExpandableRows} entries={data} />
-      ) : null}
-    </DeprecatedLoading>
+    <Loading data={rewardsRD}>
+      {rewards =>
+        rewards.length ? (
+          <Table.Component
+            rowPadding="small"
+            columns={columnsWithoutExpandableRows}
+            entries={rewards}
+          />
+        ) : null
+      }
+    </Loading>
   );
 }
