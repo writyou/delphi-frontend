@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { useApolloClient } from '@apollo/react-hooks';
+import { DependencyProvider } from '@akropolis-web/components';
 
+import { ETH_NETWORK_CONFIG } from 'env';
 import { App } from 'app/App';
 import { routes } from 'app/routes';
 import { ErrorBoundary, Snackbar, CssBaseline } from 'components';
@@ -37,23 +39,25 @@ function ApiWrapper() {
 
   return (
     <ApiContext.Provider value={api}>
-      <I18nProvider>
-        <ThemeProvider>
-          <Snackbar>
-            <AdaptabilityProvider>
-              <AuthProvider
-                web3Manager={api.web3Manager}
-                disconnectRedirectPath={routes.summary.getRedirectPath()}
-              >
-                <CssBaseline />
-                <App />
-                <TransactionsNotifications />
-                <NetworkWarning />
-              </AuthProvider>
-            </AdaptabilityProvider>
-          </Snackbar>
-        </ThemeProvider>
-      </I18nProvider>
+      <DependencyProvider supportedTokens={ETH_NETWORK_CONFIG.tokens}>
+        <I18nProvider>
+          <ThemeProvider>
+            <Snackbar>
+              <AdaptabilityProvider>
+                <AuthProvider
+                  web3Manager={api.web3Manager}
+                  disconnectRedirectPath={routes.summary.getRedirectPath()}
+                >
+                  <CssBaseline />
+                  <App />
+                  <TransactionsNotifications />
+                  <NetworkWarning />
+                </AuthProvider>
+              </AdaptabilityProvider>
+            </Snackbar>
+          </ThemeProvider>
+        </I18nProvider>
+      </DependencyProvider>
     </ApiContext.Provider>
   );
 }
