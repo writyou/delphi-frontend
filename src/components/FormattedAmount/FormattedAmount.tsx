@@ -131,13 +131,14 @@ const useStyles = makeStyles(
     percentRoot: {
       display: 'inline-flex',
       flexWrap: 'nowrap',
-      lineHeight: 'normal',
+      lineHeight: 1,
 
       '& $percentSymbol': {
         fontSize: '0.5em',
         paddingLeft: 2,
-        lineHeight: '2.2em',
+        lineHeight: 1.4,
       },
+
       '&$isZero': {
         opacity: 0.5,
       },

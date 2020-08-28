@@ -6,6 +6,7 @@ import { routes } from 'app/routes';
 import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useAuthContext } from 'services/auth';
 import { useSubscribable } from 'utils/react';
+import { Loading } from 'components';
 
 import * as images from './images';
 import { ModuleIntroButton } from '../ModuleIntroButton/ModuleIntroButton';
@@ -38,28 +39,32 @@ export function ModulesIntroSection() {
   const { t } = useTranslate();
   const { web3Manager, openModal } = useAuthContext();
 
-  const [account] = useSubscribable(() => web3Manager.account$, [], null);
+  const accountRD = useSubscribable(() => web3Manager.account$, []);
 
   const handleModuleIntroButtonClick = useCallback(
     (redirectPath: string) => {
       openModal(redirectPath);
     },
-    [account],
+    [accountRD],
   );
 
   return (
-    <Grid container spacing={4}>
-      {modules.map((module, index) => (
-        <Box clone minWidth={215} key={index}>
-          <Grid container item xs={12} md={6}>
-            {renderModuleIntroButton(module)}
-          </Grid>
-        </Box>
-      ))}
-    </Grid>
+    <Loading data={accountRD}>
+      {account => (
+        <Grid container spacing={4}>
+          {modules.map((module, index) => (
+            <Box clone minWidth={215} key={index}>
+              <Grid container item xs={12} md={6}>
+                {renderModuleIntroButton(module, account)}
+              </Grid>
+            </Box>
+          ))}
+        </Grid>
+      )}
+    </Loading>
   );
 
-  function renderModuleIntroButton(module: Module) {
+  function renderModuleIntroButton(module: Module, account: string | null) {
     const commonProps = {
       title: t(tKeys[module].title.getKey()),
       subtitle: t(tKeys[module].subtitle.getKey()),

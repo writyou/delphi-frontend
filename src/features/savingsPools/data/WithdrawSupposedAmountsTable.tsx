@@ -34,14 +34,15 @@ function getSupposedAmounts(
 export function WithdrawSupposedAmountsTable(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [supposedAmounts, supposedAmountsMeta] = useSubscribable(
-    () => getSupposedAmounts(api, poolAddress, amount),
-    [api, poolAddress, amount],
-  );
+  const supposedAmountsRD = useSubscribable(() => getSupposedAmounts(api, poolAddress, amount), [
+    api,
+    poolAddress,
+    amount,
+  ]);
 
   return (
-    <Loading meta={supposedAmountsMeta}>
-      {supposedAmounts && <Table.Component columns={columns} entries={supposedAmounts} />}
+    <Loading data={supposedAmountsRD}>
+      {supposedAmounts => <Table.Component columns={columns} entries={supposedAmounts} />}
     </Loading>
   );
 }

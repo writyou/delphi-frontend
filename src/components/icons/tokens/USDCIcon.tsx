@@ -4,9 +4,15 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 function USDCIcon(props: React.ComponentProps<typeof SvgIcon>) {
   return (
     <SvgIcon {...props} viewBox="0 0 20 20">
+      <defs>
+        <linearGradient id="yqseij07ea" x1="50%" x2="50%" y1="0%" y2="100%">
+          <stop offset="0%" stopColor="#67BFF4" />
+          <stop offset="100%" stopColor="#2775CA" />
+        </linearGradient>
+      </defs>
       <g fill="none">
         <path
-          fill="#2775CA"
+          fill="url(#yqseij07ea)"
           d="M10 20c5.542 0 10-4.458 10-10S15.542 0 10 0 0 4.458 0 10s4.458 10 10 10z"
         />
         <path

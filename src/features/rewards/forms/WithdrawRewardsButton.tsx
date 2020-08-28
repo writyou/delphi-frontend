@@ -11,40 +11,55 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const close = React.useCallback(() => setIsOpen(false), []);
 
   const api = useApi();
-  const [totalBalance, balanceMeta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [
-    api,
-  ]);
-  const [rewards, rewardsMeta] = useSubscribable(() => api.user.getRewards$(), [api]);
+  const rewardsRD = useSubscribable(() => api.user.getRewards$(), [api]);
+  // TODO need to research api
+  const rewards = rewardsRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    h => h,
+  );
 
   const handleWithdraw = useCallback(async (): Promise<void> => {
-    await api.rewards.withdrawUserRewards(rewards!);
+    // TODO await rewardsRD
+    if (rewards) {
+      await api.rewards.withdrawUserRewards(rewards);
+    } else {
+      console.warn('no loaded rewards');
+    }
     close();
   }, [api, rewards]);
+
+  const totalBalanceRD = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
 
   return (
     <>
       <Loading
-        meta={[balanceMeta, rewardsMeta]}
+        data={totalBalanceRD}
         loader={
           <Button {...props} disabled>
             Withdraw
           </Button>
         }
       >
-        <Button {...props} onClick={open} disabled={!totalBalance || totalBalance.isZero()}>
-          Withdraw
-        </Button>
+        {totalBalance => (
+          <>
+            <Button {...props} onClick={open} disabled={totalBalance.isZero()}>
+              Withdraw
+            </Button>
+            <ConfirmationDialog
+              isOpen={isOpen}
+              yesText="Withdraw"
+              title="Withdraw"
+              onCancel={close}
+              onConfirm={handleWithdraw}
+              withCancelButton
+            >
+              Are you sure you want to withdraw {totalBalance.toFormattedString()}
+            </ConfirmationDialog>
+          </>
+        )}
       </Loading>
-      <ConfirmationDialog
-        isOpen={isOpen}
-        yesText="Withdraw"
-        title="Withdraw"
-        onCancel={close}
-        onConfirm={handleWithdraw}
-        withCancelButton
-      >
-        Are you sure you want to withdraw {totalBalance?.toFormattedString()}
-      </ConfirmationDialog>
     </>
   );
 }

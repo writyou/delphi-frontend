@@ -79,7 +79,7 @@ function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
   const { t } = useTranslate();
 
-  const [depositLimit, depositLimitMeta] = useSubscribable(getDepositLimit$, [getDepositLimit$]);
+  const depositLimitRD = useSubscribable(getDepositLimit$, [getDepositLimit$]);
 
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
 
@@ -90,7 +90,15 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
-  const switchDisabled = depositLimitMeta.loaded && !!depositLimit && !depositLimit.gt(0);
+  const switchDisabled =
+    // TODO need to research api
+    depositLimitRD.fold(
+      () => true,
+      () => true,
+      () => true,
+      limit => limit?.isZero(),
+    );
+
   const switchChecked = !switchDisabled && isAllocated;
 
   const error =

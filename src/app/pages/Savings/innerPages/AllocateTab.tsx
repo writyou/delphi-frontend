@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import { combineLatest, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 import * as R from 'ramda';
 
 import { useApi } from 'services/api';
@@ -13,23 +14,32 @@ export const AllocateTab = memo(() => {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.savings.getPools$(), [api]);
-  const [limits, limitsMeta] = useSubscribable(
+
+  const poolsDataRD = useSubscribable(
     () =>
-      pools?.length
-        ? combineLatest(pools.map(p => api.user.getSavingsDepositLimit$(p.address)))
-        : of(undefined),
-    [api, R.toString(pools)],
+      api.savings.getPools$().pipe(
+        switchMap(pools =>
+          combineLatest(
+            pools.map(p =>
+              api.user.getSavingsDepositLimit$(p.address).pipe(map(limit => ({ pool: p, limit }))),
+            ),
+          ),
+        ),
+        map(data => ({
+          pools: R.pluck('pool', data),
+          hasLimits: R.pluck('limit', data).some(l => l && !l.isZero()),
+        })),
+      ),
+    [api],
   );
-  const hasLimits = limits ? limits.some(l => l && !l.isZero()) : false;
 
   return (
     <>
       <div className={classes.allocateTabDescription}>
         {t(tKeys.modules.savings.allocateTabText.getKey())}
       </div>
-      <Loading meta={[poolsMeta, limitsMeta]}>
-        {pools && <AllocateForm pools={pools} hasLimits={hasLimits} />}
+      <Loading data={poolsDataRD}>
+        {poolsData => <AllocateForm pools={poolsData.pools} hasLimits={poolsData.hasLimits} />}
       </Loading>
     </>
   );

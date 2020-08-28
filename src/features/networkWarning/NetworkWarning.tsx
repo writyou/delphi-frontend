@@ -12,11 +12,17 @@ export function NetworkWarning() {
   const api = useApi();
   const { t } = useTranslate();
 
-  const [chainId] = useSubscribable(() => api.web3Manager.chainId$, [api]);
+  const chainIdRD = useSubscribable(() => api.web3Manager.chainId$, [api]);
   const [isOpen, setIsOpen] = React.useState(false);
 
   useOnChangeState(
-    chainId,
+    // TODO need to research api
+    chainIdRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      chainID => chainID,
+    ),
     (prev, cur) => prev !== cur,
     (_, cur) => (!cur || cur === NETWORK_ID ? setIsOpen(false) : setIsOpen(true)),
   );

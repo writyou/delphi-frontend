@@ -4,7 +4,15 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 
 import { NETWORK_ID } from 'env';
 import { useCommunication } from 'utils/react';
-import { ButtonBase, Loading, Typography, Box, ShortAddress, Grid, Button } from 'components';
+import {
+  ButtonBase,
+  DeprecatedLoading,
+  Typography,
+  Box,
+  ShortAddress,
+  Grid,
+  Button,
+} from 'components';
 import { WalletType } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { makeStyles } from 'utils/styles';
@@ -95,7 +103,7 @@ export function ProviderButton({
             <span className={classes.hiddenAddress}>
               <Address address={zeroAddress} />
             </span>
-            <Loading communication={connecting} ignoreError />
+            <DeprecatedLoading communication={connecting} ignoreError />
           </div>
         )}
       </Grid>

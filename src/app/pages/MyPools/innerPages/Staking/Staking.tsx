@@ -14,7 +14,7 @@ export function Staking() {
   const classes = useStyles();
 
   const api = useApi();
-  const [stakingPools, stakingPoolsMeta] = useSubscribable(
+  const stakingPoolsRD = useSubscribable(
     () =>
       api.user.getMyStakingPools$().pipe(
         switchMap(pools =>
@@ -39,28 +39,30 @@ export function Staking() {
 
   return (
     <div className={classes.root}>
-      <Loading meta={stakingPoolsMeta}>
-        {!stakingPools?.length ? (
-          <Hint>
-            <Typography>Not found</Typography>
-          </Hint>
-        ) : (
-          <Grid container className={classes.table}>
-            <Grid item xs={7}>
-              <Table.Component
-                columns={tableData.columnsWithSubtable}
-                entries={stakingPools}
-                summary={{
-                  renderLabel: () => 'Total Staked:',
-                  renderValue: () => <UserStakingPoolsTotalBalance />,
-                }}
-              />
+      <Loading data={stakingPoolsRD}>
+        {stakingPools =>
+          stakingPools.length === 0 ? (
+            <Hint>
+              <Typography>Not found</Typography>
+            </Hint>
+          ) : (
+            <Grid container className={classes.table}>
+              <Grid item xs={7}>
+                <Table.Component
+                  columns={tableData.columnsWithSubtable}
+                  entries={stakingPools}
+                  summary={{
+                    renderLabel: () => 'Total Staked:',
+                    renderValue: () => <UserStakingPoolsTotalBalance />,
+                  }}
+                />
+              </Grid>
+              <Grid item xs>
+                <Table.Component columns={tableData.columnForChart} entries={[{}]} />
+              </Grid>
             </Grid>
-            <Grid item xs>
-              <Table.Component columns={tableData.columnForChart} entries={[{}]} />
-            </Grid>
-          </Grid>
-        )}
+          )
+        }
       </Loading>
     </div>
   );

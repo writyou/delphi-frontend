@@ -23,7 +23,7 @@ export function useDepositAmountValidationParams(
   const { t } = useTranslate();
   const api = useApi();
 
-  const [validationParams] = useSubscribable(
+  const validationParamsRD = useSubscribable(
     () =>
       token
         ? combineLatest([
@@ -62,8 +62,14 @@ export function useDepositAmountValidationParams(
     [api, token?.address, poolAddress, R.toString(formValues)],
   );
 
-  const maxValue = validationParams?.maxValue;
-  const maxErrorTKey = validationParams?.maxErrorTKey;
+  // TODO need to research api
+  const { maxValue, maxErrorTKey } =
+    validationParamsRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      params => params,
+    ) || {};
 
   return { maxValue, maxErrorTKey };
 }

@@ -6,9 +6,7 @@ import { useApi } from 'services/api';
 
 export function TotalPoolsBalance() {
   const api = useApi();
-  const [balance, balanceMeta] = useSubscribable(() => api.globalStats.getTotalPoolsBalance$(), [
-    api,
-  ]);
+  const balanceRD = useSubscribable(() => api.globalStats.getTotalPoolsBalance$(), [api]);
 
-  return <Loading meta={balanceMeta}>{balance && <FormattedAmount sum={balance} />}</Loading>;
+  return <Loading data={balanceRD}>{balance => <FormattedAmount sum={balance} />}</Loading>;
 }

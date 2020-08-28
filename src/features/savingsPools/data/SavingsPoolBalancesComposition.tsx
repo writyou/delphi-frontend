@@ -23,7 +23,7 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   const api = useApi();
   const classes = useStyles();
 
-  const [entries, entriesMeta] = useSubscribable(
+  const entriesRD = useSubscribable(
     () =>
       api.savings.getPoolBalances$(poolAddress).pipe(
         map(balances =>
@@ -34,8 +34,8 @@ function SavingsPoolBalancesComposition({ poolAddress }: Props) {
   );
 
   return (
-    <Loading meta={entriesMeta} loader={<CompositionChartSkeleton size="medium" />}>
-      {entries && (
+    <Loading data={entriesRD} loader={<CompositionChartSkeleton size="medium" />}>
+      {entries => (
         <Grid container spacing={3} wrap="nowrap">
           <Grid item>
             <CompositionChart withBackground chartData={entries} size="medium" />

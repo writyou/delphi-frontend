@@ -21,17 +21,22 @@ type Props = {
 export function SavingsPoolCard({ pool, content, additionalElement, getDepositLimit$ }: Props) {
   const { address, poolName, tokens } = pool;
   const api = useApi();
-  const [poolBalance, poolBalanceMeta] = useSubscribable(
-    () => api.savings.getPoolBalance$(address),
-    [api, address],
+  const poolBalanceRD = useSubscribable(() => api.savings.getPoolBalance$(address), [api, address]);
+
+  const isDisabledLink = poolBalanceRD.fold(
+    () => true,
+    () => true,
+    () => true,
+    balance => balance.isZero(),
   );
+
   return (
     <PoolCard
       address={address}
       poolName={poolName}
       tokens={tokens}
       link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-      isDisabledLink={!poolBalanceMeta.loaded || (!!poolBalance && poolBalance.isZero())}
+      isDisabledLink={isDisabledLink}
       content={content}
       getDepositLimit$={getDepositLimit$}
       additionalElement={additionalElement}

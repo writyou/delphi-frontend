@@ -43,7 +43,7 @@ export function DialogContentTemplate({
   const api = useApi();
   const { t } = useTranslate();
   const classes = useStyles();
-  const [pools, poolsMeta] = useSubscribable(
+  const poolsRD = useSubscribable(
     poolAddresses && poolAddresses.length
       ? () =>
           combineLatest(
@@ -54,7 +54,6 @@ export function DialogContentTemplate({
       : () => of(undefined),
     [api, poolAddresses, isStakingDeposit],
   );
-  const formattedPools = pools?.map(p => p?.poolName).join(', ');
   const history = useHistory();
   const handleLinkClick = () => {
     onClose();
@@ -119,7 +118,9 @@ export function DialogContentTemplate({
         <Table amounts={amounts!} />
         <div className={classes.text}>
           {t(fKeys.deposit.textAfterTokens.getKey())}{' '}
-          <Loading meta={poolsMeta}>{formattedPools}</Loading>
+          <Loading data={poolsRD}>
+            {pools => (pools ? <>{pools.map(p => p?.poolName).join(', ')}</> : null)}
+          </Loading>
           .
           <br />
           {t(fKeys.deposit.beforeLink.getKey())}{' '}

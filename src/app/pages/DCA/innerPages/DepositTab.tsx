@@ -14,16 +14,15 @@ export function DepositTab() {
   const api = useApi();
   const classes = useStyles();
   const { t } = useTranslate();
-  const [pools, poolsMeta] = useSubscribable(() => api.dca.getPools$(), [api]);
+  const poolsRD = useSubscribable(() => api.dca.getPools$(), [api]);
 
   return (
     <>
       <div className={classes.description}>{t(tKeys.modules.dca.description.getKey())}</div>
-      <Loading meta={poolsMeta}>
-        <Grid container alignItems="flex-start" spacing={3}>
-          {pools &&
-            pools.length &&
-            pools.map(pool => (
+      <Loading data={poolsRD}>
+        {pools => (
+          <Grid container alignItems="flex-start" spacing={3}>
+            {pools.map(pool => (
               <Grid key={pool.address} item xs={4}>
                 <PoolCard
                   address={pool.address}
@@ -38,7 +37,8 @@ export function DepositTab() {
                 />
               </Grid>
             ))}
-        </Grid>
+          </Grid>
+        )}
       </Loading>
     </>
   );

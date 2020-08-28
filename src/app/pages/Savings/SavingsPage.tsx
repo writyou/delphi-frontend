@@ -31,27 +31,41 @@ const tabs = [allocateTab, withdrawTab];
 export function SavingsPage() {
   const api = useApi();
 
-  const [myPools, meta] = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
+  const poolsRD = useSubscribable(() => api.user.getMySavingsPools$(), [api]);
 
   const match = useRouteMatch<{ page: string }>('/savings/:page');
 
   const page = match ? match.params.page : allocateTab.value;
 
   const isWorthToWatchPage$ = useMemo(
-    () => of(myPools ? page !== withdrawTab.value || !!myPools.length : false),
-    [myPools, page],
+    () =>
+      // TODO need to research api
+      of(
+        page !== withdrawTab.value ||
+          poolsRD.fold(
+            () => false,
+            () => false,
+            () => false,
+            pools => !!pools.length,
+          ),
+      ),
+    [poolsRD, page],
   );
 
   return (
-    <Loading meta={meta}>
-      <CheckAuthorization
-        isAuthorized$={isWorthToWatchPage$}
-        redirectTo={routes.savings.getRoutePath()}
-      />
-      {myPools?.length && page ? (
-        <TabsSection currentValue={page} tabs={tabs} tabComponent={RouterLink} />
-      ) : (
-        <AllocateTab />
+    <Loading data={poolsRD}>
+      {pools => (
+        <>
+          <CheckAuthorization
+            isAuthorized$={isWorthToWatchPage$}
+            redirectTo={routes.savings.getRoutePath()}
+          />
+          {pools?.length && page ? (
+            <TabsSection currentValue={page} tabs={tabs} tabComponent={RouterLink} />
+          ) : (
+            <AllocateTab />
+          )}
+        </>
       )}
     </Loading>
   );

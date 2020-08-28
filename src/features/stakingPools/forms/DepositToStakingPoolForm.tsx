@@ -35,7 +35,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const [validationParams] = useSubscribable(
+  const validationParamsRD = useSubscribable(
     () =>
       currentToken
         ? combineLatest([
@@ -56,8 +56,14 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, currentToken, pool.address],
   );
 
-  const maxValue = validationParams?.maxValue;
-  const maxErrorTKey = validationParams?.maxErrorTKey;
+  // TODO need to research api
+  const { maxValue, maxErrorTKey } =
+    validationParamsRD.fold(
+      () => undefined,
+      () => undefined,
+      () => undefined,
+      params => params,
+    ) || {};
 
   const validateAmount = useValidateAmount({
     required: true,

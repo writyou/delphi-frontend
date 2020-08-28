@@ -5,7 +5,6 @@ import { useSubscribable } from 'utils/react';
 import { useApi, SubmittedTransaction } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { ConfirmationDialog } from 'components';
-import { mockedTransactions } from 'utils/mock';
 import { getTransactionLinkFromHash } from 'utils/helpers';
 import { routes } from 'app/routes';
 
@@ -65,17 +64,31 @@ function getPayload(transaction?: SubmittedTransaction): Payload {
 }
 
 export function TransactionFinalNotification() {
-  const tr: SubmittedTransaction = mockedTransactions['savings.withdraw'];
   const api = useApi();
   const { t } = useTranslate();
-  const [transaction] = useSubscribable<SubmittedTransaction>(
+  const transactionRD = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
     // () => of(tr),
     [api],
   );
-  const [hash] = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
-    transaction,
+  // TODO need to research api
+  const transaction = transactionRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    h => h,
+  );
+
+  const hashRD = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
+    transactionRD,
   ]);
+  // TODO need to research api
+  const hash = hashRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    h => h,
+  );
 
   const [isOpen, setOpen] = useState(false);
   const [variant, setVariant] = useState<Variant>('deposit');
@@ -110,7 +123,6 @@ export function TransactionFinalNotification() {
   React.useEffect(() => {
     transaction && myEffect(transaction);
   }, [transaction]);
-  console.log(tr);
 
   const withdrawLink =
     withdrawCases.includes(transaction?.type as any) && hash

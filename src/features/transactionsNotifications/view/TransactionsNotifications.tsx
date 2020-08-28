@@ -14,9 +14,17 @@ const tKeys = tKeysAll.features.notifications;
 function TransactionsNotifications() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const api = useApi();
-  const [transaction] = useSubscribable<SubmittedTransaction>(
+  const transactionRD = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
     [api],
+  );
+
+  // TODO need to research api
+  const transaction = transactionRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    t => t,
   );
 
   const showNotifications = React.useCallback(

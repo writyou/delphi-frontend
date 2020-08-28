@@ -14,20 +14,21 @@ type Props = {
 export function WithdrawAdditionalFee(props: Props) {
   const { amount, poolAddress } = props;
   const api = useApi();
-  const [additionalFee, additionalFeeMeta] = useSubscribable(
+  const additionalFeeRD = useSubscribable(
     () => api.user.getSavingsWithdrawFee$(poolAddress, amount),
     [api, poolAddress, amount],
   );
 
   return (
     <Box component="span" display="inline-block">
-      <Loading meta={additionalFeeMeta} progressProps={{ width: 50 }}>
-        {additionalFee &&
-          (additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
+      <Loading data={additionalFeeRD} progressProps={{ width: 50 }}>
+        {additionalFee =>
+          additionalFee.gt(getSignificantValue(additionalFee.currency.decimals)) ? (
             <FormattedAmount sum={additionalFee} variant="plain" />
           ) : (
-            'zero'
-          ))}
+            <>zero</>
+          )
+        }
       </Loading>
     </Box>
   );

@@ -42,9 +42,17 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
   const { closeSnackbar } = useSnackbar();
   const { message, id, variant, transaction } = props;
 
-  const [hash] = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
+  const hashRD = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
     transaction,
   ]);
+
+  // TODO need to research api
+  const hash = hashRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    t => t,
+  );
 
   const link = hash ? `${ETH_NETWORK_CONFIG.etherskanDomain}tx/${hash}` : undefined;
 

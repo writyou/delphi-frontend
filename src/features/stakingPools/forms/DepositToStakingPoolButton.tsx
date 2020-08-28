@@ -15,7 +15,7 @@ export function DepositToStakingPoolButton({
 }: { pool: StakingPool } & ButtonProps): JSX.Element {
   const api = useApi();
 
-  const [isStakeDisabled, meta] = useSubscribable(
+  const isStakeDisabledRD = useSubscribable(
     () =>
       combineLatest([
         api.user.getStakingDepositLimit$(pool.address),
@@ -26,18 +26,20 @@ export function DepositToStakingPoolButton({
 
   return (
     <Loading
-      meta={meta}
+      data={isStakeDisabledRD}
       loader={
         <Button {...rest} disabled>
           Stake
         </Button>
       }
     >
-      <ModalButton {...rest} disabled={isStakeDisabled} content="Stake">
-        {({ closeModal }) => (
-          <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
-        )}
-      </ModalButton>
+      {isStakeDisabled => (
+        <ModalButton {...rest} disabled={isStakeDisabled} content="Stake">
+          {({ closeModal }) => (
+            <DepositToStakingPoolForm pool={pool} onSuccessfulDeposit={closeModal} />
+          )}
+        </ModalButton>
+      )}
     </Loading>
   );
 }
