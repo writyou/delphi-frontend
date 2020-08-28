@@ -39,7 +39,7 @@ type Props = {
 
 PoolCard.defaultProps = {
   content: {},
-  isCardActive: true,
+  isCardActive: false,
 } as Partial<Props>;
 
 export function PoolCard(props: Props) {
@@ -87,16 +87,22 @@ export function PoolCard(props: Props) {
           </div>
         )}
 
-        <div className={cn(classes.row, classes.availableDepositRow)}>
-          <Grid container justify="space-between" className={classes.root} spacing={1}>
-            <Grid item xs={12}>
-              {poolFilling}
+        {(poolFilling || availableForDeposit) && (
+          <div className={cn(classes.row, classes.availableDepositRow)}>
+            <Grid container justify="space-between" className={classes.root} spacing={1}>
+              {poolFilling && (
+                <Grid item xs={12}>
+                  {poolFilling}
+                </Grid>
+              )}
+              {availableForDeposit && (
+                <Grid item xs={12}>
+                  {availableForDeposit}
+                </Grid>
+              )}
             </Grid>
-            <Grid item xs={12}>
-              {availableForDeposit}
-            </Grid>
-          </Grid>
-        </div>
+          </div>
+        )}
 
         <div className={classes.row}>
           <Grid container justify="space-between">

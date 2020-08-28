@@ -1,6 +1,7 @@
 import React from 'react';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { PoolCard, Grid, Loading, DepositLimit, PoolFillingLimit } from 'components';
@@ -11,7 +12,7 @@ import {
   WithdrawFromStakingPoolButton,
   DepositToStakingPoolButton,
 } from 'features/stakingPools';
-import { useSubscribableDeprecated, useSubscribable } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 
 type Props = {
   pool: StakingPool;
@@ -21,16 +22,18 @@ export function StakingPoolCard({ pool }: Props) {
   const { address, poolName, token } = pool;
   const api = useApi();
 
-  const [fullStakingPoolBalance] = useSubscribableDeprecated(
-    () => api.user.getFullStakingPoolBalance$(address),
-    [api, address],
-  );
+  const isCardActive = useSubscribable(() => api.user.getFullStakingPoolBalance$(address), [
+    api,
+    address,
+  ])
+    .map(balance => !balance.isZero())
+    .getOrElse(R.F);
 
   return (
     <PoolCard
       poolName={poolName}
       tokens={[token]}
-      isCardActive={fullStakingPoolBalance && fullStakingPoolBalance.isZero()}
+      isCardActive={isCardActive}
       content={{
         suppliedByUser: {
           content: <UserStakingPoolBalance poolAddress={address} />,

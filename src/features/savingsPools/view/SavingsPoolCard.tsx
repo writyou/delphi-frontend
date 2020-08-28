@@ -1,12 +1,13 @@
 import React from 'react';
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import * as R from 'ramda';
 
 import { useApi } from 'services/api';
 import { PoolCard, Loading, DepositLimit, PoolFillingLimit } from 'components';
 import { SavingsPool } from 'model/types';
 import { routes } from 'app/routes';
-import { useSubscribableDeprecated, useSubscribable } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 
 import { SavingsPoolLiquidity } from '../data/SavingsPoolLiquidity';
 import { UserSavingsPoolBalance } from '../data/UserSavingsPoolBalance';
@@ -21,15 +22,24 @@ export function SavingsPoolCard({ pool, content, additionalElement }: Props) {
   const { address, poolName, tokens } = pool;
   const api = useApi();
 
-  const [poolBalance, poolBalanceMeta] = useSubscribableDeprecated(
-    () => api.user.getSavingsPoolBalance$(address),
-    [api, address],
-  );
+  const isCardActive = useSubscribable(() => api.user.getSavingsPoolBalance$(address), [
+    api,
+    address,
+  ])
+    .map(balance => !balance.isZero())
+    .getOrElse(R.F);
+
+  const isLinkToMoreInfoDisabled = useSubscribable(() => api.savings.getPoolBalance$(address), [
+    api,
+    address,
+  ])
+    .map(balance => balance.isZero())
+    .getOrElse(R.T);
 
   return (
     <PoolCard
       poolName={poolName}
-      isCardActive={poolBalance && !poolBalance.isZero()}
+      isCardActive={isCardActive}
       tokens={tokens}
       content={{
         suppliedByUser: {
@@ -43,7 +53,7 @@ export function SavingsPoolCard({ pool, content, additionalElement }: Props) {
         poolFilling: <PoolFilling poolAddress={address} />,
         linkToMoreInfo: {
           to: routes.savings.pool.id.getRedirectPath({ id: pool.address }),
-          disabled: !poolBalanceMeta.loaded || (!!poolBalance && poolBalance.isZero()),
+          disabled: isLinkToMoreInfoDisabled,
         },
         actions: {
           triggers: content,
