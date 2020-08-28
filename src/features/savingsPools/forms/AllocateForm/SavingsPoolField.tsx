@@ -109,7 +109,6 @@ function SavingsPoolFieldComponent(props: Props) {
   return (
     <SavingsPoolCard
       pool={pool}
-      getDepositLimit$={getDepositLimit$}
       content={
         <SwitchInput
           disabled={switchDisabled}

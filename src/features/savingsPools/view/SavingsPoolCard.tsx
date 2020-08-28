@@ -1,12 +1,12 @@
-import React, { useCallback } from 'react';
-import { Observable } from 'rxjs';
-import { Amount } from '@akropolis-web/primitives';
+import React from 'react';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { useApi } from 'services/api';
-import { PoolCard } from 'components';
+import { PoolCard, Loading, DepositLimit, PoolFillingLimit } from 'components';
 import { SavingsPool } from 'model/types';
 import { routes } from 'app/routes';
-import { useSubscribable } from 'utils/react';
+import { useSubscribableDeprecated, useSubscribable } from 'utils/react';
 
 import { SavingsPoolLiquidity } from '../data/SavingsPoolLiquidity';
 import { UserSavingsPoolBalance } from '../data/UserSavingsPoolBalance';
@@ -15,37 +15,85 @@ type Props = {
   pool: SavingsPool;
   content: JSX.Element;
   additionalElement?: JSX.Element;
-  getDepositLimit$?(poolAddress: string): Observable<Amount | null>;
 };
 
-export function SavingsPoolCard({ pool, content, additionalElement, getDepositLimit$ }: Props) {
+export function SavingsPoolCard({ pool, content, additionalElement }: Props) {
   const { address, poolName, tokens } = pool;
   const api = useApi();
-  const poolBalanceRD = useSubscribable(() => api.savings.getPoolBalance$(address), [api, address]);
 
-  const isDisabledLink = poolBalanceRD.fold(
-    () => true,
-    () => true,
-    () => true,
-    balance => balance.isZero(),
+  const [poolBalance, poolBalanceMeta] = useSubscribableDeprecated(
+    () => api.user.getSavingsPoolBalance$(address),
+    [api, address],
   );
 
   return (
     <PoolCard
-      address={address}
       poolName={poolName}
+      isCardActive={poolBalance && !poolBalance.isZero()}
       tokens={tokens}
-      link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-      isDisabledLink={isDisabledLink}
-      content={content}
-      getDepositLimit$={getDepositLimit$}
-      additionalElement={additionalElement}
-      poolBalance={<UserSavingsPoolBalance poolAddress={address} />}
-      poolBalanceTitle="Supplied"
-      poolLiquidity={<SavingsPoolLiquidity poolAddress={address} variant="plain" />}
-      getUserBalance$={useCallback((s: string) => api.user.getSavingsPoolBalance$(s), [api])}
-      getPoolBalance$={useCallback((s: string) => api.savings.getPoolBalance$(s), [api])}
-      getPoolCapacity$={useCallback((s: string) => api.savings.getPoolCapacity$(s), [api])}
+      content={{
+        suppliedByUser: {
+          content: <UserSavingsPoolBalance poolAddress={address} />,
+          customTitle: 'Supplied',
+        },
+        poolLiquidity: {
+          content: <SavingsPoolLiquidity poolAddress={address} variant="plain" />,
+        },
+        availableForDeposit: <AvailableForDeposit poolAddress={address} />,
+        poolFilling: <PoolFilling poolAddress={address} />,
+        linkToMoreInfo: {
+          to: routes.savings.pool.id.getRedirectPath({ id: pool.address }),
+          disabled: !poolBalanceMeta.loaded || (!!poolBalance && poolBalance.isZero()),
+        },
+        actions: {
+          triggers: content,
+          content: additionalElement,
+        },
+      }}
     />
+  );
+}
+
+function AvailableForDeposit(props: { poolAddress: string }) {
+  const { poolAddress } = props;
+  const api = useApi();
+  const availableForDepositRD = useSubscribable(
+    () => api.user.getSavingsDepositLimit$(poolAddress),
+    [api, poolAddress],
+  );
+
+  return (
+    <Loading data={availableForDepositRD} progressProps={{ width: '100%' }}>
+      {availableForDeposit => availableForDeposit && <DepositLimit limit={availableForDeposit} />}
+    </Loading>
+  );
+}
+
+function PoolFilling(props: { poolAddress: string }) {
+  const { poolAddress } = props;
+  const api = useApi();
+
+  const poolFillingRD = useSubscribable(
+    () =>
+      combineLatest([
+        api.savings.getPoolBalance$(poolAddress),
+        api.savings.getPoolCapacity$(poolAddress),
+      ]).pipe(
+        map(([poolBalance, poolCapacity]) => ({
+          poolBalance,
+          poolCapacity,
+        })),
+      ),
+    [api, poolAddress],
+  );
+
+  return (
+    <Loading data={poolFillingRD} progressProps={{ width: '100%' }}>
+      {poolFilling =>
+        poolFilling.poolCapacity && (
+          <PoolFillingLimit capacity={poolFilling.poolCapacity} filled={poolFilling.poolBalance} />
+        )
+      }
+    </Loading>
   );
 }
