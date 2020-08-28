@@ -23,9 +23,9 @@ export function WithdrawFromStakingPoolButton({
   ]);
 
   const handleUnstake = useCallback(async (): Promise<void> => {
-    await api.staking.withdraw({ poolAddress: pool.address });
+    await api.staking.withdraw({ poolAddress: pool.address, amount: params!.unlockedBalance });
     close();
-  }, [api, pool.address]);
+  }, [api, pool.address, params]);
 
   const unstakeDisabled: boolean = !params || params.unlockedBalance.isZero();
 
@@ -49,6 +49,7 @@ export function WithdrawFromStakingPoolButton({
         title="Unstake"
         onCancel={close}
         onConfirm={handleUnstake}
+        withCancelButton
       >
         Are you sure you want to unstake {params?.unlockedBalance.toFormattedString()}
       </ConfirmationDialog>

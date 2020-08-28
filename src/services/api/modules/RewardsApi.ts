@@ -1,6 +1,6 @@
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { LiquidityAmount } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 import * as R from 'ramda';
 import { autobind } from 'core-decorators';
 
@@ -21,8 +21,8 @@ export class RewardsApi {
   }
 
   @autobind
-  public withdrawUserRewards() {
-    return this.savings.withdrawUserRewards();
+  public withdrawUserRewards(rewards: TokenAmount[]) {
+    return this.savings.withdrawUserRewards(rewards);
   }
 
   @memoize(R.identity)

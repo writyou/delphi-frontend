@@ -91,7 +91,7 @@ export class SavingsModuleApi {
   }
 
   @autobind
-  public async withdrawUserRewards(): Promise<void> {
+  public async withdrawUserRewards(rewards: TokenAmount[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
     const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
@@ -99,6 +99,7 @@ export class SavingsModuleApi {
 
     this.transactionsApi.pushToSubmittedTransactions('rewards.withdraw', promiEvent, {
       fromAddress: from,
+      amounts: rewards,
     });
 
     await promiEvent;

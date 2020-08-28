@@ -26,6 +26,7 @@ export function NetworkWarning() {
       isOpen={isOpen}
       yesText={t(tKeys.disconnectButton.getKey())}
       onConfirm={api.web3Manager.disconnect}
+      onCancel={() => {}}
     >
       {t(tKeys.warning.getKey(), {
         name: t(tKeys.networkName[NETWORK_ID].getKey()),

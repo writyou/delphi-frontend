@@ -7,7 +7,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { useCommunication, ISubscriptionMeta } from 'utils/react';
-// import { Loading } from 'components/Loading';
 import { Hint } from 'components/Hint/Hint';
 import { makeStyles } from 'utils/styles';
 
@@ -16,13 +15,14 @@ import { Button } from '../Button';
 export type ConfirmationDialogProps = {
   isOpen: boolean;
   children: React.ReactNode;
-  contentMeta?: ISubscriptionMeta; // todo придумать/сделать
+  contentMeta?: ISubscriptionMeta; // todo check
   title?: string;
   yesButton?: React.ReactElement;
   yesText?: string;
   noText?: string;
   onConfirm: () => Promise<void>;
-  onCancel?: () => void;
+  onCancel: () => void;
+  withCancelButton?: boolean;
 };
 
 function ConfirmationDialog(props: ConfirmationDialogProps) {
@@ -36,6 +36,7 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
     noText,
     yesText,
     yesButton,
+    withCancelButton,
   } = props;
 
   const communication = useCommunication(onConfirm, []);
@@ -70,7 +71,7 @@ function ConfirmationDialog(props: ConfirmationDialogProps) {
               </Hint>
             </Grid>
           )}
-          {onCancel && (
+          {withCancelButton && (
             <Grid item xs={6}>
               <Button
                 variant="outlined"

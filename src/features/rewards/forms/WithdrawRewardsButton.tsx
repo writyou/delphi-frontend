@@ -11,17 +11,20 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const close = React.useCallback(() => setIsOpen(false), []);
 
   const api = useApi();
+  const [totalBalance, balanceMeta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [
+    api,
+  ]);
+  const [rewards, rewardsMeta] = useSubscribable(() => api.user.getRewards$(), [api]);
 
   const handleWithdraw = useCallback(async (): Promise<void> => {
-    await api.user.withdrawRewards();
+    await api.rewards.withdrawUserRewards(rewards!);
     close();
-  }, [api]);
-  const [totalBalance, meta] = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
+  }, [api, rewards]);
 
   return (
     <>
       <Loading
-        meta={meta}
+        meta={[balanceMeta, rewardsMeta]}
         loader={
           <Button {...props} disabled>
             Withdraw
@@ -38,6 +41,7 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
         title="Withdraw"
         onCancel={close}
         onConfirm={handleWithdraw}
+        withCancelButton
       >
         Are you sure you want to withdraw {totalBalance?.toFormattedString()}
       </ConfirmationDialog>
