@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
@@ -6,7 +6,7 @@ import { TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
 import { useApi } from 'services/api';
-import { useValidateAmount } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -35,15 +35,23 @@ export function DepositToPoolForm({
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const maxValue$ = useMemo(
+  const maxValueRD = useSubscribable(
     () => (currentToken ? api.user.getTokenBalance$(currentToken.address) : empty()),
     [api, currentToken],
   );
 
+  // TODO need to research api
+  const maxValue = maxValueRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    value => value,
+  );
+
   const validateAmount = useValidateAmount({
+    maxValue,
     required: true,
     moreThanZero: true,
-    maxValue: maxValue$,
   });
 
   const handleFormChange = useCallback(
@@ -80,8 +88,9 @@ export function DepositToPoolForm({
           currencies={supportedTokens}
           placeholder="Enter sum"
           validate={validateAmount}
-          maxValue={maxValue$}
+          maxValue={maxValue}
         />
+
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>

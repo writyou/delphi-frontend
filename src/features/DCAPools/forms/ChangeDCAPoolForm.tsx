@@ -1,10 +1,10 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { TokenAmount, Token } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount } from 'utils/react';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -32,12 +32,20 @@ export function ChangeDCAPoolForm({
   const api = useApi();
   const { t } = useTranslate();
 
-  const maxValue$ = useMemo(() => api.user.getDCATokenToSellBalance$(poolAddress), [api]);
+  const maxValueRD = useSubscribable(() => api.user.getDCATokenToSellBalance$(poolAddress), [api]);
+
+  // TODO need to research api
+  const maxValue = maxValueRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    value => value,
+  );
 
   const validateAmount = useValidateAmount({
+    maxValue,
     required: true,
     moreThanZero: true,
-    maxValue: maxValue$,
   });
 
   const handleFormSubmit = useCallback(
@@ -73,7 +81,7 @@ export function ChangeDCAPoolForm({
           currencies={[tokenToSell]}
           placeholder="Enter sum"
           validate={validateAmount}
-          maxValue={maxValue$}
+          maxValue={maxValue}
         />
         <SpyField name="__" fieldValue={validateAmount} />
       </>

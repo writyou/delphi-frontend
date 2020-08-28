@@ -41,16 +41,18 @@ export function DepositDCAPoolForm({
 
   const maxValueRD = useSubscribable(() => api.user.getTokenBalance$(tokenToSell.address), [api]);
 
+  // TODO need to research api
+  const maxValue = maxValueRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    value => value,
+  );
+
   const validateAmount = useValidateAmount({
+    maxValue,
     required: true,
     moreThanZero: true,
-    // TODO need to research api
-    maxValue: maxValueRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      maxValue => maxValue,
-    ),
     maxErrorTKey: tKeys.utils.validation.insufficientFunds.getKey(),
   });
 
@@ -103,15 +105,7 @@ export function DepositDCAPoolForm({
               currencies={[tokenToSell]}
               placeholder="Enter sum"
               validate={validateAmount}
-              maxValue={
-                // TODO need to research api
-                maxValueRD.fold(
-                  () => undefined,
-                  () => undefined,
-                  () => undefined,
-                  maxValue => maxValue,
-                )
-              }
+              maxValue={maxValue}
             />
           </Grid>
         </Grid>

@@ -1,15 +1,14 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TokenAmount, Token, denormolizeAmount } from '@akropolis-web/primitives';
+import { TokenAmount, Token, AllCoinsToken, denormolizeAmount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
 import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount } from 'utils/react';
-import { ALL_TOKEN } from 'utils/mock';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -40,7 +39,7 @@ export function WithdrawFromDCAPoolForm({
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const maxValue$ = useMemo(
+  const maxValueRD = useSubscribable(
     () =>
       currentToken
         ? api.user
@@ -50,10 +49,18 @@ export function WithdrawFromDCAPoolForm({
     [api, currentToken],
   );
 
+  // TODO need to research api
+  const maxValue = maxValueRD.fold(
+    () => undefined,
+    () => undefined,
+    () => undefined,
+    value => value,
+  );
+
   const validateAmount = useValidateAmount({
+    maxValue,
     required: true,
     moreThanZero: true,
-    maxValue: maxValue$,
   });
 
   const handleFormChange = useCallback(
@@ -69,7 +76,7 @@ export function WithdrawFromDCAPoolForm({
     async ({ amount }: FormData) => {
       if (!amount) return;
 
-      await (amount.currency === ALL_TOKEN
+      await (amount.currency instanceof AllCoinsToken
         ? api.dca.withdrawAll({ amount, poolAddress })
         : api.dca.withdraw({ amount, poolAddress }));
 
@@ -100,7 +107,7 @@ export function WithdrawFromDCAPoolForm({
           currencies={supportedTokens}
           placeholder="Enter sum"
           validate={validateAmount}
-          maxValue={maxValue$}
+          maxValue={maxValue}
         />
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
