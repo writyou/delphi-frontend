@@ -117,7 +117,8 @@ const config: webpack.Configuration = {
                   source: `assets/${
                     {
                       sandbox: 'ghPageRootSandbox',
-                      testnet: 'ghPageRootTestnet',
+                      rinkeby: 'ghPageRootRinkeby',
+                      kovan: 'ghPageRootKovan',
                       mainnet: 'ghPageRootMainnet',
                       'pre-mainnet': 'ghPageRootPreMainnet',
                     }[mode]

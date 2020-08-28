@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FieldRenderProps } from 'react-final-form';
 
 import { useTranslate } from 'services/i18n';
-import { getFieldWithComponent } from 'utils/react';
+import { wrapComponentIntoFormField } from 'utils/react';
 
 import { CheckboxInput } from '../inputs';
 
@@ -28,4 +28,4 @@ function CheckboxFieldComponent(props: IProps) {
   );
 }
 
-export const CheckboxField = getFieldWithComponent(CheckboxFieldComponent, 'checkbox');
+export const CheckboxField = wrapComponentIntoFormField(CheckboxFieldComponent, 'checkbox');

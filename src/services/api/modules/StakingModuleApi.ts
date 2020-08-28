@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-import { Observable, combineLatest, timer, merge } from 'rxjs';
+import { Observable, combineLatest, timer, merge, of } from 'rxjs';
 import { autobind } from 'core-decorators';
 import BN from 'bn.js';
 import { switchMap, map } from 'rxjs/operators';
@@ -29,7 +29,9 @@ export class StakingModuleApi {
 
   @memoize()
   public getPools$(): Observable<StakingPool[]> {
-    return combineLatest([this.getPool$(ETH_NETWORK_CONFIG.contracts.akroStakingPool)]);
+    return ETH_NETWORK_CONFIG.contracts.akroStakingPool
+      ? combineLatest([this.getPool$(ETH_NETWORK_CONFIG.contracts.akroStakingPool)])
+      : of([]);
   }
 
   @memoize(R.identity)
@@ -181,7 +183,7 @@ export class StakingModuleApi {
     const txContract = this.getPoolTxContract(deposit.poolAddress);
     const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
-    await this.erc20.approve(from, ETH_NETWORK_CONFIG.contracts.akroStakingPool, deposit.amount);
+    await this.erc20.approve(from, deposit.poolAddress, deposit.amount);
 
     const promiEvent = txContract.methods.stake(
       {

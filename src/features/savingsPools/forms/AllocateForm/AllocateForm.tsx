@@ -39,7 +39,6 @@ export const AllocateForm = memo(
 
     const handleFormSubmit = async (data: FormData, form: FormApi<FormData>) => {
       const filteredData = getDeposits(data);
-
       if (filteredData.length) {
         await api.savings.deposit(filteredData);
       }

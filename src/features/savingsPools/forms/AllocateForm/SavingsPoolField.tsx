@@ -8,7 +8,7 @@ import * as R from 'ramda';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
-import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
+import { wrapComponentIntoFormField, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
@@ -63,7 +63,7 @@ export const SavingsPoolField = memo(
   (prev, cur) => R.toString(prev) === R.toString(cur),
 );
 
-const SavingsPoolWithFieldWrapper = getFieldWithComponent(SavingsPoolFieldComponent);
+const SavingsPoolWithFieldWrapper = wrapComponentIntoFormField(SavingsPoolFieldComponent);
 
 type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | 'currencies'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement> & {
@@ -79,7 +79,9 @@ function SavingsPoolFieldComponent(props: Props) {
   const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
   const { t } = useTranslate();
 
-  const depositLimitRD = useSubscribable(getDepositLimit$, [getDepositLimit$]);
+  const switchDisabled = useSubscribable(getDepositLimit$, [getDepositLimit$])
+    .map(limit => limit?.isZero())
+    .getOrElse(R.T);
 
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
 
@@ -89,15 +91,6 @@ function SavingsPoolFieldComponent(props: Props) {
     }
     setIsAllocated(!isAllocated);
   };
-
-  const switchDisabled =
-    // TODO need to research api
-    depositLimitRD.fold(
-      () => true,
-      () => true,
-      () => true,
-      limit => limit?.isZero(),
-    );
 
   const switchChecked = !switchDisabled && isAllocated;
 
@@ -109,7 +102,6 @@ function SavingsPoolFieldComponent(props: Props) {
   return (
     <SavingsPoolCard
       pool={pool}
-      getDepositLimit$={getDepositLimit$}
       content={
         <SwitchInput
           disabled={switchDisabled}

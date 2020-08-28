@@ -1,15 +1,15 @@
 import { getEnv, Mode } from 'core/getEnv';
 
-export type NetworkID = 1 | 4;
+export type NetworkID = 1 | 4 | 42;
 
 const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 interface INetworkConfig {
   id: NetworkID;
-  name: 'mainnet' | 'rinkeby';
+  name: 'mainnet' | 'rinkeby' | 'kovan';
   contracts: {
     savingsModule: string;
-    akroStakingPool: string;
+    akroStakingPool?: string;
   };
   tokens: {
     ADEL: string;
@@ -34,7 +34,7 @@ interface INetworkConfig {
   etherskanDomain: string;
 }
 
-const testnetTokens: INetworkConfig['tokens'] = {
+const rinkebyTokens: INetworkConfig['tokens'] = {
   ADEL: `${zeroAddress.slice(-1)}1`,
   AKRO: `0xad7541B1E795656851caD5c70aA8d495063D9a95`,
   BAL: `${zeroAddress.slice(-1)}2`,
@@ -55,14 +55,14 @@ const testnetTokens: INetworkConfig['tokens'] = {
   sUSD: `0x15129620e32336438B396ce3825BcDc8Cef4B8eB`,
 };
 
-const ethNetworkConfigTestnet: INetworkConfig = {
+const ethNetworkConfigRinkeby: INetworkConfig = {
   id: 4,
   name: 'rinkeby',
   contracts: {
     savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
     akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
-  tokens: testnetTokens,
+  tokens: rinkebyTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
 };
 
@@ -73,8 +73,37 @@ const ethNetworkConfigsForSandbox: INetworkConfig = {
     savingsModule: '0xb733994019A4F55CAa3f130400B7978Cc6624c39',
     akroStakingPool: '0x6887DF2f4296e8B772cb19479472A16E836dB9e0',
   },
-  tokens: testnetTokens,
+  tokens: rinkebyTokens,
   etherskanDomain: 'https://rinkeby.etherscan.io/',
+};
+
+const ethNetworkConfigKovan: INetworkConfig = {
+  id: 42,
+  name: 'kovan',
+  contracts: {
+    savingsModule: '0x7E9a8806D37653B7289ae09F36C708485F00DF4b',
+  },
+  tokens: {
+    ADEL: rinkebyTokens.ADEL,
+    AKRO: rinkebyTokens.AKRO,
+    BAL: rinkebyTokens.BAL,
+    COMP: rinkebyTokens.COMP,
+    CRV: rinkebyTokens.CRV,
+    DAI: '0xff795577d9ac8bd7d90ee22b6c1703490b6512fd',
+    MTA: rinkebyTokens.MTA,
+    SNX: rinkebyTokens.SNX,
+    TUSD: rinkebyTokens.TUSD,
+    USDC: '0xe22da380ee6B445bb8273C81944ADEB6E8450422',
+    USDT: rinkebyTokens.USDT,
+    WBTC: rinkebyTokens.WBTC,
+    WETH: rinkebyTokens.WETH,
+    YFI: rinkebyTokens.YFI,
+    bUSD: rinkebyTokens.bUSD,
+    renBTC: rinkebyTokens.renBTC,
+    sBTC: rinkebyTokens.sBTC,
+    sUSD: rinkebyTokens.sUSD,
+  },
+  etherskanDomain: 'https://kovan.etherscan.io/',
 };
 
 const ethNetworkConfigsForMainnet: INetworkConfig = {
@@ -85,30 +114,31 @@ const ethNetworkConfigsForMainnet: INetworkConfig = {
     akroStakingPool: '0x3501Ec11d205fa249f2C42f5470e137b529b35D0',
   },
   tokens: {
-    ADEL: testnetTokens.ADEL,
+    ADEL: rinkebyTokens.ADEL,
     AKRO: '0x8ab7404063ec4dbcfd4598215992dc3f8ec853d7',
-    BAL: testnetTokens.BAL,
+    BAL: rinkebyTokens.BAL,
     COMP: '0xc00e94cb662c3520282e6f5717214004a7f26888',
     CRV: '0xd533a949740bb3306d119cc777fa900ba034cd52',
     DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
-    MTA: testnetTokens.MTA,
+    MTA: rinkebyTokens.MTA,
     SNX: '0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f',
     TUSD: '0x0000000000085d4780b73119b644ae5ecd22b376',
     USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
     USDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
-    WBTC: testnetTokens.WBTC,
-    WETH: testnetTokens.WETH,
-    YFI: testnetTokens.YFI,
+    WBTC: rinkebyTokens.WBTC,
+    WETH: rinkebyTokens.WETH,
+    YFI: rinkebyTokens.YFI,
     bUSD: '0x4fabb145d64652a948d72533023f6e7a623c7c53',
-    renBTC: testnetTokens.renBTC,
-    sBTC: testnetTokens.sBTC,
+    renBTC: rinkebyTokens.renBTC,
+    sBTC: rinkebyTokens.sBTC,
     sUSD: '0x57ab1ec28d129707052df4df418d58a2d46d5f51',
   },
   etherskanDomain: 'https://etherscan.io/',
 };
 
 const configsByMode: Record<Mode, INetworkConfig> = {
-  testnet: ethNetworkConfigTestnet,
+  rinkeby: ethNetworkConfigRinkeby,
+  kovan: ethNetworkConfigKovan,
   sandbox: ethNetworkConfigsForSandbox,
   mainnet: ethNetworkConfigsForMainnet,
   'pre-mainnet': ethNetworkConfigsForMainnet,
@@ -126,14 +156,16 @@ export const SIGNIFICANT_FRACTIONAL_DIGITS = 8;
 export const MAX_AVG_APY = 300;
 
 const subgraphHttpUrlsByMode: Record<Mode, string> = {
-  testnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  rinkeby: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  kovan: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-kovan',
   sandbox: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
   'pre-mainnet': 'https://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
 };
 
 const subgraphWsUrlsByMode: Record<Mode, string> = {
-  testnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  rinkeby: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-rinkeby',
+  kovan: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-kovan',
   sandbox: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-sandbox',
   mainnet: 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
   'pre-mainnet': 'wss://api.thegraph.com/subgraphs/name/in19farkt/delphi-mainnet',
