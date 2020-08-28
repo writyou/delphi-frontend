@@ -28,6 +28,7 @@ const rawTree = {
     withdraw: null,
   },
   staking: null,
+  settings: null,
 };
 
 export const routes = build(rawTree);

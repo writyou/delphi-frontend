@@ -10,3 +10,4 @@ export { Invest } from './Invest';
 export { MyHarvest } from './MyHarvest';
 export { Save } from './Save';
 export { Stake } from './Stake';
+export { Settings } from './Settings';

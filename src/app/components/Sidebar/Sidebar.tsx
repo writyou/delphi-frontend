@@ -42,7 +42,7 @@ const upperLinksList: PriorityLinks = {
   ],
 };
 
-const lowerLinksList: PriorityLinks = {
+const middleLinksList: PriorityLinks = {
   requiredLinks: [],
   additionalLinks: [
     {
@@ -72,13 +72,26 @@ const lowerLinksList: PriorityLinks = {
   ],
 };
 
-function getLinks$(links: PriorityLinks) {
+const lowerLinksList: PriorityLinks = {
+  requiredLinks: [],
+  additionalLinks: [
+    {
+      kind: 'internal',
+      label: 'Settings',
+      ref: routes.settings.getRoutePath(),
+      renderIcon: makeIconRenderer(icons.Settings),
+    },
+  ],
+};
+
+function getLinks(links: PriorityLinks) {
   return [...links.requiredLinks].concat(links.additionalLinks);
 }
 
 const links = {
-  upperLinks: getLinks$(upperLinksList),
-  lowerLinks: getLinks$(lowerLinksList),
+  upperLinks: getLinks(upperLinksList),
+  middleLinks: getLinks(middleLinksList),
+  lowerLinks: getLinks(lowerLinksList),
 };
 
 export const Sidebar: React.FC = () => {
@@ -106,6 +119,7 @@ export const Sidebar: React.FC = () => {
           >
             <div className={classes.upperPart}>
               <nav className={classes.upperLinks}>{links.upperLinks.map(renderLink)}</nav>
+              <nav className={classes.upperLinks}>{links.middleLinks.map(renderLink)}</nav>
               <nav className={classes.lowerLinks}>{links.lowerLinks.map(renderLink)}</nav>
             </div>
             <div className={classes.lowerPart}>

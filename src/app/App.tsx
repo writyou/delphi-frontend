@@ -34,6 +34,7 @@ export function App() {
             <Route path={routes.investments.getRoutePath()} component={pages.InvestmentsPage} />
             <Route path={routes.dca.getRoutePath()} component={pages.DCAPage} />
             <Route path={routes.staking.getRoutePath()} component={pages.Staking} />
+            <Route path={routes.settings.getRoutePath()} component={pages.Settings} />
             <Redirect to="/" />
           </Switch>
         </MainLayout>
