@@ -6,10 +6,10 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { TextInput } from '../inputs';
 
-type IProps = Omit<React.ComponentProps<typeof TextInput>, 'ref'> &
+type Props = Omit<React.ComponentProps<typeof TextInput>, 'ref'> &
   FieldRenderProps<any, HTMLElement>;
 
-function TextInputFieldComponent(props: IProps) {
+function TextInputFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
   const error =

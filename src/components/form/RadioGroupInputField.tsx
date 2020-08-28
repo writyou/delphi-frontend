@@ -6,9 +6,9 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { RadioGroupInput } from '../inputs';
 
-type IProps = React.ComponentProps<typeof RadioGroupInput> & FieldRenderProps<any, HTMLElement>;
+type Props = React.ComponentProps<typeof RadioGroupInput> & FieldRenderProps<any, HTMLElement>;
 
-function RadioGroupInputFieldComponent(props: IProps) {
+function RadioGroupInputFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
   const error =

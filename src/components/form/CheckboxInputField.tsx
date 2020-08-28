@@ -6,9 +6,9 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { CheckboxInput } from '../inputs';
 
-type IProps = React.ComponentProps<typeof CheckboxInput> & FieldRenderProps<any, HTMLElement>;
+type Props = React.ComponentProps<typeof CheckboxInput> & FieldRenderProps<any, HTMLElement>;
 
-function CheckboxFieldComponent(props: IProps) {
+function CheckboxFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { type: inputType, ...restInput } = input;
   const { t } = useTranslate();

@@ -4,13 +4,13 @@ import { map } from 'rxjs/operators';
 import { CheckAuthorization } from 'components';
 import { useApi } from 'services/api';
 
-type IProps = {
+type Props = {
   redirectTo: string;
   excludePath?: string;
   children?: React.ReactNode;
 };
 
-export const IsUserConnected = (props: IProps) => {
+export const IsUserConnected = (props: Props) => {
   const api = useApi();
 
   const isUserConnected$ = useMemo(

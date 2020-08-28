@@ -17,9 +17,9 @@ interface IState {
   locale: Lang;
 }
 
-type IProps = IOwnProps & RouteComponentProps;
+type Props = IOwnProps & RouteComponentProps;
 
-class I18nProviderComponent extends React.Component<IProps> {
+class I18nProviderComponent extends React.Component<Props> {
   public polyglot: Polyglot = new Polyglot({
     locale: DEFAULT_LANGUAGE,
     phrases: this.props.phrasesByLocale[DEFAULT_LANGUAGE],
@@ -30,7 +30,7 @@ class I18nProviderComponent extends React.Component<IProps> {
     locale: DEFAULT_LANGUAGE,
   };
 
-  public componentDidUpdate(prevProps: IProps, prevState: IState) {
+  public componentDidUpdate(prevProps: Props, prevState: IState) {
     const { phrasesByLocale } = this.props;
     const { locale } = this.state;
 

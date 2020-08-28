@@ -14,11 +14,11 @@ interface IOwnProps {
   withSelect?: boolean;
 }
 
-type IProps = Omit<React.ComponentProps<typeof TextInput>, 'ref'> &
+type Props = Omit<React.ComponentProps<typeof TextInput>, 'ref'> &
   FieldRenderProps<any, HTMLElement> &
   IOwnProps;
 
-function DecimalsFieldComponent(props: IProps) {
+function DecimalsFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
 

@@ -6,10 +6,10 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { SwitchInput } from '../inputs';
 
-type IProps = Omit<React.ComponentProps<typeof SwitchInput>, 'ref'> &
+type Props = Omit<React.ComponentProps<typeof SwitchInput>, 'ref'> &
   FieldRenderProps<any, HTMLElement>;
 
-function SwitchInputFieldComponent(props: IProps) {
+function SwitchInputFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
   const error =

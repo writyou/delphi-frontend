@@ -7,13 +7,11 @@ import { Adaptive } from 'services/adaptability';
 import { AkropolisSocialLinks } from '../AkropolisSocialLinks/AkropolisSocialLinks';
 import { useStyles } from './Layout.style';
 
-interface IOwnProps {
+type Props = {
   children: React.ReactNode;
-}
+};
 
-type IProps = IOwnProps;
-
-function LayoutComponent({ children }: IProps) {
+function LayoutComponent({ children }: Props) {
   const classes = useStyles();
 
   return <div className={classes.root}>{children}</div>;

@@ -6,10 +6,10 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { TokenAmountInput, TokenAmountInputProps } from '../inputs';
 
-type IProps = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText'> &
+type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement>;
 
-function TokenAmountFieldComponent(props: IProps) {
+function TokenAmountFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
 

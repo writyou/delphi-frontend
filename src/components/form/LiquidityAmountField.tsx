@@ -6,10 +6,10 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { LiquidityAmountInput, LiquidityAmountInputProps } from '../inputs';
 
-type IProps = Omit<LiquidityAmountInputProps, 'onChange' | 'value' | 'helperText'> &
+type Props = Omit<LiquidityAmountInputProps, 'onChange' | 'value' | 'helperText'> &
   FieldRenderProps<LiquidityAmountInputProps['value'], HTMLElement>;
 
-function LiquidityAmountFieldComponent(props: IProps) {
+function LiquidityAmountFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
 

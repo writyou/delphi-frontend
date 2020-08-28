@@ -6,10 +6,10 @@ import { getFieldWithComponent } from 'utils/react';
 
 import { NumberInput } from '../inputs';
 
-type IProps = Omit<React.ComponentProps<typeof NumberInput>, 'ref'> &
+type Props = Omit<React.ComponentProps<typeof NumberInput>, 'ref'> &
   FieldRenderProps<any, HTMLElement>;
 
-function NumberInputFieldComponent(props: IProps) {
+function NumberInputFieldComponent(props: Props) {
   const { input, meta, ...rest } = props;
   const { t } = useTranslate();
   const error =
