@@ -28,30 +28,25 @@ export function WithdrawFromStakingPoolButton({
   }, [api, pool.address]);
 
   return (
-    <Loading
-      data={confirmationParamsRD}
-      loader={
-        <Button {...rest} disabled>
-          Unstake
-        </Button>
+    <Loading data={confirmationParamsRD}>
+      {params =>
+        params.unlockedBalance.isZero() ? null : (
+          <>
+            <Button {...rest} onClick={open}>
+              Unstake
+            </Button>
+            <ConfirmationDialog
+              isOpen={isOpen}
+              yesText="Unstake"
+              title="Unstake"
+              onCancel={close}
+              onConfirm={handleUnstake}
+            >
+              Are you sure you want to unstake {params.unlockedBalance.toFormattedString()}
+            </ConfirmationDialog>
+          </>
+        )
       }
-    >
-      {params => (
-        <>
-          <Button {...rest} onClick={open} disabled={params.unlockedBalance.isZero()}>
-            Unstake
-          </Button>
-          <ConfirmationDialog
-            isOpen={isOpen}
-            yesText="Unstake"
-            title="Unstake"
-            onCancel={close}
-            onConfirm={handleUnstake}
-          >
-            Are you sure you want to unstake {params.unlockedBalance.toFormattedString()}
-          </ConfirmationDialog>
-        </>
-      )}
     </Loading>
   );
 }
