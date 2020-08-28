@@ -189,13 +189,15 @@ export class UserApi {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.staking.getPools$() : empty())),
       switchMap(pools =>
-        combineLatest(
-          pools.map(pool =>
-            this.getFullStakingPoolBalance$(pool.address).pipe(
-              map(balance => (balance.isZero() ? null : pool)),
-            ),
-          ),
-        ),
+        pools.length
+          ? combineLatest(
+              pools.map(pool =>
+                this.getFullStakingPoolBalance$(pool.address).pipe(
+                  map(balance => (balance.isZero() ? null : pool)),
+                ),
+              ),
+            )
+          : of([]),
       ),
       map(pools => pools.filter((pool): pool is StakingPool => !!pool)),
     );

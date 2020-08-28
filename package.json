@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "dev": "yarn dev:sandbox",
-    "dev:testnet": "yarn codegen:testnet && cross-env MODE=testnet better-npm-run dev",
+    "dev:rinkeby": "yarn codegen:testnet && cross-env MODE=rinkeby better-npm-run dev",
+    "dev:kovan": "yarn codegen:testnet && cross-env MODE=kovan better-npm-run dev",
     "dev:sandbox": "yarn codegen:sandbox && cross-env MODE=sandbox better-npm-run dev",
     "dev:mainnet": "yarn codegen:mainnet && cross-env MODE=mainnet better-npm-run dev",
-    "build:testnet": "cross-env MODE=testnet better-npm-run build",
+    "build:rinkeby": "cross-env MODE=rinkeby better-npm-run build",
+    "build:kovan": "cross-env MODE=kovan better-npm-run build",
     "build:sandbox": "cross-env MODE=sandbox better-npm-run build",
     "build:mainnet": "cross-env MODE=mainnet better-npm-run build",
     "build:pre-mainnet": "cross-env MODE=pre-mainnet better-npm-run build",
@@ -18,11 +20,11 @@
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand --watch",
     "test:coverage": "jest --coverage --watch",
-    "codegen": "rm -rf ./src/generated && typechain --target web3-rxjs --outDir src/generated/contracts **/abi/*.json; graphql-codegen --config",
     "codegen:testnet": "yarn codegen codegen-testnet.yml",
     "codegen:sandbox": "yarn codegen codegen-sandbox.yml",
     "codegen:mainnet": "yarn codegen codegen-mainnet.yml",
-    "codegen:pre-mainnet": "yarn codegen codegen-mainnet.yml"
+    "codegen:pre-mainnet": "yarn codegen codegen-mainnet.yml",
+    "codegen": "rm -rf ./src/generated && typechain --target web3-rxjs --outDir src/generated/contracts **/abi/*.json; graphql-codegen --config"
   },
   "betterScripts": {
     "node": {

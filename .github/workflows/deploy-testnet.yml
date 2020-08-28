@@ -1,0 +1,52 @@
+name: Deploy to GH Pages
+
+on:
+  push:
+    branches:
+    - testnet
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: echo Generate code
+        run: yarn codegen:testnet
+
+      - name: Test
+        run: yarn test
+
+      # TODO: need to run parallel
+      - name: echo Build rinkeby application
+        run: yarn build:rinkeby
+
+      - name: echo Deploy rinkeby 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          REPOSITORY_NAME: akropolisio/delphi-rinkeby-frontend
+
+      - name: echo Build kovan application
+        run: yarn build:kovan
+
+      - name: echo Deploy kovan 🚀
+        uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
+          REPOSITORY_NAME: akropolisio/delphi-kovan-frontend
+
+
