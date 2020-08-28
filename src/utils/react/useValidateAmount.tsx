@@ -42,14 +42,7 @@ export function useValidateAmount(options: ValidateAmountOptions) {
     [options.maxValue, options.minValue],
   );
 
-  // TODO need to research api
-  const { maxValue, minValue } =
-    amplitudeValuesRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      values => values,
-    ) || {};
+  const { maxValue, minValue } = amplitudeValuesRD.toUndefined() || {};
 
   return useMemo(() => {
     return (amount: '' | Amount | null) => {

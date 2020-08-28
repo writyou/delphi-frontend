@@ -31,31 +31,29 @@ export function AuthProvider(props: Props) {
     [],
   );
 
-  // TODO need to research api
-  const connectedWallet = authStateRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    values => values.connectedWallet,
-  );
+  const connectedWalletRD = authStateRD.map(values => values.connectedWallet);
 
   const history = useHistory();
 
   const connectToWallet = useCallback(
-    async (wallet: WalletType) => {
-      const currentWallet = connectedWallet;
-      const connectResult = await web3Manager.connect(wallet);
-      if (wallet === currentWallet) {
-        disconnectRedirectPath && history.push(disconnectRedirectPath);
-      } else {
-        connectRedirectPath && history.push(connectRedirectPath);
-      }
+    async (wallet: WalletType) =>
+      connectedWalletRD.foldOption(
+        () => undefined,
+        async connectedWallet => {
+          const currentWallet = connectedWallet;
+          const connectResult = await web3Manager.connect(wallet);
+          if (wallet === currentWallet) {
+            disconnectRedirectPath && history.push(disconnectRedirectPath);
+          } else {
+            connectRedirectPath && history.push(connectRedirectPath);
+          }
 
-      closeModal();
+          closeModal();
 
-      return connectResult;
-    },
-    [web3Manager, connectedWallet, disconnectRedirectPath, connectRedirectPath],
+          return connectResult;
+        },
+      ),
+    [web3Manager, connectedWalletRD, disconnectRedirectPath, connectRedirectPath],
   );
   const connectCommunication = useCommunication(connectToWallet, []);
 

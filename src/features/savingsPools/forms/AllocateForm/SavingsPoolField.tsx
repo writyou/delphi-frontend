@@ -90,14 +90,7 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
-  const switchDisabled =
-    // TODO need to research api
-    depositLimitRD.fold(
-      () => true,
-      () => true,
-      () => true,
-      limit => limit?.isZero(),
-    );
+  const switchDisabled = depositLimitRD.map(limit => limit?.isZero()).getOrElse(R.T);
 
   const switchChecked = !switchDisabled && isAllocated;
 

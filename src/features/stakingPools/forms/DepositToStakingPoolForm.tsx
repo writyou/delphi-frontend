@@ -56,14 +56,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, currentToken, pool.address],
   );
 
-  // TODO need to research api
-  const { maxValue, maxErrorTKey } =
-    validationParamsRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      params => params,
-    ) || {};
+  const { maxValue, maxErrorTKey } = validationParamsRD.toUndefined() || {};
 
   const validateAmount = useValidateAmount({
     required: true,

@@ -39,12 +39,9 @@ export function SavingsPage() {
 
   const isWorthToWatchPage$ = useMemo(
     () =>
-      // TODO need to research api
       of(
         page !== withdrawTab.value ||
-          poolsRD.fold(
-            () => false,
-            () => false,
+          poolsRD.foldOption(
             () => false,
             pools => !!pools.length,
           ),
