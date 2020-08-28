@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "yarn dev:sandbox",
-    "dev:rinkeby": "yarn codegen:rinkeby && cross-env MODE=rinkeby better-npm-run dev",
-    "dev:kovan": "yarn codegen:kovan && cross-env MODE=kovan better-npm-run dev",
+    "dev:rinkeby": "yarn codegen:testnet && cross-env MODE=rinkeby better-npm-run dev",
+    "dev:kovan": "yarn codegen:testnet && cross-env MODE=kovan better-npm-run dev",
     "dev:sandbox": "yarn codegen:sandbox && cross-env MODE=sandbox better-npm-run dev",
     "dev:mainnet": "yarn codegen:mainnet && cross-env MODE=mainnet better-npm-run dev",
     "build:rinkeby": "cross-env MODE=rinkeby better-npm-run build",
