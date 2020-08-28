@@ -12,7 +12,7 @@ import { useSubscribableDeprecated } from 'utils/react';
 
 import { DeprecatedLoading } from '../DeprecatedLoading';
 import { DepositLimit } from '../DepositLimit/DepositLimit';
-import { TokenIcon } from '../TokenIcon/TokenIcon';
+import { TokenIcon } from '../TokenIcon';
 import { Card } from '../Card';
 import { PoolFillingLimit } from '../PoolFillingLimit/PoolFillingLimit';
 import { useStyles } from './PoolCard.style';
