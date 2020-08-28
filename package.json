@@ -20,12 +20,11 @@
     "test:watch": "jest --watch",
     "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand --watch",
     "test:coverage": "jest --coverage --watch",
-    "codegen": "rm -rf ./src/generated && typechain --target web3-rxjs --outDir src/generated/contracts **/abi/*.json; graphql-codegen --config",
-    "codegen:rinkeby": "yarn codegen codegen-testnet.yml",
-    "codegen:kovan": "yarn codegen codegen-testnet.yml",
+    "codegen:testnet": "yarn codegen codegen-testnet.yml",
     "codegen:sandbox": "yarn codegen codegen-sandbox.yml",
     "codegen:mainnet": "yarn codegen codegen-mainnet.yml",
-    "codegen:pre-mainnet": "yarn codegen codegen-mainnet.yml"
+    "codegen:pre-mainnet": "yarn codegen codegen-mainnet.yml",
+    "codegen": "rm -rf ./src/generated && typechain --target web3-rxjs --outDir src/generated/contracts **/abi/*.json; graphql-codegen --config"
   },
   "betterScripts": {
     "node": {
