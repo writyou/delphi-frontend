@@ -43,7 +43,7 @@ export const useStyles = makeStyles(
       opacity: 0.5,
     },
     availableDepositRow: {},
-    additionalElementRow: {},
+    actionsRow: {},
   }),
   { name: 'PoolCard' },
 );

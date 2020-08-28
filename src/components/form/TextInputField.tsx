@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FieldRenderProps } from 'react-final-form';
 
 import { useTranslate } from 'services/i18n';
-import { getFieldWithComponent } from 'utils/react';
+import { wrapComponentIntoFormField } from 'utils/react';
 
 import { TextInput } from '../inputs';
 
@@ -19,4 +19,4 @@ function TextInputFieldComponent(props: IProps) {
   return <TextInput {...rest} helperText={error} error={Boolean(error)} {...input} />;
 }
 
-export const TextInputField = getFieldWithComponent(TextInputFieldComponent);
+export const TextInputField = wrapComponentIntoFormField(TextInputFieldComponent);

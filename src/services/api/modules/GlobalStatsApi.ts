@@ -1,4 +1,4 @@
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { LiquidityAmount } from '@akropolis-web/primitives';
 
@@ -44,24 +44,26 @@ export class GlobalStatsApi {
   private getTotalStakingPoolsBalance$(): Observable<LiquidityAmount> {
     return this.staking.getPools$().pipe(
       switchMap(pools =>
-        combineLatest(
-          pools.map(pool =>
-            this.staking
-              .getPoolBalance$(pool.address)
-              .pipe(
-                switchMap(balance =>
-                  this.prices
-                    .getTokenPrice$(balance.currency.address)
-                    .pipe(
-                      map(
-                        price =>
-                          new LiquidityAmount(balance.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
-                      ),
+        pools.length
+          ? combineLatest(
+              pools.map(pool =>
+                this.staking
+                  .getPoolBalance$(pool.address)
+                  .pipe(
+                    switchMap(balance =>
+                      this.prices
+                        .getTokenPrice$(balance.currency.address)
+                        .pipe(
+                          map(
+                            price =>
+                              new LiquidityAmount(balance.mul(price), DEFAULT_LIQUIDITY_CURRENCY),
+                          ),
+                        ),
                     ),
-                ),
+                  ),
               ),
-          ),
-        ),
+            )
+          : of([]),
       ),
       reduceLiquidityAmounts,
     );
