@@ -68,36 +68,25 @@ export function TransactionFinalNotification() {
   const { t } = useTranslate();
   const transactionRD = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
-    // () => of(tr),
     [api],
   );
-  // TODO need to research api
-  const transaction = transactionRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    h => h,
-  );
+  const transaction = transactionRD.toUndefined();
 
   const hashRD = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
     transactionRD,
   ]);
-  // TODO need to research api
-  const hash = hashRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    h => h,
-  );
+
+  const hash = hashRD.toUndefined();
 
   const [isOpen, setOpen] = useState(false);
   const [variant, setVariant] = useState<Variant>('deposit');
-  const handleConfirm = async () => {
+
+  const handleConfirm = useCallback(async () => {
     setOpen(false);
-  };
-  const handleClose = () => {
+  }, []);
+  const handleClose = useCallback(() => {
     setOpen(false);
-  };
+  }, []);
 
   const myEffect = useCallback(
     async st => {

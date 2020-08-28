@@ -23,23 +23,14 @@ export function WithdrawFromStakingPoolButton({
   ]);
 
   const handleUnstake = useCallback(async (): Promise<void> => {
-    // TODO need to research api
-    const params = confirmationParamsRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      h => h,
-    );
-    // TODO await confirmationParamsRD
+    const params = confirmationParamsRD.toUndefined();
     if (params) {
       await api.staking.withdraw({
         poolAddress: pool.address,
         amount: params.unlockedBalance,
       });
-    } else {
-      console.warn('no loaded params');
+      close();
     }
-    close();
   }, [api, pool.address, confirmationParamsRD]);
 
   return (

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import R from 'ramda';
+import * as R from 'ramda';
 import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 

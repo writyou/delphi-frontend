@@ -1,4 +1,6 @@
-import React from 'react';
+/* eslint-disable jsx-a11y/interactive-supports-focus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+import React, { useCallback } from 'react';
 import { TokenAmount } from '@akropolis-web/primitives';
 import { of, combineLatest } from 'rxjs';
 import { useHistory } from 'react-router';
@@ -55,10 +57,10 @@ export function DialogContentTemplate({
     [api, poolAddresses, isStakingDeposit],
   );
   const history = useHistory();
-  const handleLinkClick = () => {
+  const handleLinkClick = useCallback(() => {
     onClose();
     depositLink && history.push(depositLink);
-  };
+  }, [depositLink]);
 
   if (variant === 'errorDeposit') {
     return (
@@ -124,7 +126,7 @@ export function DialogContentTemplate({
           .
           <br />
           {t(fKeys.deposit.beforeLink.getKey())}{' '}
-          <span className={classes.link} onClick={handleLinkClick}>
+          <span className={classes.link} onClick={handleLinkClick} role="button">
             {t(fKeys.deposit.link.getKey())}
           </span>{' '}
           {t(fKeys.deposit.afterLink.getKey())}

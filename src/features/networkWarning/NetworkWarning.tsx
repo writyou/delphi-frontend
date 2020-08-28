@@ -19,7 +19,8 @@ export function NetworkWarning() {
     () =>
       chainIdRD.foldOption(
         () => undefined,
-        chainId => (chainId === NETWORK_ID ? setIsOpen(false) : setIsOpen(true)),
+        chainId =>
+          chainId !== null && chainId !== NETWORK_ID ? setIsOpen(true) : setIsOpen(false),
       ),
     [chainIdRD],
   );

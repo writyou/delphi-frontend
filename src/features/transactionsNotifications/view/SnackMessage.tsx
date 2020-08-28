@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useSnackbar, SnackbarMessage, SnackbarKey, SharedProps } from 'notistack';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -46,26 +46,22 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
     transaction,
   ]);
 
-  // TODO need to research api
-  const hash = hashRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    t => t,
-  );
-
+  const hash = hashRD.toUndefined();
   const link = hash ? `${ETH_NETWORK_CONFIG.etherskanDomain}tx/${hash}` : undefined;
 
-  const handleDismiss = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation();
-    closeSnackbar(id);
-  };
+  const handleDismiss = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      closeSnackbar(id);
+    },
+    [id],
+  );
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (link) {
       window.open(link);
     }
-  };
+  }, [link]);
   const Icon = getIcon(variant);
 
   return (

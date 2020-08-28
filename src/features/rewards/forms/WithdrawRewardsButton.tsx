@@ -3,6 +3,7 @@ import React, { useCallback } from 'react';
 import { ConfirmationDialog, Button, ButtonProps, Loading } from 'components';
 import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
+import { combine } from 'utils/remoteData';
 
 export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -12,37 +13,29 @@ export function WithdrawRewardsButton(props: ButtonProps): JSX.Element {
 
   const api = useApi();
   const rewardsRD = useSubscribable(() => api.user.getRewards$(), [api]);
-  // TODO need to research api
-  const rewards = rewardsRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    h => h,
-  );
-
-  const handleWithdraw = useCallback(async (): Promise<void> => {
-    // TODO await rewardsRD
-    if (rewards) {
-      await api.rewards.withdrawUserRewards(rewards);
-    } else {
-      console.warn('no loaded rewards');
-    }
-    close();
-  }, [api, rewards]);
 
   const totalBalanceRD = useSubscribable(() => api.user.getTotalRewardsBalance$(), [api]);
+  const combinedRD = combine(totalBalanceRD, rewardsRD);
+
+  const handleWithdraw = useCallback(async (): Promise<void> => {
+    const rewards = rewardsRD.toUndefined();
+    if (rewards) {
+      await api.rewards.withdrawUserRewards(rewards);
+      close();
+    }
+  }, [api, rewardsRD]);
 
   return (
     <>
       <Loading
-        data={totalBalanceRD}
+        data={combinedRD}
         loader={
           <Button {...props} disabled>
             Withdraw
           </Button>
         }
       >
-        {totalBalance => (
+        {([totalBalance]) => (
           <>
             <Button {...props} onClick={open} disabled={totalBalance.isZero()}>
               Withdraw
