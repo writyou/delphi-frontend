@@ -8,7 +8,7 @@ import * as R from 'ramda';
 import { SavingsPool } from 'model/types';
 import { tKeys, useTranslate } from 'services/i18n';
 import { SwitchInput, TokenAmountInputProps, TokenAmountInput } from 'components/inputs';
-import { getFieldWithComponent, useValidateAmount, useSubscribable } from 'utils/react';
+import { wrapComponentIntoFormField, useValidateAmount, useSubscribable } from 'utils/react';
 import { SpyField } from 'components';
 
 import { useGetDepositLimit$ } from '../../hooks/useGetDepositLimit$';
@@ -63,7 +63,7 @@ export const SavingsPoolField = memo(
   (prev, cur) => R.toString(prev) === R.toString(cur),
 );
 
-const SavingsPoolWithFieldWrapper = getFieldWithComponent(SavingsPoolFieldComponent);
+const SavingsPoolWithFieldWrapper = wrapComponentIntoFormField(SavingsPoolFieldComponent);
 
 type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | 'currencies'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement> & {

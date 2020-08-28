@@ -1,5 +1,5 @@
 export * from './filterChildrenByComponent';
-export * from './getFieldWithComponent';
+export * from './wrapComponentIntoFormField';
 export * from './useOnChangeState';
 export * from './withProps';
 export * from './useSubscribableDeprecated';
