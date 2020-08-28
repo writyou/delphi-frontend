@@ -60,13 +60,7 @@ export function MyPools() {
 
   const match = useRouteMatch<{ page: string }>('/pools/:page');
 
-  // TODO need to research api
-  const defaultPage = filteredTabsRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    filteredTabs => filteredTabs[0]?.value,
-  );
+  const defaultPage = filteredTabsRD.map(filteredTabs => filteredTabs[0]?.value).toUndefined();
 
   const page = match ? match.params.page : defaultPage;
 
@@ -76,13 +70,10 @@ export function MyPools() {
 
   const isWorthToWatchPage$ = useMemo(
     () =>
-      // TODO need to research api
       of(
-        filteredTabsRD.fold(
+        filteredTabsRD.foldOption(
           () => false,
-          () => false,
-          () => false,
-          filteredTabs => filteredTabs.some(filteredTab => filteredTab.value === page),
+          filteredTabs => filteredTabs.some(tab => tab.value === page),
         ),
       ),
     [filteredTabsRD, page],
