@@ -19,7 +19,11 @@ type Props = {
   fontSize?: 'default' | 'inherit';
 };
 
-function getInfiniteApproves$(api: ReturnType<typeof useApi>, tokens: Token[], spender: string) {
+export function getInfiniteApproves$(
+  api: ReturnType<typeof useApi>,
+  tokens: Token[],
+  spender: string,
+) {
   return api.web3Manager.account$.pipe(
     switchMap(account => {
       if (!account) return empty();

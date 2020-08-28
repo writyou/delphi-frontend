@@ -1,1 +1,2 @@
-export { InfiniteApproveSwitch } from './InfiniteApproveSwitch/InfiniteApproveSwitch';
+export { InfiniteApproveSwitch } from './view/InfiniteApproveSwitch';
+export { TokensInfiniteApproveForm } from './forms/TokensInfiniteApproveForm';
