@@ -3,7 +3,7 @@ import BN from 'bn.js';
 import { FieldRenderProps } from 'react-final-form';
 
 import { useTranslate } from 'services/i18n';
-import { getFieldWithComponent } from 'utils/react';
+import { wrapComponentIntoFormField } from 'utils/react';
 
 import { TextInput, DecimalsInput } from '../inputs';
 
@@ -30,4 +30,4 @@ function DecimalsFieldComponent(props: Props) {
   return <DecimalsInput {...rest} helperText={error} error={Boolean(error)} {...input} />;
 }
 
-export const DecimalsField = getFieldWithComponent(DecimalsFieldComponent);
+export const DecimalsField = wrapComponentIntoFormField(DecimalsFieldComponent);

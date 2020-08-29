@@ -25,15 +25,23 @@ export function WithdrawTab() {
             {pools.map(pool => (
               <Grid key={pool.address} item xs={4}>
                 <PoolCard
-                  address={pool.address}
                   poolName={pool.poolName}
                   tokens={pool.tokens}
-                  isDisabledLink
-                  link={routes.savings.pool.id.getRedirectPath({ id: pool.address })}
-                  content={<DCAWithdrawCardButtons pool={pool} />}
-                  poolBalance={<UserDCAPoolBalance poolAddress={pool.address} />}
-                  poolLiquidity={<DCAPoolLiquidity poolAddress={pool.address} />}
-                  getUserBalance$={(s: string) => api.user.getDCAPoolBalance$(s)}
+                  content={{
+                    suppliedByUser: {
+                      content: <UserDCAPoolBalance poolAddress={pool.address} />,
+                    },
+                    poolLiquidity: {
+                      content: <DCAPoolLiquidity poolAddress={pool.address} />,
+                    },
+                    linkToMoreInfo: {
+                      to: routes.savings.pool.id.getRedirectPath({ id: pool.address }),
+                      disabled: true,
+                    },
+                    actions: {
+                      triggers: <DCAWithdrawCardButtons pool={pool} />,
+                    },
+                  }}
                 />
               </Grid>
             ))}

@@ -62,14 +62,7 @@ export function useDepositAmountValidationParams(
     [api, token?.address, poolAddress, R.toString(formValues)],
   );
 
-  // TODO need to research api
-  const { maxValue, maxErrorTKey } =
-    validationParamsRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      params => params,
-    ) || {};
+  const { maxValue, maxErrorTKey } = validationParamsRD.toUndefined() || {};
 
   return { maxValue, maxErrorTKey };
 }

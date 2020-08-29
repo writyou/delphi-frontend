@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FieldRenderProps } from 'react-final-form';
 
 import { useTranslate } from 'services/i18n';
-import { getFieldWithComponent } from 'utils/react';
+import { wrapComponentIntoFormField } from 'utils/react';
 
 import { NumberInput } from '../inputs';
 
@@ -33,4 +33,4 @@ function NumberInputFieldComponent(props: Props) {
   );
 }
 
-export const NumberInputField = getFieldWithComponent(NumberInputFieldComponent);
+export const NumberInputField = wrapComponentIntoFormField(NumberInputFieldComponent);

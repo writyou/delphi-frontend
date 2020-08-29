@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import R from 'ramda';
 import cn from 'classnames';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -32,13 +33,7 @@ export function AuthButton({ children, size }: Props) {
 
   const accountRD = useSubscribable(() => web3Manager.account$, [web3Manager]);
 
-  // TODO: refactor
-  const isConnected: boolean = accountRD.fold(
-    () => false,
-    () => false,
-    () => false,
-    account => !!account,
-  );
+  const isConnected = accountRD.map(Boolean).getOrElse(R.F);
 
   const handleAuthButtonClick = useCallback(() => {
     openModal();

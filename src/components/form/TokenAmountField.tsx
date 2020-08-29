@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FieldRenderProps } from 'react-final-form';
 
 import { useTranslate } from 'services/i18n';
-import { getFieldWithComponent } from 'utils/react';
+import { wrapComponentIntoFormField } from 'utils/react';
 
 import { TokenAmountInput, TokenAmountInputProps } from '../inputs';
 
@@ -21,4 +21,4 @@ function TokenAmountFieldComponent(props: Props) {
   return <TokenAmountInput {...rest} helperText={error} error={Boolean(error)} {...input} />;
 }
 
-export const TokenAmountField = getFieldWithComponent(TokenAmountFieldComponent);
+export const TokenAmountField = wrapComponentIntoFormField(TokenAmountFieldComponent);
