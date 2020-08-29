@@ -10,7 +10,7 @@ type Props = Omit<React.ComponentProps<typeof SwitchInput>, 'ref'> &
   FieldRenderProps<any, HTMLElement>;
 
 function SwitchInputFieldComponent(props: Props) {
-  const { input, meta, ...rest } = props;
+  const { input, meta, value, ...rest } = props;
   const { t } = useTranslate();
   const error =
     typeof rest.error === 'boolean'
@@ -19,4 +19,4 @@ function SwitchInputFieldComponent(props: Props) {
   return <SwitchInput {...rest} helperText={error} error={Boolean(error)} {...input} />;
 }
 
-export const SwitchInputField = getFieldWithComponent(SwitchInputFieldComponent);
+export const SwitchInputField = getFieldWithComponent(SwitchInputFieldComponent, 'checkbox');

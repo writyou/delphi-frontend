@@ -5,7 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Hint, Button } from 'components';
-import { makeStyles } from 'utils/styles';
 
 type AnyObject = Record<string, any>;
 
@@ -14,13 +13,13 @@ export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   'subscription'
 > & {
   submitButton?: string;
+  FooterContent: React.FC<{ SubmitButton: () => JSX.Element }>;
 };
 
 export function InfiniteApproveFormTemplate<FormValues extends AnyObject>(
   props: FormTemplateProps<FormValues>,
 ) {
-  const { submitButton, ...restProps } = props;
-  const classes = useStyles();
+  const { submitButton, FooterContent, ...restProps } = props;
 
   const children = React.Children.toArray(restProps.children);
 
@@ -38,19 +37,21 @@ export function InfiniteApproveFormTemplate<FormValues extends AnyObject>(
         <form onSubmit={handleSubmit}>
           <Grid container justify="center" spacing={2}>
             <Grid container item direction="column">
-              <Grid item container xs>
+              <Grid container direction="column">
                 {children}
-              </Grid>
-              <Grid item className={classes.submit}>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={submitting || hasValidationErrors}
-                >
-                  {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
-                </Button>
+                <FooterContent
+                  SubmitButton={() => (
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="primary"
+                      type="submit"
+                      disabled={submitting || hasValidationErrors}
+                    >
+                      {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
+                    </Button>
+                  )}
+                />
               </Grid>
             </Grid>
             {!dirtySinceLastSubmit && !!submitError && (
@@ -66,10 +67,3 @@ export function InfiniteApproveFormTemplate<FormValues extends AnyObject>(
     </Form>
   );
 }
-
-const useStyles = makeStyles(() => ({
-  submit: {
-    paddingTop: 3,
-    paddingLeft: 32,
-  },
-}));

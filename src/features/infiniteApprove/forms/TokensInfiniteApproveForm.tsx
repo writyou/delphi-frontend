@@ -4,19 +4,22 @@ import { map, catchError, switchMap } from 'rxjs/operators';
 import { Token } from '@akropolis-web/primitives';
 import * as R from 'ramda';
 import { FormSpy } from 'react-final-form';
+import { makeStyles } from '@akropolis-web/styles';
 
 import { useApi } from 'services/api';
 import { SwitchInputField } from 'components/form';
 import { useSubscribable, useCommunication } from 'utils/react';
 import { isSuccess } from 'utils/remoteData';
-import { Table } from 'components';
+import { Grid, TokenIcon, Loading } from 'components';
 import { ETH_NETWORK_CONFIG } from 'env';
 
 import { getInfiniteApproves$ } from '../view/InfiniteApproveSwitch';
 import { InfiniteApproveFormTemplate } from './InfiniteApproveFormTemplate';
-import * as tableData from './tableData';
+import { SwitchAllTokens } from './SwitchAllTokens';
 
-type FormData = TokenToApprove[];
+type FormData = {
+  [x: string]: boolean;
+};
 
 type TokenToApprove = {
   token: Token;
@@ -68,26 +71,48 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
       val => val,
     ) || {};
 
-  const initialValues: FormData | undefined = useMemo(() => validTokens, [validTokens]);
+  const initialValues = useMemo(
+    () =>
+      validTokens &&
+      R.mergeAll(validTokens.map(data => ({ [data.token.symbol]: data.hasInfiniteApprove }))),
+    [validTokens],
+  );
 
-  const handleFormSubmit = useCallback(async (tokensState: FormData) => {
-    if (!tokensState) return;
+  const handleFormSubmit = useCallback(
+    async (tokensFormState: FormData) => {
+      if (!tokensFormState) return;
 
-    await communication.execute(tokensState);
-  }, []);
+      await communication.execute(tokensFormState);
+    },
+    [validTokens],
+  );
 
   const communication = useCommunication(
-    async (tokensState: FormData) => {
-      if (!tokensState || !account) return;
+    async (tokensFormState: FormData) => {
+      if (!tokensFormState || !account) return;
       await api.erc20.infiniteApproveMultiple(
         account,
         ETH_NETWORK_CONFIG.contracts.savingsModule,
-        R.pluck('token', validTokens?.filter(token => !token.hasInfiniteApprove) || []),
+        R.pluck(
+          'token',
+          validTokens?.filter(
+            token =>
+              tokensFormState[token.token.symbol] &&
+              tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
+          ) || [],
+        ),
       );
       await api.erc20.revertInfiniteApproveMultiple(
         account,
         ETH_NETWORK_CONFIG.contracts.savingsModule,
-        R.pluck('token', validTokens?.filter(token => token.hasInfiniteApprove) || []),
+        R.pluck(
+          'token',
+          validTokens?.filter(
+            token =>
+              !tokensFormState[token.token.symbol] &&
+              tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
+          ) || [],
+        ),
       );
     },
     [api, account, validTokens],
@@ -96,48 +121,113 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
   const isDisabled = communication.status === 'pending' || !isSuccess(tokensRD);
 
   return (
-    <InfiniteApproveFormTemplate<FormData>
-      initialValues={initialValues}
-      onSubmit={handleFormSubmit}
-      submitButton="Confirm"
-    >
-      <FormSpy<FormData> subscription={{ values: true }}>
-        {({ values }) => (
-          <>
-            {values.length && (
-              <>
-                <Table.Component
-                  rowPadding="small"
-                  columns={tableData.columns}
-                  entries={values.map(currentToken => ({
-                    token: currentToken.token,
-                    switch: renderApproveSwitch(currentToken),
-                  }))}
-                />
-                Grant infinite unlock rights for all
-                <SwitchInputField
-                  disabled={isDisabled}
-                  name="switchAll"
-                  checked={values.every(currentToken => currentToken.hasInfiniteApprove)}
-                />
-              </>
-            )}
-          </>
-        )}
-      </FormSpy>
-    </InfiniteApproveFormTemplate>
+    <Loading data={tokensRD}>
+      {tokensData => (
+        <InfiniteApproveFormTemplate<FormData>
+          onSubmit={handleFormSubmit}
+          submitButton="Confirm"
+          initialValues={initialValues}
+          FooterContent={InfiniteApproveFooterContent}
+        >
+          <FormSpy<FormData> subscription={{ values: true }}>
+            {() => renderCustomTable(tokensData.validTokens)}
+          </FormSpy>
+        </InfiniteApproveFormTemplate>
+      )}
+    </Loading>
   );
 
-  function renderApproveSwitch(currentToken: TokenToApprove) {
+  function renderCustomTable(values: TokenToApprove[]) {
+    const classes = useStyles();
     return (
       <>
-        <SwitchInputField
-          disabled={isDisabled}
-          key={currentToken.token.symbol}
-          name={currentToken.token.symbol}
-          checked={currentToken.hasInfiniteApprove}
-        />
+        <Grid container item className={classes.headerRow}>
+          <Grid item xs={4}>
+            Asset
+          </Grid>
+          <Grid item xs={8}>
+            Infinite Unlock
+          </Grid>
+        </Grid>
+        <Grid container item>
+          {values.map(({ token }) => (
+            <Grid item container className={classes.row}>
+              <Grid item container xs={4}>
+                <Grid item className={classes.tokenIcon}>
+                  <TokenIcon tokenAddress={token.address} />
+                </Grid>
+                <Grid item>{token.symbol}</Grid>
+              </Grid>
+              <Grid item xs={8}>
+                {renderApproveSwitch(token)}
+              </Grid>
+            </Grid>
+          ))}
+        </Grid>
+      </>
+    );
+  }
+
+  function InfiniteApproveFooterContent(props: { SubmitButton: () => JSX.Element }) {
+    const { SubmitButton } = props;
+    const classes = useStyles();
+    return (
+      <Grid container item alignItems="center" className={classes.footerRow}>
+        <Grid item xs={4}>
+          Grant infinite unlock rights for all
+        </Grid>
+        <Grid container item xs={8} alignItems="center">
+          <Grid item className={classes.switch}>
+            <FormSpy<FormData> subscription={{ values: true }}>
+              {({ values, form }) => (
+                <SwitchAllTokens form={form} tokens={values} isDisabled={isDisabled} />
+              )}
+            </FormSpy>
+          </Grid>
+          <Grid item>
+            <SubmitButton />
+          </Grid>
+        </Grid>
+      </Grid>
+    );
+  }
+
+  function renderApproveSwitch(token: Token) {
+    return (
+      <>
+        <SwitchInputField disabled={isDisabled} key={token.symbol} name={token.symbol} />
       </>
     );
   }
 }
+
+const useStyles = makeStyles(
+  {
+    headerRow: {
+      paddingBottom: 22,
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+    row: {
+      fontWeight: 300,
+      marginTop: 27,
+      '&:first-of-type': {
+        marginTop: 30,
+      },
+      '&:last-of-type': {
+        marginBottom: 19,
+      },
+    },
+    footerRow: {
+      paddingTop: 27,
+      borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+      fontWeight: 300,
+    },
+    tokenIcon: {
+      marginRight: 12,
+    },
+    switch: {
+      marginRight: 50,
+    },
+  },
+  { name: 'InfiniteApproveTable' },
+);
