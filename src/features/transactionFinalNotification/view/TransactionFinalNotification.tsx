@@ -66,17 +66,14 @@ function getPayload(transaction?: SubmittedTransaction): Payload {
 export function TransactionFinalNotification() {
   const api = useApi();
   const { t } = useTranslate();
-  const transactionRD = useSubscribable<SubmittedTransaction>(
+  const transaction = useSubscribable<SubmittedTransaction>(
     () => api.transactions.getSubmittedTransaction$(),
     [api],
-  );
-  const transaction = transactionRD.toUndefined();
+  ).toUndefined();
 
-  const hashRD = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
-    transactionRD,
-  ]);
-
-  const hash = hashRD.toUndefined();
+  const hash = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
+    transaction,
+  ]).toUndefined();
 
   const [isOpen, setOpen] = useState(false);
   const [variant, setVariant] = useState<Variant>('deposit');

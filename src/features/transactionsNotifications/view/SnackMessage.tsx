@@ -11,6 +11,7 @@ import cn from 'classnames';
 import { from, of } from 'rxjs';
 
 import { SubmittedTransaction } from 'services/api';
+import { Link } from 'components';
 import { ErrorIcon, OkIcon, InfoIcon } from 'components/icons';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
@@ -51,21 +52,23 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
 
   const handleDismiss = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.stopPropagation();
+      e.preventDefault();
       closeSnackbar(id);
     },
     [id],
   );
 
-  const handleClick = useCallback(() => {
-    if (link) {
-      window.open(link);
-    }
-  }, [link]);
   const Icon = getIcon(variant);
 
   return (
-    <div ref={ref} className={classes.root} onClick={handleClick} role="link">
+    <Link
+      ref={ref}
+      className={classes.root}
+      underline="none"
+      href={link}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Card
         className={cn(classes.card, {
           [classes.pending]: variant === 'info',
@@ -79,12 +82,18 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
             {message}
           </Typography>
           <div className={classes.icons}>
-            <IconButton key="close" aria-label="close" color="inherit" onClick={handleDismiss}>
+            <IconButton
+              size="small"
+              key="close"
+              aria-label="close"
+              color="inherit"
+              onClick={handleDismiss}
+            >
               <CloseIcon className={classes.icon} />
             </IconButton>
           </div>
         </CardActions>
       </Card>
-    </div>
+    </Link>
   );
 });

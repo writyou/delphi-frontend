@@ -22,7 +22,7 @@ export const useStyles = makeStyles(
       padding: '8px 8px 8px 16px',
     },
     icons: {
-      marginLeft: 'auto',
+      marginLeft: 'auto !important',
     },
     button: {
       padding: 0,

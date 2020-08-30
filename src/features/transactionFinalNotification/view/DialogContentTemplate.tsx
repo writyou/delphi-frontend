@@ -3,7 +3,7 @@
 import React, { useCallback } from 'react';
 import { TokenAmount } from '@akropolis-web/primitives';
 import { of, combineLatest } from 'rxjs';
-import { useHistory } from 'react-router';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from 'utils/styles';
 import { useSubscribable } from 'utils/react';
@@ -56,11 +56,9 @@ export function DialogContentTemplate({
       : () => of(undefined),
     [api, poolAddresses, isStakingDeposit],
   );
-  const history = useHistory();
   const handleLinkClick = useCallback(() => {
     onClose();
-    depositLink && history.push(depositLink);
-  }, [depositLink]);
+  }, []);
 
   if (variant === 'errorDeposit') {
     return (
@@ -101,7 +99,7 @@ export function DialogContentTemplate({
           {wallet}
           <br />
           {t(fKeys.withdraw.beforeLink.getKey())}{' '}
-          <Link href={withdrawLink} target="_blank" rel="noopener noreferrer">
+          <Link color="textPrimary" href={withdrawLink} target="_blank" rel="noopener noreferrer">
             {t(fKeys.withdraw.link.getKey())}
           </Link>
           {t(fKeys.withdraw.afterLink.getKey())}
@@ -126,9 +124,16 @@ export function DialogContentTemplate({
           .
           <br />
           {t(fKeys.deposit.beforeLink.getKey())}{' '}
-          <span className={classes.link} onClick={handleLinkClick} role="button">
-            {t(fKeys.deposit.link.getKey())}
-          </span>{' '}
+          {depositLink && (
+            <Link<typeof RouterLink>
+              color="textPrimary"
+              component={RouterLink}
+              onClick={handleLinkClick}
+              to={depositLink}
+            >
+              {t(fKeys.deposit.link.getKey())}
+            </Link>
+          )}{' '}
           {t(fKeys.deposit.afterLink.getKey())}
         </div>
       </>
@@ -167,9 +172,5 @@ const useStyles = makeStyles({
     fontSize: 16,
     margin: '20px 0',
     whiteSpace: 'pre-line',
-  },
-  link: {
-    textDecoration: 'underline',
-    cursor: 'pointer',
   },
 });

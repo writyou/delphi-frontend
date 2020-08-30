@@ -42,7 +42,7 @@ function TransactionsNotifications() {
         await submittedTransaction.promiEvent;
         enqueueSnackbar(<NotificationText transaction={submittedTransaction} type="success" />, {
           variant: 'success',
-          autoHideDuration: 300000,
+          autoHideDuration: 30000,
           content: (key, message) => (
             <SnackMessage
               id={key}
