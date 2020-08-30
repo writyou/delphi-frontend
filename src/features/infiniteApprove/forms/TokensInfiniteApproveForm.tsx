@@ -32,6 +32,7 @@ type InfiniteApproveFormProps = {
 
 export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) {
   const api = useApi();
+  const classes = useStyles();
 
   const tokensRD = useSubscribable(
     () =>
@@ -137,7 +138,6 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
 
   // TODO: refactor when table component will be more customizable
   function renderInfiniteApproveTable(values: TokenToApprove[]) {
-    const classes = useStyles();
     return (
       <>
         <Grid container item className={classes.headerRow}>
@@ -169,7 +169,6 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
 
   function InfiniteApproveFooterContent(props: { SubmitButton: () => JSX.Element }) {
     const { SubmitButton } = props;
-    const classes = useStyles();
     return (
       <Grid container item alignItems="center" className={classes.footerRow}>
         <Grid item xs={4}>
