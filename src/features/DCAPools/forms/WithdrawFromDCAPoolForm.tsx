@@ -49,13 +49,7 @@ export function WithdrawFromDCAPoolForm({
     [api, currentToken],
   );
 
-  // TODO need to research api
-  const maxValue = maxValueRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    value => value,
-  );
+  const maxValue = maxValueRD.toUndefined();
 
   const validateAmount = useValidateAmount({
     maxValue,

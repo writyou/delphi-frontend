@@ -34,13 +34,7 @@ export function ChangeDCAPoolForm({
 
   const maxValueRD = useSubscribable(() => api.user.getDCATokenToSellBalance$(poolAddress), [api]);
 
-  // TODO need to research api
-  const maxValue = maxValueRD.fold(
-    () => undefined,
-    () => undefined,
-    () => undefined,
-    value => value,
-  );
+  const maxValue = maxValueRD.toUndefined();
 
   const validateAmount = useValidateAmount({
     maxValue,
