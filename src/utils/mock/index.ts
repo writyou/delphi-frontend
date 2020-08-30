@@ -51,7 +51,6 @@ export const getMockCompositionChartEntriesLiquidity = (
   }));
 
 // TODO move to another place, it is not mocks
-export const ALL_TOKEN = new Token(zeroAddress, 'All Coins', 18);
 export const DEFAULT_LIQUIDITY_CURRENCY = new Currency('$', 18);
 
 export const mockedTransactions: Record<
