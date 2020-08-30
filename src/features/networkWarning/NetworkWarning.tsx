@@ -19,7 +19,8 @@ export function NetworkWarning() {
     () =>
       chainIdRD.foldOption(
         () => undefined,
-        chainId => (chainId === NETWORK_ID ? setIsOpen(false) : setIsOpen(true)),
+        chainId =>
+          chainId !== null && chainId !== NETWORK_ID ? setIsOpen(true) : setIsOpen(false),
       ),
     [chainIdRD],
   );
@@ -29,6 +30,7 @@ export function NetworkWarning() {
       isOpen={isOpen}
       yesText={t(tKeys.disconnectButton.getKey())}
       onConfirm={api.web3Manager.disconnect}
+      onCancel={() => {}}
     >
       {t(tKeys.warning.getKey(), {
         name: t(tKeys.networkName[NETWORK_ID].getKey()),

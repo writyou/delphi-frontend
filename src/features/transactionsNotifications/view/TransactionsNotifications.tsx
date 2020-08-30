@@ -7,6 +7,8 @@ import { useTranslate, tKeys as tKeysAll } from 'services/i18n';
 import { useApi, SubmittedTransaction } from 'services/api';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
+import { SnackMessage } from './SnackMessage';
+
 const tKeys = tKeysAll.features.notifications;
 
 function TransactionsNotifications() {
@@ -24,6 +26,15 @@ function TransactionsNotifications() {
         {
           persist: true,
           variant: 'info',
+          autoHideDuration: 30000,
+          content: (key, message) => (
+            <SnackMessage
+              id={key}
+              message={message}
+              variant="info"
+              transaction={submittedTransaction}
+            />
+          ),
         },
       );
 
@@ -31,11 +42,28 @@ function TransactionsNotifications() {
         await submittedTransaction.promiEvent;
         enqueueSnackbar(<NotificationText transaction={submittedTransaction} type="success" />, {
           variant: 'success',
+          autoHideDuration: 30000,
+          content: (key, message) => (
+            <SnackMessage
+              id={key}
+              message={message}
+              variant="success"
+              transaction={submittedTransaction}
+            />
+          ),
         });
       } catch {
         enqueueSnackbar(<NotificationText transaction={submittedTransaction} type="error" />, {
           persist: true,
           variant: 'error',
+          content: (key, message) => (
+            <SnackMessage
+              id={key}
+              message={message}
+              variant="error"
+              transaction={submittedTransaction}
+            />
+          ),
         });
       } finally {
         pendingNotificationKey && closeSnackbar(pendingNotificationKey);

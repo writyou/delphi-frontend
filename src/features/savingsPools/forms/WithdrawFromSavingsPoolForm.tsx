@@ -1,16 +1,15 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TokenAmount, Token, denormolizeAmount } from '@akropolis-web/primitives';
+import { TokenAmount, Token, denormolizeAmount, AllCoinsToken } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
-import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
-import { useValidateAmount } from 'utils/react';
-import { ALL_TOKEN } from 'utils/mock';
 import { Typography } from 'components';
+import { FormWithConfirmation, TokenAmountField, FieldNames, SpyField } from 'components/form';
+import { useValidateAmount, useSubscribable } from 'utils/react';
 
 import { WithdrawAdditionalFee } from '../data/WithdrawAdditionalFee';
 import { WithdrawSupposedAmountsTable } from '../data/WithdrawSupposedAmountsTable';
@@ -44,7 +43,7 @@ export function WithdrawFromSavingsPoolForm({
 
   const [currentToken, setCurrentToken] = useState<Token | null>(null);
 
-  const maxValue$ = useMemo(
+  const maxValueRD = useSubscribable(
     () =>
       currentToken
         ? api.user
@@ -54,10 +53,12 @@ export function WithdrawFromSavingsPoolForm({
     [api, currentToken],
   );
 
+  const maxValue = maxValueRD.toUndefined();
+
   const validateAmount = useValidateAmount({
+    maxValue,
     required: true,
     moreThanZero: true,
-    maxValue: maxValue$,
   });
 
   const handleFormChange = useCallback(
@@ -73,7 +74,7 @@ export function WithdrawFromSavingsPoolForm({
     async ({ amount }: FormData) => {
       if (!amount) return;
 
-      await (amount.currency === ALL_TOKEN
+      await (amount.currency instanceof AllCoinsToken
         ? api.savings.withdrawAll({ amount, poolAddress })
         : api.savings.withdraw({ amount, poolAddress }));
 
@@ -100,14 +101,14 @@ export function WithdrawFromSavingsPoolForm({
           currencies={supportedTokens}
           placeholder="Enter sum"
           validate={validateAmount}
-          maxValue={maxValue$}
+          maxValue={maxValue}
         />
         <FormSpy<FormData> subscription={{ values: true }} onChange={handleFormChange} />
         <SpyField name="__" fieldValue={validateAmount} />
       </>
       <FormSpy<FormData> subscription={{ values: true, valid: true }}>
         {({ values: { amount }, valid }) =>
-          amount?.currency === ALL_TOKEN ? (
+          amount?.currency instanceof AllCoinsToken ? (
             <>
               {valid && amount && (
                 <WithdrawSupposedAmountsTable poolAddress={poolAddress} amount={amount} />

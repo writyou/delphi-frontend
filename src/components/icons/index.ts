@@ -34,6 +34,8 @@ export { GradientArrow } from './GradientArrow';
 export { AlertIcon } from './AlertIcon';
 export { AlphaCat } from './AlphaCat';
 export { CloseIcon } from './CloseIcon';
+export { OkIcon } from './OkIcon';
+export { ErrorIcon } from './ErrorIcon';
 
 export { Cat1 } from './cats/Cat1';
 export { Cat2 } from './cats/Cat2';

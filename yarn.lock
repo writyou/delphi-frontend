@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.7.8":
-  version "0.7.8"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.7.8.tgz#698bd82d9cc8dcc9ad1f71fda69f08c8513ea7c1"
-  integrity sha512-Rq5JBRPa+hsDB47VT6DCI5QLvsNee+Fhc0hwgGTxYXfEAmyTKM7K/n5QeqD+EpTFk61KRUh2DHyHbw+r0q75ww==
+"@akropolis-web/components@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.8.0.tgz#ff7b80321600f73a31195594edf23fd3b157653e"
+  integrity sha512-qG0VMmXrVX0uMbhCZON6wBIXhgPk7Q2rnxx2HXT9EB31dvkXXzT1JsxtFD3yqKPdwj9/4I9vi3WR44ra6L8y0A==
   dependencies:
-    "@akropolis-web/primitives" "^0.2.1"
+    "@akropolis-web/primitives" "^0.2.2"
     "@akropolis-web/styles" "^0.8.4"
     "@types/mersenne-twister" "^1.1.2"
     "@types/react-copy-to-clipboard" "^4.3.0"
@@ -15,10 +15,10 @@
     mersenne-twister "^1.1.0"
     react-copy-to-clipboard "^5.0.2"
 
-"@akropolis-web/primitives@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.1.tgz#92d4347f73eaa3db5570d8cebc2ca4e904754e72"
-  integrity sha512-/Edq9IoMv4FlMLaK/eTuYqtK5tPcs8h+NjDrxzyKJND7A1ZQLwGHqcsSjEUmnf4uekcc9hCvVe5+l3r0CGzuSg==
+"@akropolis-web/primitives@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.2.tgz#9e873618f64694a18469774a6df04f5c418deee8"
+  integrity sha512-lhsg+rydJGiKUl+K3V3hrZeqi74p/IMfgrlN/ULJXoQxh/RylYsOhWOuyFqxJ4QO2bR9+bJPI5DnMvWUHa0XHg==
 
 "@akropolis-web/styles@^0.8.4":
   version "0.8.4"
@@ -10419,10 +10419,10 @@ normalize-url@^4.1.0:
   resolved "https://registry.yarnpkg.com/normalize-url/-/normalize-url-4.5.0.tgz#453354087e6ca96957bd8f5baf753f5982142129"
   integrity sha512-2s47yzUxdexf1OhyRi4Em83iQk0aPvwTddtFz4hnSSw9dCEsLEGf6SwIO8ss/19S9iBb5sJaOuTvTGDeZI00BQ==
 
-notistack@^0.9.16:
-  version "0.9.16"
-  resolved "https://registry.yarnpkg.com/notistack/-/notistack-0.9.16.tgz#26567fe8cf8b1f963ed802b592439731624f41fd"
-  integrity sha512-+q1KKj2XkU+mKnbp9PbVkRLSLfVYnPJGi+MHT+N9Pm3nZUMVtbjDFodwdv/RoEldvkXKCROnecayUFMwLOiIQA==
+notistack@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/notistack/-/notistack-1.0.0.tgz#849ac58fad484852833284ee40bda5e04fbfe649"
+  integrity sha512-kIGwVy8qs2hpcDegLhjTQMlGkJvr7OVUg6mnOcjqwKOCZhCnkMt5h53kP9bPRKQQ3UckCzhkvuEPbyMbyYyRNQ==
   dependencies:
     clsx "^1.1.0"
     hoist-non-react-statics "^3.3.0"
