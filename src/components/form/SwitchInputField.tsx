@@ -19,4 +19,4 @@ function SwitchInputFieldComponent(props: Props) {
   return <SwitchInput {...rest} helperText={error} error={Boolean(error)} {...input} />;
 }
 
-export const SwitchInputField = wrapComponentIntoFormField(SwitchInputFieldComponent);
+export const SwitchInputField = wrapComponentIntoFormField(SwitchInputFieldComponent, 'checkbox');

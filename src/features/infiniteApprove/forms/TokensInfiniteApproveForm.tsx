@@ -56,14 +56,14 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
             api,
             receivedTokens,
             ETH_NETWORK_CONFIG.contracts.savingsModule,
-          ).pipe(map(values => ({ account, validTokens: values }))),
+          ).pipe(map(values => ({ account, receivedTokens: values }))),
         ),
       ),
     [api],
   );
 
   // TODO refactor
-  const { account, validTokens } =
+  const { account, receivedTokens } =
     tokensRD.fold(
       () => undefined,
       () => undefined,
@@ -73,9 +73,9 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
 
   const initialValues = useMemo(
     () =>
-      validTokens &&
-      R.mergeAll(validTokens.map(data => ({ [data.token.symbol]: data.hasInfiniteApprove }))),
-    [validTokens],
+      receivedTokens &&
+      R.mergeAll(receivedTokens.map(data => ({ [data.token.symbol]: data.hasInfiniteApprove }))),
+    [receivedTokens],
   );
 
   const handleFormSubmit = useCallback(
@@ -84,7 +84,7 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
 
       await communication.execute(tokensFormState);
     },
-    [validTokens],
+    [receivedTokens],
   );
 
   const communication = useCommunication(
@@ -95,7 +95,7 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
         ETH_NETWORK_CONFIG.contracts.savingsModule,
         R.pluck(
           'token',
-          validTokens?.filter(
+          receivedTokens?.filter(
             token =>
               tokensFormState[token.token.symbol] &&
               tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
@@ -107,7 +107,7 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
         ETH_NETWORK_CONFIG.contracts.savingsModule,
         R.pluck(
           'token',
-          validTokens?.filter(
+          receivedTokens?.filter(
             token =>
               !tokensFormState[token.token.symbol] &&
               tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
@@ -115,7 +115,7 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
         ),
       );
     },
-    [api, account, validTokens],
+    [api, account, receivedTokens],
   );
 
   const isDisabled = communication.status === 'pending' || !isSuccess(tokensRD);
@@ -129,15 +129,14 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
           initialValues={initialValues}
           FooterContent={InfiniteApproveFooterContent}
         >
-          <FormSpy<FormData> subscription={{ values: true }}>
-            {() => renderCustomTable(tokensData.validTokens)}
-          </FormSpy>
+          {renderInfiniteApproveTable(tokensData.receivedTokens)}
         </InfiniteApproveFormTemplate>
       )}
     </Loading>
   );
 
-  function renderCustomTable(values: TokenToApprove[]) {
+  // TODO: refactor when table component will be more customizable
+  function renderInfiniteApproveTable(values: TokenToApprove[]) {
     const classes = useStyles();
     return (
       <>
