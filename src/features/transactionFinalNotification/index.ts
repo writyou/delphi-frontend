@@ -1,1 +1,1 @@
-export { TransactionFinalNotification } from './view/TransactionFinalNotification';
+export { TransactionFinalNotifications } from './view/TransactionFinalNotifications';

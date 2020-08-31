@@ -15,7 +15,7 @@ import { AuthProvider } from 'services/auth/';
 import { AdaptabilityProvider } from 'services/adaptability';
 import { NetworkWarning } from 'features/networkWarning';
 import { TransactionsNotifications } from 'features/transactionsNotifications';
-import { TransactionFinalNotification } from 'features/transactionFinalNotification';
+import { TransactionFinalNotifications } from 'features/transactionFinalNotification';
 
 export function Root(): React.ReactElement<{}> {
   return (
@@ -52,7 +52,7 @@ function ApiWrapper() {
                   <CssBaseline />
                   <App />
                   <TransactionsNotifications />
-                  <TransactionFinalNotification />
+                  <TransactionFinalNotifications />
                   <NetworkWarning />
                 </AuthProvider>
               </AdaptabilityProvider>
