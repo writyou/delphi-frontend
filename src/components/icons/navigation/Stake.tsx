@@ -10,7 +10,7 @@ function Stake(props: React.ComponentProps<typeof SvgIcon>) {
 
   return (
     <SvgIcon {...props} viewBox="0 0 24 24">
-      {withGradient && theme.gradients.main.svgLinear('StakeIconGradient')}
+      {withGradient && <defs>{theme.gradients.main.svgLinear('StakeIconGradient')}</defs>}
       <g fill="none" fillRule="evenodd">
         {withGradient ? (
           <g transform="translate(2.5 4)">

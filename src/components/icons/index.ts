@@ -14,7 +14,6 @@ export * from './tokens';
 
 export { DeFiPulseIcon } from './DeFiPulseIcon';
 export { getSocialIconByLink } from './getSocialIconByLink';
-export * from './MainSvgGradient';
 export { MoneyIcon } from './MoneyIcon';
 export { EyeIcon } from './EyeIcon';
 export { Back } from './Back';

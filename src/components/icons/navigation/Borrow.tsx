@@ -11,7 +11,7 @@ function Borrow(props: React.ComponentProps<typeof SvgIcon>) {
 
   return (
     <SvgIcon {...props} viewBox="0 0 24 24">
-      {withGradient && theme.gradients.main.svgLinear('BorrowIconGradient')}
+      {withGradient && <defs>{theme.gradients.main.svgLinear('BorrowIconGradient')}</defs>}
       <g fill="none" fillRule="evenodd">
         {withGradient ? (
           <path

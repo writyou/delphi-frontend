@@ -1,11 +1,10 @@
 import * as React from 'react';
 import cn from 'classnames';
-import SvgIcon from '@material-ui/core/SvgIcon';
 
-import { makeStyles } from 'utils/styles';
+import { HiddenSvgGradient } from 'components/HiddenSvgGradient';
+import { makeStyles, useTheme } from 'utils/styles';
 
 import { SocialLink } from '../SocialLink/SocialLink';
-import { MainSvgGradient } from '../icons';
 
 interface IProps {
   direction?: 'row' | 'column';
@@ -24,13 +23,11 @@ const links: Array<[string, boolean]> = [
 function AkropolisSocialLinks(props: IProps) {
   const { direction = 'row' } = props;
   const classes = useStyles();
+  const theme = useTheme();
+
   return (
     <div className={cn(classes.root, { [classes[direction]]: true })}>
-      <div className={classes.hidden}>
-        <SvgIcon>
-          <MainSvgGradient />
-        </SvgIcon>
-      </div>
+      <HiddenSvgGradient>{theme.gradients.main.svgLinear('socialLinksGradient')}</HiddenSvgGradient>
       {links.map(([link, needToFill]) => (
         <SocialLink
           key={link}
@@ -42,38 +39,35 @@ function AkropolisSocialLinks(props: IProps) {
   );
 }
 
-const useStyles = makeStyles(() => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
+const useStyles = makeStyles(
+  () => ({
+    root: {
+      display: 'flex',
+      justifyContent: 'center',
 
-    '&$row': {
-      flexDirection: 'row',
+      '&$row': {
+        flexDirection: 'row',
+      },
+
+      '&$column': {
+        flexDirection: 'column',
+      },
     },
 
-    '&$column': {
-      flexDirection: 'column',
+    link: {
+      color: 'inherit',
     },
-  },
 
-  link: {
-    color: 'inherit',
-  },
-
-  fillPath: {
-    '& path, & circle': {
-      fill: `url(#${MainSvgGradient.ID})`,
+    fillPath: {
+      '& path, & circle': {
+        fill: `url(#socialLinksGradient)`,
+      },
     },
-  },
 
-  hidden: {
-    opacity: 1,
-    width: 0,
-    height: 0,
-  },
-
-  row: {},
-  column: {},
-}));
+    row: {},
+    column: {},
+  }),
+  { name: 'AkropolisSocialLinks' },
+);
 
 export { AkropolisSocialLinks };

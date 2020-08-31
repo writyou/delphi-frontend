@@ -46,13 +46,6 @@ export const useStyles = makeStyles(
     label: {
       color: theme.palette.text.primary,
     },
-    hidden: {
-      height: 0,
-      width: 0,
-      visibility: 'hidden',
-      position: 'absolute',
-      zIndex: -100,
-    },
 
     isExtraSmall: {},
     isSmall: {},

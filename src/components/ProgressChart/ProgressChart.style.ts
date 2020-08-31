@@ -7,13 +7,6 @@ export const useStyles = makeStyles(
       height: '100%',
       position: 'relative',
     },
-    hidden: {
-      opacity: 0,
-      width: 0,
-      height: 0,
-      position: 'absolute',
-      zIndex: -100,
-    },
     chart: {
       width: '100%',
       height: '200%',
