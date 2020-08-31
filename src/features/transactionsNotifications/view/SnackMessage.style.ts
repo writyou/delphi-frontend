@@ -6,11 +6,12 @@ export const useStyles = makeStyles(
       [theme.breakpoints.up('sm')]: {
         minWidth: '344px !important',
       },
-      borderRadius: 4,
     },
     card: {
+      borderRadius: 4,
       backgroundColor: '#fddc6c',
       width: '100%',
+      padding: '8px 16px',
     },
     typography: {
       fontFamily: 'HelveticaNeue, Helvetica Neue',
@@ -18,15 +19,10 @@ export const useStyles = makeStyles(
       fontWeight: 'normal',
       color: '#0a0a0e',
     },
-    actionRoot: {
-      padding: '8px 8px 8px 16px',
-    },
     icons: {
       marginLeft: 'auto !important',
-    },
-    button: {
-      padding: 0,
-      textTransform: 'none',
+      display: 'flex',
+      alignItems: 'center',
     },
     pending: {
       backgroundColor: '#594cf2',
@@ -38,9 +34,16 @@ export const useStyles = makeStyles(
       backgroundColor: '#fe5a59',
     },
     icon: {
-      fontSize: 20,
+      fontSize: 24,
       color: '#0a0a0e',
     },
+    statusIcon: {
+      marginRight: 8,
+    },
+    closeIcon: {
+      fontSize: 17,
+      marginLeft: 30,
+    },
   }),
-  { name: 'SnackbarMessage' },
+  { name: 'SnackMessage' },
 );
