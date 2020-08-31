@@ -5,5 +5,5 @@ import { useApi } from 'services/api';
 export function useGetDepositLimit$(poolAddress: string) {
   const api = useApi();
 
-  return useCallback(() => api.user.getSavingsDepositLimit$(poolAddress), [api, poolAddress]);
+  return useCallback(() => api.user.getAvailableForDeposit$(poolAddress), [api, poolAddress]);
 }

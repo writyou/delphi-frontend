@@ -24,6 +24,7 @@ export function DepositLimit({ limit }: { limit: Amount }) {
     </Grid>
   );
 }
+
 const useStyles = makeStyles(
   {
     circle: {

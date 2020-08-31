@@ -28,7 +28,7 @@ export function useDepositAmountValidationParams(
       token
         ? combineLatest([
             api.user.getTokenBalance$(token.address),
-            api.user.getSavingsDepositLimit$(poolAddress),
+            api.user.getAvailableForDeposit$(poolAddress),
           ]).pipe(
             map(([balance, limit]) => {
               const otherAmounts = formValues

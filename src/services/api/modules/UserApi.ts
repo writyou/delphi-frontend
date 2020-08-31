@@ -133,7 +133,7 @@ export class UserApi {
   }
 
   @memoize(R.identity)
-  public getSavingsDepositLimit$(poolAddress: string): Observable<LiquidityAmount | null> {
+  public getAvailableForDeposit$(poolAddress: string): Observable<LiquidityAmount | null> {
     return this.web3Manager.account$.pipe(
       switchMap(account =>
         account ? this.savings.getUserDepositLimit$(account, poolAddress) : empty(),

@@ -68,7 +68,7 @@ function AvailableForDeposit(props: { poolAddress: string }) {
   const { poolAddress } = props;
   const api = useApi();
   const availableForDepositRD = useSubscribable(
-    () => api.user.getSavingsDepositLimit$(poolAddress),
+    () => api.user.getAvailableForDeposit$(poolAddress),
     [api, poolAddress],
   );
 

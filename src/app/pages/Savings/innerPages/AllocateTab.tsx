@@ -21,7 +21,7 @@ export const AllocateTab = memo(() => {
         switchMap(pools =>
           combineLatest(
             pools.map(p =>
-              api.user.getSavingsDepositLimit$(p.address).pipe(map(limit => ({ pool: p, limit }))),
+              api.user.getAvailableForDeposit$(p.address).pipe(map(limit => ({ pool: p, limit }))),
             ),
           ),
         ),
