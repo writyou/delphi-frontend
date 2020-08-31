@@ -5,7 +5,7 @@ import cn from 'classnames';
 import { PercentAmount } from '@akropolis-web/primitives';
 
 import { makeStyles } from 'utils/styles';
-import { Back } from 'components/icons';
+import { Back, MoreIcon } from 'components/icons';
 import { Grid, Metric, IconButton, Hint, Loading, FormattedAmount, Card, Box } from 'components';
 import { routes } from 'app/routes';
 import { useSubscribable } from 'utils/react';
@@ -73,8 +73,8 @@ export function SavingsPoolPage() {
                         pool.apy.lt(MAX_AVG_APY) ? (
                           <FormattedAmount sum={pool.apy} />
                         ) : (
-                          <Box component="span" whiteSpace="nowrap">
-                            &gt;&nbsp;
+                          <Box display="inline-flex" alignItems="center" flexWrap="nowrap">
+                            <MoreIcon className={classes.arrow} />
                             <FormattedAmount sum={new PercentAmount(MAX_AVG_APY)} />
                           </Box>
                         )
@@ -173,6 +173,10 @@ const useStyles = makeStyles(
     depositLimit: {
       fontSize: 12,
       marginTop: 8,
+    },
+    arrow: {
+      marginRight: '0.45em',
+      fontSize: '0.45em',
     },
   }),
   { name: 'SavingsPoolPage' },

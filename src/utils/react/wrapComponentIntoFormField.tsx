@@ -19,7 +19,7 @@ type RFFieldPropKey =
   | 'validate'
   | 'value';
 
-export function getFieldWithComponent<P extends BaseWrappedFieldProps>(
+export function wrapComponentIntoFormField<P extends BaseWrappedFieldProps>(
   Component: React.ComponentType<P>,
   type?: string,
 ) {

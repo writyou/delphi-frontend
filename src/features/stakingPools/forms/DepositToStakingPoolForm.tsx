@@ -12,7 +12,6 @@ import { useValidateAmount, useSubscribable } from 'utils/react';
 import { StakingPool } from 'model/types';
 import { Grid } from 'components';
 import { InfiniteApproveSwitch } from 'features/infiniteApprove';
-import { ETH_NETWORK_CONFIG } from 'env';
 
 import { DepositToStakingFormTemplate } from './DepositToStakingFormTemplate';
 
@@ -56,14 +55,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
     [api, currentToken, pool.address],
   );
 
-  // TODO need to research api
-  const { maxValue, maxErrorTKey } =
-    validationParamsRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      params => params,
-    ) || {};
+  const { maxValue, maxErrorTKey } = validationParamsRD.toUndefined() || {};
 
   const validateAmount = useValidateAmount({
     required: true,
@@ -124,10 +116,7 @@ export function DepositToStakingPoolForm({ pool, onSuccessfulDeposit }: DepositF
       {currentToken && (
         <Grid container justify="flex-end">
           <Grid item>
-            <InfiniteApproveSwitch
-              tokens={currentToken}
-              spender={ETH_NETWORK_CONFIG.contracts.akroStakingPool}
-            />
+            <InfiniteApproveSwitch tokens={currentToken} spender={pool.address} />
           </Grid>
         </Grid>
       )}

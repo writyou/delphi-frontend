@@ -7,6 +7,7 @@ import BN from 'bn.js';
 import {
   IToBN,
   TokenAmount,
+  AllCoinsToken,
   LiquidityAmount,
   denormolizeAmount,
   sumTokenAmountsByToken,
@@ -29,7 +30,7 @@ import {
   createSavingsPoolToken,
 } from 'generated/contracts';
 import { memoize } from 'utils/decorators';
-import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
 
 import { Erc20Api } from './Erc20Api';
@@ -91,7 +92,7 @@ export class SavingsModuleApi {
   }
 
   @autobind
-  public async withdrawUserRewards(): Promise<void> {
+  public async withdrawUserRewards(rewards: TokenAmount[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
     const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
@@ -99,6 +100,7 @@ export class SavingsModuleApi {
 
     this.transactionsApi.pushToSubmittedTransactions('rewards.withdraw', promiEvent, {
       fromAddress: from,
+      amounts: rewards,
     });
 
     await promiEvent;
@@ -189,7 +191,9 @@ export class SavingsModuleApi {
         },
       )
       .pipe(
-        map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
+        map(nAmount =>
+          denormolizeAmount(new TokenAmount(nAmount, new AllCoinsToken()), amount.currency),
+        ),
         map(dnAmount => dnAmount.sub(amount)),
       );
   }
@@ -284,10 +288,16 @@ export class SavingsModuleApi {
   ): Observable<LiquidityAmount | null> {
     return combineLatest([
       this.getUserCap$(userAddress, poolAddress),
+      this.getIsVipUser$(userAddress, poolAddress),
       this.getPoolCapacity$(poolAddress),
       this.getPoolBalance$(poolAddress),
     ]).pipe(
-      map(([userCap, poolCapacity, poolBalance]) => {
+      map(([userCap, isVipUser, poolCapacity, poolBalance]) => {
+        // VIP user ignores pool capacity limit
+        if (isVipUser) {
+          return userCap;
+        }
+
         const availableCapacity = poolCapacity
           ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
           : null;
@@ -351,6 +361,24 @@ export class SavingsModuleApi {
     );
   }
 
+  @memoize((...args: string[]) => args.join())
+  public getIsVipUser$(userAddress: string, poolAddress: string): Observable<boolean> {
+    return combineLatest([
+      this.readonlyContract.methods.isVipUser(
+        {
+          _protocol: poolAddress,
+          user: userAddress,
+        },
+        [
+          this.readonlyContract.events.VipUserChanged({
+            filter: { protocol: poolAddress, user: userAddress },
+          }),
+        ],
+      ),
+      this.getVipUsersEnabled$(),
+    ]).pipe(map(([isVip, enabled]) => (enabled ? isVip : false)));
+  }
+
   @memoize()
   private getUserCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.userCapEnabled(undefined, [
@@ -362,6 +390,13 @@ export class SavingsModuleApi {
   private getPoolCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.protocolCapEnabled(undefined, [
       this.readonlyContract.events.ProtocolCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getVipUsersEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.vipUserEnabled(undefined, [
+      this.readonlyContract.events.VipUserEnabledChange(),
     ]);
   }
 
@@ -392,7 +427,7 @@ export class SavingsModuleApi {
             ...deposits[index],
             fee: deposits[index].amount.sub(
               denormolizeAmount(
-                new TokenAmount(nDepositAmount, ALL_TOKEN),
+                new TokenAmount(nDepositAmount, new AllCoinsToken()),
                 deposits[index].amount.currency,
               ),
             ),

@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable class-methods-use-this */
-import { Observable, combineLatest, timer, merge } from 'rxjs';
+import { Observable, combineLatest, timer, merge, of } from 'rxjs';
 import { autobind } from 'core-decorators';
 import BN from 'bn.js';
 import { switchMap, map } from 'rxjs/operators';
@@ -29,7 +29,9 @@ export class StakingModuleApi {
 
   @memoize()
   public getPools$(): Observable<StakingPool[]> {
-    return combineLatest([this.getPool$(ETH_NETWORK_CONFIG.contracts.akroStakingPool)]);
+    return ETH_NETWORK_CONFIG.contracts.akroStakingPool
+      ? combineLatest([this.getPool$(ETH_NETWORK_CONFIG.contracts.akroStakingPool)])
+      : of([]);
   }
 
   @memoize(R.identity)
@@ -99,10 +101,16 @@ export class StakingModuleApi {
   public getDepositLimit$(poolAddress: string, account: string): Observable<TokenAmount | null> {
     return combineLatest([
       this.getUserCap$(poolAddress, account),
+      this.getIsVipUser$(poolAddress, account),
       this.getPoolCapacity$(poolAddress),
       this.getPoolBalance$(poolAddress),
     ]).pipe(
-      map(([userCap, poolCapacity, poolBalance]) => {
+      map(([userCap, isVipUser, poolCapacity, poolBalance]) => {
+        // VIP user ignores pool capacity limit
+        if (isVipUser) {
+          return userCap;
+        }
+
         const availableCapacity = poolCapacity
           ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
           : null;
@@ -145,6 +153,25 @@ export class StakingModuleApi {
     );
   }
 
+  @memoize((...args: string[]) => args.join())
+  public getIsVipUser$(poolAddress: string, userAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return combineLatest([
+      poolContract.methods.isVipUser(
+        {
+          '': userAddress,
+        },
+        [
+          poolContract.events.VipUserChanged({
+            filter: { user: userAddress },
+          }),
+        ],
+      ),
+      this.getVipUsersEnabled$(poolAddress),
+    ]).pipe(map(([isVip, enabled]) => (enabled ? isVip : false)));
+  }
+
   @memoize(R.identity)
   private getPoolCapEnabled$(poolAddress: string): Observable<boolean> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
@@ -160,6 +187,15 @@ export class StakingModuleApi {
 
     return poolContract.methods.userCapEnabled(undefined, [
       poolContract.events.UserCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getVipUsersEnabled$(poolAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return poolContract.methods.vipUserEnabled(undefined, [
+      poolContract.events.VipUserEnabledChange(),
     ]);
   }
 
@@ -181,7 +217,7 @@ export class StakingModuleApi {
     const txContract = this.getPoolTxContract(deposit.poolAddress);
     const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
-    await this.erc20.approve(from, ETH_NETWORK_CONFIG.contracts.akroStakingPool, deposit.amount);
+    await this.erc20.approve(from, deposit.poolAddress, deposit.amount);
 
     const promiEvent = txContract.methods.stake(
       {

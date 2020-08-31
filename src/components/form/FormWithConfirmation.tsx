@@ -52,6 +52,7 @@ export function FormWithConfirmation<FormData extends AnyObject>(
         title="Confirm action"
         onCancel={handlePTokenExchangingConfirmationCancel}
         onConfirm={handleConfirmationClick}
+        withCancelButton
       >
         {values && <DialogContent {...values} />}
       </ConfirmationDialog>

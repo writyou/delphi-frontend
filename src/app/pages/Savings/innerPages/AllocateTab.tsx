@@ -27,7 +27,7 @@ export const AllocateTab = memo(() => {
         ),
         map(data => ({
           pools: R.pluck('pool', data),
-          hasLimits: R.pluck('limit', data).some(l => l && !l.isZero()),
+          hasLimits: R.pluck('limit', data).some(l => !l || !l.isZero()),
         })),
       ),
     [api],

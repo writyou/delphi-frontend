@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FieldRenderProps } from 'react-final-form';
 
-import { useOnChangeState, getFieldWithComponent } from 'utils/react';
+import { useOnChangeState, wrapComponentIntoFormField } from 'utils/react';
 
 interface IOwnProps<T> {
   name: string;
@@ -11,7 +11,7 @@ interface IOwnProps<T> {
 
 type Props<T> = FieldRenderProps<string, HTMLElement> & IOwnProps<T>;
 
-const SpyFieldComponent = getFieldWithComponent<Props<any>>(function SpyFieldComponent<T>(
+const SpyFieldComponent = wrapComponentIntoFormField<Props<any>>(function SpyFieldComponent<T>(
   props: Props<T>,
 ) {
   const { input, fieldValue, isChangedValue } = props;

@@ -6,7 +6,7 @@ export const useStyles = makeStyles(
       borderRadius: 6,
     },
     content: {
-      padding: 30,
+      padding: '30px 16px 20px',
       borderRadius: 6,
       color: theme.palette.text.primary,
     },
@@ -43,7 +43,7 @@ export const useStyles = makeStyles(
       opacity: 0.5,
     },
     availableDepositRow: {},
-    additionalElementRow: {},
+    actionsRow: {},
   }),
   { name: 'PoolCard' },
 );

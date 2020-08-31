@@ -122,6 +122,46 @@ const en = {
         error: 'Rewards withdrawing. Failed',
       },
     },
+    transactionFinalNotification: {
+      withdraw: {
+        button: 'YAY!',
+        title: 'Successful withdrawal!',
+        textBeforeTokens: 'You have withdrawn the following tokens',
+        textAfterTokens: 'to the following wallet',
+        beforeLink: 'You can check the transaction hash',
+        link: 'here',
+        afterLink: '.',
+      },
+      deposit: {
+        button: 'Great!',
+        title: 'Successful deposit!',
+        textBeforeTokens: 'Your successfully deposited the following tokens:',
+        textAfterTokens: 'into the following pools:',
+        beforeLink: 'Check',
+        link: 'My Pool section',
+        afterLink: 'for more information.',
+      },
+      withdrawError: {
+        button: 'Damn it!',
+        title: 'Withdrawal failed :(',
+        text:
+          'This is unfair but some awkward error occurred during transaction process. Please try again!',
+        problems: `What might be the problem? Check that
+        — you have enough ETH to pay gas fees;
+        — you are not trying to withdraw more than you have.`,
+      },
+      depositError: {
+        button: 'Damn it!',
+        title: 'Deposit failed :(',
+        text:
+          'This is unfair but some awkward error occurred during transaction process. Please try again!',
+        problems: `What might be the problem? Check that
+        — you have enough ETH to pay gas fees;
+        — you have enough tokens on your balance;
+        — you did not went over your limit (shown on pool card);
+        — pool did not reach TVL yet.`,
+      },
+    },
     networkWarning: {
       title: 'You are connected to the wrong network',
       warning:
@@ -130,10 +170,12 @@ const en = {
       networkName: {
         1: 'Main Ethereum Network',
         4: 'Rinkeby Network',
+        42: 'Kovan Network',
       },
       networkType: {
         1: 'mainnet',
         4: 'testnet',
+        42: 'testnet',
       },
     },
     infiniteApprove: {
