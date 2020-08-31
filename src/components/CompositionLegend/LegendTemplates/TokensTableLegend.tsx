@@ -42,7 +42,7 @@ const mkColumns = <T extends Amount, P = void>(
         />
       ),
     },
-    align: 'right',
+    align: 'left',
   },
   {
     cellContent: {
