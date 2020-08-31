@@ -14,15 +14,12 @@ import {
   isEqualHex,
   min,
   max,
+  normalizeAmounts,
 } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
 import { getCurrentValueOrThrow, awaitFirstNonNullableOrThrow } from 'utils/rxjs';
-import {
-  DepositToSavingsPool,
-  WithdrawFromSavingsPool,
-  DepositToSavingsPoolWithFee,
-} from 'model/types';
+import { DepositToSavingsPool, WithdrawFromSavingsPool } from 'model/types';
 import { ETH_NETWORK_CONFIG, WEB3_LONG_POOLING_TIMEOUT, REWARDS_LONG_POOLING_TIMEOUT } from 'env';
 import {
   createSavingsModule,
@@ -32,6 +29,7 @@ import {
 import { memoize } from 'utils/decorators';
 import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
+import { getLiquidityAmountsSum } from 'utils/helpers';
 
 import { Erc20Api } from './Erc20Api';
 import { Contracts, Web3ManagerModule } from '../types';
@@ -380,7 +378,7 @@ export class SavingsModuleApi {
   public getDepositFees$(
     userAddress: string,
     deposits: DepositToSavingsPool[],
-  ): Observable<DepositToSavingsPoolWithFee[]> {
+  ): Observable<TokenAmount[]> {
     return this.readonlyContract.methods.deposit
       .read(
         {
@@ -392,17 +390,29 @@ export class SavingsModuleApi {
       )
       .pipe(
         map(nDepositAmounts =>
-          nDepositAmounts.map((nDepositAmount, index) => ({
-            ...deposits[index],
-            fee: deposits[index].amount.sub(
+          nDepositAmounts.map((nDepositAmount, index) =>
+            deposits[index].amount.sub(
               denormolizeAmount(
                 new TokenAmount(nDepositAmount, new AllCoinsToken()),
                 deposits[index].amount.currency,
               ),
             ),
-          })),
+          ),
         ),
       );
+  }
+
+  public getTotalDepositFee$(
+    userAddress: string,
+    deposits: DepositToSavingsPool[],
+  ): Observable<LiquidityAmount> {
+    return this.getDepositFees$(userAddress, deposits).pipe(
+      map(fees => normalizeAmounts(fees, 18)),
+      map(normalizedFees =>
+        normalizedFees.map(fee => new LiquidityAmount(fee.value, DEFAULT_LIQUIDITY_CURRENCY)),
+      ),
+      map(liquidityAmounts => getLiquidityAmountsSum(liquidityAmounts)),
+    );
   }
 
   @autobind

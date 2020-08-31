@@ -1,16 +1,15 @@
 import React from 'react';
 
-import { getSignificantValue } from 'utils';
-import { DepositToSavingsPoolWithFee } from 'model/types';
+import { DepositToSavingsPool } from 'model/types';
 import { Table, FormattedAmount, TokenName } from 'components';
 
 import { SavingsPoolName } from '../../data/SavingsPoolName';
 
-export function FeesTable({ fees }: { fees: DepositToSavingsPoolWithFee[] }) {
-  return <Table.Component entries={fees} columns={columns} />;
+export function DepositsTable({ deposits }: { deposits: DepositToSavingsPool[] }) {
+  return <Table.Component entries={deposits} columns={columns} />;
 }
 
-const columns: Table.models.Column<DepositToSavingsPoolWithFee>[] = [
+const columns: Table.models.Column<DepositToSavingsPool>[] = [
   {
     renderTitle: () => 'Pool',
     cellContent: {
@@ -31,20 +30,6 @@ const columns: Table.models.Column<DepositToSavingsPoolWithFee>[] = [
     cellContent: {
       kind: 'simple',
       render: fee => <FormattedAmount sum={fee.amount} hideSymbol variant="plain" />,
-    },
-  },
-  {
-    renderTitle: () => 'Fee',
-    align: 'right',
-    cellContent: {
-      kind: 'simple',
-      render: ({ fee }) => {
-        return fee.gt(getSignificantValue(fee.currency.decimals)) ? (
-          <FormattedAmount sum={fee} hideSymbol variant="plain" />
-        ) : (
-          '—'
-        );
-      },
     },
   },
 ];

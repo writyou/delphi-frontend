@@ -17,10 +17,6 @@ export type DepositToSavingsPool = {
   amount: TokenAmount;
 };
 
-export type DepositToSavingsPoolWithFee = DepositToSavingsPool & {
-  fee: TokenAmount;
-};
-
 export type WithdrawFromSavingsPool = {
   poolAddress: string;
   amount: TokenAmount;

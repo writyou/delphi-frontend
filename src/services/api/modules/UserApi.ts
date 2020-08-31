@@ -123,6 +123,14 @@ export class UserApi {
     );
   }
 
+  public getSavingsTotalDepositFee$(deposits: DepositToSavingsPool[]) {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.savings.getTotalDepositFee$(account, deposits) : empty(),
+      ),
+    );
+  }
+
   public getSavingsWithdrawFee$(poolAddress: string, amount: TokenAmount): Observable<TokenAmount> {
     return this.web3Manager.account$.pipe(
       switchMap(account =>

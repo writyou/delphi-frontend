@@ -69,7 +69,7 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
   const DepositToSavingsConfirmContent = ({ amount }: FormData) => {
     const spender = ETH_NETWORK_CONFIG.contracts.savingsModule;
 
-    const feesRD = useSubscribable(
+    const feeRD = useSubscribable(
       () =>
         currentToken
           ? api.web3Manager.account$.pipe(
@@ -83,7 +83,9 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
               }),
               switchMap(account => {
                 return account && amount
-                  ? api.savings.getDepositFees$(account, [{ poolAddress: pool.address, amount }])
+                  ? api.savings.getTotalDepositFee$(account, [
+                      { poolAddress: pool.address, amount },
+                    ])
                   : of(null);
               }),
             )
@@ -96,20 +98,17 @@ export function DepositToSavingsPoolForm({ pool, onSuccessfulDeposit }: DepositF
         {`${t(tKeys.modules.savings.allocateToOnePoolDialog.getKey(), {
           amount: amount ? amount.toFormattedString() : '⏳',
         })}`}
-        <Loading data={feesRD}>
-          {fees => {
-            const fee = fees?.[0]?.fee;
-            return (
-              <Typography>
-                Additional fee is{' '}
-                {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
-                  <FormattedAmount sum={fee} variant="plain" />
-                ) : (
-                  'zero'
-                )}
-              </Typography>
-            );
-          }}
+        <Loading data={feeRD}>
+          {fee => (
+            <Typography>
+              Additional fee is{' '}
+              {fee && fee.gt(getSignificantValue(fee.currency.decimals)) ? (
+                <FormattedAmount sum={fee} variant="plain" />
+              ) : (
+                'zero'
+              )}
+            </Typography>
+          )}
         </Loading>
       </>
     );
