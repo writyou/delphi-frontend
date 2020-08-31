@@ -4,7 +4,7 @@ export const useStyles = makeStyles(
   theme => ({
     root: {
       [theme.breakpoints.up('sm')]: {
-        minWidth: '344px !important',
+        minWidth: '344px',
       },
     },
     card: {
@@ -19,11 +19,6 @@ export const useStyles = makeStyles(
       fontWeight: 'normal',
       color: '#0a0a0e',
     },
-    icons: {
-      marginLeft: 'auto !important',
-      display: 'flex',
-      alignItems: 'center',
-    },
     pending: {
       backgroundColor: '#594cf2',
     },
@@ -37,12 +32,8 @@ export const useStyles = makeStyles(
       fontSize: 24,
       color: '#0a0a0e',
     },
-    statusIcon: {
-      marginRight: 8,
-    },
     closeIcon: {
       fontSize: 17,
-      marginLeft: 30,
     },
   }),
   { name: 'SnackMessage' },

@@ -70,21 +70,22 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
         container
         wrap="nowrap"
         alignItems="center"
+        spacing={1}
         className={cn(classes.card, {
           [classes.pending]: variant === 'info',
           [classes.success]: variant === 'success',
           [classes.error]: variant === 'error',
         })}
       >
-        <Grid item className={classes.statusIcon}>
+        <Grid item>
           <Icon className={classes.icon} />
         </Grid>
-        <Grid item>
+        <Grid item xs>
           <Typography variant="subtitle2" className={classes.typography}>
             {message}
           </Typography>
         </Grid>
-        <Grid item className={classes.icons}>
+        <Grid item>
           <IconButton
             size="small"
             key="close"
