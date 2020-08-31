@@ -1,6 +1,5 @@
 import React, { useCallback, useState, useMemo, memo } from 'react';
 import { FieldRenderProps, FormSpy } from 'react-final-form';
-import { Observable } from 'rxjs';
 import { FormState } from 'final-form';
 import { TokenAmount, Token, Amount } from '@akropolis-web/primitives';
 import * as R from 'ramda';
@@ -23,11 +22,7 @@ export const SavingsPoolField = memo(
     const deposits = useMemo(() => (values ? getDeposits(values) : undefined), [values]);
 
     const getDepositLimit$ = useGetDepositLimit$(pool.address);
-    const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(
-      pool.address,
-      currentToken,
-      deposits,
-    );
+    const depositLimit = useSubscribable(getDepositLimit$, [getDepositLimit$]).toNullable();
 
     const handleFormChange = useCallback(
       (data: FormState<FormData>) => {
@@ -40,6 +35,12 @@ export const SavingsPoolField = memo(
       [currentToken],
     );
 
+    const { maxErrorTKey, maxValue } = useDepositAmountValidationParams(
+      pool.address,
+      currentToken,
+      deposits,
+    );
+
     const validateAmount = useValidateAmount({
       maxValue,
       maxErrorTKey,
@@ -47,10 +48,10 @@ export const SavingsPoolField = memo(
 
     return (
       <>
-        <SavingsPoolWithFieldWrapper
+        <SavingsPoolFormField
           name={name}
           pool={pool}
-          getDepositLimit$={getDepositLimit$}
+          depositLimit={depositLimit}
           validate={validateAmount}
           currentToken={currentToken}
           maxValue={maxValue}
@@ -63,25 +64,21 @@ export const SavingsPoolField = memo(
   (prev, cur) => R.toString(prev) === R.toString(cur),
 );
 
-const SavingsPoolWithFieldWrapper = wrapComponentIntoFormField(SavingsPoolFieldComponent);
+const SavingsPoolFormField = wrapComponentIntoFormField(SavingsPoolFieldComponent);
 
 type Props = Omit<TokenAmountInputProps, 'onChange' | 'value' | 'helperText' | 'currencies'> &
   FieldRenderProps<TokenAmountInputProps['value'], HTMLElement> & {
     pool: SavingsPool;
     maxValue: TokenAmount | undefined;
-    getDepositLimit$(): Observable<Amount | null>;
+    depositLimit: Amount | null;
     currentToken: Token | null;
   };
 
 type FormData = Record<string, TokenAmount> & { _: () => void };
 
 function SavingsPoolFieldComponent(props: Props) {
-  const { input, meta, pool, currentToken, maxValue, getDepositLimit$, ...rest } = props;
+  const { input, meta, pool, currentToken, maxValue, depositLimit, ...rest } = props;
   const { t } = useTranslate();
-
-  const switchDisabled = useSubscribable(getDepositLimit$, [getDepositLimit$])
-    .map(limit => limit?.isZero())
-    .getOrElse(R.T);
 
   const [isAllocated, setIsAllocated] = useState<boolean>(false);
 
@@ -92,6 +89,7 @@ function SavingsPoolFieldComponent(props: Props) {
     setIsAllocated(!isAllocated);
   };
 
+  const switchDisabled = depositLimit?.isZero() || true;
   const switchChecked = !switchDisabled && isAllocated;
 
   const error =
