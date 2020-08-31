@@ -3,7 +3,7 @@ import * as R from 'ramda';
 import cn from 'classnames';
 import { Amount } from '@akropolis-web/primitives';
 
-import { HiddenSvgGradient } from 'components/HiddenSvgGradient';
+import { HiddenSvgDefs } from 'components/HiddenSvgDefs';
 
 import { PieChart } from '../PieChart/PieChart';
 import { PieChartData, PieSector, Size } from './model';
@@ -37,7 +37,7 @@ export function CompositionChart<T extends Amount, P = void>({
 
   return (
     <div className={classes.root}>
-      <HiddenSvgGradient>{sectors.map(sector => sector.color.svgGradient)}</HiddenSvgGradient>
+      <HiddenSvgDefs>{sectors.map(sector => sector.color.svgGradient)}</HiddenSvgDefs>
       <div className={classes.chartContainer}>
         <div
           className={cn(classes.chart, {

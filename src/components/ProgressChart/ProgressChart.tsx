@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { HiddenSvgDefs } from 'components/HiddenSvgDefs';
 
-import { HiddenSvgGradient } from 'components/HiddenSvgGradient';
 import { PieChart } from 'components/PieChart/PieChart';
 import { useTheme } from 'utils/styles';
 
@@ -25,9 +25,9 @@ function ProgressChart(props: Props & Partial<React.ComponentProps<typeof PieCha
 
   return (
     <div className={classes.root}>
-      <HiddenSvgGradient>
+      <HiddenSvgDefs>
         {theme.gradients.progressChart.svgLinear('progressChartGradient')}
-      </HiddenSvgGradient>
+      </HiddenSvgDefs>
       <div className={classes.chart}>
         <PieChart
           {...rest}

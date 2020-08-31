@@ -1,7 +1,7 @@
 import * as React from 'react';
 import cn from 'classnames';
+import { HiddenSvgDefs } from 'components/HiddenSvgDefs';
 
-import { HiddenSvgGradient } from 'components/HiddenSvgGradient';
 import { makeStyles, useTheme } from 'utils/styles';
 
 import { SocialLink } from '../SocialLink/SocialLink';
@@ -27,7 +27,7 @@ function AkropolisSocialLinks(props: IProps) {
 
   return (
     <div className={cn(classes.root, { [classes[direction]]: true })}>
-      <HiddenSvgGradient>{theme.gradients.main.svgLinear('socialLinksGradient')}</HiddenSvgGradient>
+      <HiddenSvgDefs>{theme.gradients.main.svgLinear('socialLinksGradient')}</HiddenSvgDefs>
       {links.map(([link, needToFill]) => (
         <SocialLink
           key={link}

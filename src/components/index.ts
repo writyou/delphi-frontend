@@ -28,7 +28,7 @@ export { AddressIcon } from './AddressIcon';
 export { Button, ButtonProps } from './Button';
 export { Card } from './Card';
 export { ComingSoon } from './ComingSoon';
-export { HiddenSvgGradient } from './HiddenSvgGradient';
+export { HiddenSvgDefs } from './HiddenSvgDefs';
 export { Label } from './Label';
 export { Table } from './Table';
 export { TokenIcon } from './TokenIcon';
