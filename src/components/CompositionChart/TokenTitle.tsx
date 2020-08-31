@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { makeStyles } from 'utils/styles';
 
-import { TokenIcon } from '../TokenIcon/TokenIcon';
+import { TokenIcon } from '../TokenIcon';
 
 type Props = {
   address: string;

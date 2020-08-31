@@ -37,6 +37,30 @@ export abstract class RemoteData<R, E = string> {
   public map<T>(fn: (x: R) => T): RemoteData<T, E> {
     return isSuccess(this) ? success(fn(this.value.data)) : (this as any);
   }
+
+  public foldOption<O>(onNone: () => O, onSome: (x: R) => O) {
+    const { value } = this;
+    switch (value.tag) {
+      case 'SUCCESS': {
+        return onSome(value.data);
+      }
+      default: {
+        return onNone();
+      }
+    }
+  }
+
+  public getOrElse(onElse: () => R): R {
+    return isSuccess(this) ? this.value.data : onElse();
+  }
+
+  public toNullable(): R | null {
+    return isSuccess(this) ? this.value.data : null;
+  }
+
+  public toUndefined(): R | undefined {
+    return isSuccess(this) ? this.value.data : undefined;
+  }
 }
 
 export function combine<A, B, E>(a: RemoteData<A, E>, b: RemoteData<B, E>): RemoteData<[A, B], E>;
@@ -45,31 +69,23 @@ export function combine<A, B, C, E>(
   b: RemoteData<B, E>,
   c: RemoteData<C, E>,
 ): RemoteData<[A, B, C], E>;
-
 export function combine<A, B, C, D, E>(
   a: RemoteData<A, E>,
   b: RemoteData<B, E>,
   c: RemoteData<C, E>,
   d: RemoteData<D, E>,
 ): RemoteData<[A, B, C, D], E>;
-
-export function combine<A, B, C, D, E>(
-  a: RemoteData<A, E>,
-  b: RemoteData<B, E>,
-  c?: RemoteData<C, E>,
-  d?: RemoteData<D, E>,
-): RemoteData<[A, B] | [A, B, C] | [A, B, C, D], E> {
-  const all = [a, b, c, d].filter(Boolean);
-  const firstFailure = all.find(isFailure as any);
+export function combine<T, E>(...list: RemoteData<T, E>[]): RemoteData<T[], E> {
+  const firstFailure = list.find(isFailure);
   if (firstFailure) {
-    return firstFailure as any;
+    return firstFailure;
   }
-  const firstLoading = all.find(isLoading as any);
+  const firstLoading = list.find(isLoading);
   if (firstLoading) {
-    return firstLoading as any;
+    return firstLoading;
   }
-  if (all.every(isSuccess as any)) {
-    return success((all as any).map((x: Success<any>) => x.value.data));
+  if (list.every(isSuccess)) {
+    return success(list.map(x => (x as Success<T>).value.data));
   }
   return notAsked;
 }

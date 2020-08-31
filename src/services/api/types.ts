@@ -64,7 +64,10 @@ export type SubmittedTransaction =
       'staking.withdraw',
       { withdraw: WithdrawFromStakingPool; fromAddress: string }
     >
-  | IGenericSubmittedTransaction<'rewards.withdraw', { fromAddress: string }>;
+  | IGenericSubmittedTransaction<
+      'rewards.withdraw',
+      { amounts: TokenAmount[]; fromAddress: string }
+    >;
 
 export interface IGenericSubmittedTransaction<T extends string, P = void> {
   type: T;

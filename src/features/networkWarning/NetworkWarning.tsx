@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useSubscribable, useOnChangeState } from 'utils/react';
+import { useSubscribable } from 'utils/react';
 import { useApi } from 'services/api';
 import { NETWORK_ID } from 'env';
 import { ConfirmationDialog } from 'components';
@@ -15,16 +15,14 @@ export function NetworkWarning() {
   const chainIdRD = useSubscribable(() => api.web3Manager.chainId$, [api]);
   const [isOpen, setIsOpen] = React.useState(false);
 
-  useOnChangeState(
-    // TODO need to research api
-    chainIdRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      chainID => chainID,
-    ),
-    (prev, cur) => prev !== cur,
-    (_, cur) => (!cur || cur === NETWORK_ID ? setIsOpen(false) : setIsOpen(true)),
+  React.useEffect(
+    () =>
+      chainIdRD.foldOption(
+        () => undefined,
+        chainId =>
+          chainId !== null && chainId !== NETWORK_ID ? setIsOpen(true) : setIsOpen(false),
+      ),
+    [chainIdRD],
   );
 
   return (
@@ -32,6 +30,7 @@ export function NetworkWarning() {
       isOpen={isOpen}
       yesText={t(tKeys.disconnectButton.getKey())}
       onConfirm={api.web3Manager.disconnect}
+      onCancel={() => {}}
     >
       {t(tKeys.warning.getKey(), {
         name: t(tKeys.networkName[NETWORK_ID].getKey()),

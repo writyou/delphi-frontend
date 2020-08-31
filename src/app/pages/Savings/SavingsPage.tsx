@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 
 import { routes } from 'app/routes';
 import { TabsSection, CheckAuthorization, Loading } from 'components';
-import { Api, useApi } from 'services/api';
+import { useApi } from 'services/api';
 import { useSubscribable } from 'utils/react';
 
 import { AllocateTab } from './innerPages/AllocateTab';
@@ -15,7 +15,6 @@ const allocateTab = {
   value: routes.savings.allocate.getElementKey(),
   to: routes.savings.allocate.getRedirectPath(),
   renderContent: () => <AllocateTab />,
-  getData: (api: Api) => api.savings.getPools$(),
 };
 
 const withdrawTab = {
@@ -23,7 +22,6 @@ const withdrawTab = {
   value: routes.savings.withdraw.getElementKey(),
   to: routes.savings.withdraw.getRedirectPath(),
   renderContent: () => <WithdrawTab />,
-  getData: (api: Api) => api.user.getMySavingsPools$(),
 };
 
 const tabs = [allocateTab, withdrawTab];
@@ -39,12 +37,9 @@ export function SavingsPage() {
 
   const isWorthToWatchPage$ = useMemo(
     () =>
-      // TODO need to research api
       of(
         page !== withdrawTab.value ||
-          poolsRD.fold(
-            () => false,
-            () => false,
+          poolsRD.foldOption(
             () => false,
             pools => !!pools.length,
           ),

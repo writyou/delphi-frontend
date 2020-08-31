@@ -7,6 +7,7 @@ import BN from 'bn.js';
 import {
   IToBN,
   TokenAmount,
+  AllCoinsToken,
   LiquidityAmount,
   denormolizeAmount,
   sumTokenAmountsByToken,
@@ -29,7 +30,7 @@ import {
   createSavingsPoolToken,
 } from 'generated/contracts';
 import { memoize } from 'utils/decorators';
-import { DEFAULT_LIQUIDITY_CURRENCY, ALL_TOKEN } from 'utils/mock';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { fromWeb3DataEvent } from 'generated/contracts/utils/fromWeb3DataEvent';
 
 import { Erc20Api } from './Erc20Api';
@@ -91,7 +92,7 @@ export class SavingsModuleApi {
   }
 
   @autobind
-  public async withdrawUserRewards(): Promise<void> {
+  public async withdrawUserRewards(rewards: TokenAmount[]): Promise<void> {
     const txContract = getCurrentValueOrThrow(this.txContract);
     const from = await awaitFirstNonNullableOrThrow(this.web3Manager.account$);
 
@@ -99,6 +100,7 @@ export class SavingsModuleApi {
 
     this.transactionsApi.pushToSubmittedTransactions('rewards.withdraw', promiEvent, {
       fromAddress: from,
+      amounts: rewards,
     });
 
     await promiEvent;
@@ -189,7 +191,9 @@ export class SavingsModuleApi {
         },
       )
       .pipe(
-        map(nAmount => denormolizeAmount(new TokenAmount(nAmount, ALL_TOKEN), amount.currency)),
+        map(nAmount =>
+          denormolizeAmount(new TokenAmount(nAmount, new AllCoinsToken()), amount.currency),
+        ),
         map(dnAmount => dnAmount.sub(amount)),
       );
   }
@@ -392,7 +396,7 @@ export class SavingsModuleApi {
             ...deposits[index],
             fee: deposits[index].amount.sub(
               denormolizeAmount(
-                new TokenAmount(nDepositAmount, ALL_TOKEN),
+                new TokenAmount(nDepositAmount, new AllCoinsToken()),
                 deposits[index].amount.currency,
               ),
             ),

@@ -2,14 +2,13 @@ import React, { useCallback, useMemo } from 'react';
 import { combineLatest, of } from 'rxjs';
 import BN from 'bn.js';
 import { catchError, map } from 'rxjs/operators';
-import { TokenAmount, Token, decimalsToWei } from '@akropolis-web/primitives';
+import { TokenAmount, Token, AllCoinsToken, decimalsToWei } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { FormWithConfirmation, TokenAmountField, FieldNames } from 'components/form';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 import { Loading } from 'components';
-import { ALL_TOKEN } from 'utils/mock';
 
 interface FormData {
   amount: TokenAmount | null;
@@ -25,6 +24,7 @@ const fieldNames: FieldNames<FormData> = {
 
 export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps) {
   const api = useApi();
+  const allCoinsToken = useMemo(() => new AllCoinsToken(), []);
 
   const tokensRD = useSubscribable(
     () =>
@@ -42,7 +42,10 @@ export function MintTestnetTokenForm({ onSuccessfulWithdraw }: WithdrawFormProps
 
   const initialValues: FormData = useMemo(
     () => ({
-      amount: new TokenAmount(new BN(100).mul(decimalsToWei(ALL_TOKEN.decimals)), ALL_TOKEN),
+      amount: new TokenAmount(
+        new BN(100).mul(decimalsToWei(allCoinsToken.decimals)),
+        allCoinsToken,
+      ),
     }),
     [],
   );
