@@ -62,33 +62,33 @@ export function DialogContentTemplate({
 
   if (variant === 'errorDeposit') {
     return (
-      <>
+      <div className={classes.root}>
         <img className={classes.image} src={errorCat} alt="sad Delphic" />
-        <Typography variant="h5" gutterBottom>
+        <Typography className={classes.title} variant="h5" gutterBottom>
           {t(fKeys.depositError.title.getKey())}
         </Typography>
         <div className={classes.text}>{t(fKeys.depositError.text.getKey())}</div>
         <div className={classes.text}>{t(fKeys.depositError.problems.getKey())}</div>
-      </>
+      </div>
     );
   }
   if (variant === 'errorWithdraw') {
     return (
-      <>
+      <div className={classes.root}>
         <img className={classes.image} src={errorCat} alt="sad Delphic" />
-        <Typography variant="h5" gutterBottom>
+        <Typography className={classes.title} variant="h5" gutterBottom>
           {t(fKeys.withdrawError.title.getKey())}
         </Typography>
         <div className={classes.text}>{t(fKeys.withdrawError.text.getKey())}</div>
         <div className={classes.text}>{t(fKeys.withdrawError.problems.getKey())}</div>
-      </>
+      </div>
     );
   }
   if (variant === 'withdraw') {
     return (
-      <>
+      <div className={classes.root}>
         <img className={classes.image} src={withdrawCat} alt="happy Delphic" />
-        <Typography variant="h5" gutterBottom>
+        <Typography className={classes.title} variant="h5" gutterBottom>
           {t(fKeys.withdraw.title.getKey())}
         </Typography>
         <div className={classes.text}>{t(fKeys.withdraw.textBeforeTokens.getKey())}</div>
@@ -96,7 +96,7 @@ export function DialogContentTemplate({
         <div className={classes.text}>
           {t(fKeys.withdraw.textAfterTokens.getKey())}
           <br />
-          {wallet}
+          <span className={classes.address}>{wallet}</span>
           <br />
           {t(fKeys.withdraw.beforeLink.getKey())}{' '}
           <Link color="textPrimary" href={withdrawLink} target="_blank" rel="noopener noreferrer">
@@ -104,14 +104,14 @@ export function DialogContentTemplate({
           </Link>
           {t(fKeys.withdraw.afterLink.getKey())}
         </div>
-      </>
+      </div>
     );
   }
   if (variant === 'deposit') {
     return (
-      <>
+      <div className={classes.root}>
         <img className={classes.image} src={depositCat} alt="happy Delphic" />
-        <Typography variant="h5" gutterBottom>
+        <Typography className={classes.title} variant="h5" gutterBottom>
           {t(fKeys.deposit.title.getKey())}
         </Typography>
         <div className={classes.text}>{t(fKeys.deposit.textBeforeTokens.getKey())}</div>
@@ -136,7 +136,7 @@ export function DialogContentTemplate({
           )}{' '}
           {t(fKeys.deposit.afterLink.getKey())}
         </div>
-      </>
+      </div>
     );
   }
   return null;
@@ -164,8 +164,22 @@ function Table({ amounts }: { amounts: TokenAmount[] }) {
 }
 
 const useStyles = makeStyles({
+  root: {
+    fontWeight: 300,
+  },
+  title: {
+    marginTop: 20,
+    fontWeight: 300,
+  },
   image: {
     margin: '0 -30px',
+  },
+  address: {
+    display: 'inline-block',
+    margin: '8px 0',
+    padding: '2px 10px',
+    borderRadius: 6,
+    backgroundColor: '#494972',
   },
   text: {
     lineHeight: 1.5,
