@@ -1,16 +1,30 @@
 import React from 'react';
+import { map } from 'rxjs/operators';
+import { TokenAmount, Token, LiquidityAmount } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { Table, FormattedAmount, TokenName, Loading, ComingSoon } from 'components';
 import { useSubscribable } from 'utils/react';
 import { RewardData } from 'model/types';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 
 function withComingSoonLabel(tokenAddress: string) {
   const comingSoonTokenAddresses = [ETH_NETWORK_CONFIG.tokens.AKRO, ETH_NETWORK_CONFIG.tokens.ADEL];
 
   return comingSoonTokenAddresses.some(t => t.toLowerCase() === tokenAddress.toLowerCase());
 }
+
+const akroMockedRewards: RewardData[] = [
+  {
+    amount: new TokenAmount(0, new Token(ETH_NETWORK_CONFIG.tokens.AKRO, 'AKRO', 18)),
+    NAV: new LiquidityAmount(0, DEFAULT_LIQUIDITY_CURRENCY),
+  },
+  {
+    amount: new TokenAmount(0, new Token(ETH_NETWORK_CONFIG.tokens.ADEL, 'ADEL', 18)),
+    NAV: new LiquidityAmount(0, DEFAULT_LIQUIDITY_CURRENCY),
+  },
+];
 
 const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
   {
@@ -48,7 +62,13 @@ const columnsWithoutExpandableRows: Array<Table.models.Column<RewardData>> = [
 
 export function RewardsTable() {
   const api = useApi();
-  const rewardsRD = useSubscribable(() => api.user.getRewardsData$(), [api]);
+  const rewardsRD = useSubscribable(
+    () =>
+      api.user
+        .getRewardsData$()
+        .pipe(map(rewards => (rewards.length ? [...akroMockedRewards, ...rewards] : []))),
+    [api],
+  );
 
   return (
     <Loading data={rewardsRD}>
