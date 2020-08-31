@@ -7,7 +7,7 @@ import { Token } from '@akropolis-web/primitives';
 
 import { tKeys, useTranslate } from 'services/i18n';
 
-import { TokenIcon } from '../TokenIcon/TokenIcon';
+import { TokenIcon } from '../TokenIcon';
 import { Card } from '../Card';
 import { useStyles } from './PoolCard.style';
 

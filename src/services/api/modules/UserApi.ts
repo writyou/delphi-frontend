@@ -8,7 +8,6 @@ import {
   Fraction,
   calcAvg,
 } from '@akropolis-web/primitives';
-import { autobind } from 'core-decorators';
 
 import { memoize } from 'utils/decorators';
 import { SavingsPool, DepositToSavingsPool, StakingPool, RewardData } from 'model/types';
@@ -203,11 +202,6 @@ export class UserApi {
     );
   }
 
-  @autobind
-  public withdrawRewards() {
-    return this.rewards.withdrawUserRewards();
-  }
-
   @memoize()
   public getTotalRewardsBalance$(): Observable<LiquidityAmount> {
     return this.web3Manager.account$.pipe(
@@ -219,6 +213,13 @@ export class UserApi {
   public getRewardsData$(): Observable<RewardData[]> {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.rewards.getUserRewardsData$(account) : empty())),
+    );
+  }
+
+  @memoize()
+  public getRewards$(): Observable<TokenAmount[]> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account => (account ? this.rewards.getUserRewards$(account) : empty())),
     );
   }
 }

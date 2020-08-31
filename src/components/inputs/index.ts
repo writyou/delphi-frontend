@@ -7,7 +7,8 @@ export {
   RadioButton,
   SwitchInput,
   SelectInput,
+  TokenAmountInput,
+  TokenAmountInputProps,
+  LiquidityAmountInput,
+  LiquidityAmountInputProps,
 } from '@akropolis-web/components';
-export { TokenAmountInput, TokenAmountInputProps } from './TokenAmountInput';
-export { LiquidityAmountInput, LiquidityAmountInputProps } from './LiquidityAmountInput';
-export { AmountInput } from './AmountInput/AmountInput';

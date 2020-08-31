@@ -1,6 +1,6 @@
 import { combineLatest, of, Observable } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import { LiquidityAmount } from '@akropolis-web/primitives';
+import { LiquidityAmount, TokenAmount } from '@akropolis-web/primitives';
 import * as R from 'ramda';
 import { autobind } from 'core-decorators';
 
@@ -17,18 +17,19 @@ export class RewardsApi {
 
   @memoize(R.identity)
   public getUserRewards$(userAddress: string) {
-    return this.savings.getUserRewards$(userAddress);
+    return this.savings
+      .getUserRewards$(userAddress)
+      .pipe(map(rewards => rewards.filter(a => !a.isZero())));
   }
 
   @autobind
-  public withdrawUserRewards() {
-    return this.savings.withdrawUserRewards();
+  public withdrawUserRewards(rewards: TokenAmount[]) {
+    return this.savings.withdrawUserRewards(rewards);
   }
 
   @memoize(R.identity)
   public getUserTotalRewardsBalance(userAddress: string): Observable<LiquidityAmount> {
     return this.getUserRewards$(userAddress).pipe(
-      map(rewards => rewards.filter(a => !a.isZero())),
       switchMap(rewards =>
         rewards.length
           ? combineLatest(rewards.map(a => this.prices.getTokenPrice$(a.currency.address))).pipe(
@@ -48,7 +49,6 @@ export class RewardsApi {
   @memoize(R.identity)
   public getUserRewardsData$(userAddress: string) {
     return this.getUserRewards$(userAddress).pipe(
-      map(rewards => rewards.filter(a => !a.isZero())),
       switchMap(rewards =>
         rewards.length
           ? combineLatest(rewards.map(a => this.prices.getTokenPrice$(a.currency.address))).pipe(

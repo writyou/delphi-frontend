@@ -8,6 +8,7 @@ export type StakingPool = {
 
 export type WithdrawFromStakingPool = {
   poolAddress: string;
+  amount: TokenAmount;
 };
 
 export type DepositToStakingPool = {

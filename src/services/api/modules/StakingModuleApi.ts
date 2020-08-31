@@ -101,10 +101,16 @@ export class StakingModuleApi {
   public getDepositLimit$(poolAddress: string, account: string): Observable<TokenAmount | null> {
     return combineLatest([
       this.getUserCap$(poolAddress, account),
+      this.getIsVipUser$(poolAddress, account),
       this.getPoolCapacity$(poolAddress),
       this.getPoolBalance$(poolAddress),
     ]).pipe(
-      map(([userCap, poolCapacity, poolBalance]) => {
+      map(([userCap, isVipUser, poolCapacity, poolBalance]) => {
+        // VIP user ignores pool capacity limit
+        if (isVipUser) {
+          return userCap;
+        }
+
         const availableCapacity = poolCapacity
           ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
           : null;
@@ -147,6 +153,25 @@ export class StakingModuleApi {
     );
   }
 
+  @memoize((...args: string[]) => args.join())
+  public getIsVipUser$(poolAddress: string, userAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return combineLatest([
+      poolContract.methods.isVipUser(
+        {
+          '': userAddress,
+        },
+        [
+          poolContract.events.VipUserChanged({
+            filter: { user: userAddress },
+          }),
+        ],
+      ),
+      this.getVipUsersEnabled$(poolAddress),
+    ]).pipe(map(([isVip, enabled]) => (enabled ? isVip : false)));
+  }
+
   @memoize(R.identity)
   private getPoolCapEnabled$(poolAddress: string): Observable<boolean> {
     const poolContract = this.getPoolReadonlyContract(poolAddress);
@@ -162,6 +187,15 @@ export class StakingModuleApi {
 
     return poolContract.methods.userCapEnabled(undefined, [
       poolContract.events.UserCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getVipUsersEnabled$(poolAddress: string): Observable<boolean> {
+    const poolContract = this.getPoolReadonlyContract(poolAddress);
+
+    return poolContract.methods.vipUserEnabled(undefined, [
+      poolContract.events.VipUserEnabledChange(),
     ]);
   }
 
