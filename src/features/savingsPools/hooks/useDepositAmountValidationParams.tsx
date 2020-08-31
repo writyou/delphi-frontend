@@ -18,7 +18,7 @@ import { DepositToSavingsPool } from 'model/types';
 export function useDepositAmountValidationParams(
   poolAddress: string,
   token: Token | null,
-  formValues?: DepositToSavingsPool[],
+  deposits: DepositToSavingsPool[] = [],
 ) {
   const { t } = useTranslate();
   const api = useApi();
@@ -30,36 +30,39 @@ export function useDepositAmountValidationParams(
             api.user.getTokenBalance$(token.address),
             api.user.getAvailableForDeposit$(poolAddress),
           ]).pipe(
-            map(([balance, limit]) => {
-              const otherAmounts = formValues
-                ? formValues.reduce((acc, v) => {
-                    return isEqualHex(v.poolAddress, poolAddress) ||
-                      !isEqualHex(v.amount.currency.address, token.address)
-                      ? acc
-                      : [...acc, v.amount];
-                  }, [] as TokenAmount[])
-                : [];
-              const sum = otherAmounts.reduce((acc, v) => {
-                return acc.add(v);
+            map(([userBalance, availableForDepositInInterestingPool]) => {
+              const totalAmountSetInOtherPools = deposits.reduce((acc, deposit) => {
+                const isDifferentPool = !isEqualHex(deposit.poolAddress, poolAddress);
+                const isInterestingToken = !isEqualHex(
+                  deposit.amount.currency.address,
+                  token.address,
+                );
+                return isDifferentPool && isInterestingToken ? acc.add(deposit.amount) : acc;
               }, new TokenAmount(0, token));
-              const calculatedBalance = max(new TokenAmount(0, token), balance.sub(sum));
-              const denormalizedLimit = limit && denormolizeAmount(limit, balance.currency);
-              const maxValue = denormalizedLimit
-                ? min(calculatedBalance, denormalizedLimit)
-                : calculatedBalance;
+
+              const remainingUserBalance = max(
+                new TokenAmount(0, token),
+                userBalance.sub(totalAmountSetInOtherPools),
+              );
+              const limitOnDeposit =
+                availableForDepositInInterestingPool &&
+                denormolizeAmount(availableForDepositInInterestingPool, token);
+              const maxAvailableForDeposit = limitOnDeposit
+                ? min(remainingUserBalance, limitOnDeposit)
+                : remainingUserBalance;
 
               return {
-                maxValue,
-                maxErrorTKey: maxValue.eq(calculatedBalance)
+                maxValue: maxAvailableForDeposit,
+                maxErrorTKey: maxAvailableForDeposit.eq(remainingUserBalance)
                   ? t(tKeys.utils.validation.insufficientFunds.getKey(), {
-                      value: balance.toFormattedString(),
+                      value: userBalance.toFormattedString(),
                     })
                   : tKeys.utils.validation.depositLimitExceeded.getKey(),
               };
             }),
           )
         : empty(),
-    [api, token?.address, poolAddress, R.toString(formValues)],
+    [api, token?.address, poolAddress, R.toString(deposits)],
   );
 
   const { maxValue, maxErrorTKey } = validationParamsRD.toUndefined() || {};
