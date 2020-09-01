@@ -146,20 +146,20 @@ const en = {
         title: 'Withdrawal failed :(',
         text:
           'This is unfair but some awkward error occurred during transaction process. Please try again!',
-        problems: `What might be the problem?
-        Check that you have enough ETH to pay gas fees;
-        Check that you are not trying to withdraw more than you have.`,
+        problems: `What might be the problem? Check that
+        — you have enough ETH to pay gas fees;
+        — you are not trying to withdraw more than you have.`,
       },
       depositError: {
         button: 'Damn it!',
         title: 'Deposit failed :(',
         text:
           'This is unfair but some awkward error occurred during transaction process. Please try again!',
-        problems: `What might be the problem?
-        Check that you have enough ETH to pay gas fees;
-        Check that you have enough tokens on your balance;
-        Check that you did not went over your limit (shown on pool card);
-        Check that pool did not reach TVL yet.`,
+        problems: `What might be the problem? Check that
+        — you have enough ETH to pay gas fees;
+        — you have enough tokens on your balance;
+        — you did not went over your limit (shown on pool card);
+        — pool did not reach TVL yet.`,
       },
     },
     networkWarning: {
