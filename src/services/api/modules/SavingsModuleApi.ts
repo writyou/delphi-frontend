@@ -288,10 +288,16 @@ export class SavingsModuleApi {
   ): Observable<LiquidityAmount | null> {
     return combineLatest([
       this.getUserCap$(userAddress, poolAddress),
+      this.getIsVipUser$(userAddress, poolAddress),
       this.getPoolCapacity$(poolAddress),
       this.getPoolBalance$(poolAddress),
     ]).pipe(
-      map(([userCap, poolCapacity, poolBalance]) => {
+      map(([userCap, isVipUser, poolCapacity, poolBalance]) => {
+        // VIP user ignores pool capacity limit
+        if (isVipUser) {
+          return userCap;
+        }
+
         const availableCapacity = poolCapacity
           ? max(poolCapacity.withValue(0), poolCapacity.sub(poolBalance))
           : null;
@@ -355,6 +361,24 @@ export class SavingsModuleApi {
     );
   }
 
+  @memoize((...args: string[]) => args.join())
+  public getIsVipUser$(userAddress: string, poolAddress: string): Observable<boolean> {
+    return combineLatest([
+      this.readonlyContract.methods.isVipUser(
+        {
+          _protocol: poolAddress,
+          user: userAddress,
+        },
+        [
+          this.readonlyContract.events.VipUserChanged({
+            filter: { protocol: poolAddress, user: userAddress },
+          }),
+        ],
+      ),
+      this.getVipUsersEnabled$(),
+    ]).pipe(map(([isVip, enabled]) => (enabled ? isVip : false)));
+  }
+
   @memoize()
   private getUserCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.userCapEnabled(undefined, [
@@ -366,6 +390,13 @@ export class SavingsModuleApi {
   private getPoolCapEnabled$(): Observable<boolean> {
     return this.readonlyContract.methods.protocolCapEnabled(undefined, [
       this.readonlyContract.events.ProtocolCapEnabledChange(),
+    ]);
+  }
+
+  @memoize()
+  private getVipUsersEnabled$(): Observable<boolean> {
+    return this.readonlyContract.methods.vipUserEnabled(undefined, [
+      this.readonlyContract.events.VipUserEnabledChange(),
     ]);
   }
 

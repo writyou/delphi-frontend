@@ -4,29 +4,20 @@ export const useStyles = makeStyles(
   theme => ({
     root: {
       [theme.breakpoints.up('sm')]: {
-        minWidth: '344px !important',
+        minWidth: '344px',
       },
-      borderRadius: 4,
     },
     card: {
+      borderRadius: 4,
       backgroundColor: '#fddc6c',
       width: '100%',
+      padding: '8px 16px',
     },
     typography: {
       fontFamily: 'HelveticaNeue, Helvetica Neue',
       fontSize: 12,
       fontWeight: 'normal',
       color: '#0a0a0e',
-    },
-    actionRoot: {
-      padding: '8px 8px 8px 16px',
-    },
-    icons: {
-      marginLeft: 'auto !important',
-    },
-    button: {
-      padding: 0,
-      textTransform: 'none',
     },
     pending: {
       backgroundColor: '#594cf2',
@@ -38,9 +29,12 @@ export const useStyles = makeStyles(
       backgroundColor: '#fe5a59',
     },
     icon: {
-      fontSize: 20,
+      fontSize: 24,
       color: '#0a0a0e',
     },
+    closeIcon: {
+      fontSize: 17,
+    },
   }),
-  { name: 'SnackbarMessage' },
+  { name: 'SnackMessage' },
 );

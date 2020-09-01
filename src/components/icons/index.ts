@@ -36,6 +36,7 @@ export { AlphaCat } from './AlphaCat';
 export { CloseIcon } from './CloseIcon';
 export { OkIcon } from './OkIcon';
 export { ErrorIcon } from './ErrorIcon';
+export { MoreIcon } from './MoreIcon';
 
 export { Cat1 } from './cats/Cat1';
 export { Cat2 } from './cats/Cat2';

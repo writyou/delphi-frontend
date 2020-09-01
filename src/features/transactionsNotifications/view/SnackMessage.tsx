@@ -3,16 +3,13 @@
 import React, { useCallback } from 'react';
 import { useSnackbar, SnackbarMessage, SnackbarKey, SharedProps } from 'notistack';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
 import cn from 'classnames';
 import { from, of } from 'rxjs';
 
 import { SubmittedTransaction } from 'services/api';
-import { Link } from 'components';
-import { ErrorIcon, OkIcon, InfoIcon } from 'components/icons';
+import { Link, Grid } from 'components';
+import { ErrorIcon, OkIcon, InfoIcon, CloseIcon } from 'components/icons';
 import { useSubscribable } from 'utils/react';
 import { ETH_NETWORK_CONFIG } from 'env';
 
@@ -69,31 +66,37 @@ export const SnackMessage = React.forwardRef((props: Props, ref: any) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <Card
+      <Grid
+        container
+        wrap="nowrap"
+        alignItems="center"
+        spacing={1}
         className={cn(classes.card, {
           [classes.pending]: variant === 'info',
           [classes.success]: variant === 'success',
           [classes.error]: variant === 'error',
         })}
       >
-        <CardActions classes={{ root: classes.actionRoot }}>
-          <Icon />
+        <Grid item>
+          <Icon className={classes.icon} />
+        </Grid>
+        <Grid item xs>
           <Typography variant="subtitle2" className={classes.typography}>
             {message}
           </Typography>
-          <div className={classes.icons}>
-            <IconButton
-              size="small"
-              key="close"
-              aria-label="close"
-              color="inherit"
-              onClick={handleDismiss}
-            >
-              <CloseIcon className={classes.icon} />
-            </IconButton>
-          </div>
-        </CardActions>
-      </Card>
+        </Grid>
+        <Grid item>
+          <IconButton
+            size="small"
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={handleDismiss}
+          >
+            <CloseIcon className={cn(classes.icon, classes.closeIcon)} />
+          </IconButton>
+        </Grid>
+      </Grid>
     </Link>
   );
 });

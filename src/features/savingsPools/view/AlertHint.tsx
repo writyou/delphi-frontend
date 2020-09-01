@@ -22,6 +22,7 @@ const useStyles = makeStyles(
   () => ({
     hint: {
       marginLeft: 10,
+      fontSize: 12,
     },
   }),
   { name: 'AlertHint' },
