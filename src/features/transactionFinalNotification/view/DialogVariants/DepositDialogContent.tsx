@@ -22,7 +22,7 @@ export type DepositDialogProps = {
 
 const fKeys = tKeys.features.transactionFinalNotification;
 
-export function DepositDialogTemplate({
+export function DepositDialogContent({
   amounts,
   poolAddresses,
   isStakingDeposit,

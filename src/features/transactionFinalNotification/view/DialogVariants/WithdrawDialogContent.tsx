@@ -11,12 +11,12 @@ import { AmountsTable } from '../AmountsTable';
 export type WithdrawDialogProps = {
   amounts: TokenAmount[];
   wallet: string;
-  withdrawLink: string;
+  withdrawLink?: string;
 };
 
 const fKeys = tKeys.features.transactionFinalNotification;
 
-export function WithdrawDialogTemplate({ amounts, withdrawLink, wallet }: WithdrawDialogProps) {
+export function WithdrawDialogContent({ amounts, withdrawLink, wallet }: WithdrawDialogProps) {
   const { t } = useTranslate();
   const classes = useStyles();
 

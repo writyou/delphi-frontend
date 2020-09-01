@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import { of, from } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+import { from } from 'rxjs';
 
 import { useSubscribable } from 'utils/react';
 import { useApi, SubmittedTransaction } from 'services/api';
@@ -9,12 +10,13 @@ import { getTransactionLinkFromHash } from 'utils/helpers';
 import { routes } from 'app/routes';
 
 import {
-  DepositDialogTemplate,
+  DepositDialogContent,
   DepositDialogProps,
-  ErrorDialogTemplate,
-  WithdrawDialogTemplate,
+  ErrorDialogContent,
+  ErrorDialogProps,
+  WithdrawDialogContent,
   WithdrawDialogProps,
-} from './DialogTemplates';
+} from './DialogVariants';
 
 const mapVariantToButtonTKey: Record<Variant, string> = {
   withdraw: tKeys.features.transactionFinalNotification.withdraw.button.getKey(),
@@ -24,6 +26,12 @@ const mapVariantToButtonTKey: Record<Variant, string> = {
 };
 
 type Variant = 'withdraw' | 'deposit' | 'withdrawError' | 'depositError';
+
+type TransactionResult =
+  | (DepositDialogProps & { variant: 'deposit' })
+  | (WithdrawDialogProps & { variant: 'withdraw' })
+  | ErrorDialogProps
+  | null;
 
 const withdrawCases: SubmittedTransaction['type'][] = [
   'savings.withdraw',
@@ -35,108 +43,115 @@ const depositCases: SubmittedTransaction['type'][] = ['savings.deposit', 'stakin
 export function TransactionFinalNotifications() {
   const api = useApi();
   const { t } = useTranslate();
-  const transaction = useSubscribable<SubmittedTransaction>(
-    () => api.transactions.getSubmittedTransaction$(),
-    [api],
-  ).toUndefined();
 
-  const transactionsQueue = Array(0);
+  const { transaction, hash } =
+    useSubscribable(
+      () =>
+        api.transactions
+          .getSubmittedTransaction$()
+          .pipe(switchMap(st => from(st.tx).pipe(map(hs => ({ transaction: st, hash: hs }))))),
+      [api],
+    ).toUndefined() || {};
 
-  const hash = useSubscribable(() => (transaction ? from(transaction.tx) : of(undefined)), [
-    transaction,
-  ]).toUndefined();
-
-  const [isOpen, setOpen] = useState(false);
   const [variant, setVariant] = useState<Variant>('deposit');
+  const [transactionsResultsQueue, setTransactionsResultsQueue] = useState<TransactionResult[]>([]);
 
   const handleConfirm = useCallback(async () => {
-    setOpen(false);
-  }, []);
+    setTransactionsResultsQueue([...transactionsResultsQueue?.slice(1)]);
+  }, [transactionsResultsQueue]);
   const handleClose = useCallback(() => {
-    setOpen(false);
-    transactionsQueue.shift();
-  }, []);
+    setTransactionsResultsQueue([...transactionsResultsQueue?.slice(1)]);
+  }, [transactionsResultsQueue]);
 
-  const listenTransactionAction = useCallback(async st => {
-    if (st && (withdrawCases.includes(st.type) || depositCases.includes(st.type))) {
-      const isWithdraw = withdrawCases.includes(st.type);
-      try {
-        await st.promiEvent;
-        setVariant(isWithdraw ? 'withdraw' : 'deposit');
-      } catch {
-        setVariant(isWithdraw ? 'withdrawError' : 'depositError');
-      } finally {
-        transactionsQueue.push(st);
-        setOpen(true);
+  const listenTransactionAction = useCallback(
+    async (st: SubmittedTransaction) => {
+      if (st && (withdrawCases.includes(st.type) || depositCases.includes(st.type))) {
+        const isWithdraw = withdrawCases.includes(st.type);
+        try {
+          await st.promiEvent;
+          setVariant(isWithdraw ? 'withdraw' : 'deposit');
+        } catch {
+          setVariant(isWithdraw ? 'withdrawError' : 'depositError');
+        } finally {
+          setTransactionsResultsQueue([...transactionsResultsQueue, getDialogData(st)]);
+        }
       }
-    }
-  }, []);
+    },
+    [transactionsResultsQueue],
+  );
 
   React.useEffect(() => {
     transaction && listenTransactionAction(transaction);
   }, [transaction]);
 
   return (
-    transactionsQueue[0] && (
-      <ConfirmationDialog
-        isOpen={isOpen}
-        onConfirm={handleConfirm}
-        onCancel={handleClose}
-        yesText={t(mapVariantToButtonTKey[variant])}
-      >
-        {renderDialogTemplate(getPayload(transactionsQueue[0]))}
-      </ConfirmationDialog>
-    )
+    <ConfirmationDialog
+      isOpen={Boolean(transactionsResultsQueue[0])}
+      onConfirm={handleConfirm}
+      onCancel={handleClose}
+      yesText={t(mapVariantToButtonTKey[variant])}
+    >
+      {renderDialogContent(transactionsResultsQueue[0])}
+    </ConfirmationDialog>
   );
 
-  function getPayload(
-    transactionPl?: SubmittedTransaction,
-  ): DepositDialogProps | WithdrawDialogProps | null {
-    if (transactionPl && hash) {
-      switch (transactionPl.type) {
+  function getDialogData(st?: SubmittedTransaction): TransactionResult {
+    switch (variant) {
+      case 'withdrawError':
+      case 'depositError':
+        return { variant };
+    }
+    if (st) {
+      switch (st.type) {
         case 'savings.deposit':
           return {
-            amounts: transactionPl.payload.deposits.map(d => d.amount),
-            poolAddresses: transactionPl.payload.deposits.map(d => d.poolAddress),
+            variant: 'deposit',
+            amounts: st.payload.deposits.map(d => d.amount),
+            poolAddresses: st.payload.deposits.map(d => d.poolAddress),
             depositLink: routes.pools.savings.getRedirectPath(),
             onClose: handleClose,
           };
         case 'staking.deposit':
           return {
-            amounts: [transactionPl.payload.deposit.amount],
-            poolAddresses: [transactionPl.payload.deposit.poolAddress],
+            variant: 'deposit',
+            amounts: [st.payload.deposit.amount],
+            poolAddresses: [st.payload.deposit.poolAddress],
             isStakingDeposit: true,
             depositLink: routes.pools.staking.getRedirectPath(),
             onClose: handleClose,
           };
         case 'savings.withdraw':
-          return {
-            amounts: [transactionPl.payload.withdraw.amount],
-            wallet: transactionPl.payload.fromAddress,
-            withdrawLink: getTransactionLinkFromHash(hash),
-          };
         case 'staking.withdraw':
           return {
-            amounts: [transactionPl.payload.withdraw.amount],
-            wallet: transactionPl.payload.fromAddress,
-            withdrawLink: getTransactionLinkFromHash(hash),
+            variant: 'withdraw',
+            amounts: [st.payload.withdraw.amount],
+            wallet: st.payload.fromAddress,
+            withdrawLink: hash && getTransactionLinkFromHash(hash),
           };
         case 'rewards.withdraw':
           return {
-            amounts: transactionPl.payload.amounts,
-            wallet: transactionPl.payload.fromAddress,
-            withdrawLink: getTransactionLinkFromHash(hash),
+            variant: 'withdraw',
+            amounts: st.payload.amounts,
+            wallet: st.payload.fromAddress,
+            withdrawLink: hash && getTransactionLinkFromHash(hash),
           };
       }
     }
     return null;
   }
 
-  function renderDialogTemplate(payload: DepositDialogProps | WithdrawDialogProps | null) {
-    if (payload === null && (variant === 'withdrawError' || variant === 'depositError'))
-      return <ErrorDialogTemplate variant={variant} />;
-    if (payload && 'poolAddresses' in payload) return <DepositDialogTemplate {...payload} />;
-    if (payload && 'wallet' in payload) return <WithdrawDialogTemplate {...payload} />;
+  function renderDialogContent(payload: TransactionResult) {
+    if (payload) {
+      switch (payload.variant) {
+        case 'deposit':
+          return <DepositDialogContent {...payload} />;
+        case 'withdraw':
+          return <WithdrawDialogContent {...payload} />;
+        case 'withdrawError':
+        case 'depositError':
+          return <ErrorDialogContent variant={payload.variant} />;
+      }
+    }
     return null;
   }
 }

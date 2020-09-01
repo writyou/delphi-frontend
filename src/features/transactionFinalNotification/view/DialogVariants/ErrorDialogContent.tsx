@@ -12,7 +12,7 @@ export type ErrorDialogProps = {
 
 const fKeys = tKeys.features.transactionFinalNotification;
 
-export function ErrorDialogTemplate({ variant }: ErrorDialogProps) {
+export function ErrorDialogContent({ variant }: ErrorDialogProps) {
   const { t } = useTranslate();
   const classes = useStyles();
 

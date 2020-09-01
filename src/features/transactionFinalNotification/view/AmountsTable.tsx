@@ -9,14 +9,14 @@ export function AmountsTable({ amounts }: { amounts: TokenAmount[] }) {
     <Grid container wrap="nowrap">
       <Grid item container direction="column" spacing={1}>
         {amounts.map(amount => (
-          <Grid item>
+          <Grid item key={amount.currency.symbol}>
             <TokenName token={amount.currency} />
           </Grid>
         ))}
       </Grid>
       <Grid item container direction="column" spacing={1}>
         {amounts.map(amount => (
-          <Grid item>
+          <Grid item key={amount.currency.symbol}>
             <FormattedAmount sum={amount} variant="plain" hideSymbol />
           </Grid>
         ))}
