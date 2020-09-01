@@ -8,12 +8,14 @@ import { Hint, Button } from 'components';
 
 type AnyObject = Record<string, any>;
 
+export type SubmitButtonProps = { disabled?: boolean };
+
 export type FormTemplateProps<FormValues extends AnyObject> = Omit<
   FormProps<FormValues>,
   'subscription'
 > & {
   submitButton?: string;
-  FooterContent: React.FC<{ SubmitButton: () => JSX.Element }>;
+  FooterContent: React.FC<{ SubmitButton: (props: SubmitButtonProps) => JSX.Element }>;
 };
 
 export function InfiniteApproveFormTemplate<FormValues extends AnyObject>(
@@ -40,13 +42,13 @@ export function InfiniteApproveFormTemplate<FormValues extends AnyObject>(
               <Grid container direction="column">
                 {children}
                 <FooterContent
-                  SubmitButton={() => (
+                  SubmitButton={({ disabled }: SubmitButtonProps) => (
                     <Button
                       size="small"
                       variant="contained"
                       color="primary"
                       type="submit"
-                      disabled={submitting || hasValidationErrors}
+                      disabled={disabled || submitting || hasValidationErrors}
                     >
                       {submitting ? <CircularProgress size={24} /> : submitButton || 'Submit'}
                     </Button>

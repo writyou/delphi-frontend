@@ -181,6 +181,11 @@ const en = {
     infiniteApprove: {
       text:
         'Preapprove the contract to be able to spend any amount of your coins. You will not need to approve again & sign additional transactions each time.',
+      switchAllText: 'Grant infinite unlock rights for all',
+      tokensTableHeader: {
+        asset: 'Asset',
+        unlock: 'Infinite Unlock',
+      },
     },
   },
   utils: {

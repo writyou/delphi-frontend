@@ -12,9 +12,10 @@ import { useSubscribable, useCommunication } from 'utils/react';
 import { isSuccess } from 'utils/remoteData';
 import { Grid, TokenIcon, Loading } from 'components';
 import { ETH_NETWORK_CONFIG } from 'env';
+import { tKeys, useTranslate } from 'services/i18n';
 
 import { getInfiniteApproves$ } from '../view/InfiniteApproveSwitch';
-import { InfiniteApproveFormTemplate } from './InfiniteApproveFormTemplate';
+import { InfiniteApproveFormTemplate, SubmitButtonProps } from './InfiniteApproveFormTemplate';
 import { SwitchAllTokens } from './SwitchAllTokens';
 
 type FormData = {
@@ -30,15 +31,16 @@ type InfiniteApproveFormProps = {
   tokens: Token[];
 };
 
-export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) {
+export function TokensInfiniteApproveForm({ tokens: initialTokens }: InfiniteApproveFormProps) {
   const api = useApi();
   const classes = useStyles();
+  const { t } = useTranslate();
 
   const tokensRD = useSubscribable(
     () =>
       combineLatest(
         combineLatest(
-          Object.values(tokens).map(({ address }) => {
+          Object.values(initialTokens).map(({ address }) => {
             try {
               return api.erc20.getToken$(address).pipe(catchError(() => of(null)));
             } catch {
@@ -48,29 +50,22 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
         ),
         api.web3Manager.account$,
       ).pipe(
-        map(([receivedTokens, account]) => ({
-          receivedTokens: receivedTokens.filter((value): value is Token => !!value),
+        map(([tokens, account]) => ({
+          verifiedTokens: tokens.filter((value): value is Token => !!value),
           account,
         })),
-        switchMap(({ receivedTokens, account }) =>
+        switchMap(({ verifiedTokens, account }) =>
           getInfiniteApproves$(
             api,
-            receivedTokens,
+            verifiedTokens,
             ETH_NETWORK_CONFIG.contracts.savingsModule,
-          ).pipe(map(values => ({ account, receivedTokens: values }))),
+          ).pipe(map(tokens => ({ account, receivedTokens: tokens }))),
         ),
       ),
     [api],
   );
 
-  // TODO refactor
-  const { account, receivedTokens } =
-    tokensRD.fold(
-      () => undefined,
-      () => undefined,
-      () => undefined,
-      val => val,
-    ) || {};
+  const { account, receivedTokens } = tokensRD.toUndefined() || {};
 
   const initialValues = useMemo(
     () =>
@@ -80,40 +75,38 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
   );
 
   const handleFormSubmit = useCallback(
-    async (tokensFormState: FormData) => {
-      if (!tokensFormState) return;
+    async (tokens: FormData) => {
+      if (!tokens) return;
 
-      await communication.execute(tokensFormState);
+      await communication.execute(tokens);
     },
     [receivedTokens],
   );
 
+  const getChangedTokens = useCallback(
+    (tokensState: FormData, direction: 'approve' | 'revert') =>
+      receivedTokens?.filter(
+        token =>
+          (direction === 'approve'
+            ? tokensState[token.token.symbol]
+            : !tokensState[token.token.symbol]) &&
+          tokensState[token.token.symbol] !== token.hasInfiniteApprove,
+      ),
+    [receivedTokens],
+  );
+
   const communication = useCommunication(
-    async (tokensFormState: FormData) => {
-      if (!tokensFormState || !account) return;
+    async (tokens: FormData) => {
+      if (!tokens || !account) return;
       await api.erc20.infiniteApproveMultiple(
         account,
         ETH_NETWORK_CONFIG.contracts.savingsModule,
-        R.pluck(
-          'token',
-          receivedTokens?.filter(
-            token =>
-              tokensFormState[token.token.symbol] &&
-              tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
-          ) || [],
-        ),
+        R.pluck('token', getChangedTokens(tokens, 'approve') || []),
       );
       await api.erc20.revertInfiniteApproveMultiple(
         account,
         ETH_NETWORK_CONFIG.contracts.savingsModule,
-        R.pluck(
-          'token',
-          receivedTokens?.filter(
-            token =>
-              !tokensFormState[token.token.symbol] &&
-              tokensFormState[token.token.symbol] !== token.hasInfiniteApprove,
-          ) || [],
-        ),
+        R.pluck('token', getChangedTokens(tokens, 'revert') || []),
       );
     },
     [api, account, receivedTokens],
@@ -142,15 +135,15 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
       <>
         <Grid container item className={classes.headerRow}>
           <Grid item xs={4}>
-            Asset
+            {t(tKeys.features.infiniteApprove.tokensTableHeader.asset.getKey())}
           </Grid>
           <Grid item xs={8}>
-            Infinite Unlock
+            {t(tKeys.features.infiniteApprove.tokensTableHeader.unlock.getKey())}
           </Grid>
         </Grid>
         <Grid container item>
           {values.map(({ token }) => (
-            <Grid item container className={classes.row}>
+            <Grid item container key={token.symbol} className={classes.row}>
               <Grid item container xs={4}>
                 <Grid item className={classes.tokenIcon}>
                   <TokenIcon tokenAddress={token.address} />
@@ -167,35 +160,40 @@ export function TokensInfiniteApproveForm({ tokens }: InfiniteApproveFormProps) 
     );
   }
 
-  function InfiniteApproveFooterContent(props: { SubmitButton: () => JSX.Element }) {
+  function InfiniteApproveFooterContent(props: {
+    SubmitButton: (props: SubmitButtonProps) => JSX.Element;
+  }) {
     const { SubmitButton } = props;
     return (
       <Grid container item alignItems="center" className={classes.footerRow}>
         <Grid item xs={4}>
-          Grant infinite unlock rights for all
+          {t(tKeys.features.infiniteApprove.switchAllText.getKey())}
         </Grid>
-        <Grid container item xs={8} alignItems="center">
-          <Grid item className={classes.switch}>
-            <FormSpy<FormData> subscription={{ values: true }}>
-              {({ values, form }) => (
-                <SwitchAllTokens form={form} tokens={values} isDisabled={isDisabled} />
-              )}
-            </FormSpy>
-          </Grid>
-          <Grid item>
-            <SubmitButton />
-          </Grid>
-        </Grid>
+        <FormSpy<FormData> subscription={{ values: true }}>
+          {({ values, form }) => {
+            return (
+              <Grid container item xs={8} alignItems="center">
+                <Grid item className={classes.switch}>
+                  <SwitchAllTokens form={form} tokens={values} isDisabled={isDisabled} />
+                </Grid>
+                <Grid item>
+                  <SubmitButton
+                    disabled={
+                      !getChangedTokens(values, 'approve')?.length &&
+                      !getChangedTokens(values, 'revert')?.length
+                    }
+                  />
+                </Grid>
+              </Grid>
+            );
+          }}
+        </FormSpy>
       </Grid>
     );
   }
 
   function renderApproveSwitch(token: Token) {
-    return (
-      <>
-        <SwitchInputField disabled={isDisabled} key={token.symbol} name={token.symbol} />
-      </>
-    );
+    return <SwitchInputField disabled={isDisabled} key={token.symbol} name={token.symbol} />;
   }
 }
 
