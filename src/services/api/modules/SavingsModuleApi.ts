@@ -14,6 +14,8 @@ import {
   isEqualHex,
   min,
   max,
+  Token,
+  decimalsToWei,
 } from '@akropolis-web/primitives';
 
 import { getSignificantValue } from 'utils';
@@ -168,6 +170,88 @@ export class SavingsModuleApi {
         });
       }),
     ) as any;
+  }
+
+  @memoize((from: string, poolAddress: string, token: Token) =>
+    [from, poolAddress, token.address].join(),
+  )
+  public getMaxWithdrawAmount$(
+    from: string,
+    poolAddress: string,
+    token: Token,
+  ): Observable<TokenAmount> {
+    return this.getUserBalance$(poolAddress, from).pipe(
+      map(balance => denormolizeAmount(balance, token)),
+      token instanceof AllCoinsToken
+        ? map(balance => denormolizeAmount(balance, token))
+        : switchMap(balance => this.calcMaxWithdrawAmount$(from, poolAddress, balance)),
+    );
+  }
+
+  @memoize(
+    (
+      from: string,
+      poolAddress: string,
+      userPoolBalance: TokenAmount,
+      opts?: {
+        withdrawAmount: TokenAmount;
+        fee: TokenAmount;
+      },
+    ) =>
+      [
+        from,
+        poolAddress,
+        userPoolBalance.toString(),
+        userPoolBalance.currency.address,
+        opts?.withdrawAmount.toString(),
+        opts?.fee.toString(),
+      ].join(),
+  )
+  private calcMaxWithdrawAmount$(
+    from: string,
+    poolAddress: string,
+    userPoolBalance: TokenAmount,
+    opts?: {
+      withdrawAmount: TokenAmount;
+      fee: TokenAmount;
+    },
+  ): Observable<TokenAmount> {
+    const zeroAmount = userPoolBalance.withValue(0);
+    const { fee, withdrawAmount } = opts || {
+      withdrawAmount: zeroAmount,
+      fee: zeroAmount,
+    };
+
+    const allowedRemainingUserPoolBalance = decimalsToWei(userPoolBalance.currency.decimals);
+    const remaining = userPoolBalance.sub(withdrawAmount).sub(fee);
+
+    if (remaining.lt(allowedRemainingUserPoolBalance)) {
+      return of(withdrawAmount);
+    }
+
+    const maxEstimatedFee = withdrawAmount.isZero()
+      ? zeroAmount
+      : userPoolBalance.mul(fee).div(withdrawAmount);
+
+    const nextWithdrawAmount = min(
+      withdrawAmount.add(remaining.div(2)),
+      userPoolBalance.sub(maxEstimatedFee), // TODO possibly lead to infinite recursion, check this
+    );
+
+    return this.getWithdrawFee$(from, poolAddress, nextWithdrawAmount).pipe(
+      switchMap(nextFee => {
+        const fullAmount = nextWithdrawAmount.add(nextFee);
+        // fee is wrong, return prev withdrawAmount
+        if (fullAmount.gt(userPoolBalance)) {
+          return of(withdrawAmount);
+        }
+
+        return this.calcMaxWithdrawAmount$(from, poolAddress, userPoolBalance, {
+          fee: nextFee,
+          withdrawAmount: nextWithdrawAmount,
+        });
+      }),
+    );
   }
 
   @memoize((from: string, poolAddress: string, amount: TokenAmount) =>

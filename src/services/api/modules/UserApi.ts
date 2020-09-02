@@ -7,6 +7,7 @@ import {
   PercentAmount,
   Fraction,
   calcAvg,
+  Token,
 } from '@akropolis-web/primitives';
 
 import { memoize } from 'utils/decorators';
@@ -120,6 +121,14 @@ export class UserApi {
   public getSavingsDepositFees$(deposits: DepositToSavingsPool[]) {
     return this.web3Manager.account$.pipe(
       switchMap(account => (account ? this.savings.getDepositFees$(account, deposits) : empty())),
+    );
+  }
+
+  public getMaxSavingsWithdrawAmount$(poolAddress: string, token: Token): Observable<TokenAmount> {
+    return this.web3Manager.account$.pipe(
+      switchMap(account =>
+        account ? this.savings.getMaxWithdrawAmount$(account, poolAddress, token) : empty(),
+      ),
     );
   }
 

@@ -2,8 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { FormSpy } from 'react-final-form';
 import { FormState } from 'final-form';
 import { empty } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { TokenAmount, Token, denormolizeAmount, AllCoinsToken } from '@akropolis-web/primitives';
+import { TokenAmount, Token, AllCoinsToken } from '@akropolis-web/primitives';
 
 import { useApi } from 'services/api';
 import { tKeys, useTranslate } from 'services/i18n';
@@ -45,11 +44,7 @@ export function WithdrawFromSavingsPoolForm({
 
   const maxValueRD = useSubscribable(
     () =>
-      currentToken
-        ? api.user
-            .getSavingsPoolBalance$(poolAddress)
-            .pipe(map(balance => denormolizeAmount(balance, currentToken)))
-        : empty(),
+      currentToken ? api.user.getMaxSavingsWithdrawAmount$(poolAddress, currentToken) : empty(),
     [api, currentToken],
   );
 
