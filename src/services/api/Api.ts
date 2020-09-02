@@ -13,6 +13,7 @@ import { DCAModuleApi } from './modules/DCAModuleApi';
 import { StakingModuleApi } from './modules/StakingModuleApi';
 import { PricesApi } from './modules/PriceApi';
 import { RewardsApi } from './modules/RewardsApi';
+import { RENGateway } from './modules/RENGateway';
 
 export class Api {
   private subgraphApi = new SubgraphApi(this.apolloClient);
@@ -20,6 +21,7 @@ export class Api {
   public web3Manager = new Web3Manager();
   public swarmApi = new SwarmApi();
   public prices = new PricesApi();
+  public renGateway = new RENGateway(this.web3Manager);
 
   public transactions = new TransactionsApi();
   public erc20 = new Erc20Api(this.web3Manager, this.transactions);
