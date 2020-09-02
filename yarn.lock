@@ -2,12 +2,12 @@
 # yarn lockfile v1
 
 
-"@akropolis-web/components@^0.10.0":
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.10.0.tgz#134d3068f5b6198f6e36b0729a96ce9215829376"
-  integrity sha512-aAdbWDvZrz5kERCvZ6ZRkqMqlnP51XIVXBkLbAbI+6SZ6cGBta2sYsfzP9+N2r1lKY1Bm/vWh0MIuqf4FEo3hA==
+"@akropolis-web/components@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/components/-/components-0.10.1.tgz#0aea575461fa84b2fb774adf4d0a95aec262714c"
+  integrity sha512-o3/hE17loAMQog4xbT/BD7fi+ZD0qRNL4arqHeDJOmdE29pfGeyLFzcm7b+D9kuoAyG+ive4A5GReKrPPM52FQ==
   dependencies:
-    "@akropolis-web/primitives" "^0.2.2"
+    "@akropolis-web/primitives" "^0.2.3"
     "@akropolis-web/styles" "^0.9.0"
     "@types/mersenne-twister" "^1.1.2"
     "@types/react-copy-to-clipboard" "^4.3.0"
@@ -15,10 +15,10 @@
     mersenne-twister "^1.1.0"
     react-copy-to-clipboard "^5.0.2"
 
-"@akropolis-web/primitives@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.2.tgz#9e873618f64694a18469774a6df04f5c418deee8"
-  integrity sha512-lhsg+rydJGiKUl+K3V3hrZeqi74p/IMfgrlN/ULJXoQxh/RylYsOhWOuyFqxJ4QO2bR9+bJPI5DnMvWUHa0XHg==
+"@akropolis-web/primitives@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@akropolis-web/primitives/-/primitives-0.2.3.tgz#8d7959676ee7695ad4f66d7a0250298b42200403"
+  integrity sha512-gfZYn9NqyrHn6Hzaj+zT/W4EWefKgCMEgOvkqqEyXAs8HwJaJ2O0W0jSKLRSo7tEkzdqjH5qUkusprYH4iVGcA==
 
 "@akropolis-web/styles@^0.9.0":
   version "0.9.0"
