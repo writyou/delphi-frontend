@@ -10,6 +10,7 @@ import {
   CatsPawPlaceholder,
 } from 'components';
 import { percentAmount } from 'utils/mock';
+import { useBreakpointsMatch } from 'services/adaptability';
 
 import { UserSavingsPoolsSummary } from './UserSavingsPoolsSummary';
 import { UserStakingPoolsSummary } from './UserStakingPoolsSummary';
@@ -17,8 +18,10 @@ import { UserInvestmentPoolsSummary } from './UserInvestmentPoolsSummary';
 import { UserDCAPoolsSummary } from './UserDCAPoolsSummary';
 
 export function APYMetricsSection() {
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
+
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={isMobile ? 2 : 4}>
       <Grid item xs={6}>
         <UserSavingsPoolsSummary />
       </Grid>

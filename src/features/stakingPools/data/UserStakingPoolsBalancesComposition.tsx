@@ -21,7 +21,7 @@ import { DEFAULT_LIQUIDITY_CURRENCY } from 'utils/mock';
 import { UserStakingPoolsAvgAPY } from './UserStakingPoolsAvgAPY';
 
 type Props = {
-  size: 'extra-small' | 'extra-large';
+  size: 'ultra-small' | 'extra-small' | 'extra-large';
   withInnerLegend?: boolean;
   withCompositionLegend?: boolean;
 };

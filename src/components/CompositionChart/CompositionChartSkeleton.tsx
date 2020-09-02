@@ -20,6 +20,7 @@ export function CompositionChartSkeleton(props: Props & SkeletonProps) {
       {...rest}
       variant="circle"
       className={cn(classes.root, {
+        [classes.isUltraSmall]: size === 'ultra-small',
         [classes.isExtraSmall]: size === 'extra-small',
         [classes.isSmall]: size === 'small',
         [classes.isMedium]: size === 'medium',
@@ -37,6 +38,10 @@ export const useStyles = makeStyles(
       width: theme.sizes.chartWidth.default,
       height: theme.sizes.chartWidth.default,
 
+      '&$isUltraSmall': {
+        width: theme.sizes.chartWidth.us,
+        height: theme.sizes.chartWidth.us,
+      },
       '&$isExtraSmall': {
         width: theme.sizes.chartWidth.xs,
         height: theme.sizes.chartWidth.xs,
@@ -59,6 +64,7 @@ export const useStyles = makeStyles(
       },
     },
 
+    isUltraSmall: {},
     isExtraSmall: {},
     isSmall: {},
     isMedium: {},

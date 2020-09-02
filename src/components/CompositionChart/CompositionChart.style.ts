@@ -13,6 +13,10 @@ export const useStyles = makeStyles(
       width: theme.sizes.chartWidth.default,
       height: theme.sizes.chartWidth.default,
 
+      '&$isUltraSmall': {
+        width: theme.sizes.chartWidth.us,
+        height: theme.sizes.chartWidth.us,
+      },
       '&$isExtraSmall': {
         width: theme.sizes.chartWidth.xs,
         height: theme.sizes.chartWidth.xs,
@@ -54,6 +58,7 @@ export const useStyles = makeStyles(
       zIndex: -100,
     },
 
+    isUltraSmall: {},
     isExtraSmall: {},
     isSmall: {},
     isMedium: {},

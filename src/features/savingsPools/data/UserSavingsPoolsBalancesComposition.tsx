@@ -21,7 +21,7 @@ import { useApi, Api } from 'services/api';
 import { UserSavingsPoolsAvgAPY } from './UserSavingsPoolsAvgAPY';
 
 type Props = {
-  size: 'extra-small' | 'extra-large';
+  size: 'ultra-small' | 'extra-small' | 'extra-large';
   withInnerLegend?: boolean;
   withCompositionLegend?: boolean;
 };

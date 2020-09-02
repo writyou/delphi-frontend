@@ -22,4 +22,4 @@ export type CompositionChartLegendProps<T extends Amount, P = void> = {
   sectors: PieSector<T, P>[];
 };
 
-export type Size = 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
+export type Size = 'ultra-small' | 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';

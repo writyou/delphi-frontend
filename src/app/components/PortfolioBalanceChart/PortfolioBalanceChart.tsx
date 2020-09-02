@@ -11,15 +11,15 @@ function PortfolioBalanceChart() {
 
   return (
     <Grid container spacing={4} direction="column" className={classes.root}>
-      <Grid item container spacing={2} justify="space-between">
-        <Grid item>
+      <Grid item container justify="space-between">
+        <Grid item className={classes.chartHeaderItem}>
           <Label withComingSoon>Portfolio balance</Label>
         </Grid>
-        <Grid item>
+        <Grid item className={classes.chartHeaderItem}>
           <PeriodSwitch period="all" onSelect={() => {}} />
         </Grid>
       </Grid>
-      <Grid item container spacing={4}>
+      <Grid item container>
         <Grid item xs={12}>
           <ChartWithCat className={classes.cat} hideText />
         </Grid>
@@ -36,6 +36,11 @@ const useStyles = makeStyles(
     cat: {
       width: '100%',
       height: 'unset',
+    },
+    chartHeaderItem: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '10px 0',
     },
   }),
   { name: 'PortfolioBalanceChart' },

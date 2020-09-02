@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { Button, ButtonProps } from 'components/Button';
 import { GradientArrow } from 'components/icons';
 import { makeStyles } from 'utils/styles';
+import { useBreakpointsMatch } from 'services/adaptability';
 
 type OwnProps = {
   isHovered?: boolean;
@@ -15,6 +16,8 @@ export function GradientArrowButton<C extends React.ElementType>(
   const { children, isHovered, ...rest } = props;
   const classes = useStyles();
   const [localIsHovered, setLocalIsHovered] = useState(false);
+
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
 
   const handleButtonMouseOver = useCallback(() => {
     setLocalIsHovered(true);
@@ -29,7 +32,7 @@ export function GradientArrowButton<C extends React.ElementType>(
         {...rest}
         variant="text"
         color="primary"
-        endIcon={<GradientArrow className={classes.arrow} />}
+        endIcon={<GradientArrow className={classes.arrow} size={isMobile ? 'small' : 'medium'} />}
         className={cn(classes.root, { [classes.isHovered]: isHovered || localIsHovered })}
         onMouseOver={handleButtonMouseOver}
         onFocus={handleButtonMouseOver}

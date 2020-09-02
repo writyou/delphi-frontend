@@ -16,6 +16,7 @@ type Props<T extends Amount, P = void> = {
 };
 
 const innerRadiusBySize: Record<Size, string> = {
+  'ultra-small': '80%',
   'extra-small': '85%',
   small: '87%',
   medium: '89%',
@@ -41,6 +42,7 @@ export function CompositionChart<T extends Amount, P = void>({
       <div className={classes.chartContainer}>
         <div
           className={cn(classes.chart, {
+            [classes.isUltraSmall]: size === 'ultra-small',
             [classes.isExtraSmall]: size === 'extra-small',
             [classes.isSmall]: size === 'small',
             [classes.isMedium]: size === 'medium',

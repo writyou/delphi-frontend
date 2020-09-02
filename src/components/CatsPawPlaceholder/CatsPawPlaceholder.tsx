@@ -5,7 +5,7 @@ import { makeStyles } from 'utils/styles';
 import { CatPaws, CatPawsProps } from 'components/icons';
 
 type Props = {
-  size: 'extra-small' | 'extra-large';
+  size: 'ultra-small' | 'extra-small' | 'extra-large';
 };
 
 export function CatsPawPlaceholder(props: Props & CatPawsProps) {
@@ -15,6 +15,7 @@ export function CatsPawPlaceholder(props: Props & CatPawsProps) {
   return (
     <div
       className={cn(classes.root, {
+        [classes.isUltraSmall]: size === 'ultra-small',
         [classes.isExtraSmall]: size === 'extra-small',
         [classes.isExtraLarge]: size === 'extra-large',
       })}
@@ -27,6 +28,11 @@ export function CatsPawPlaceholder(props: Props & CatPawsProps) {
 const useStyles = makeStyles(
   () => ({
     root: {
+      '&$isUltraSmall': {
+        fontSize: 30,
+        padding: 0,
+      },
+
       '&$isExtraSmall': {
         fontSize: 50,
         padding: 5,
@@ -38,6 +44,7 @@ const useStyles = makeStyles(
       },
     },
 
+    isUltraSmall: {},
     isExtraSmall: {},
     isExtraLarge: {},
   }),

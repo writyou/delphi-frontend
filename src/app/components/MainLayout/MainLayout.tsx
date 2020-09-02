@@ -2,22 +2,22 @@ import React from 'react';
 
 import { Card } from 'components';
 
-import { NewHeader } from '../NewHeader';
+// import { NewHeader } from '../NewHeader';
 import { PreauditVersionWarning } from '../PreauditVersionWarning/PreauditVersionWarning';
 import { useStyles } from './MainLayout.style';
 import { AppFooter } from '../AppFooter/AppFooter';
-import { Sidebar } from '../Sidebar';
+// import { Sidebar } from '../Sidebar';
 
 export const MainLayout: React.FC = ({ children }) => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className={classes.headerAndContent}>
-        <Card variant="contained" className={classes.header}>
+        {/* <Card variant="contained" className={classes.header}>
           <NewHeader />
-        </Card>
+  </Card> */}
         <div className={classes.preauditVersionWarning}>
           <PreauditVersionWarning />
         </div>

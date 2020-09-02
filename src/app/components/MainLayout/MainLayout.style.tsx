@@ -12,14 +12,18 @@ export const useStyles = makeStyles(
       flex: 1,
       flexDirection: 'column',
       overflow: 'auto',
-      padding: '25px 50px 50px 56px',
+      padding: '25px 10px 10px',
 
-      '&:first-child': {
-        paddingLeft: 50,
+      [theme.breakpoints.up('tabletXS')]: {
+        padding: '25px 50px 56px',
+
+        '&:first-child': {
+          paddingLeft: 50,
+        },
       },
     },
 
-    // TODO: remove duplication with extand plugin
+    // TODO: remove duplication with extend plugin
 
     header: {
       backgroundColor: theme.palette.background.paperSecondary,

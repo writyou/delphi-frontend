@@ -10,12 +10,17 @@ import {
 } from 'components';
 import { routes } from 'app/routes';
 import { percentAmount } from 'utils/mock';
+import { useBreakpointsMatch } from 'services/adaptability';
 
 export function UserInvestmentPoolsSummary() {
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
+
   return (
     <PoolSummaryCard
       title={<Label withComingSoon>Investments</Label>}
-      chart={<CatsPawPlaceholder variant="violet" size="extra-small" />}
+      chart={
+        <CatsPawPlaceholder variant="violet" size={isMobile ? 'ultra-small' : 'extra-small'} />
+      }
       apyValue={<FormattedAmount sum={percentAmount} />}
       button={
         <GradientArrowButton component={RouterLink} to={routes.investments.getRedirectPath()}>

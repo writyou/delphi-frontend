@@ -39,6 +39,7 @@ function getGradients(type: 'dark' | 'light') {
 const sizes = {
   chartWidth: {
     default: 135,
+    us: 30,
     xs: 60,
     sm: 85,
     md: 114,
@@ -85,7 +86,7 @@ function getTheme(type: 'light' | 'dark'): Theme {
         desktopXS: 1280,
         tabletSM: 1024,
         tabletXS: 768,
-        mobileMD: 414,
+        mobileMD: 480,
         mobileSM: 320,
         mobileXS: 0,
       },

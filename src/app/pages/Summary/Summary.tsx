@@ -5,6 +5,7 @@ import { useSubscribable } from 'utils/react';
 import { Loading, Card, Grid } from 'components';
 import { makeStyles } from 'utils/styles';
 import { PageForGuest, PortfolioBalanceChart } from 'app/components';
+import { useBreakpointsMatch } from 'services/adaptability';
 
 import { APYMetricsSection } from './Components/APYMetricsSection';
 
@@ -12,6 +13,7 @@ export function Summary() {
   const classes = useStyles();
 
   const api = useApi();
+  const isMobile = useBreakpointsMatch({ to: 'tabletXS' });
   const doesUserExistRD = useSubscribable(() => api.user.isUserExist$(), [api]);
 
   return (
@@ -19,11 +21,11 @@ export function Summary() {
       <Loading data={doesUserExistRD}>
         {doesUserExist =>
           doesUserExist ? (
-            <Grid container spacing={10}>
-              <Grid item xs={6}>
+            <Grid container spacing={isMobile ? 0 : 10}>
+              <Grid item xs={isMobile ? 12 : 6}>
                 <PortfolioBalanceChart />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={isMobile ? 12 : 6}>
                 <APYMetricsSection />
               </Grid>
             </Grid>
@@ -36,9 +38,16 @@ export function Summary() {
   );
 }
 
-const useStyles = makeStyles({
-  root: {
-    padding: 50,
-    minHeight: '100%',
-  },
-});
+const useStyles = makeStyles(
+  theme => ({
+    root: {
+      minHeight: '100%',
+
+      padding: 10,
+      [theme.breakpoints.up('tabletXS')]: {
+        padding: 50,
+      },
+    },
+  }),
+  { name: 'Summary' },
+);
